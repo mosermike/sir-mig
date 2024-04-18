@@ -1,0 +1,62 @@
+# This is the config file, generated with create_config.py
+mode : 2C # Determimes which code is executed
+path : Path to the data # Path location where all the data is stored and will be saved
+# 
+# Stuff from the data
+# 
+cube : data.npy  # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1
+cube_inv : data_inv.npy # Data cube name used for the inversion (npy or fits)
+map : xmin,xmax,ymin,ymax # Pixels to be considered as a list
+waves : waves.npy # numpy file with wavelengths in Angstrom
+instrument : Hinode # Instrument used (GRIS, Hinode or empty)
+shift_wave : 0 # Shift the wavelength grid when waves file is created in mA
+#
+# Data Preprocessing when main.py is executed
+#
+preprocess : 1 # Preprocess data (1 = True, 0 = False)
+quiet_sun : xmin,xmax,ymin,ymax # Quiet sun region for normalization as a list (0 => already normalised)
+fts_file : path to fts file # Absolute fts file, blank = do not correct spectral  
+# 
+# Inversion configuration
+# 
+model1 : model1.mod # Base Model 1 for guess
+model2 : model2.mod # Base Model 2 for guess
+range_wave : 6300,6304 # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.
+inv_out : inversion.npy # Prefix of the output of the inversion files
+chi2 : chi2.npy # Output of the chi2 values (npy)
+line : Lines # Line file
+atoms : 3,4 # Atoms to be used in Grid file
+guess1 :  # Use a npy file as initial guesses, blank use base model 1
+guess2 :  # Use a npy file as initial guesses, blank use base model 2
+psf :  # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used
+# 
+# Control file
+# 
+cycles :  # Number of cycles
+weights : 1,1,1,1 # Weights in the control file
+nodes_temp1 :  # Nodes in T
+nodes_magn1 :  # Nodes in B
+nodes_vlos1 :  # Nodes in vlos
+nodes_gamma1 :  # Nodes in gamma
+nodes_phi1 :  # Nodes in phi
+nodes_temp2 :  # Nodes in T
+nodes_magn2 :  # Nodes in B
+nodes_vlos2 :  # Nodes in vlos
+nodes_gamma2 :  # Nodes in gamma
+nodes_phi2 :  # Nodes in phi
+mu_cos :  # mu = cos theta
+abundance : THEVENIN # Abundance file
+gas_pressure :  # Gas Pressure Boundary condition
+# 
+# Radomisation Settings
+# 
+random_guess :  # Create random guesses, 0 = use model as guess
+random_pars : B,T,vlos,gamma # Randomise these parameters in the file(s) below
+lim_B1 : 0,5000 # Limits 1 for the randomisation in B in G
+lim_vlos1 : -1e5,1e5 # Limits 1 for the randomisation in vlos in cm/s
+lim_gamma1 : 0,180 # Limits 1 for the randomisation in the inclination in deg
+lim_azimuth1 : 0,180 # Limits 1 for the randomisation in the azimuth in deg
+lim_B2 : 0,5000 # Limits 2 for the randomisation in B in G
+lim_vlos2 : -1e5,1e5 # Limits 2 for the randomisation in vlos in cm/s
+lim_gamma2 : 0,180 # Limits 2 for the randomisation in the inclination in deg
+lim_azimuth2 : 0,180 # Limits 2 for the randomisation in the azimuth in deg

@@ -1,0 +1,10 @@
+# Obtained by running the commands below
+# pip install pipreqs
+# conda install --yes --file requirements.txt -c conda-forge
+
+python==3.11.6
+numpy==1.25.0
+astropy==5.2
+matplotlib==3.7.1
+scipy==1.11.1
+mpi4py==3.1.4
