@@ -47,10 +47,10 @@ in the src directory of the SIR code.
 2. There is a python script 'main.py' which merges, normalises the data and corrects it for the spectral veil. Afterwards, the inversion is executed.
 
 	```
-		mpirun -np 64 python [Path to here]/main.py config.txt -dir [Path to the data directory of the fits files]
+		mpirun -np 64 python [Path to here]/src/main.py config.txt -dir [Path to the data directory of the fits files]
 	```
 
-   It executes following commands:
+   It executes for example the following commands for the modes 1C and 2C:
 
   1. Merging the data can be done as
 	```
@@ -86,7 +86,7 @@ in the src directory of the SIR code.
 
 ## Example
 
-In the directory `example`, several files are put. An examplary config file for gris and hinode. Then there are also other things needed to perform the inversion. All other files are created by using the scripts.
+In the directory `example`, several files are put. An examplary config file for gris and hinode for each mode. Then there are also other things needed to perform the inversion. All other files are created by using the scripts.
 
 ## Directory structure of src
 
@@ -96,11 +96,6 @@ In the directory `example`, several files are put. An examplary config file for 
 ├── create_config.py			- Creates a config file
 ├── create_random_guess.py		- Creates random guesses for the inversion
 ├── definitions.py				- Several definitions used in different scripts
-├── fts						- Folder with data from the FTS for the spectral correction
-│   ├── ph09225.dat
-│   ├── ph09250.dat
-│   ├── ph09275.dat
-│   └── wn6375.dat
 ├── inversion.py				- Performs the inversion
 ├── main.py					- Script executing all the neccessary step with the already existing config file
 ├── merge.py					- Merges the fits files
@@ -136,7 +131,7 @@ In the directory `example`, several files are put. An examplary config file for 
   2. Save this numpy array as a npy file with the same name as the parameter 'veil_parameters' in the definitions python script in 'src' (if it is not changed, it should be 'veil.npy').
   3. make sure that there is no file in the directory with the same name as provided in the config file
 ## Support
-For any questions, write a mail to [mikemoser1997@gmail.com](mailto:mikemoser1997@gmail.com)
+For any questions, write a mail to [mosermike@protonmail.ch](mailto:mosermike@protonmail.ch)
 
 
 ## Authors and acknowledgment
