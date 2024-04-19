@@ -92,32 +92,63 @@ In the directory `example`, several files are put. An examplary config file for 
 
 ```bash
 .
-├── correction_spectral_veil.py	- Corrects for the spectral veil
-├── create_config.py			- Creates a config file
-├── create_random_guess.py		- Creates random guesses for the inversion
-├── definitions.py				- Several definitions used in different scripts
-├── inversion.py				- Performs the inversion
-├── main.py					- Script executing all the neccessary step with the already existing config file
-├── merge.py					- Merges the fits files
-├── mml.mplstyle				- Matplotlib style sheet
-├── model.py					- File with the class model
-├── normalise.py				- Normalises the data cube
-├── obs.py					- Several functions related to the observation processing
-├── plot						- Directory with several scripts to plot things
-│   ├── gris_sketch.py			- Sketches things from the data of gris
-│   ├── Ic_test.py				- Plots the intensity of the obs. and the fit in a diagramm to test the inversion
-│   ├── initial_vs_result.py		- Plots the initial starting point vs the resulting point for different inversions
-│   ├── inversion.py			- Plots one single inversion and saves it
-│   ├── response.py				- Plots the response function of a model created with SIR
-│   ├── result.py				- Plots the results of the inversion
-│   └── visualizer.py			- Visualises the Stokes Profiles and the fits as well as the model for selectable pixels.
-├── sir.py					- Several functions related to sir
-└── tools						- Directory with additional tools
-    ├── change_config_path.py 	- Changes the path in the config file
-    ├── clean.py				- Cleans the output of the inversion
-    ├── distclean.py			- Cleans all created files
-    ├── extract_profile_model.py	- Script to extract the observed and fitted profile as well as the initial guess and the resulting profile
-    └── model_change.py			- Changes manually the components of a model
+├── create_config.py                  - Create config file as expected from the code
+├── definitions.py                    - Global definitions
+├── main.py                           - Main script to be executed
+├── mml.mplstyle                      - Matplotlib stylesheet
+├── model_1C.py                       - Class for the model of 1 Component
+├── model_2C.py                       - Class for the model of 2 Components (includes the filling factor)
+├── obs.py                            - Scripts related to observations
+├── profile_stk.py                    - Class profile 
+├── sir.py                            - Script containing import functions related to SIR and the code (reading config, writing control files, etc.)
+├── _1C                               - Code for the 1 component inversion
+│   ├── create_random_guess.py        - Creates random guesses for the inversion
+│   └── inversion.py                  - Performs the inversion
+├── _2C                               - Code for the 2 component inversion
+│   ├── create_random_guess.py        - Creates random guesses for the inversion
+│   └── inversion.py                  - Performs the inversion
+├── _MC                               - Code for the Monte-Carlo-Simulation
+│   ├── add_noise.py                  - Adding noise to the created, random profiles
+│   ├── create_models.py              - Create models with 2 or 3 nodes and T based on HSRA.
+│   ├── create_random_guess.py        - Creates random guess models
+│   ├── inversion.py                  - Performs the MC inversion
+│   └── synthesis.py                  - Performs the MC synthesis
+├── plots                             - Directory with several plots for the different modes
+│   ├── _1C
+│   │   ├── inversion.py              - Plots one single inversion and saves it by using the config file
+│   │   ├── inversion_single.py       - Plots one single inversion and saves it
+│   │   └── result.py                 - Plots the results of the inversion
+│   ├── _2C
+│   │   ├── inversion.py              - Plots one single inversion and saves it by using the config file
+│   │   ├── inversion_single.py       - Plots one single inversion and saves it
+│   │   └── result.py                 - Plots the results of the inversion
+│   ├── _MC
+│   │   ├── analysis_compare_chi2.py  - Compares the chi^2 value for different MC simulations. Needs to be revised.
+│   │   ├── analysis_multiple.py	  - Does the same as the script below but plots the results of multiple different MC simulations.
+│   │   ├── analysis.py               - Analysis the MC simulation by plotting the standard deviations and printing out the values at some log tau values.
+│   │   ├── chi2.py                   - Plots the chi2 values of multiple MC simulations 
+│   │   ├── inversion.py              - Plots the Stokes profiles and the fit plus the physical parameters of one model.
+│   │   ├── inversion_2.py            - Does the same as the script before but for two inversions.
+│   │   ├── inversion_single.py       - Plots a single inversion result without any config file for testing purposes.
+│   │   ├── synthesis_blend.py        - Blends two profiles with specified values alpha. It is also possible to add noise to the profiles.
+│   │   └── synthesis.py              - Plots the results of the synthesis for multiple profiles and models.
+|   ├── Ic_test.py                    - Plots the intensity of the obs. and the fit in a diagramm to test the inversion
+│   ├── initial_vs_result.py          - Plots the initial starting point vs the resulting point for different inversions
+|   ├── gris_sketch.py                - Sketches data of gris to get an overview
+│   ├── one_model.py                  - Plots one model
+│   ├── response.py                   - Plots the response function of a model created with SIR
+│   └── visualizer.py                 - Visualises the Stokes Profiles and the fits as well as the model for selectable pixels.
+├── preprocess                        - Scripts for data preprocessing
+│   ├── correction_spectral_veil.py   - Correcting the spectral veil for ground based telescopes by using FTS data
+│   ├── merge.py                      - Merging hinode and gris data to a data cube
+│   └── normalise.py                  - Normalises Hinode and GRIS data based on the defined wavelength in definitions.py
+└── tools                             - Useful scripts
+    ├── change_config_path.py         - Changes the path of a config file by providing the new path in the command line
+    ├── change_model.py               - Changes a parameter of a model. Verify that it worked as wanted.
+    ├── clean.py                      - Cleans the inversion files
+    ├── convert_MC.py                 - A script to convert old MC files to the new version (separated profiles saved for different lines)
+    ├── distclean.py                  - Removes all created files
+    └── extract_profile_model.py      - Extract the data from the npy files and stores it in a directory to run a single inversion again
 
 
 ```
@@ -130,6 +161,7 @@ In the directory `example`, several files are put. An examplary config file for 
   1. Create a numpy array with one entry. This entry will be taken as the width of a Gaussian in mA.
   2. Save this numpy array as a npy file with the same name as the parameter 'veil_parameters' in the definitions python script in 'src' (if it is not changed, it should be 'veil.npy').
   3. make sure that there is no file in the directory with the same name as provided in the config file
+
 ## Support
 For any questions, write a mail to [mosermike@protonmail.ch](mailto:mosermike@protonmail.ch)
 

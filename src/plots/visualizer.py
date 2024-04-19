@@ -24,42 +24,6 @@ def signal_handling(signum,frame):
 		plt.close(fig2)
 	sys.exit()
 
-def load_data(conf, filename = '', add = '', add_path = True):
-	"""
-	Load the data cube as given in the config
-	
-	Parameter
-	---------
-	config : dict
-		Dictionary with all the configurations
-	filename : string, optional
-		If empty, filename from config is used. Default = ''
-	add : string, optional
-		Add this string before the extension to open corrected or
-		normalised data cube. Default: ''
-	add_path : bool, optional
-		Add the path in the config. Default: True
-
-	Return
-	------
-	numpy array
-
-	"""
-	if filename == '':
-		filename = conf['cube']
-
-	# Open norm or corrected data 
-	filename = filename.replace('.npy',add + '.npy')
-
-	if add_path:
-		cube = os.path.join(conf['path'],filename)
-	else:
-		cube = filename
-
-	data = np.load(cube)
-	
-	return data
-
 
 def help():
 	print("visualizer - Visualizes the spectra and model.")
@@ -326,7 +290,7 @@ def move_figure(position, width = 10, height = 10, Monitor = "1"):
 		elif position == "bottom-right":
 			mgr.window.setGeometry(int(px2[0]), int(py2), aw,ah)
 
-def on_click(event, ll1, ll2, I_obs, Q_obs, U_obs, V_obs, I_fit, Q_fit, U_fit, V_fit, Models, Map):
+def on_click_1C(event, ll1, ll2, I_obs, Q_obs, U_obs, V_obs, I_fit, Q_fit, U_fit, V_fit, Models, Map):
 	"""
 	Opens a figure with the I, Q, U and V in the chosen pixel in the picture.
 	The chose pixel is determined by clicking on a figure
@@ -493,49 +457,7 @@ def on_click(event, ll1, ll2, I_obs, Q_obs, U_obs, V_obs, I_fit, Q_fit, U_fit, V
 		
 		plt.show()
 
-def vlos_normalise(conf, models_inv, stokes, wave_ind, index = 5):
-	"""
-	Normalisation of vlos to the quiet sun
-
-	Parameter
-	---------
-	config : dict
-		Dictionary with all the information from the config
-	models_inv : numpy array
-		Array containing all the models from the inversion
-	stokes : numpy array
-		Array containing all the Stokes profiles
-	wave_ind : int
-		Index at what wavelength the intensity is plotted, if needed
-	index : int, optional
-		Index specifying where vlos is in the given array models_inv. Default: 5
-
-	Return
-	------
-	numpy array with all the models but vlos is normalised to the quiet sun
-	"""
-	# Check if quiet sun is in range of the inversion for normalisation of vlos
-	quiet = conf['quiet_sun']
-	Map = conf['map']
-
-	if len(quiet) > 1 and quiet[0] >= Map[0] and quiet[1] <= Map[1] and quiet[2] >= Map[2] and quiet[3] <= Map[3]:
-		models_inv[:,:,index]  = models_inv[:,:,index] - np.mean(models_inv[quiet[0]:quiet[1],quiet[2]:quiet[3],5])
-	# Chosen range for quiet sun is not part of the inversion: Ask for the normalisation range:
-	else:
-		imgscale = 7
-		frac = (Map[3]+1-Map[2])/(Map[1]+1-Map[0])
-		fig, ax = plt.subplots(figsize=[imgscale * 1.4, imgscale * frac])
-		plt.imshow(stokes[:,:,1,wave_ind].transpose(), origin = d.origin, vmin = 0.5, vmax = 1.0)
-		plt.title("Choose range for normalisation of vlos")
-		plt.show()
-		quiet = (input ("Give a range to normalise vlos as a list: ")).replace(" ","").split(",")
-		models_inv[:,:,index]  = models_inv[:,:,index] - np.mean(models_inv[int(quiet[0])-Map[0]:int(quiet[1])-Map[0],int(quiet[2])-Map[2]:int(quiet[3])-Map[2],5])
-
-	return models_inv
-
-
-
-def visualiser(conf, wave):
+def visualiser_1C(conf, wave):
 	"""
 	Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
 
@@ -549,8 +471,8 @@ def visualiser(conf, wave):
 	"""
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../mml.mplstyle'):
-		plt.style.use(dirname + '/../mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
 
@@ -563,11 +485,11 @@ def visualiser(conf, wave):
 	Map = conf['map']
 
 	if "-data" not in sys.argv:
-		stokes = load_data(conf, filename=conf['cube_inv'])
+		stokes = obs.load_data(conf, filename=conf['cube_inv'])
 		stokes = stokes[Map[0]:Map[1]+1, Map[2] : Map[3]+1,:,:]
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
-		stokes = load_data(conf, filename = filename)
+		stokes = obs.load_data(conf, filename = filename)
 		stokes = stokes[Map[0]:Map[1]+1, Map[2] : Map[3]+1,:,:]
 
 	if "-stokes" not in sys.argv:
@@ -661,7 +583,7 @@ def visualiser(conf, wave):
 				cbar.set_label(label = labels[i], loc = 'center')
 				############
 				break
-		plt.connect('button_press_event', lambda event: on_click(
+		plt.connect('button_press_event', lambda event: on_click_1C(
 														event, waves, waves_inv, stokes[:,:,0], stokes[:,:,1], stokes[:,:,2], stokes[:,:,3], stokes_inv[:,:,0],
 														stokes_inv[:,:,1], stokes_inv[:,:,2], stokes_inv[:,:,3], models_inv, Map
 													)
@@ -680,9 +602,333 @@ def visualiser(conf, wave):
 
 		im = ax.imshow(stokes_inv[:,:,0,wave_ind].transpose(), #cmap = 'gist_gray',
 					origin=d.origin, extent=Map)
-		plt.connect('button_press_event', lambda event: on_click(
+		plt.connect('button_press_event', lambda event: on_click_1C(
 														event, waves, waves_inv, stokes[:,:,0], stokes[:,:,1], stokes[:,:,2], stokes[:,:,3], stokes_inv[:,:,0],
 														stokes_inv[:,:,1], stokes_inv[:,:,2], stokes_inv[:,:,3], models_inv, Map
+													)
+		)
+		plt.show()
+
+
+def on_click_2C(event, ll, I_obs, Q_obs, U_obs, V_obs, I_fit, Q_fit, U_fit, V_fit, Models1, Models2, Map):
+	"""
+	Opens a figure with the I, Q, U and V in the chosen pixel in the picture.
+	The chose pixel is determined by clicking on a figure
+
+	Parameter
+	---------
+	event : unknown
+ 		Event containing the data of the chosen pixel
+	ll : array
+ 		Array containing relative wavelengths
+	I_obs : array
+ 		Multidimensional array containing observed I
+	Q_obs : array
+ 		Multidimensional array containing observed Q
+	U_obs : array
+ 		Multidimensional array containing observed U
+	V_obs : array
+ 		Multidimensional array containing observed V
+	I_fits : array
+ 		Multidimensional array containing fitted I
+	Q_fits : array
+ 		Multidimensional array containing fitted Q
+	U_fits : array
+ 		Multidimensional array containing fitted U
+	V_fits : array
+ 		Multidimensional array containing fitted V
+	Models1 : numpy array
+ 		Multidimensional array containing the fitted models 1
+	Models2 : numpy array
+ 		Multidimensional array containing the fitted models 2
+	Map : array
+		Map of the image used in extent
+
+	"""
+	plt.ion() # No Error from QApplication
+	if event.button is MouseButton.LEFT:
+		xlims = False
+		global fig1
+		global fig2
+		global ax1
+		global ax2
+		global ax3
+		global ax4
+		global ax11
+		global ax21
+		global ax31
+		global ax41
+		
+		if event.xdata == None:
+			return
+		
+		# Read and print the position on the Map	
+		x = int(event.xdata + 0.5) - Map[0]
+		y = int(event.ydata + 0.5) - Map[2]
+		print('[STATUS] Plot data at (%i,%i)' % (x + Map[0],y + Map[2]))
+
+
+		# Set xlimits as before and also the size
+		if 'fig1' in globals():
+			xlims = True
+			xlim1 = ax1.get_xlim()
+			xlim2 = ax2.get_xlim()
+			xlim3 = ax3.get_xlim()
+			xlim4 = ax4.get_xlim()
+			ax1.cla()
+			ax2.cla()
+			ax3.cla()
+			ax4.cla()
+
+		if 'fig2' in globals():
+			ax11.cla()
+			ax21.cla()
+			ax31.cla()
+			ax41.cla()
+
+		# Set figure size as before
+		if not xlims:
+			fig1, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2)
+			plt.get_current_fig_manager().set_window_title('Stokes_' + str(rand))
+			if px1 == -1:
+				move_figure("right1")
+			else:
+				move_figure("right1", Monitor="2")
+
+
+		ax1.plot(ll, I_obs[x,y,:], '-', label="Observation")
+		ax1.plot(ll, I_fit[x,y,:], linestyle='dotted', label="Fit")
+
+		ax2.plot(ll, Q_obs[x,y,:], '-')
+		ax2.plot(ll, Q_fit[x,y,:], linestyle='dotted')
+
+		ax3.plot(ll, U_obs[x,y,:], '-')
+		ax3.plot(ll, U_fit[x,y,:], linestyle='dotted')
+
+		ax4.plot(ll, V_obs[x,y,:], '-')
+		ax4.plot(ll, V_fit[x,y,:], linestyle='dotted')
+
+		if xlims:
+			ax1.set_xlim(xlim1)
+			ax2.set_xlim(xlim2)
+			ax3.set_xlim(xlim3)
+			ax4.set_xlim(xlim4)
+		else:
+			ax1.set_xlim(np.min(ll), np.max(ll))
+			ax2.set_xlim(np.min(ll), np.max(ll))
+			ax3.set_xlim(np.min(ll), np.max(ll))
+			ax4.set_xlim(np.min(ll), np.max(ll))
+		
+		ax1.legend(fontsize=12)
+
+		ax1.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
+		ax2.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
+		ax3.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
+		ax4.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
+		ax1.set_ylabel(r'$I/I_c$')
+		ax2.set_ylabel(r'$Q/I_c$')
+		ax3.set_ylabel(r'$U/I_c$')
+		ax4.set_ylabel(r'$V/I_c$')
+		fig1.suptitle(f"Pixel ({x},{y})")
+		plt.tight_layout()
+
+		if not xlims:		
+			fig2, ((ax11,ax21),(ax31,ax41)) = plt.subplots(2,2)
+			plt.get_current_fig_manager().set_window_title('Model_' + str(rand))
+			if px2 == -1:
+				move_figure("right2")
+			else:
+				move_figure("right2", Monitor="2")
+
+		log_tau = Models1[x,y,0,:]
+		ind_max = np.argmin(np.abs(log_tau	+ 3))
+		
+		log_tau = log_tau[:ind_max+1]
+		ax11.plot(log_tau,Models1[x,y,1,:ind_max+1], label = "Model 1")
+		ax21.plot(log_tau,Models1[x,y,4,:ind_max+1])
+		ax31.plot(log_tau,Models1[x,y,5,:ind_max+1])
+		ax41.plot(log_tau,Models1[x,y,6,:ind_max+1])
+		
+		ax11.plot(log_tau,Models2[x,y,1,:ind_max+1], label = "Model 2")
+		ax21.plot(log_tau,Models2[x,y,4,:ind_max+1])
+		ax31.plot(log_tau,Models2[x,y,5,:ind_max+1])
+		ax41.plot(log_tau,Models2[x,y,6,:ind_max+1])
+
+		ax11.legend()
+
+		ax11.set_title("Temperature T")
+		ax21.set_title("Magnetic Field B")
+		ax31.set_title(r"Line-of-Sight Velocity $\mathrm{v}_{\mathrm{los}}$")
+		ax41.set_title(r"Inclination $\gamma$")
+
+		ax11.set_xlabel(r"$\log \tau$")
+		ax21.set_xlabel(r"$\log \tau$")
+		ax31.set_xlabel(r"$\log \tau$")
+		ax41.set_xlabel(r"$\log \tau$")
+
+		ax11.set_ylabel(r"T [K]")
+		ax21.set_ylabel(r"B [G]")
+		ax31.set_ylabel(r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$")
+		ax41.set_ylabel(r"$\gamma$ [deg]")
+
+
+
+		ax11.set_xlim(log_tau[0],log_tau[-1])
+		ax21.set_xlim(log_tau[0],log_tau[-1])
+		ax31.set_xlim(log_tau[0],log_tau[-1])
+		ax41.set_xlim(log_tau[0],log_tau[-1])
+		fig2.suptitle(f"Pixel ({x},{y})")
+		plt.tight_layout()
+		plt.show()
+
+def visualiser_2C(conf, wave):
+	"""
+	Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
+
+	Parameter
+	---------
+	conf : dict
+		All the information from the config file
+	wave : float
+		Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map
+
+	"""
+	# Import library
+	dirname = os.path.split(os.path.abspath(__file__))[0]
+	if exists(dirname + '/../mml.mplstyle'):
+		plt.style.use(dirname + '/../mml.mplstyle')
+	elif "mml" in plt.style.available:
+		plt.style.use('mml')
+
+	#############################################################
+	#			READ INPUT AND LOAD DATA					#
+	#############################################################
+	path = conf["path"]
+	waves = np.load(os.path.join(path, conf['waves']))
+	Map = conf['map']
+
+	# Check whether a model or Ic should be plotted
+	use_model = False
+	if ("-T" in sys.argv or "-Pe" in sys.argv or "-vmicro" in sys.argv or
+		"-B" in sys.argv or "-vlos" in sys.argv or "-inc"  in sys.argv or
+		"-azi" in sys.argv or "-z" in sys.argv or "-Pg" in sys.argv or
+		"-rho" in sys.argv or "-chi2" in sys.argv):
+		use_model = True
+	
+	# wave is used as tau position
+	if use_model:
+		tau = wave
+		wave = 0 # Print the first value in the wavelength range
+
+	range_wave_ang = sir.pixel_to_angstrom(waves, conf['range_wave'])
+	range_wave_pix = sir.angstrom_to_pixel(waves, conf['range_wave'])
+	# Check whether the wavelength is in range
+	wave = check_range(range_wave_ang, wave)
+	if "-data" not in sys.argv:
+		stokes = obs.load_data(conf, filename=conf['cube_inv'])
+		stokes = stokes[Map[0]:Map[1]+1, Map[2] : Map[3]+1,:,:]
+	else:
+		filename = sys.argv[sys.argv.index("-data")+1]
+		stokes = obs.load_data(conf, filename = filename)
+		stokes = stokes[Map[0]:Map[1]+1, Map[2] : Map[3]+1,:,:]
+
+	if "-stokes" not in sys.argv:
+		stokes_inv = np.load(os.path.join(path,conf['inv_out'] + d.end_stokes))
+	else:
+		filename = sys.argv[sys.argv.index("-stokes")+1]
+		stokes_inv = np.load(filename)
+	
+	if "-models1" not in sys.argv:
+			models1_inv = np.load(os.path.join(path,conf['inv_out'] + d.end_models1))
+	else:
+			filename = sys.argv[sys.argv.index("-models1")+1]
+			models1_inv = np.load(filename)
+	if "-models2" not in sys.argv:
+			models2_inv = np.load(os.path.join(path,conf['inv_out'] + d.end_models2))
+	else:
+			filename = sys.argv[sys.argv.index("-models2")+1]
+			models2_inv = np.load(filename)
+
+	print("Opening visualizer ...")
+	global px, py, px2, py2
+	px, py, px2, py2 = get_display_size()
+
+	global fig
+
+	# Random number between 0 and 99 so that plotted figures can be linked to each other if many are plotted
+	global rand
+	rand = int(np.random.uniform(0,100))
+	models1_inv[:,:,5] = models1_inv[:,:,5] / 1e5
+	models2_inv[:,:,5] = models2_inv[:,:,5] / 1e5
+	
+
+	if use_model:
+		if "-chi" not in sys.argv:
+			chi2_inv = np.load(os.path.join(path,conf['chi2']))
+		else:
+			filename = sys.argv[sys.argv.index("-chi")+1]
+			chi2_inv = np.load(filename)
+
+		ind = np.argmin(abs(models1_inv[0,0,0,:] - tau))
+			
+		###################################################
+		#			Plot physical parameters			#
+		###################################################
+
+		# Define labels and get from arguments which parameter should be plot
+		inputs = ["___","-T", '-Pe', '-vmicro', '-B', "-vlos", "-inc", "-azi", "-z", "-Pg","-rho","-chi2", "-Bz"]
+		labels = ["", "T [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", "B [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", "z [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$",r"$\chi^2$", r"$B \cdot \cos \gamma$ [G]"]
+		titles   = ["",r"Temperature T", r"Electron Pressure $\log P_e$",r"Microturbulence Velocity $\mathrm{v}_{\mathrm{micro}}$", r"Magnetic Field Strength B",
+					r"Line-of-Sight Velocity $\mathrm{v}_{\mathrm{los}}$",
+				r"Inclination $\gamma$", r"Azimuth $\phi$", r"Height $z$", r"Gas Pressure $\log P_g$", r"Density $\rho$", r"$\chi^2$", r"Line-of-Sight Magnetic Field $B \cdot \cos \gamma$"]
+		cmap = [None,None,None,None,None,'seismic','jet','hsv',None,None,None,'gist_gray', None]
+		limits = [[None,None],[np.min(models1_inv[:,:,1,ind]),np.max(models1_inv[:,:,1,ind])],[None,None],[None,None],[0,4500],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[None,None],[-2000,2000]]
+		i = 0
+		imgscale = 7
+		frac = (Map[3]+1-Map[2])/(Map[1]+1-Map[0])
+		for i in range(len(inputs)):
+			if inputs[i] in sys.argv:
+				# Plot
+				fig, ax = plt.subplots(figsize=[imgscale * 1.4, imgscale * frac])
+				plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
+				size = fig.get_size_inches()
+				move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(tau))
+				if inputs[i] == '-chi2':
+					ax.set_title(titles[i])
+					im = ax.imshow(chi2_inv.transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)					
+				else:
+					im = ax.imshow(models1_inv[:,:,i,ind].transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)
+					
+				# Set labels
+				ax.set_xlabel(r"x [Pixels]")
+				ax.set_ylabel(r"y [Pixels]")
+
+				############
+				# Colorbar #
+				cbar = fig.colorbar(im, ax=ax, fraction=0.046 * frac, pad=0.04)
+				cbar.set_label(label = labels[i], loc = 'center')
+				############
+				break
+		plt.connect('button_press_event', lambda event: on_click_2C(
+														event, waves, stokes[:,:,0], stokes[:,:,1], stokes[:,:,2], stokes[:,:,3], stokes_inv[:,:,0],
+														stokes_inv[:,:,1], stokes_inv[:,:,2], stokes_inv[:,:,3], models1_inv, models2_inv, Map
+													)
+		)
+
+		plt.show()
+
+	else:
+		fig, ax = plt.subplots()
+		plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
+		size = fig.get_size_inches()
+		move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+
+		im = ax.imshow(stokes_inv[:,:,0,range_wave_pix[0][0]].transpose(), #cmap = 'gist_gray',
+					origin=d.origin, extent=Map)
+		plt.connect('button_press_event', lambda event: on_click_2C(
+														event, waves, stokes[:,:,0], stokes[:,:,1], stokes[:,:,2], stokes[:,:,3], stokes_inv[:,:,0],
+														stokes_inv[:,:,1], stokes_inv[:,:,2], stokes_inv[:,:,3], models1_inv, models2_inv, Map
 													)
 		)
 		plt.show()
@@ -693,6 +939,11 @@ if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
 	conf = sir.read_config(sys.argv[1])
-	visualiser(conf, float(sys.argv[2]))
-
-
+	if conf["mode"] == "1C":
+		visualiser_1C(conf, float(sys.argv[2]))
+	elif conf["mode"] == "2C":
+		visualiser_2C(conf, float(sys.argv[2]))
+	elif conf["mode"] == "MC":
+		print("[visualizer] Not defined for mode 'MC'")
+	else:
+		print("[visualizer] Unknown mode")
