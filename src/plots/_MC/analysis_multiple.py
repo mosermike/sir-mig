@@ -6,7 +6,7 @@ import numpy as np
 import sys
 import os
 sys.path.append(sys.path[0] + "../..")
-sys.path.append(sys.path[0] + "../tools")
+sys.path.append(sys.path[0] + "../../tools")
 import sir as sir
 import definitions as d
 from model_1C import *  # Model class
@@ -97,10 +97,11 @@ def analysis_multiple(confs, labels):
 	"""
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/mml.mplstyle'):
-		plt.style.use(dirname + '/mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
+
 
 	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]  # Get colors used in the actual cycle
 	

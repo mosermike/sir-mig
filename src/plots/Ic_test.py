@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 from os.path import exists
 import sys
 import os
-sys.path.append(sys.path[0] + "/../..")
+sys.path.append(sys.path[0] + "/..")
 import os, sys, sir, obs
 import definitions as d
 
-# Import matplotlib library
+# Import library
 dirname = os.path.split(os.path.abspath(__file__))[0]
 if exists(dirname + '/../mml.mplstyle'):
 	plt.style.use(dirname + '/../mml.mplstyle')
@@ -142,8 +142,10 @@ if __name__ == "__main__":
 	num = 0
 	if '-num' in sys.argv:
 		num = sys.argv[sys.argv.index("-num")+1]-1
-	
-	Ic_test(conf, int(num))
+	if conf['mode'] == "1C" or "2C":
+		Ic_test(conf, int(num))
+	else:
+		print("[Ic_test] Mode unknown or not defined")
 
 
 

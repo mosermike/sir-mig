@@ -2,7 +2,7 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import sys, os
-sys.path.append(sys[0] +  "/../..") 
+sys.path.append(sys[0] +  "/..") 
 import sir
 import definitions as d
 from os.path import exists
@@ -31,10 +31,10 @@ def plot_initial_vs_result():
 	"""
 	Plots the initial value vs the resulting value for different physical parameters and the chi2 value in a 2x2 plot
 	"""
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/mml.mplstyle'):
-		plt.style.use(dirname + '/mml.mplstyle')
+	if exists(dirname + '/../mml.mplstyle'):
+		plt.style.use(dirname + '/../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
 

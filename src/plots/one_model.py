@@ -4,8 +4,7 @@ Plots the changed parameters for one model
 import matplotlib.pyplot as plt
 import numpy as np
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-sys.path.append(os.path.join(os.path.dirname(__file__), "../..")) 
+sys.path.append(os.path.join(os.path.dirname(__file__), "..")) 
 import sir
 import definitions as d
 
@@ -13,10 +12,10 @@ import definitions as d
 
 # Import library
 dirname = os.path.split(os.path.abspath(__file__))[0]
-if os.path.exists(dirname + '/../../mml.mplstyle'):
-     plt.style.use(dirname + '/../../mml.mplstyle')
+if os.path.exists(dirname + '/../mml.mplstyle'):
+	plt.style.use(dirname + '/../mml.mplstyle')
 elif "mml" in plt.style.available:
-     plt.style.use('mml')
+	plt.style.use('mml')
 else:
      plt.rcParams["savefig.format"] = "pdf"
 

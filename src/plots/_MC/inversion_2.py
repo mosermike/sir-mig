@@ -4,13 +4,11 @@ Plots the result of the SIR synthesis
 
 import numpy as np 
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))) 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../lib")) 
-import sir, model as m
+sys.path.append(os.path.join(os.path.dirname(__file__), "../..")) 
+import sir, model_1C as m
 import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists
-import matplotlib
 import os
 
 # TODO implement the class model/error
@@ -63,12 +61,13 @@ def inversion_2(conf1, num1, conf2, num2):
 	num2 : int
 		Model number for 2nd inversion
 	"""
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/mml.mplstyle'):
-		plt.style.use(dirname + '/mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
+
 	
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#

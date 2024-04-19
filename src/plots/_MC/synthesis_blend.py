@@ -4,8 +4,7 @@ Plots the result of the SIR synthesis by blending two results into each other
 
 import numpy as np 
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))) 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../lib")) 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../..")) 
 import sir
 import definitions as d
 import matplotlib.pyplot as plt
@@ -14,11 +13,13 @@ from os.path import exists
 print("NEEDS TO BE REVISED!")
 sys.exit()
 # Import library
+# Import library
 dirname = os.path.split(os.path.abspath(__file__))[0]
-if exists(dirname + '/mml.mplstyle'):
-     plt.style.use(dirname + '/mml.mplstyle')
+if exists(dirname + '/../../mml.mplstyle'):
+	plt.style.use(dirname + '/../../mml.mplstyle')
 elif "mml" in plt.style.available:
-     plt.style.use('mml')
+	plt.style.use('mml')
+
 
 
 if sys.argv[1] == "-h" or (len(sys.argv) < 3):

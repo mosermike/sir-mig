@@ -4,11 +4,10 @@ Plots the result of the SIR inversion
 
 import numpy as np 
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))) 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../lib"))
-sys.path.append(os.path.join(os.path.dirname(__file__), "../tools"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../tools"))
 import sir
-import model as m
+import model_1C as m
 import definitions as d
 import matplotlib.pyplot as plt
 from change_config_path import change_config_path
@@ -58,10 +57,10 @@ def inversion(conf, num):
 	num : int
 		Model number
 	"""
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/mml.mplstyle'):
-		plt.style.use(dirname + '/mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
 	# Check if path exists

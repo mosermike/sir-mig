@@ -113,7 +113,7 @@ In the directory `example`, several files are put. An examplary config file for 
 │   ├── create_random_guess.py        - Creates random guess models
 │   ├── inversion.py                  - Performs the MC inversion
 │   └── synthesis.py                  - Performs the MC synthesis
-├── plots                             - Directory with several plots for the different modes
+├── plots                             - Directory with several plots for the different modes 
 │   ├── _1C
 │   │   ├── inversion.py              - Plots one single inversion and saves it by using the config file
 │   │   ├── inversion_single.py       - Plots one single inversion and saves it

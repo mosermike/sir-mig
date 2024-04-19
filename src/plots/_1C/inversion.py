@@ -5,12 +5,11 @@ Plots the result of the SIR synthesis
 import numpy as np 
 import sys, os
 sys.path.append(sys.path[0] + "/../..")
-sys.path.append(sys.path[0] + "/../tools")
+sys.path.append(sys.path[0] + "/../../tools")
 import sir, obs
 import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists
-import matplotlib
 import os
 from change_config_path import change_config_path
 
@@ -58,10 +57,10 @@ def inversion(conf, x, y):
 	y : int
 		y position
 	"""
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../mml.mplstyle'):
-		plt.style.use(dirname + '/../mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
 	# Check if path exists

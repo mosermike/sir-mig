@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from os.path import exists
 import os, sys
 sys.path.append(sys.path[0] + "/../..")
-sys.path.append(sys.path[0] + "/../tools")
+sys.path.append(sys.path[0] + "/../../tools")
 import sir, obs
 import definitions as d
 from change_config_path import change_config_path
@@ -60,7 +60,6 @@ def help():
 	sir.option("-limitB:","Set the limit for the colorbar in the magnetic field.")
 	sir.option("-limitchi2:","Set the limit for the colorbar in chi2.")
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
-	sir.option("-norm:","Ask for parameter to normalise vlos (otherwise not additionally normalised")
 	sir.option("-arc:","Print x and y axis in arcseconds")
 	sir.option("-flipx:","Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun")
 
@@ -102,54 +101,6 @@ def check_range(range_wave_ang, wave):
 		wave = wave.flatten()[np.argmin(abs(range_wave_ang-wave))]
 	return wave
 
-def vlos_normalise(conf, models_inv, stokes, wave_ind, index = 5):
-	"""
-	Normalisation of vlos to the quiet sun
-
-	Parameter
-	---------
-	config : dict
-		Dictionary with all the information from the config
-	models_inv : numpy array
-		Array containing all the models from the inversion
-	stokes : numpy array
-		Array containing all the Stokes profiles
-	wave_ind : int
-		Index at what wavelength the intensity is plotted, if needed
-	index : int, optional
-		Index specifying where vlos is in the given array models_inv. Default: 5
-
-	Return
-	------
-	numpy array with all the models but vlos is normalised to the quiet sun
-	"""
-	# Check if quiet sun is in range of the inversion for normalisation of vlos
-	quiet = conf['quiet_sun']
-	Map = conf['map']
-
-	if len(quiet) > 1 and quiet[0] >= Map[0] and quiet[1] <= Map[1] and quiet[2] >= Map[2] and quiet[3] <= Map[3]:
-		models_inv[:,:,index]  = models_inv[:,:,index] - np.mean(models_inv[quiet[0]:quiet[1],quiet[2]:quiet[3],index])
-	# Inverted range is a subset of the quiet sun region
-	elif len(quiet) > 1 and quiet[0] <= Map[0] and quiet[1] >= Map[1] and quiet[2] <= Map[2] and quiet[3] >= Map[3]:
-		models_inv[:,:,index]  = models_inv[:,:,index] - np.mean(models_inv[Map[0]:Map[1]+1,Map[2]:Map[3]+1,index])
-	# Chosen range for quiet sun is not part of the inversion: Ask for the normalisation range:
-	else:
-		quiet = (input ("Give a range to normalise vlos as a list (use -1 for plotting the spectrum for help): ")).replace(" ","").split(",")
-		if quiet[0] == "-1":
-			imgscale = 9
-			frac = (Map[3]+1-Map[2])/(Map[1]+1-Map[0])
-			# Relations are different when x is bigger than y
-			if frac < 1:
-				imgscale *= 2
-			fig, ax = plt.subplots(figsize=[imgscale * 1.4, imgscale * frac])
-			plt.imshow(stokes[Map[0]:Map[1]+1,Map[2]:Map[3]+1,0,wave_ind].transpose(), origin = d.origin, vmin = 0.0, vmax = 1.0, extent=Map)
-			plt.title("Choose range for normalisation of vlos")
-			plt.show()
-			quiet = (input ("Give a range to normalise vlos as a list: ")).replace(" ","").split(",")
-
-		models_inv[:,:,index]  = models_inv[:,:,index] - np.mean(models_inv[int(quiet[0])-Map[0]:int(quiet[1])-Map[0],int(quiet[2])-Map[2]:int(quiet[3])-Map[2],5])
-
-	return models_inv
 
 def plot(conf, wave, tau, waveV = -1):
 	"""
@@ -172,12 +123,13 @@ def plot(conf, wave, tau, waveV = -1):
 
 	"""
 
-	# Import matplotlib library
+		# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../mml.mplstyle'):
-		plt.style.use(dirname + '/../mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
+
 	# Check if path exists
 	if not exists(conf['path']):
 		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")

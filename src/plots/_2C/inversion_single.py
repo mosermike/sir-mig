@@ -12,10 +12,11 @@ from os.path import exists
 
 # Import library
 dirname = os.path.split(os.path.abspath(__file__))[0]
-if exists(dirname + '/../mml.mplstyle'):
-	plt.style.use(dirname + '/../mml.mplstyle')
+if exists(dirname + '/../../mml.mplstyle'):
+	plt.style.use(dirname + '/../../mml.mplstyle')
 elif "mml" in plt.style.available:
 	plt.style.use('mml')
+
 
 if "-h" in sys.argv or (len(sys.argv) < 5):
 	print("plot_inversion_single - Plots the result of a inversion without using a config file")

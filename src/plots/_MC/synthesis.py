@@ -4,8 +4,7 @@ Plots the result of the SIR synthesis with different profiles
 # TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 import numpy as np 
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-sys.path.append(os.path.join(os.path.dirname(__file__), "../lib")) 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../..")) 
 import sir
 import definitions as d
 import matplotlib.pyplot as plt
@@ -16,10 +15,11 @@ sys.exit()
 
 # Import library
 dirname = os.path.split(os.path.abspath(__file__))[0]
-if exists(dirname + '/mml.mplstyle'):
-     plt.style.use(dirname + '/mml.mplstyle')
+if exists(dirname + '/../../mml.mplstyle'):
+	plt.style.use(dirname + '/../../mml.mplstyle')
 elif "mml" in plt.style.available:
-     plt.style.use('mml')
+	plt.style.use('mml')
+
 
 if "-h" in sys.argv or (len(sys.argv) < 2):
      print("sir_synthesis_plot - Plots the result of a synthesis")

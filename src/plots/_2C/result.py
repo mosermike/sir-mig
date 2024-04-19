@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from os.path import exists
 import os, sys
 sys.path.append(sys.path[0] + "/../..")
+sys.path.append(sys.path[0] + "/../..")
 import sir, obs
 import definitions as d
 from change_config_path import change_config_path
@@ -128,10 +129,10 @@ def plot(conf, wave, tau, Type = "_1", plot_stokes = True):
 
 	"""
 
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../mml.mplstyle'):
-		plt.style.use(dirname + '/../mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
 	# Check if path exists

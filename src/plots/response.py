@@ -118,7 +118,7 @@ def plot_response(conf,filename, modelname):
 	Plots the response function 
 	"""
 
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
 	if exists(dirname + '/../mml.mplstyle'):
 		plt.style.use(dirname + '/../mml.mplstyle')

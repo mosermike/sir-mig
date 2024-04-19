@@ -6,6 +6,7 @@ import numpy as np
 import sys
 import os
 sys.path.append(sys.path[0] + "/../..")
+sys.path.append(sys.path[0] + "/../../tools")
 import sir
 import obs
 import definitions as d
@@ -60,12 +61,13 @@ def inversion(conf, x, y):
 	y : int
 		y position
 	"""
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../mml.mplstyle'):
-		plt.style.use(dirname + '/../mml.mplstyle')
+	if exists(dirname + '/../../mml.mplstyle'):
+		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
+
 	# Check if path exists
 	if not exists(conf['path']):
 		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")

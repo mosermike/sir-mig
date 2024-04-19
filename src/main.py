@@ -20,13 +20,14 @@ import _MC.inversion	  # Inversion
 
 from mpi4py import MPI
 
-def initial():
+def initial(mode):
 	"""
 	Initial print outs and preparation
 
 	Parameter
 	---------
-	None
+	mode : string
+		Mode which is used
 	
 	Return
 	------
@@ -37,6 +38,7 @@ def initial():
 	print("│ SIR - MIG                                         │")
 	print("│ Version 1.0                                       │")
 	print("│ Multiple Initial Guesses                          │")
+	print(f"│ Mode: {mode}                                          │")
 	print("│ Author: Mike Moser                                │")
 	print("╰───────────────────────────────────────────────────╯")	
 	print()
@@ -67,13 +69,7 @@ rank = comm.Get_rank()
 size = comm.Get_size()
 
 if rank == 0:
-	initial()
-	if conf['mode'] == "1C":
-		print("-------> Mode '1C' selected")
-	elif conf['mode'] == "2C":
-		print("-------> Mode '2C' selected")
-	elif conf['mode'] == "MC":
-		print("-------> Mode 'MC' selected")
+	initial(conf['mode'])
 
 
 #####################

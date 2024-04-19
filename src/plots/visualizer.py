@@ -4,9 +4,10 @@ Visualizes the spectra and model interactively at different pixels.
 import matplotlib.pyplot as plt
 import numpy as np
 import sys, os
-sys.path.append(sys.path[0] + "/../..")
+sys.path.append(sys.path[0] + "/..")
 from matplotlib.backend_bases import MouseButton
 import sir
+import obs
 from os.path import exists
 import definitions as d
 import signal
@@ -471,8 +472,8 @@ def visualiser_1C(conf, wave):
 	"""
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../../mml.mplstyle'):
-		plt.style.use(dirname + '/../../mml.mplstyle')
+	if exists(dirname + '/../mml.mplstyle'):
+		plt.style.use(dirname + '/../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
 

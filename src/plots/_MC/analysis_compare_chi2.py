@@ -69,13 +69,13 @@ def analysis_compare_chi2(conf1, conf2):
 		Configuration for simulation 2
 	"""
 
-	# Import matplotlib library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/mml.mplstyle'):
+	if exists(dirname + '/../../mml.mplstyle'):
 		plt.style.use(dirname + '/../../mml.mplstyle')
 	elif "mml" in plt.style.available:
 		plt.style.use('mml')
-	# Check if path exists
+
 
 	###############################################
 	# READ INPUT, WRITE DEFINITIONS AND LOAD DATA #
