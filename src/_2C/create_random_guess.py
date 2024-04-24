@@ -10,7 +10,7 @@ from os.path import exists
 import scipy.interpolate as inter
 import definitions as d
 import matplotlib.pyplot as plt
-import model_2C as m
+import model as m
 
 def help():
 	print("create_random_guess - Creates random guesses")
@@ -162,10 +162,10 @@ def create_guesses_per_model(model, output, Type, bools, lim_B, lim_vlos, lim_ga
 	for i in range(len(Numbers)):
 		# Arrays with pars from the model
 		# Create arrays with all the columns as rows
-		mod.log_tau[i,0]	= File_T[0]
+		mod.log_tau	     	= File_T[0]
 		mod.T[i,0]			= File_T[1]
 		mod.Pe[i,0]			= File_T[2]
-		mod.vmicro[i,0]		= File_T[3] / 1e5
+		mod.vmicro[i,0]		= File_T[3]
 		mod.B[i,0]			= File_T[4]
 		mod.vlos[i,0]		= File_T[5]
 		mod.gamma[i,0]		= File_T[6]
@@ -243,7 +243,7 @@ def create_guesses_per_model(model, output, Type, bools, lim_B, lim_vlos, lim_ga
 			
 			Ts = cool_T + factor * HSRA_T
 
-			mod.T[i,0] = np.interp(mod.log_tau[i,0], np.flip(log_taus), np.flip(Ts))
+			mod.T[i,0] = np.interp(mod.log_tau, np.flip(log_taus), np.flip(Ts))
 			
 			
 		####################################

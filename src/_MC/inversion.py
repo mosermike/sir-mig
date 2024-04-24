@@ -15,8 +15,8 @@ from _MC.create_random_guess import create_guesses
 from os.path import exists
 import datetime
 import definitions as d
-import model_1C as m
 import profile_stk as p
+import model as m
 
 def help():
 	"""
@@ -143,9 +143,9 @@ def scatter_data(conf, comm, rank, size):
 			if rank == 0:
 				print("-------> No noise flag used")
 				print("-------> Use synthesis profiles")
-			stk = p.Profile_MC(os.path.join(path,conf["syn_out"]))
+			stk = p.read_profile(os.path.join(path,conf["syn_out"]))
 		else:
-			stk = p.Profile_MC(os.path.join(path,conf["noise_out"]))
+			stk = p.read_profile(os.path.join(path,conf["noise_out"]))
 
 		tasks = create_task_folder_list(conf["num"])
 
@@ -154,7 +154,7 @@ def scatter_data(conf, comm, rank, size):
 		stkq = stk.stkq
 		stku = stk.stku
 		stkv = stk.stkv
-		lines = stk.line
+		lines = stk.indx
 		waves = stk.wave
 
 		del stk # Free Memory
@@ -201,9 +201,9 @@ def scatter_data(conf, comm, rank, size):
 	waves = comm.bcast(waves, root=0)
 
 	# Put the data together
-	stk = p.Profile_MC(stki_chunk.shape[0],stki_chunk.shape[1])
+	stk = p.Profile(stki_chunk.shape[0],stki_chunk.shape[1],stki_chunk.shape[2])
 	stk.data_cut = True # Already cut before
-	stk.line = lines
+	stk.indx = lines
 	stk.stki[:,:] = stki_chunk
 	stk.stkq[:,:] = stkq_chunk
 	stk.stku[:,:] = stku_chunk
@@ -460,7 +460,7 @@ def inversion(conf, comm, rank, size):
 		os.makedirs(task_folder, exist_ok=True)
 
 		# Write the data from the cube into a profile file for SIR
-		stk.write(os.path.join(task_folder, d.profile), i)
+		stk.write_profile_mc(os.path.join(task_folder, d.profile), i)
 
 		sir_files = [d.inv_trol_file, model, "sir.x", line_file, d.Grid, abundance_file]
 		for sir_file in sir_files:
@@ -520,12 +520,12 @@ def inversion(conf, comm, rank, size):
 		tasks = create_task_folder_list(conf["num"])
 
 		# Read the profiles and models
-		stokes = p.Profile_MC(0)
-		stokes.read_results(path, tasks, f"{d.model_inv.replace('.mod','')}_{conf['cycles']}.per")
+		stokes = p.Profile(0,0,0)
+		stokes.read_results_MC(path, tasks, f"{d.model_inv.replace('.mod','')}_{conf['cycles']}.per")
 		
-		models = m.Model()
-		errors = m.Error()
-		guess = m.Model()  # Best guess model
+		models = m.Model(conf["num"],1,0)	# Model
+		errors = m.Model(conf["num"],1,0)	# Error
+		guess  = m.Model(conf["num"],1,0)   # Best guess model
 		
 		models.read_results(tasks, f"{d.model_inv.replace('.mod','')}_{conf['cycles']}.mod", path, int(conf['num']), 1)
 		errors.read_results(tasks, f"{d.model_inv.replace('.mod','')}_{conf['cycles']}.err", path, int(conf['num']), 1)
@@ -533,11 +533,11 @@ def inversion(conf, comm, rank, size):
 		
 		chi2 = sir.read_chi2s(conf, tasks)
 		
-		stokes.save(f"{os.path.join(path,conf['inv_out'])}{d.end_stokes}.npy")
+		stokes.write(f"{os.path.join(path,conf['inv_out'])}{d.end_stokes}")
 		
-		models.save(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
-		errors.save(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
-		guess.save(f"{os.path.join(path,d.best_guess.replace('.mod','.npy'))}")
+		models.write(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
+		errors.write(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
+		guess.write(f"{os.path.join(path,d.best_guess.replace('.mod','.bin'))}")
 		np.save(f"{conf['chi2']}", chi2)
 
 		for i in range(conf['num']):

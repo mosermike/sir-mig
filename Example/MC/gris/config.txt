@@ -9,16 +9,16 @@ instrument : GRIS # Instrument used (GRIS, Hinode or empty)
 model : model-B2000.mod # Base Model for guess
 atoms : 8;10 # Atoms to be used in Grid file
 range_wave : -1800.0,50.0,1800.0;-1200.0,50.0,1200.0 # Ranges of wavelengths in mA to be considered min1,step1,max1;min2,step2,max2;... First pair belongs to first line in Grid file, etc.
-random_guess : 5 # Create random guesses, 0 = use model as guess
+random_guess : 1 # Create random guesses, 0 = use model as guess
 random_pars : B,T,vlos,gamma,phi # Randomise these parameters for the guess
 #
 # Creating Models and Synthesis
 #
 model_nodes : 3 # Create models with 2 or 3 nodes
-model_out : models_real.npy # Output file of the created models as npy
+model_out : syn_models.bin # Output file of the created models as npy
 model_pars : B,T,vlos,gamma,phi # Randomise these parameters while creating models as a list
-syn_out : synthesis_profiles.npy # Output of the synthesis profiles and models
-noise_out : noise_profiles.npy # Output of the noise profiles as npy
+syn_out : syn_profiles.bin # Output of the synthesis profiles and models
+noise_out : noise_profiles.bin # Output of the noise profiles as bin
 noise_I : 0 # Noise in I
 noise_Q : 0.000768 # Noise in Q
 noise_U : 0.0007677 # Noise in U

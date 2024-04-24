@@ -16,6 +16,7 @@ from os.path import exists
 from astropy.convolution import convolve_fft, convolve
 from shutil import which
 
+# TODO SAVE AS PROFILE BINARY FILE
 #############
 # Help page #
 #############

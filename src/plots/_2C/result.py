@@ -12,6 +12,7 @@ import sir, obs
 import definitions as d
 from change_config_path import change_config_path
 
+# Use profile_stk and model
 
 def help():
 	"""

@@ -6,7 +6,7 @@ Class Profile
 import numpy as np 
 import os
 import sys
-
+from scipy.io import FortranFile
 def read_grid(filename):
 	"""
 	Reads the grid file
@@ -88,11 +88,11 @@ def read_profile(filename):
 	"""
 	data = np.loadtxt(filename).transpose()
 	line = data[0].astype(int)
-	ll = data[1].astype(np.float64)
-	I  = data[2].astype(np.float64)
-	Q  = data[3].astype(np.float64)
-	U  = data[4].astype(np.float64)
-	V  = data[5].astype(np.float64)
+	ll = data[1].astype(np.float32)
+	I  = data[2].astype(np.float32)
+	Q  = data[3].astype(np.float32)
+	U  = data[4].astype(np.float32)
+	V  = data[5].astype(np.float32)
 
 	return np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
 
@@ -123,13 +123,13 @@ def read_profile_mc(filename):
 
 	data = np.loadtxt(filename).transpose()
 	line = data[0].astype(int)
-	ll = data[1].astype(np.float64)
-	I  = data[2].astype(np.float64)
-	Q  = data[3].astype(np.float64)
-	U  = data[4].astype(np.float64)
-	V  = data[5].astype(np.float64)
+	ll = data[1].astype(np.float32)
+	I  = data[2].astype(np.float32)
+	Q  = data[3].astype(np.float32)
+	U  = data[4].astype(np.float32)
+	V  = data[5].astype(np.float32)
 
-	return line, np.array(ll/1000), np.array(I), np.array(Q), np.array(U), np.array(V)
+	return line, np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
 
 class Profile:
 	"""
@@ -152,84 +152,57 @@ class Profile:
 
 
 	"""
-	def __init__(self, arg1=None, arg2 = None, nw=0):
+	def __init__(self, nx=None, ny = None, nw=0):
 		"""
 		Initialisation of the class with the Profiles
 		
 		Parameter
 		---------
-		filename : str or int
-			File name of the profile to be loaded. Default: None (= no reading)
+		nx : int
 			Integer of pixels in x direction
-		filename_wave : str or int
-			File name of the wavelength to be loaded. Default: None (= no reading)
+		ny :  int
 			Integer of pixels in y direction
 		nw : int
-			Number of wavelength points (only used if arg1 and arg2 are integers)
+			Number of wavelength points
 		"""
 		filename = None
-		filename_wave = None
 		# Initialize with two integers
-		if isinstance(arg1, int) and isinstance(arg2, int):
-			self.nx = arg1	# Points in x
-			self.ny = arg2	# Points in y
-		# Initialize with two strings
-		elif isinstance(arg1, str) and isinstance(arg2, str):
-			filename = arg1
-			filename_wave = arg2
-		elif isinstance(arg1, str) and arg2 is None:
-			filename = arg1
-			filename_wave = None
-		else:
-			self.nx = 0
-			self.ny = 0
+		self.nx = nx	# Points in x
+		self.ny = ny	# Points in y
+		self.nw = nw
+		self.ns = 4
 		
-		self.full = False		# Determines whether also z, pg, and rho exists
 		self.load = False		# Determines whether data is already loaded or not
-		self.nw = nw			# Points in lambda
-
-		if filename_wave is not None:
-			self.wave = np.load(filename_wave)
-		else:
-			self.wave = np.zeros(shape=(self.nw))
-
-		if filename is not None:
-			if filename[-4:] == ".per":
-				ll, I, Q, U, V = read_profile(filename)
-				self.stki = np.zeros(shape=(1,1,len(ll)))
-				self.stkq = np.zeros(shape=(1,1,len(ll)))
-				self.stku = np.zeros(shape=(1,1,len(ll)))
-				self.stkv = np.zeros(shape=(1,1,len(ll)))
-				self.stki[0,0] = I
-				self.stkq[0,0] = Q
-				self.stku[0,0] = U
-				self.stkv[0,0] = V
-				self.nx = 1
-				self.ny = 1
-				self.nw = len(I)
-			else:
-				stk = np.load(filename).astype(np.float64)
-				self.stki = stk[:, :, 0, :]
-				self.stkq = stk[:, :, 1, :]
-				self.stku = stk[:, :, 2, :]
-				self.stkv = stk[:, :, 3, :]
-				self.nx = self.stki.shape[0]
-				self.ny = self.stki.shape[1]
-				self.nw = self.stki.shape[2]
-			
-			self.load = True
-
-		else:
-			self.stki = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float64)
-			self.stkq = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float64)
-			self.stku = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float64)
-			self.stkv = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float64)
+		
+		self.indx = np.zeros(shape=(self.nw))
+		self.wave = np.zeros(shape=(self.nw))
+		self.stki = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
+		self.stkq = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
+		self.stku = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
+		self.stkv = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
 
 		self.data_cut = False
-	
-	
 
+	def cut_to_map(self, Map):
+		"""
+		Cut the data to a map [xmin, xmax, ymin, ymax]
 
+		Parameters
+		----------
+		Map : list
+			List with the ranges in pixel in x and y direction
+		"""
+		
+		self.nx = Map[1]-Map[0]+1
+		self.ny = Map[3]-Map[2]+1
+
+		self.stki = self.stki[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
+		self.stkq = self.stkq[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
+		self.stku = self.stku[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
+		self.stkv = self.stkv[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
+		
+		
+		return self
 
 	def cut_to_wave(self, range_wave_pix):
 		"""
@@ -247,11 +220,11 @@ class Profile:
 			nws.append(range_wave_pix[i][1]-range_wave_pix[i][0]+1+nws[i])
 		
 		# Initialize new arrays
-		lwave = np.zeros(shape=(nws[-1]), dtype=np.float64)
-		lstki = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float64)
-		lstkq = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float64)
-		lstku = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float64)
-		lstkv = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float64)
+		lwave = np.zeros(shape=(nws[-1]), dtype=np.float32)
+		lstki = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
+		lstkq = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
+		lstku = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
+		lstkv = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
 		
 		for i in range(len(range_wave_pix)):
 			lwave[nws[i]:nws[i+1]] = self.wave[range_wave_pix[i][0]:range_wave_pix[i][1]+1]
@@ -270,32 +243,52 @@ class Profile:
 		self.data_cut = True
 		
 		return self
+	
 
-	def read(self, filename, filename_wave):
-		"""
-		Reads a numpy file and stores the parameters
+	def read(self, fname, fmt_type=np.float32):
 		
-		Parameter
-		---------
-		filename : str
-			File name of the model to be loaded
-		filename_wave : str
-			Filename with the wavelengths
-		
-		"""
-		stk = np.load(filename).astype(np.float64)
+		f = FortranFile(fname, 'r')
+		first_rec = f.read_record(dtype=fmt_type)
 
-		self.stki = stk[:, :, 0, :]
-		self.stkq = stk[:, :, 1, :]
-		self.stku = stk[:, :, 2, :]
-		self.stkv = stk[:, :, 3, :]
+		posv = first_rec[0]
+		negv = first_rec[1]
+		fid = first_rec[2]
+		nrec = first_rec[3]
+		ndims = first_rec[4]
+
+		medv = (posv + negv) / 2.
+		verp = posv - medv
+		vern = negv - medv
+		vers = (posv - negv) / 2.
+
+		if ( (np.abs(medv-3000.) > 1.e-3) | (np.abs(fid-160904.) > 1.e-3) ):
+			print('Something is wrong with the file %s' % fname)
+			print('\tIs it a 3D profile file?')
+			return np.nan
+
+		if (np.abs(vers-3.) < 1.e-3):
+			#VERSION 3
+			dims = first_rec[5:]
+			nx, ny, nw, ns = np.int16(dims)
+			self.nx = nx
+			self.ny = ny
+			self.nw = nw
+			self.ns = ns
+
+			self.indx = f.read_record(dtype=fmt_type)
+
+			self.wave = f.read_record(dtype=fmt_type)
+
+			data = f.read_record(dtype=fmt_type)
+			data = data.reshape(nx,ny,nw,ns) * 1.
+
+			self.stki = data[:, :, :, 0]
+			self.stkq = data[:, :, :, 1]
+			self.stku = data[:, :, :, 2]
+			self.stkv = data[:, :, :, 3]
 		
-		self.wave = np.load(filename_wave)
-		
+				
 		self.load = True
-		self.nx = self.stki.shape[0]
-		self.ny = self.stki.shape[1]
-		self.nw = self.stki.shape[2]
 
 		return self
 
@@ -351,28 +344,55 @@ class Profile:
 
 		return self
 
-	def save(self, filename, filename_wave):
-		"""
-		Save the data in the class as a numpy file
 
-		Parameters
-		----------
-		filename : str
-			Filename of the numpy file
-		filename_wave : str
-			Filename with the wavelengths
+	def read_results_MC(self, path, tasks, filename):
+		"""
+		Reads all the profiles of the synthesis or inversion
+
+		config : dict
+			Config information
+		tasks : dict
+			Dictionary with the folder names
+		Type : string, optional
+			Indicating if synthesis or inversion. Default: 'syn'
 
 		"""
-		if not self.load:
-			print(f"[save] It seems that data was never read or saved. {filename} may contain no data")
 			
-		stk = np.stack([self.stki, self.stkq, self.stku, self.stkv], axis=2, dtype=np.float64)
-		np.save(filename_wave,self.wave)
-		np.save(filename, stk)
+		# Make a check
+		if not os.path.exists(os.path.join(path,tasks['folders'][0]) + '/' + filename):
+			print('[read_profiles] The profiles do not exist. Make sure, that sir is executed correctly and fortran is installed.')
+			sys.exit()
 
-		del stk  # make the memory free
+		line, _, _, _, _, _ = read_profile_mc(os.path.join(path,tasks['folders'][0]) + '/' + filename)
+		self.nw = len(line)
+		self.nx = len(tasks['folders'])
+		self.ny = 1
+		self.stki = np.zeros(shape=(self.nx,1,self.nw))
+		self.stkq = np.zeros(shape=(self.nx,1,self.nw))
+		self.stku = np.zeros(shape=(self.nx,1,self.nw))
+		self.stkv = np.zeros(shape=(self.nx,1,self.nw))
+
+		for n in range(self.nx):
+			line, ll, I, Q, U, V = read_profile_mc(os.path.join(path,tasks['folders'][n]) + '/' + filename)
+			if n == 0:
+				self.indx = line
+				self.wave = ll
+			self.stki[n,0,:] = I
+			self.stkq[n,0,:] = Q
+			self.stku[n,0,:] = U
+			self.stkv[n,0,:] = V
+
+		del line
+		del ll
+		del I
+		del Q
+		del U
+		del V
+		
+		self.load = True
 
 		return self
+
 
 	def set_dim(self, nx, ny, nw):
 		"""
@@ -392,7 +412,8 @@ class Profile:
 			print("[set_dim] Data is already loaded and therefore dimensions cannot be set.")
 			return self
 
-		self.wave = np.zeros(shape=(nx, ny, nw), dtype=np.float64)
+		self.indx = np.zeros(shape=(nw), dtype=np.float64)
+		self.wave = np.zeros(shape=(nw), dtype=np.float64)
 		self.stki = np.zeros(shape=(nx, ny, nw), dtype=np.float64)
 		self.stkq = np.zeros(shape=(nx, ny, nw), dtype=np.float64)
 		self.stku = np.zeros(shape=(nx, ny, nw), dtype=np.float64)
@@ -401,11 +422,74 @@ class Profile:
 		self.nx = nx
 		self.ny = ny
 		self.nw = nw
+		self.ns = 4
+
+		return self
+
+	def write(self, fname, fmt_type=np.float32):
+		"""
+		Write data into a binary fortran file
+
+		Parameter
+		---------
+		fname : str
+			File name 
+		fmt_type : type
+			type which is used to save it => numpy.float64 used
+		"""
+		if (fmt_type != np.float32):
+			print('Not implemented yet!')
+			return np.nan
+
+		if not self.load:
+			print(f"[write] It seems that data was never read or saved. {fname} may contain no data")
+
+
+		f = FortranFile(fname, 'w')
+		
+		# FIRST, WE WRITE A FIRST RECORD WITH THE MANDATORY DATA:
+		towrite = np.zeros(9, dtype=fmt_type)
+		
+		v = 3
+
+		towrite[0] = 3000 + v
+		towrite[1] = 3000 - v
+		towrite[2] = 160904. * 1.
+		towrite[3] = 4. #NREC
+		towrite[4] = 4. # Number of dimensions
+		towrite[5] = self.nx * 1.
+		towrite[6] = self.ny * 1.
+		towrite[7] = self.nw * 1.
+		towrite[8] = 4. # Number of Stokes parameter
+		
+		# Write header
+		f.write_record(np.float32(towrite))
+		
+		# Write indx
+		f.write_record(np.float32(self.indx))
+
+		# Write the wavelenghts
+		f.write_record(np.float32(self.wave))
+
+		array = np.zeros(shape=(self.nx, self.ny, self.nw, 4))
+
+
+		array[:,:,:,0] = self.stki
+		array[:,:,:,1] = self.stkq
+		array[:,:,:,2] = self.stku
+		array[:,:,:,3] = self.stkv
+		
+
+		f.write_record(np.float32(array.flatten()))
+
+		del array
+
+		f.close()
 
 		return self
 
 
-	def write(self, filename, x, y, Grid):
+	def write_profile(self, filename, x, y, Grid):
 		"""
 		Writes data to profiles as described in the config file
 		Note to call cut_to_wave, otherwise it writes the wrong profiles!
@@ -462,215 +546,7 @@ class Profile:
 		f.close()
 
 
-
-class Profile_MC:
-	"""
-	Class containing the models of a simulation
-
-	Variables are:
-		- line
-		- wave
-		- stki
-		- stkq
-		- stku
-		- stkv
-
-
-	There are several functions:
-		- read: Read a numpy file containing models and stores it into the class variables
-		- read_results: Reads the results from the inversion of SIR
-		- write: Writes a Model to a SIR readable file
-		- save: Saves the models as a numpy file
-		- set_limit: Cuts the data to a specific log_tau value (used for plotting)
-
-
-	"""
-	def __init__(self, arg1=None, arg2 = 0):
-		"""
-		Initialisation of the class with the Profiles
-		
-		Parameter
-		---------
-		filename : str or int
-			File name of the profile to be loaded. Default: None (= no reading)
-			Integer of pixels in x direction
-		filename_wave : str or int
-			File name of the wavelength to be loaded. Default: None (= no reading)
-			Integer of pixels in y direction
-		nw : int
-			Number of wavelength points (only used if arg1 and arg2 are integers)
-		"""
-		filename = None
-		# Initialize with two integers
-		if isinstance(arg1, int):
-			self.num = arg1	# Points in x
-			self.nw = arg2	# Points in y
-		# Initialize with two strings
-		elif isinstance(arg1, str):
-			filename = arg1
-			self.nw = 0
-		else:
-			self.nx = 0
-			self.nw = 0
-		
-		self.load = False		# Determines whether data is already loaded or not
-		self.npars = 6
-
-		if filename is not None:
-			stk = np.load(filename).astype(np.float64)
-			self.line = stk[:, 0, :]
-			self.wave = stk[:, 1, :]
-			self.stki = stk[:, 2, :]
-			self.stkq = stk[:, 3, :]
-			self.stku = stk[:, 4, :]
-			self.stkv = stk[:, 5, :]
-		
-			self.load = True
-			self.num = stk.shape[0]
-			self.npars = stk.shape[1]
-			self.nw = stk.shape[2]
-		else:
-			self.line = np.zeros(shape=(self.num,self.nw), dtype=np.float64)
-			self.wave = np.zeros(shape=(self.num,self.nw), dtype=np.float64)
-			self.stki = np.zeros(shape=(self.num,self.nw), dtype=np.float64)
-			self.stkq = np.zeros(shape=(self.num,self.nw), dtype=np.float64)
-			self.stku = np.zeros(shape=(self.num,self.nw), dtype=np.float64)
-			self.stkv = np.zeros(shape=(self.num,self.nw), dtype=np.float64)
-			
-
-	def read(self, filename):
-		"""
-		Reads a numpy file and stores the parameters
-		
-		Parameter
-		---------
-		filename : str
-			File name of the model to be loaded
-		filename_wave : str
-			Filename with the wavelengths
-		
-		"""
-		stk = np.load(filename).astype(np.float64)
-
-		self.line = stk[:,0,:]
-		self.wave = stk[:,1,:]
-		self.stki = stk[:, 2, :]
-		self.stkq = stk[:, 3, :]
-		self.stku = stk[:, 4, :]
-		self.stkv = stk[:, 5, :]
-		
-		self.load = True
-		self.num = self.stki.shape[0]
-		self.npars = stk.shape[1]
-		self.nw = self.stki.shape[1]
-
-		return self
-	
-
-	def read_results(self, path, tasks, filename):
-		"""
-		Reads all the profiles of the synthesis or inversion
-
-		config : dict
-			Config information
-		tasks : dict
-			Dictionary with the folder names
-		Type : string, optional
-			Indicating if synthesis or inversion. Default: 'syn'
-
-		"""
-			
-		# Make a check
-		if not os.path.exists(os.path.join(path,tasks['folders'][0]) + '/' + filename):
-			print('[read_profiles] The profiles do not exist. Make sure, that sir is executed correctly and fortran is installed.')
-			sys.exit()
-
-		line, _, _, _, _, _ = read_profile_mc(os.path.join(path,tasks['folders'][0]) + '/' + filename)
-		self.nw = len(line)
-		self.num = len(tasks['folders'])
-		stokes = np.zeros(shape=(self.num,self.nw))
-		self.line = np.zeros(shape=(self.num,self.nw))
-		self.wave = np.zeros(shape=(self.num,self.nw))
-		self.stki = np.zeros(shape=(self.num,self.nw))
-		self.stkq = np.zeros(shape=(self.num,self.nw))
-		self.stku = np.zeros(shape=(self.num,self.nw))
-		self.stkv = np.zeros(shape=(self.num,self.nw))
-
-		for n in range(self.num):
-			line, ll, I, Q, U, V = read_profile_mc(os.path.join(path,tasks['folders'][n]) + '/' + filename)
-			self.line[n,:] = line
-			self.wave[n,:] = ll
-			self.stki[n,:] = I
-			self.stkq[n,:] = Q
-			self.stku[n,:] = U
-			self.stkv[n,:] = V
-
-		del line
-		del ll
-		del I
-		del Q
-		del U
-		del V
-		
-		self.load = True
-
-		return stokes
-
-	def save(self, filename):
-		"""
-		Save the data in the class as a numpy file
-
-		Parameters
-		----------
-		filename : str
-			Filename of the numpy file
-		filename_wave : str
-			Filename with the wavelengths
-
-		"""
-		if not self.load:
-			print(f"[save] It seems that data was never read or saved. {filename} may contain no data")
-			
-		stk = np.stack([self.line, self.wave, self.stki, self.stkq, self.stku, self.stkv], axis=1, dtype=np.float64)
-		
-		np.save(filename, stk)
-
-		del stk  # make the memory free
-
-		return self
-
-	def set_dim(self, num, nw):
-		"""
-		Sets the dimensions if no data is loaded yet
-
-		Parameter
-		---------
-		nx : int
-			Number of Models in x
-		ny : int
-			Number of Models in y
-		nw : int
-			Number of wavelength points
-		
-		"""
-		if self.load:
-			print("[set_dim] Data is already loaded and therefore dimensions cannot be set.")
-			return self
-
-		self.line = np.zeros(shape=(num, nw), dtype=np.float64)
-		self.wave = np.zeros(shape=(num, nw), dtype=np.float64)
-		self.stki = np.zeros(shape=(num, nw), dtype=np.float64)
-		self.stkq = np.zeros(shape=(num, nw), dtype=np.float64)
-		self.stku = np.zeros(shape=(num, nw), dtype=np.float64)
-		self.stkv = np.zeros(shape=(num, nw), dtype=np.float64)
-		
-		self.num = num
-		self.nw = nw
-
-		return self
-
-
-	def write(self, filename, x):
+	def write_profile_mc(self, filename, x):
 		"""
 		Writes data to profiles as described in the config file
 		
@@ -685,19 +561,18 @@ class Profile_MC:
 		Grid : string
 			Grid file
 		"""
-		
-		
+
 		# Save data
 		f = open(filename, 'w')
 		for i in range(self.nw):
-			f.write(f" {int(self.line[x,i]):>2} {self.wave[x,i]:>10.4f} {self.stki[x,i]:>14.7E} {self.stkq[x,i]:>14.7E} {self.stku[x,i]:>14.7E} {self.stkv[x,i]:>14.7E}\n")
+			f.write(f" {int(self.indx[i]):>2} {self.wave[i]:>10.4f} {self.stki[x,0,i]:>14.7E} {self.stkq[x,0,i]:>14.7E} {self.stku[x,0,i]:>14.7E} {self.stkv[x,0,i]:>14.7E}\n")
 		f.close()
 
 
+def read_profile(file):
 
-def read(file1, file2=None):
-
-	pro = Profile(file1, file2)
+	pro = Profile(0,0,0)
+	pro.read(file)
 
 	return pro
 

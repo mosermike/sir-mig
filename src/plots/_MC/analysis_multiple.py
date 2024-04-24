@@ -9,7 +9,7 @@ sys.path.append(sys.path[0] + "../..")
 sys.path.append(sys.path[0] + "../../tools")
 import sir as sir
 import definitions as d
-from model_1C import *  # Model class
+from model import *  # Model class
 import matplotlib.pyplot as plt
 from os.path import exists
 import os
@@ -54,7 +54,7 @@ def get_attribute(model, att):
 
 	'''
 	if att == "tau":
-		return model.log_tau[:,0,:]
+		return model.log_tau
 	elif att == "T":
 		return model.T[:,0,:]
 	elif att == "Pe":
@@ -183,8 +183,8 @@ def analysis_multiple(confs, labels):
 	for n in range(len(confs)):
 		path = confs[n]["path"]
 		num = confs[n]['num']
-		fit = Model(os.path.join(path, confs[n]["inv_out"]) + d.end_models)
-		syn = Model(os.path.join(path, confs[n]["model_out"]))
+		fit = read_model(os.path.join(path, confs[n]["inv_out"]) + d.end_models)
+		syn = read_model(os.path.join(path, confs[n]["model_out"]))
 
 		# Correct phi range
 		syn.correct_phi()

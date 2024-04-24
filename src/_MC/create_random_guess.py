@@ -12,8 +12,6 @@ from os.path import exists
 import os
 import definitions as d
 
-# TODO implement class model
-
 def help():
 	print("guess_random_mc - Creates random guesses")
 	print("Usage: python guess_random_mc.py [OPTION]")

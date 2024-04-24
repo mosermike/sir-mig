@@ -112,7 +112,7 @@ def scatter_data(conf, comm, rank, size):
 	tasks = create_task_folder_list(conf["map"])
 	if rank == 0:
 		print("[Status] Load and scatter data ...")
-		stk = p.Profile(os.path.join(path,conf["cube_inv"]),os.path.join(path,conf["waves"]))
+		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
 		stk.cut_to_wave(sir.angstrom_to_pixel(stk.wave, conf["range_wave"])) # Cut wavelength file to the wished area
 		# Create one data cube
 		stki = stk.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
@@ -393,7 +393,7 @@ def inversion(conf, comm, rank, size):
 
 	# Create guess from npy file if wanted
 	if conf["guess1"] != '':
-			guess1 = np.load(os.path.join(path,conf["guess1"])) # Load data
+			guess1 = m.read_model(os.path.join(path,conf["guess1"])) # Load data
 			# Read Header Infos from the base model, if exists
 			if exists(os.path.join(path,conf["model1"])):
 				header1 = np.loadtxt(os.path.join(path,conf["model1"]), max_rows=1)
@@ -403,14 +403,14 @@ def inversion(conf, comm, rank, size):
 			if rank == 0:
 				print(f"-------> File {conf['guess1']} used as initial guess/base model 1")
 				# Check if the shapes match
-				if guess1.shape[0] > Map[1]-Map[0]+1 or guess1.shape[1] > Map[3]-Map[2]+1:
+				if guess1.nx > Map[1]-Map[0]+1 or guess1.ny > Map[3]-Map[2]+1:
 					print("[Warn]   The shapes of the initial guess/base model 1 are bigger than the map in the config.")
-				elif guess1.shape[0] < Map[1]-Map[0]+1 or guess1.shape[1] < Map[3]-Map[2]+1:
-					print(f"[ERROR] The shapes ({guess1.shape[0]},{guess1.shape[1]}) of the initial guess/base model 1 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
-					return
+				elif guess1.nx < Map[1]-Map[0]+1 or guess1.ny < Map[3]-Map[2]+1:
+					print(f"[ERROR] The shapes ({guess1.nx},{guess1.ny}) of the initial guess/base model 1 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
+					sys.exit()
 	# Create guess from npy file if wanted
 	if conf["guess2"] != '':
-			guess2 = np.load(os.path.join(path,conf["guess2"]))
+			guess2 = m.read_model(os.path.join(path,conf["guess2"])) # Load data
 			# Read Header Infos from the base model, if exists
 			if exists(os.path.join(path,conf["model2"])):
 				header2 = np.loadtxt(os.path.join(path,conf["model2"]), max_rows=1)
@@ -421,17 +421,17 @@ def inversion(conf, comm, rank, size):
 			if rank == 0:
 				print(f"-------> File {conf['guess2']} used as initial guess/base model 2")
 				# Check if the shapes match
-				if guess2.shape[0] > Map[1]-Map[0]+1 or guess2.shape[1] > Map[3]-Map[2]+1:
+				if guess2.nx > Map[1]-Map[0]+1 or guess2.ny > Map[3]-Map[2]+1:
 					print("[Warn]   The shapes of the initial guess/base model 2 are bigger than the map in the config.")
-				if guess2.shape[0] < Map[1]-Map[0]+1 or guess2.shape[1] < Map[3]-Map[2]+1:
-					print(f"[ERROR]  The shapes ({guess2.shape[0]},{guess2.shape[1]}) of the initial guess/base model 2 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
+				if guess2.nx < Map[1]-Map[0]+1 or guess2.ny < Map[3]-Map[2]+1:
+					print(f"[ERROR]  The shapes ({guess2.nx},{guess2.ny}) of the initial guess/base model 2 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
 					return
 	##########################
 	#	CREATE GRID FILE	#
 	##########################
 	if rank == 0:
 		# Write Grid file based on the chosen wavelength ranges in the config file
-		sir.write_grid(conf, os.path.join(path,d.Grid))
+		sir.write_grid(conf, stk.wave, os.path.join(path,d.Grid))
 
 	# Print out randomisation setting
 	if rank == 0:
@@ -502,7 +502,7 @@ def inversion(conf, comm, rank, size):
 		os.makedirs(task_folder, exist_ok=True)
 					
 		# Write the data from the cube into a profile file for SIR
-		stk.write(os.path.join(path, task_folder, d.profile_obs), i, 0, os.path.join(conf['path'],d.Grid))
+		stk.write_profile(os.path.join(path, task_folder, d.profile_obs), i, 0, os.path.join(conf['path'],d.Grid))
 		
 		# Copy stuff for the inversion
 		if conf['psf'] != '':
@@ -518,20 +518,13 @@ def inversion(conf, comm, rank, size):
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
-			sir.write_model(os.path.join(task_folder,model1), header1,
-						 guess1[x1,y1,0],guess1[x1,y1,1],guess1[x1,y1,2],guess1[x1,y1,3],
-						 guess1[x1,y1,4],guess1[x1,y1,5],guess1[x1,y1,6],guess1[x1,y1,7],
-						 guess1[x1,y1,8],guess1[x1,y1,9],guess1[x1,y1,10]
-						)
+			guess1.write_model(os.path.join(task_folder,model1), header1,x1,y1)
+			
 		if conf["guess2"] != '':
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
-			sir.write_model(os.path.join(task_folder,model2), header2,
-						 guess2[x1,y1,0],guess2[x1,y1,1],guess2[x1,y1,2],guess2[x1,y1,3],
-						 guess2[x1,y1,4],guess2[x1,y1,5],guess2[x1,y1,6],guess2[x1,y1,7],
-						 guess2[x1,y1,8],guess2[x1,y1,9],guess2[x1,y1,10]
-						)
+			guess1.write_model(os.path.join(task_folder,model2), header2,x1,y1)
 
 		###############################
 		# 	Perform inversion		#
@@ -587,7 +580,7 @@ def inversion(conf, comm, rank, size):
 		# Create shapes of the arrays which are filled and saved later
 		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
 		#stokes_inv	= np.ones (shape=(Map[1]-Map[0]+1,Map[3]-Map[2]+1,4 ,data.shape[3]))
-		stokes_inv = p.Profile()
+		stokes_inv = p.Profile(stk.nx, stk.ny, stk.nw)
 		stokes_inv.wave = stk.wave # Copy wavelength positions
 		models_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
 		models_inv2		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
@@ -605,8 +598,6 @@ def inversion(conf, comm, rank, size):
 		best_guesses1.read_results(tasks, d.best_guess1, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses2.read_results(tasks, d.best_guess2, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		stokes_inv.read_results(tasks, f"best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
-
-		waves = np.load(conf['waves']) # For reading profiles
 
 		# Collect data from task folders and delete the folder
 		for i in range(len(tasks['x'])):
@@ -629,13 +620,13 @@ def inversion(conf, comm, rank, size):
 
 		# Save as npy files
 		#np.save(conf['inv_out'] + d.end_stokes, stokes_inv)
-		stokes_inv.save(os.path.join(path,conf['inv_out']) + d.end_stokes, os.path.join(path,conf['inv_out']) + d.end_wave)
-		models_inv1.save(conf['inv_out'] + d.end_models1, fill = True)
-		models_inv2.save(conf['inv_out'] + d.end_models2, fill = True)
-		errors_inv1.save(conf['inv_out'] + d.end_errors1)
-		errors_inv2.save(conf['inv_out'] + d.end_errors2)
-		best_guesses1.save(d.best_guess1.replace(".mod",".npy"))
-		best_guesses2.save(d.best_guess2.replace(".mod",".npy"))
+		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
+		models_inv1.write(conf['inv_out'] + d.end_models1)
+		models_inv2.write(conf['inv_out'] + d.end_models2)
+		errors_inv1.write(conf['inv_out'] + d.end_errors1)
+		errors_inv2.write(conf['inv_out'] + d.end_errors2)
+		best_guesses1.write(d.best_guess1.replace(".mod",".bin"))
+		best_guesses2.write(d.best_guess2.replace(".mod",".bin"))
 		np.save(conf['chi2'],chi2)
 		
 		# Print needed time

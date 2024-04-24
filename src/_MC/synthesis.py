@@ -9,7 +9,8 @@ from mpi4py import MPI
 import glob
 import sys
 import sir
-import model_1C as m
+#import model_1C as m
+import model as m
 import profile_stk as p
 import definitions as d
 import numpy as np
@@ -126,7 +127,7 @@ def synthesis(conf, comm, rank, size):
 	abundance_file = conf['abundance'] # Abundance file	
 	end='.per' # ending of the file for the profile
 	
-	models = m.Model(os.path.join(path, conf['model_out']))
+	models = m.read_model(os.path.join(path, conf['model_out']))
 
 	####################################
 	#	CREATE GRID AND CONFIG FILE	#
@@ -166,7 +167,7 @@ def synthesis(conf, comm, rank, size):
 			shutil.copy(os.path.join(path, sir_file), os.path.join(task_folder, sir_file))
 		
 		# Extract model from the npy file
-		models.write(os.path.join(task_folder,d.model_syn), d.header, i, 0)
+		models.write_model(os.path.join(task_folder,d.model_syn), d.header, i, 0)
 	
 		# Perform synthesis
 		os.chdir(task_folder)
@@ -184,15 +185,15 @@ def synthesis(conf, comm, rank, size):
 	os.chdir(path)
 	# Collect data and save it
 	if rank == 0:
-		print(f"\rTotal finished Jobs: {conf['num']}")
+		print(f"\rTotal finished Jobs: {conf['num']}", end='', flush=False)
 		output =  os.path.join(path,conf["syn_out"]) # Output file
 		atoms = [i.split(",") for i in conf['atoms']]
 
 		# Read the profiles
-		stk = p.Profile_MC(conf['num'])
-		stk.read_results(path, tasks, d.profile)
+		stk = p.Profile(conf['num'],1,0)
+		stk.read_results_MC(path, tasks, d.profile)
 		
-		stk.save(f"{conf['syn_out']}")
+		stk.write(f"{conf['syn_out']}")
 		
 		for i in range(conf['num']):
 			shutil.rmtree(tasks['folders'][i])

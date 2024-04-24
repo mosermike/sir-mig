@@ -11,7 +11,7 @@ import sys
 import sir
 import obs
 import glob
-import model_1C as m
+import model as m
 import profile_stk as p
 from mpi4py import MPI
 from _1C.create_random_guess import create_guesses
@@ -107,7 +107,7 @@ def scatter_data(conf, comm, rank, size):
 	tasks = create_task_folder_list(conf["map"])
 	if rank == 0:
 		print("[Status] Load and scatter data ...")
-		stk = p.Profile(os.path.join(path,conf["cube_inv"]),os.path.join(path,conf["waves"]))
+		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
 		stk.cut_to_wave(sir.angstrom_to_pixel(stk.wave, conf["range_wave"])) # Cut wavelength file to the wished area
 		# Create one data cube
 		stki = stk.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
@@ -366,7 +366,7 @@ def inversion(conf, comm, rank, size):
 		print("-------> Write control and grid file")
 		sir.write_control_1c(os.path.join(conf['path'],d.inv_trol_file), conf)
 		# Write Grid file based on the chosen wavelength ranges in the config file
-		sir.write_grid(conf, os.path.join(path,d.Grid))
+		sir.write_grid(conf, stk.wave, os.path.join(path,d.Grid))
 	abundance_file = conf['abundance']  # Abundance file
 	# Write psf function, if needed
 	if rank == 1 or (size < 2 and rank == 0):
@@ -379,7 +379,7 @@ def inversion(conf, comm, rank, size):
 	if conf["guess"] != '':
 		if rank == 0:
 			print(f"-------> File {conf['guess']} used as initial guess/base model")
-		guess = np.load(os.path.join(path,conf["guess"]))
+		guess = m.read_model(os.path.join(path,conf["guess"]))
 		
 	if rank == 2 or (size < 3 and rank == 0):
 		# Check if there are old task folders and delete them => can result to errors
@@ -449,7 +449,7 @@ def inversion(conf, comm, rank, size):
 		os.makedirs(task_folder, exist_ok=True)
 					
 		# Write the data from the cube into a profile file for SIR
-		stk.write(os.path.join(path, task_folder, d.profile_obs), i, 0, os.path.join(conf['path'],d.Grid))
+		stk.write_profile(os.path.join(path, task_folder, d.profile_obs), i, 0, os.path.join(conf['path'],d.Grid))
 				
 		# Copy stuff for the inversion
 		if conf['psf'] != '':
@@ -465,11 +465,7 @@ def inversion(conf, comm, rank, size):
 			# Write the new initial model from here:
 			x1 = x - Map[0]  # x position taking the Map into account
 			y1 = y - Map[2]  # y position taking the Map into account
-			sir.write_model(os.path.join(task_folder, model), d.header,
-							guess[x1, y1, 0], guess[x1, y1, 1], guess[x1, y1, 2], guess[x1, y1, 3],
-							guess[x1, y1, 4], guess[x1, y1, 5], guess[x1, y1, 6], guess[x1, y1, 7],
-							guess[x1, y1, 8], guess[x1, y1, 9], guess[x1, y1, 10]
-							)
+			guess.write_model(os.path.join(task_folder, model), d.header, x1, y1)
 
 		#####################
 		# Perform inversion #
@@ -527,11 +523,11 @@ def inversion(conf, comm, rank, size):
 		tasks = create_task_folder_list(Map) # Structure tasks
 
 		# Create shapes of the arrays which are filled and saved later
-		stokes_inv = p.Profile()
+		stokes_inv = p.Profile(0,0,0)
 		stokes_inv.wave = wave # Copy wavelength positions
-		models_inv = m.Model()
-		errors_inv = m.Error()
-		best_guesses = m.Model()
+		models_inv = m.Model(0,0,0)
+		errors_inv = m.Model(0,0,0)
+		best_guesses = m.Model(0,0,0)
 
 		print("-------> Read Models ...")
 		models_inv.read_results(tasks, f'{model1}_{cycles}.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
@@ -566,10 +562,10 @@ def inversion(conf, comm, rank, size):
 				os.mkdir(temp[:temp.rfind('/')])
 				
 		# Save as npy files
-		stokes_inv.save(os.path.join(path,conf['inv_out']) + d.end_stokes, os.path.join(path,conf['inv_out']) + d.end_wave)
-		models_inv.save(os.path.join(path,conf['inv_out']) + d.end_models)
-		errors_inv.save(os.path.join(path,conf['inv_out']) + d.end_errors)
-		best_guesses.save(os.path.join(path,d.best_guess.replace(".mod",".npy")))
+		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
+		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
+		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
+		best_guesses.write(os.path.join(path,d.best_guess.replace(".mod",".bin")))
 		np.save(os.path.join(path,conf['chi2']),chi2)
 		
 		# Print needed time
