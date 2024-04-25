@@ -64,7 +64,7 @@ def read_grid(filename):
 	return Dict
 
 
-def read_profile(filename):
+def read_profile_sir(filename):
 	"""
 	Reads the first LINE data from a profile computed by SIR
 	
@@ -96,7 +96,7 @@ def read_profile(filename):
 
 	return np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
 
-def read_profile_mc(filename):
+def read_profile_sir_mc(filename):
 	"""
 	Reads the first LINE data from a profile computed by SIR
 	
@@ -321,7 +321,7 @@ class Profile:
 		
 		# Read the profile
 		file = f"{os.path.join(path,task['folders'][0])}/{filename}"
-		ll, _, _, _, _ = read_profile(file)
+		ll, _, _, _, _ = read_profile_sir(file)
 		self.nw = len(ll)
 		self.stki = np.zeros(shape=(nx, ny, len(ll)), dtype=np.float64)
 		self.stkq = np.zeros(shape=(nx, ny, len(ll)), dtype=np.float64)
@@ -331,7 +331,7 @@ class Profile:
 		# Read all the files
 		for i in range(len(task['x'])):
 			file = f"{os.path.join(path,task['folders'][i])}/{filename}"
-			ll, I, Q, U, V = read_profile(file)
+			ll, I, Q, U, V = read_profile_sir(file)
 			if( (i == 0) and (self.wave == 0).all()):
 				self.wave = ll
 			x, y = task['x'][i]-task['x'][0], task['y'][i]-task['y'][0]
@@ -364,7 +364,7 @@ class Profile:
 			print('[read_profiles] The profiles do not exist. Make sure, that sir is executed correctly and fortran is installed.')
 			sys.exit()
 
-		line, _, _, _, _, _ = read_profile_mc(os.path.join(path,tasks['folders'][0]) + '/' + filename)
+		line, _, _, _, _, _ = read_profile_sir_mc(os.path.join(path,tasks['folders'][0]) + '/' + filename)
 		self.nw = len(line)
 		self.nx = len(tasks['folders'])
 		self.ny = 1
@@ -374,7 +374,7 @@ class Profile:
 		self.stkv = np.zeros(shape=(self.nx,1,self.nw))
 
 		for n in range(self.nx):
-			line, ll, I, Q, U, V = read_profile_mc(os.path.join(path,tasks['folders'][n]) + '/' + filename)
+			line, ll, I, Q, U, V = read_profile_sir_mc(os.path.join(path,tasks['folders'][n]) + '/' + filename)
 			if n == 0:
 				self.indx = line
 				self.wave = ll
@@ -517,13 +517,17 @@ class Profile:
 		Line_min  = grid['min']
 		Line_step = grid['step']
 		Line_max  = grid['max']
-		add = np.copy(Line_step)
+		
+		add = np.copy(Line_step) # in case the Line_step does not need to be added
+		
 		# Create the first column => number of the line
 		num = np.empty(0)
 		checks = []
 		for i in range(len(Line)):
 			num = np.append(num,np.ones(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))*int(Line[i][0]))
 			checks.append(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))
+
+		# Check if the data has the same format as the cut data (in case because if precision it is one value more)
 		if np.sum(checks) != self.wave.shape[0]:
 			add = np.zeros(add.shape)
 			num = np.empty(0)

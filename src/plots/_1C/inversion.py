@@ -12,7 +12,8 @@ import matplotlib.pyplot as plt
 from os.path import exists
 import os
 from change_config_path import change_config_path
-
+import model as m
+import profile_stk as p
 def help():
 	"""
 	Help Page

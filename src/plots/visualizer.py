@@ -59,41 +59,34 @@ def help():
 
 	sys.exit()
 
-def check_range(range_wave_ang, wave):
+def check_range(wave_inv, wave):
 	"""
 	Check if the given wavelength is in the range
 
 	Parameter
 	---------
-	range_wave_ang : numpy nd array
-		Array containing the wavelength ranges in A for the given inversion. The size is nx2 depending on the Grid file
+	wave_inv : numpy 1d array
+		Array containing the wavelength from the inversion binary file
 	wave : float
 		Wavelength in A to be checked
 
 	Return
 	------
 	Wavelength in the range
+	Wavelength index in the range
 
 	"""
 	# Check for the wavelength if it is in the inversion range:
-	if wave < np.min(range_wave_ang):
+	if wave < np.min():
 		print("Note that the given wavelength is not in the inversion range. Take closest one in range...")
-		wave = np.min(range_wave_ang)
-		return wave
-	elif wave > np.max(range_wave_ang):
+		wave = np.min(wave_inv)
+		return wave, 0
+	elif wave > np.max(wave_inv):
 		print("Note that the given wavelength is not in the inversion range. Take closest one in range...")
-		wave = np.max(range_wave_ang)
-		return wave
+		wave = np.max(wave_inv)
+		return wave, len(wave_inv)-1
 
-	in_range = False
-	for i in range_wave_ang:
-		# Check that the wavelength is in the range
-		if i[0] <= wave <= i[1]:
-			return wave
-	if not in_range:
-		print("Note that the given wavelength is not in the inversion range. Take closest one in range...")
-		wave = wave.flatten()[np.argmin(abs(range_wave_ang-wave))]
-	return wave
+	return wave, np.argmin(abs(wave_inv-wave))
 
 
 def determine_resolution(string, pos, primary=False):
@@ -506,7 +499,7 @@ def visualiser_1C(conf, wave):
 		tau = wave
 		wave = 0 # Print the first value in the wavelength range
 	waves_inv = stokes_inv.wave
-	range_wave_ang2 = sir.pixel_to_angstrom(waves_inv, conf['range_wave'])
+	
 
 	print("Opening visualizer ...")
 	global px, py, px2, py2
@@ -576,8 +569,7 @@ def visualiser_1C(conf, wave):
 
 	else:
 		# Check whether the wavelength is in range
-		wave = check_range(range_wave_ang2, wave)
-		wave_ind = np.argmin(abs(waves_inv - wave))
+		wave, wave_ind = check_range(stokes_inv.wave, wave)
 		fig, ax = plt.subplots()
 		plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
 		size = fig.get_size_inches()
@@ -813,10 +805,8 @@ def visualiser_2C(conf, wave):
 			models2_inv = m.read_model(filename)
 
 	waves = stokes_inv.wave
-	range_wave_ang = sir.pixel_to_angstrom(waves, conf['range_wave'])
-	range_wave_pix = sir.angstrom_to_pixel(waves, conf['range_wave'])
 	# Check whether the wavelength is in range
-	wave = check_range(range_wave_ang, wave)
+	wave, wave_ind = check_range(waves, wave)
 
 	print("Opening visualizer ...")
 	global px, py, px2, py2
@@ -890,7 +880,7 @@ def visualiser_2C(conf, wave):
 		size = fig.get_size_inches()
 		move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
 
-		im = ax.imshow(stokes_inv.stki[:,:,range_wave_pix[0][0]].transpose(), #cmap = 'gist_gray',
+		im = ax.imshow(stokes_inv.stki[:,:,wave_ind].transpose(), #cmap = 'gist_gray',
 					origin=d.origin, extent=Map)
 		plt.connect('button_press_event', lambda event: on_click_2C(event, stokes, stokes_inv, models1_inv, models2_inv, Map))
 

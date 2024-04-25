@@ -67,41 +67,34 @@ def help():
 
 	sys.exit()
 
-def check_range(range_wave_ang, wave):
+def check_range(wave_inv, wave):
 	"""
 	Check if the given wavelength is in the range
 
 	Parameter
 	---------
-	range_wave_ang : numpy nd array
-		Array containing the wavelength ranges in A for the given inversion. The size is nx2 depending on the Grid file
+	wave_inv : numpy array
+		Array containing the wavelengths used in the inversion
 	wave : float
 		Wavelength in A to be checked
 
 	Return
 	------
 	Wavelength in the range
-
+	Index of the wavelength
 	"""
 	# Check for the wavelength if it is in the inversion range:
-	if wave < np.min(range_wave_ang):
+	if wave < np.min(wave_inv):
 		print("Note that the given wavelength is not in the inversion range. Take closest one in range...")
-		wave = np.min(range_wave_ang)
-		return wave
-	elif wave > np.max(range_wave_ang):
+		wave = np.min(wave_inv)
+		return wave, 0
+	elif wave > np.max(wave_inv):
 		print("Note that the given wavelength is not in the inversion range. Take closest one in range...")
-		wave = np.max(range_wave_ang)
-		return wave
+		wave = np.max(wave_inv)
+		return wave, len(wave_inv)-1
 
-	in_range = False
-	for i in range_wave_ang:
-		# Check that the wavelength is in the range
-		if i[0] <= wave <= i[1]:
-			return wave
-	if not in_range:
-		print("Note that the given wavelength is not in the inversion range. Take closest one in range...")
-		wave = wave.flatten()[np.argmin(abs(range_wave_ang-wave))]
-	return wave
+	wave_ind = np.argmin(abs(wave_inv-wave))
+	return wave, wave_ind
 
 
 def plot(conf, wave, tau, waveV = -1):
@@ -143,17 +136,8 @@ def plot(conf, wave, tau, waveV = -1):
 	#############################################################
 	path = conf["path"]
 	Map = conf['map']
-	range_wave_ang = sir.pixel_to_angstrom(waves, conf['range_wave'])
-	
-	# Check whether the wavelength is in range
-	wave = check_range(range_wave_ang, wave)
-	
-	if "-waveV" in sys.argv:
-		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
-		waveV = check_range(range_wave_ang, waveV)
+		
 
-	if int(waveV) != -1:
-		waveV = check_range(range_wave_ang, waveV)
 	
 
 	if "-data" not in sys.argv:
@@ -203,6 +187,18 @@ def plot(conf, wave, tau, waveV = -1):
 		logI = tau
 	else:
 		logI = float(sys.argv[sys.argv.index("-logI")+1])
+
+
+	# Check whether the wavelength is in range
+	wave, wave_ind = check_range(stokes_inv.wave, wave)
+	
+	if "-waveV" in sys.argv:
+		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
+		waveV, waveV_ind = check_range(stokes_inv.wave, waveV)
+
+	if int(waveV) != -1:
+		waveV, waveV_ind = check_range(stokes_inv.wave, waveV)
+
 
 	# Cut data in x and y position	
 	if "-limitxy" in sys.argv:
