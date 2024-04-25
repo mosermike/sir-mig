@@ -275,9 +275,9 @@ def analysis_multiple(confs, labels):
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
 		if len(labels) > 5:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), sharex=True)
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
 		else:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 12), sharex=True)
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 12))
 
 	######################
 	# Standard deviation #

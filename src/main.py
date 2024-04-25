@@ -71,6 +71,7 @@ size = comm.Get_size()
 if rank == 0:
 	initial(conf['mode'])
 
+comm.barrier()
 
 #####################
 # MERGING THE DATA	#

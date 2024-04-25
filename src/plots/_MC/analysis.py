@@ -234,7 +234,7 @@ def analysis(conf):
 														gridspec_kw = dict(hspace=0))
 			fig.subplots_adjust(hspace=0, wspace=0)
 		else:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), sharex = True)
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
 
 		# Plot uncertainties
 		# Standard deviation
