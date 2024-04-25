@@ -537,7 +537,7 @@ def inversion(conf, comm, rank, size):
 		best_guesses.read_results(tasks, d.best_guess, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
 		# Correct for phi ambiguity (no difference between 0 and 180 measurable)
-		models_inv.correct_phi()
+		#models_inv.correct_phi()
 
 		print("-------> Read Profiles ...")
 		stokes_inv.read_results(tasks, f"{model1}_{cycles}.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
