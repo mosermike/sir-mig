@@ -4,7 +4,7 @@ Removes all created files
 
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+sys.path.append(sys.path[0]+"/..")
 import sir
 import definitions as d
 # Import library

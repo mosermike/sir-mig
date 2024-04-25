@@ -1,6 +1,6 @@
 import numpy as np 
 import os
-
+import sys
 
 class Model:
 	"""
@@ -29,21 +29,38 @@ class Model:
 
 
 	"""
-	def __init__(self, filename=None, nx = 0, ny = 0, npar = 0):
+	def __init__(self, arg1=None, arg2 = None, npar = 0):
 		"""
 		Initialisation of the class with the models
 		
 		Parameter
 		---------
-		filename : str, optional
-			File name of the model to be loaded. Default: None (= no reading)
+		arg1 : str or int
+			Dimension in x or file name
+		arg 2: int (optional if arg1 = str)
+			Dimension in y
 		
 		"""
+
+
+		filename = None
+		# Initialize with two integers
+		if isinstance(arg1, int):
+			if arg2 is None:
+				print("[model_1C] Dimension iny not defined.")
+				sys.exit()
+			self.nx = arg1	# Points in x
+			self.ny = arg2	# Points in y
+		# Initialize with two strings
+		elif isinstance(arg1, str):
+			filename = arg1
+		else:
+			self.nx = 0
+			self.ny = 0
+
+
 		self.full = False		# Determines whether also z, pg, and rho exists
 		self.load = False		# Determines whether data is already loaded or not
-		self.num = 0			# Number of Models saved
-		self.nx = nx			# Points in x
-		self.ny = ny			# Points in y
 		self.npar = npar		# Points in log tau
 		
 		if filename is not None:
@@ -98,17 +115,17 @@ class Model:
 				self.ny = self.log_tau.shape[1]
 				self.npar = self.log_tau.shape[2]
 		else:
-			self.log_tau = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.T = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.Pe = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.vmicro = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.B = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.vlos = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.gamma = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.phi = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.z = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.Pg = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
-			self.rho = np.zeros(shape=(nx,ny,npar), dtype=np.float64)
+			self.log_tau = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.T = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.Pe = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.vmicro = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.B = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.vlos = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.gamma = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.phi = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.z = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.Pg = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
+			self.rho = np.zeros(shape=(self.nx,self.ny,npar), dtype=np.float64)
 
 
 	def correct_phi(self):

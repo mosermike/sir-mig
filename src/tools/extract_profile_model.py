@@ -3,7 +3,7 @@ Extracts the profile file and the mdoel file from a data cube
 """
 import numpy as np
 import sys, os, shutil
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+sys.path.append(sys.path[0]+"/..")
 import obs, sir, definitions as d
 from os.path import exists
 import profile_stk as p
