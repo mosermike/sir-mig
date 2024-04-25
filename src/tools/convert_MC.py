@@ -1,7 +1,8 @@
 import numpy as np
 import sys
+sys.path(sys.path[0]+"/../")
 
-# Convert old version to new version of SIR-MIG-MC
+# Convert old version to new version of SIR-MIG-MC of the profiles
 # 1st argument: first npy file
 # 2nd argument: second npy file
 # 3rd argument: destination
@@ -35,5 +36,6 @@ new[:,4,data1.shape[2]:] = data2[:,3,:]
 
 new[:,5,0:data1.shape[2]] = data1[:,4,:]
 new[:,5,data1.shape[2]:] = data2[:,4,:]
+
 
 np.save(sys.argv[3], new)

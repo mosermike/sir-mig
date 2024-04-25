@@ -165,8 +165,6 @@ if conf['mode'] == 'MC':
 			else:
 				print("[STATUS] Add noise")
 				_MC.add_noise.add_noise(conf, False)
-			if not "--no-inv" in sys.argv:
-				print("[STATUS] Perform inversion")
 	else:
 		if rank == 0:
 			print("[STATUS] Only perform inversion")

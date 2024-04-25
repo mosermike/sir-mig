@@ -5,14 +5,14 @@ Analyses the quality of the Monte Carlo Simulation by computing the standard dev
 import numpy as np 
 import sys, os
 sys.path.append(sys.path[0] + "/../..")
-sys.path.append(os.path.join(os.path.dirname(__file__), "/../../tools"))
+sys.path.append(os.path.join(sys.path[0], "/../../tools"))
 import sir
 import definitions as d
-from model_1C import * # Class Model
+from model import * # Class Model
 
 import matplotlib.pyplot as plt
 from os.path import exists
-from change_config_path import change_config_path
+from tools.change_config_path import change_config_path
 
 def std_dev(data, syn):
 	"""
@@ -63,7 +63,7 @@ def get_attribute(model, att):
 
 	'''
 	if att == "tau":
-		return model.log_tau[:,0,:]
+		return model.log_tau
 	elif att == "T":
 		return model.T[:,0,:]
 	elif att == "Pe":
@@ -119,8 +119,8 @@ def analysis(conf):
 	#	    READ INPUT, WRITE DEFINITIONS AND LOAD DATA				  #
 	#########################################################################
 	path = conf["path"]
-	data = Model(os.path.join(path,conf["inv_out"]) + d.inv_models) # Data from fit
-	syn = Model(os.path.join(path,conf["model_out"])) # Data
+	data = read_model(os.path.join(path,conf["inv_out"]) + d.end_models) # Data from fit
+	syn  = read_model(os.path.join(path,conf["model_out"])) # Data
 
 	# Correct phi range
 	syn.correct_phi()
@@ -187,8 +187,8 @@ def analysis(conf):
 	# Cut data so that the plot limits are adjusted to the shorted range
 	syn.set_limit(lim_max)
 	data.set_limit(lim_max)
-	log_tau = data.log_tau[0,0]
-	lim_max = data.log_tau[0,0, -1]
+	log_tau = data.log_tau
+	lim_max = data.log_tau[-1]
 
 	for i in range(len(inputs)):
 		if inputs[i] in sys.argv:

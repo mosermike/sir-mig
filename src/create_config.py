@@ -221,7 +221,6 @@ def config_1C():
     preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
     Map			= input ("Map in pixels (format xmin,xmax,ymin,ymax): ")
 
-    waves		= input ("Numpy file npy with wavelengths in Angstrom: ")
     instrument	= input ("Instrument          (GRIS, Hinode or blank): ")
     # Ask for spectral veil for Gris:
     if instrument == 'Hinode':
@@ -302,7 +301,6 @@ def config_1C():
         f.write(f"cube : {cube} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
         f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (npy or fits)\n")
         f.write(f"map : {Map} # Pixels to be considered as a list\n")
-        f.write(f"waves : {waves} # numpy file with wavelengths in Angstrom\n")
         f.write(f"instrument : {instrument} # Instrument used (GRIS, Hinode or empty)\n")
         f.write(f"shift_wave : {shift_wave} # Shift the wavelength grid when waves file is created in mA\n")
 
@@ -367,7 +365,6 @@ def config_2C():
     preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
     Map			= input ("Map in pixels (format xmin,xmax,ymin,ymax, 0 => all pixels): ")
 
-    waves		= input ("Numpy file npy with wavelengths in Angstrom: ")
     instrument	= input ("Instrument          (GRIS, Hinode or blank): ")
     # Ask for spectral veil for Gris:
     if instrument == 'Hinode':
@@ -380,7 +377,7 @@ def config_2C():
     cycles		= input ("Cycles: ")
     model1		= input ("Base model 1: ")
     model2		= input ("Base model 2: ")
-    inv_out		= input ("Inversion output as npy [inversion.npy]: ")
+    inv_out		= input ("Inversion output prefix [inversion]: ")
     line			= input ("Line file                       [Lines]: ")
     atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
     Range		= input ("Ranges in the wavelengths (pixel or angstrom) to be considered (as 'min1,max1;min2,max2;...') defining the indices linewise as in grid file):" )
@@ -389,8 +386,8 @@ def config_2C():
         random_pars    = input ("Randomize these parameters [B,T,vlos,gamma]: ")
     else:
         random_pars = ''
-    guess1		= input ("Take npy file as initial guess for model 1? Write name of the file, if used: ")
-    guess2		= input ("Take npy file as initial guess for model 2? Write name of the file, if used: ")
+    guess1		= input ("Take bin file as initial guess for model 1? Write name of the file, if used: ")
+    guess2		= input ("Take bin file as initial guess for model 2? Write name of the file, if used: ")
     psf		     = input ("Filename of psf (.dat file, if it does not exist => Compute from spectral veil corr., blank = not used): ")
 
     weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
@@ -443,7 +440,7 @@ def config_2C():
         lim_azimuth2 = '0,180'
 
     if inv_out == '':
-        inv_out = 'inversion.npy'
+        inv_out = 'inversion'
     if line == '':
         line = 'Lines'
     if abundance == '':
@@ -467,7 +464,6 @@ def config_2C():
         f.write(f"cube : {cube} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
         f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (npy or fits)\n")
         f.write(f"map : {Map} # Pixels to be considered as a list (0 means all pixels)\n")
-        f.write(f"waves : {waves} # numpy file with wavelengths in Angstrom\n")
         f.write(f"instrument : {instrument} # Instrument used (GRIS, Hinode or empty)\n")
         f.write(f"shift_wave : {shift_wave} # Shift the wavelength grid when waves file is created in mA\n")
 

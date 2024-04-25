@@ -15,10 +15,10 @@ random_pars : B,T,vlos,gamma,phi # Randomise these parameters for the guess
 # Creating Models and Synthesis
 #
 model_nodes : 3 # Create models with 2 or 3 nodes
-model_out : models_real.npy # Output file of the created models as npy
+model_out : syn_models.bin # Output file of the created models as npy
 model_pars : B,T,vlos,gamma,phi # Randomise these parameters while creating models as a list
-syn_out : synthesis_profiles # Output of the synthesis profiles and models
-noise_out : noise_profiles # Output of the noise profiles as npy
+syn_out : syn_profiles.bin # Output of the synthesis profiles and models
+noise_out : noise_profiles.bin # Output of the noise profiles as bin
 noise_I : 0 # Noise in I
 noise_Q : 0.001 # Noise in Q
 noise_U : 0.001 # Noise in U

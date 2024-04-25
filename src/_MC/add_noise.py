@@ -6,7 +6,7 @@ import numpy as np
 import sys
 import os
 import sir
-
+import profile_stk as p
 
 def help() -> None:
 	"""
@@ -50,24 +50,22 @@ def add_noise(conf: dict, verbose: bool = True) -> None:
 	noise_U = conf['noise_U']  # Noise in U
 	noise_V = conf['noise_V']  # Noise in V
 
-	atoms = [i.split(",") for i in conf['atoms']]
-
 	#############################
 	# ADD NOISE TO EACH PROFILE #
 	#############################
-	syn = np.load(f"{Input}")
+	syn = p.read_profile(Input)
 
-	noise_Is = np.random.normal(scale=float(noise_I), size=(syn.shape[0], syn.shape[2]))
-	noise_Qs = np.random.normal(scale=float(noise_Q), size=(syn.shape[0], syn.shape[2]))
-	noise_Us = np.random.normal(scale=float(noise_U), size=(syn.shape[0], syn.shape[2]))
-	noise_Vs = np.random.normal(scale=float(noise_V), size=(syn.shape[0], syn.shape[2]))
+	noise_Is = np.random.normal(scale=float(noise_I), size=(syn.nx, syn.ny, syn.nw))
+	noise_Qs = np.random.normal(scale=float(noise_Q), size=(syn.nx, syn.ny, syn.nw))
+	noise_Us = np.random.normal(scale=float(noise_U), size=(syn.nx, syn.ny, syn.nw))
+	noise_Vs = np.random.normal(scale=float(noise_V), size=(syn.nx, syn.ny, syn.nw))
 
-	syn[:, 2, :] = syn[:, 2, :] + noise_Is
-	syn[:, 3, :] = syn[:, 3, :] + noise_Qs
-	syn[:, 4, :] = syn[:, 4, :] + noise_Us
-	syn[:, 5, :] = syn[:, 5, :] + noise_Vs
+	syn.stki = syn.stki + noise_Is
+	syn.stkq = syn.stkq + noise_Qs
+	syn.stku = syn.stku + noise_Us
+	syn.stkv = syn.stkv + noise_Vs
 
-	np.save(f"{Output}", syn)
+	syn.write(Output)
 
 	return
 

@@ -14,16 +14,14 @@ EXECUTED
 ##############
 # Data stuff #
 ##############
-end_stokes = '_stokes.npy' # Ending inversion result stokes  KEEP
-end_models = '_models.npy' # Ending inversion result models  KEEP
-end_models1 = '_models_1.npy'  # Ending inversion result models 1 for 2C KEEP
-end_models2 = '_models_2.npy'  # Ending inversion result models 2 for 2C KEEP 
-end_errors = '_errors.npy' # Ending inversion result error  KEEP
-end_wave = '_waves.npy'		# Ending for the wavelengths used in the inversion
+end_stokes = '_stokes.bin' # Ending inversion result stokes  KEEP
+end_models = '_models.bin' # Ending inversion result models  KEEP
+end_models1 = '_models_1.bin'  # Ending inversion result models 1 for 2C KEEP
+end_models2 = '_models_2.bin'  # Ending inversion result models 2 for 2C KEEP 
 end_norm = '_norm'  # Normalised ending in file KEEP
-end_errors = '_errors.npy'  # Ending inversion result error KEEP
-end_errors1 = '_errors_1.npy'  # Ending inversion result error 1 for 2C KEEP
-end_errors2 = '_errors_2.npy'  # Ending inversion result error 2 for 2C KEEP
+end_errors = '_errors.bin'  # Ending inversion result error KEEP
+end_errors1 = '_errors_1.bin'  # Ending inversion result error 1 for 2C KEEP
+end_errors2 = '_errors_2.bin'  # Ending inversion result error 2 for 2C KEEP
 veil_parameters = 'veil.npy'  # numpy file with sigma and nu from the spectral veil correction KEEP
 header_infos = 'infos.txt'  # Information about the observations from the Header # KEEP
 filling_factor = 'fill'		# Generic start of the npy files with the filling factors (end_modelsX is added)
@@ -41,20 +39,20 @@ syn_trol_file ='syn.trol' # inversion control file CLEAN
 Grid = 'Grid.grid'  # Grid file KEEP
 profile_obs = 'profile.per'  # Name of the observed profile in the inversion
 inv_trol_file = 'inv.trol'  # inversion control file CLEAN
-guess = "guess.mod"  # Guess model as in control file
-guess1 = 'guess1.mod'  # Guess Model 1 for control file and inversion
-guess2 = 'guess2.mod'  # Guess Model 2 for control file and inversion
+guess = "guess.mod"  # Guess model as in control file for 1C and MC
+guess1 = 'guess1.mod'  # Guess Model 1 for control file and inversion for 2C
+guess2 = 'guess2.mod'  # Guess Model 2 for control file and inversion for 2C
 header = "   0.100000      1.00000	   0.00000"  # Header used for writing a model
 best_guess = 'best_guess.mod'  # Name of the best guess model (best model is saved under this name) KEEP
-best_guess1 = 'best_guess1.mod'  # Name of the best guess model (best model is saved under this name) for 2C
-best_guess2 = 'best_guess2.mod'  # Name of the best guess model (best model is saved under this name) for 2C
+best_guess1 = 'best_guess1.mod'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
+best_guess2 = 'best_guess2.mod'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
 task_start = ".task_"	# Start of the task folders
 profile = 'profile.per' # Name of the observed profile in the synthesis/inversion
 model1 = 'model1_'  # Generic name for creating guesses for Model 1 for 2C
 model2 = 'model2_'  # Generic name for creating guesses for Model 2 for 2C
-profile_obs = profile  # Name of the observed profile in the inversion KEEP
+profile_obs = profile  # Name of the observed profile in the inversion
 header_2C = "   0.10000000      0.50000	   0.00000" # Header used for writing a model 2C
-
+fill_2C = 0.5 # Filling factor for the first model when mode 2C is used
 
 #############################
 # Spectral Veil Correction	#

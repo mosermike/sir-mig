@@ -527,10 +527,9 @@ def write_config_1c(File, conf):
 		f.write(f"# \n")
 		f.write(f"# Stuff from the data\n")
 		f.write(f"# \n")
-		f.write(f"cube : {conf['cube']} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
-		f.write(f"cube_inv : {conf['cube_inv']} # Data cube name used for the inversion (npy or fits)\n")
+		f.write(f"cube : {conf['cube']} # Data cube name (bin) used for preprocessing data if 'preprocess' is 1\n")
+		f.write(f"cube_inv : {conf['cube_inv']} # Data cube name used for the inversion (bin)\n")
 		f.write(f"map : {Map} # Pixels to be considered as a list\n")
-		f.write(f"waves : {conf['waves']} # numpy file with wavelengths in Angstrom\n")
 		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
 		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
@@ -550,7 +549,7 @@ def write_config_1c(File, conf):
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
-		f.write(f"guess : {conf['guess']} # Use a npy file as initial guesses, blank use base model\n")
+		f.write(f"guess : {conf['guess']} # Use a bin file as initial guesses, blank use base model\n")
 		f.write(f"psf : {conf['psf']} # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used\n")
 
 		f.write(f"# \n")
@@ -620,10 +619,9 @@ def write_config_2c(File, conf):
 		f.write(f"# \n")
 		f.write(f"# Stuff from the data\n")
 		f.write(f"# \n")
-		f.write(f"cube : {conf['cube']} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
-		f.write(f"cube_inv : {conf['cube_inv']} # Data cube name used for the inversion (npy or fits)\n")
+		f.write(f"cube : {conf['cube']} # Data cube name (bin) used for preprocessing data if 'preprocess' is 1\n")
+		f.write(f"cube_inv : {conf['cube_inv']} # Data cube name used for the inversion (bin)\n")
 		f.write(f"map : {Map} # Pixels to be considered as a list (0 means all pixels)\n")
-		f.write(f"waves : {conf['waves']} # numpy file with wavelengths in Angstrom\n")
 		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
 		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
@@ -645,8 +643,8 @@ def write_config_2c(File, conf):
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
-		f.write(f"guess1 : {conf['guess1']} # Use a npy file as initial guesses, blank use base model 1\n")
-		f.write(f"guess2 : {conf['guess2']} # Use a npy file as initial guesses, blank use base model 2\n")
+		f.write(f"guess1 : {conf['guess1']} # Use a bin file as initial guesses, blank use base model 1\n")
+		f.write(f"guess2 : {conf['guess2']} # Use a bin file as initial guesses, blank use base model 2\n")
 		f.write(f"psf : {conf['psf']} # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used\n")
 
 		f.write(f"# \n")
@@ -733,9 +731,9 @@ def write_config_mc(File, conf):
 		f.write(f"# Creating Models and Synthesis\n")
 		f.write(f"#\n")
 		f.write(f"model_nodes : {conf['model_nodes']} # Create models with 2 or 3 nodes\n")
-		f.write(f"model_out : {conf['model_out']} # Output file of the created models as npy\n")
+		f.write(f"model_out : {conf['model_out']} # Output file of the created models\n")
 		f.write(f"syn_out : {conf['syn_out']} # Output of the synthesis profiles and models\n")
-		f.write(f"noise_out : {conf['noise_out']} # Output of the noise profiles as npy\n")
+		f.write(f"noise_out : {conf['noise_out']} # Output of the noise profiles\n")
 		f.write(f"noise_I : {conf['noise_I']} # Noise in I\n")		
 		f.write(f"noise_Q : {conf['noise_Q']} # Noise in Q\n")
 		f.write(f"noise_U : {conf['noise_U']} # Noise in U\n")
@@ -752,7 +750,7 @@ def write_config_mc(File, conf):
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of the output of the inversion files\n")
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
-		f.write(f"guess : {conf['guess']} # Use a npy file as initial guesses, blank use base model\n")
+		f.write(f"guess : {conf['guess']} # Use a bin file as initial guesses, blank use base model\n")
 
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
@@ -800,7 +798,7 @@ def write_config(File, conf):
 
 ######################################################################
 
-def write_grid(conf, filename = 'Grid.grid'):
+def write_grid(conf, waves, filename = 'Grid.grid'):
 	"""
 	Writes the Grid file with data from the config file
 
@@ -816,7 +814,6 @@ def write_grid(conf, filename = 'Grid.grid'):
 	range_wave = conf['range_wave']
 	line = read_line(os.path.join(conf['path'],conf['line']))
 	atoms = conf["atoms"]
-	waves = np.load(os.path.join(conf['path'],conf['waves']))
 
 	# Change the ranges if it is given in angstroms, if needed
 	range_wave = pixel_to_angstrom(waves,range_wave)

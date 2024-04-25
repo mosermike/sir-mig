@@ -11,6 +11,8 @@ sys.path.append(sys.path[0] + "/../../tools")
 import sir, obs
 import definitions as d
 from change_config_path import change_config_path
+import model as m
+import profile_stk as p
 
 # TODO do the figure size as in gris_firtez
 
@@ -140,8 +142,6 @@ def plot(conf, wave, tau, waveV = -1):
 	#			READ INPUT AND LOAD DATA					#
 	#############################################################
 	path = conf["path"]
-	waves = np.load(os.path.join(path, conf['waves']))
-	waves_inv = np.load(os.path.join(path,conf['inv_out']) + d.end_wave)
 	Map = conf['map']
 	range_wave_ang = sir.pixel_to_angstrom(waves, conf['range_wave'])
 	
@@ -157,26 +157,27 @@ def plot(conf, wave, tau, waveV = -1):
 	
 
 	if "-data" not in sys.argv:
-		stokes = obs.load_data(conf, filename=conf['cube_inv'])
+		stokes = p.read_profile(os.path.join(conf["path"],conf['cube_inv']))
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
-		stokes = obs.load_data(conf, filename = filename)
+		stokes = p.read_profile(filename)
 
 	if "-stokes" not in sys.argv:
-		stokes_inv = np.load(os.path.join(path,conf['inv_out'] + d.end_stokes))
+		stokes_inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
 	else:
 		filename = sys.argv[sys.argv.index("-stokes")+1]
-		stokes_inv = np.load(filename)
+		stokes_inv = p.read_profile(filename)
 	if "-models" not in sys.argv:
-		models_inv = np.load(os.path.join(path,conf['inv_out'] + d.end_models))
+		models_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models))
 	else:
 		filename = sys.argv[sys.argv.index("-models")+1]
-		models_inv = np.load(filename)
+		models_inv = m.read_model(filename)
 	if "-errors" not in sys.argv:
-		errors_inv = np.load(os.path.join(path,conf['inv_out'] + d.end_errors))
+		errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors))
 	else:
 		filename = sys.argv[sys.argv.index("-errors")+1]
-		errors_inv = np.load(filename)
+		errors_inv = m.read_model(filename)
+	
 	if "-chi" not in sys.argv:
 		chi2_inv = np.load(os.path.join(path,conf['chi2']))
 	else:
@@ -209,12 +210,15 @@ def plot(conf, wave, tau, waveV = -1):
 
 		# Cut data to the new range:
 		#stokes = stokes[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
-		stokes_inv = stokes_inv[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
-		models_inv = models_inv[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
-		errors_inv = errors_inv[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
+		stokes_inv = stokes_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
+		models_inv = models_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
+		errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 
 		# Save the new limits as the new Map
 		Map = limit_xy
+
+	waves = stokes.wave
+	waves_inv = stokes_inv.wave
 
 	if waveV == -1:
 		waveV_ind1 = np.argmin(abs(waves-wave))
@@ -257,22 +261,24 @@ def plot(conf, wave, tau, waveV = -1):
 		add_label = sys.argv[sys.argv.index("-label")+1]
 
 	# Restrict models to the given tau
-	ind  = np.argmin(abs(models_inv[0,0,0,:] - tau))
-	indT = np.argmin(abs(models_inv[0,0,0,:] - logT))
-	indB = np.argmin(abs(models_inv[0,0,0,:] - logB))
-	indV = np.argmin(abs(models_inv[0,0,0,:] - logV))
-	indI = np.argmin(abs(models_inv[0,0,0,:] - logI))
+	ind  = np.argmin(abs(models_inv.log_tau - tau))
+	indT = np.argmin(abs(models_inv.log_tau - logT))
+	indB = np.argmin(abs(models_inv.log_tau - logB))
+	indV = np.argmin(abs(models_inv.log_tau - logV))
+	indI = np.argmin(abs(models_inv.log_tau - logI))
 
 	# Cut models to the specific log tau value
-	models_inv_temp = np.copy(models_inv)
-	models_inv = np.zeros(shape=(models_inv.shape[0],models_inv.shape[1],models_inv.shape[2]))
-	for i in [0,2,3,7,8,9,10]:
-		models_inv[:,:,i] = models_inv_temp[:,:,i,ind]
-
-	models_inv[:,:,1] = models_inv_temp[:,:,1,indT]
-	models_inv[:,:,4] = models_inv_temp[:,:,4,indB]
-	models_inv[:,:,5] = models_inv_temp[:,:,5,indV]
-	models_inv[:,:,6] = models_inv_temp[:,:,6,indI]
+	models_inv.nval = ind
+	models_inv.T = models_inv.T[:,:,:indT]
+	models_inv.Pe = models_inv.Pe[:,:,:ind]
+	models_inv.vmicro = models_inv.vmicro[:,:,:ind]
+	models_inv.B = models_inv.B[:,:,:indB]
+	models_inv.vlos = models_inv.vlos[:,:,:indV]
+	models_inv.gamma = models_inv.gamma[:,:,:indI]
+	models_inv.phi = models_inv.phi[:,:,:ind]
+	models_inv.z = models_inv.z[:,:,:ind]
+	models_inv.rho = models_inv.rho[:,:,:ind]
+	models_inv.Pg = models_inv.Pg[:,:,:ind]
 
 
 	taus = [tau for i in range(11)]
@@ -282,11 +288,8 @@ def plot(conf, wave, tau, waveV = -1):
 	taus[6] = logI
 	
 	# Pressure in log
-	models_inv[:,:,2] = np.log(models_inv[:,:,2])
-	models_inv[:,:,9] = np.log(models_inv[:,:,9])
-
-	# vlos in km/s
-	models_inv[:,:,5] = models_inv[:,:,5] / 1e5
+	models_inv.Pe = np.log(models_inv.Pe)
+	models_inv.Pg = np.log(models_inv.Pg)
 
 	#############################################################
 	#					PLOTTING STUFF					#
@@ -306,15 +309,16 @@ def plot(conf, wave, tau, waveV = -1):
 		] 
 
 
-	I1 = stokes[Map[0]:Map[1]+1,Map[2]:Map[3]+1,0,:]
-	Q1 = stokes[Map[0]:Map[1]+1,Map[2]:Map[3]+1,1,:]
-	U1 = stokes[Map[0]:Map[1]+1,Map[2]:Map[3]+1,2,:]
-	V1 = stokes[Map[0]:Map[1]+1,Map[2]:Map[3]+1,3,:]
+	stokes.cut_to_map(Map)
+	I1 = stokes.stki
+	Q1 = stokes.stkq
+	U1 = stokes.stku
+	V1 = stokes.stkv
 
-	I2 = stokes_inv[:,:,0,:]
-	Q2 = stokes_inv[:,:,1,:]
-	U2 = stokes_inv[:,:,2,:]
-	V2 = stokes_inv[:,:,3,:]
+	I2 = stokes_inv.stki
+	Q2 = stokes_inv.stkq
+	U2 = stokes_inv.stku
+	V2 = stokes_inv.stkv
 
 	limits_stokes1 = [  [np.min(I1[:,:,wave_ind1]), np.max(I1[:,:,wave_ind1])],
 					[-np.max(np.abs(Q1[:,:,wave_ind1])), np.max(np.abs(Q1[:,:,wave_ind1]))],
@@ -577,13 +581,13 @@ def plot(conf, wave, tau, waveV = -1):
 			fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
 			ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]))
 			if inputs[i] == "-Bz":
-				im = ax.imshow((models_inv[:,:,4]*np.cos(models_inv[:,:,6]*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
+				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			elif inputs[i] == '-chi2':
 				im = ax.imshow(chi2_inv.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			else:
-				im = ax.imshow(models_inv[:,:,i], cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
+				im = ax.imshow(models_inv.get_attribute(inputs[i][2:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 
 			# Set labels
@@ -618,13 +622,13 @@ def plot(conf, wave, tau, waveV = -1):
 		#fig.subplots_adjust(hspace=0.0)
 
 
-	im1 = ax1.imshow(models_inv[:,:,1].transpose(), cmap=cmap[1], origin = origin, vmin = limits[1][0], vmax = limits[1][1],extent=Map_plot)
-	im2 = ax2.imshow(models_inv[:,:,4].transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
-	im3 = ax3.imshow(models_inv[:,:,5].transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
+	im1 = ax1.imshow(models_inv.T.transpose(), cmap=cmap[1], origin = origin, vmin = limits[1][0], vmax = limits[1][1],extent=Map_plot)
+	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
+	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
 	if "-plot_chi2" in sys.argv:
 		im4 = ax4.imshow(chi2_inv.transpose(), cmap=cmap[11], origin = origin, vmin = limits[11][0], vmax = limits[11][1],extent=Map_plot)
 	else:
-		im4 = ax4.imshow(models_inv[:,:,6].transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
+		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
 
 	#####################
 	#	Set labels	#
