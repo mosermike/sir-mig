@@ -366,7 +366,7 @@ def inversion(conf, comm, rank, size):
 		print("-------> Write control and grid file")
 		sir.write_control_1c(os.path.join(conf['path'],d.inv_trol_file), conf)
 		# Write Grid file based on the chosen wavelength ranges in the config file
-  		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
+		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
 		sir.write_grid(conf, stk.wave, os.path.join(path,d.Grid))
 		del stk
 	abundance_file = conf['abundance']  # Abundance file
