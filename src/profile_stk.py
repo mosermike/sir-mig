@@ -213,8 +213,11 @@ class Profile:
 		range_wave : list
 			List with the ranges from the config file
 		"""
-		nws = range_wave[:,2]
-		
+		# Number of wavelengths
+		temp = range_wave[:,2].astype(int)
+		nws = [0, temp[0]]
+		for i in range(1,len(temp)):
+			nws.append(temp[i]+temp[i-1])
 		
 		# Initialize new arrays
 		lwave = np.zeros(shape=(nws[-1]), dtype=np.float32)
@@ -225,19 +228,19 @@ class Profile:
 		
 		ind = [np.argmin(np.abs(self.wave-range_wave[i][0])) for i in range(len(range_wave))]
 		for i in range(len(range_wave)):
-			lwave[nws[i]:nws[i+1]] = self.wave[ind[i]:ind[i]+range_wave[i][2]]
-			lstki[:,:,nws[i]:nws[i+1]] = self.stki[:,:,ind[i]:ind[i]+range_wave[i][2]]
-			lstkq[:,:,nws[i]:nws[i+1]] = self.stkq[:,:,ind[i]:ind[i]+range_wave[i][2]]
-			lstku[:,:,nws[i]:nws[i+1]] = self.stku[:,:,ind[i]:ind[i]+range_wave[i][2]]
-			lstkv[:,:,nws[i]:nws[i+1]] = self.stkv[:,:,ind[i]:ind[i]+range_wave[i][2]]
-
+			lwave[nws[i]:nws[i+1]] = self.wave[ind[i]:ind[i]+int(range_wave[i][2])]
+			lstki[:,:,nws[i]:nws[i+1]] = self.stki[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
+			lstkq[:,:,nws[i]:nws[i+1]] = self.stkq[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
+			lstku[:,:,nws[i]:nws[i+1]] = self.stku[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
+			lstkv[:,:,nws[i]:nws[i+1]] = self.stkv[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
+		
 		self.wave = lwave
 		self.stki = lstki
 		self.stkq = lstkq
 		self.stku = lstku
 		self.stkv = lstkv
 
-		
+		self.nw = self.wave.shape[0]
 		self.data_cut = True
 		
 		return self
@@ -514,21 +517,29 @@ class Profile:
 		Line_min  = grid['min']
 		Line_step = grid['step']
 		Line_max  = grid['max']
-
+		add = np.copy(Line_step)
 		# Create the first column => number of the line
 		num = np.empty(0)
 		checks = []
 		for i in range(len(Line)):
-			num = np.append(num,np.ones(int(np.ceil((Line_max[i]-Line_min[i]+Line_step[i])/Line_step[i])))*int(Line[i][0]))
-			checks.append(int(np.ceil((Line_max[i]-Line_min[i]+Line_step[i])/Line_step[i])))
-
+			num = np.append(num,np.ones(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))*int(Line[i][0]))
+			checks.append(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))
+		if np.sum(checks) != self.wave.shape[0]:
+			add = np.zeros(add.shape)
+			num = np.empty(0)
+			checks = []
+			for i in range(len(Line)):
+				num = np.append(num,np.ones(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))*int(Line[i][0]))
+				checks.append(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))
+		
+		
 		# Create the second column => wavelength grid
 		ll = np.empty(0)
 		
 		for i in range(len(Line)):
-			if np.arange(Line_min[i],Line_max[i]+Line_step[i],Line_step[i]).shape[0] != checks[i]:
-				print(f"[WARN] The profiles might we wrong written {np.arange(Line_min[i],Line_max[i]+Line_step[i],Line_step[i]).shape[0]} vs {checks[i]}")
-			ll = np.append(ll,np.arange(Line_min[i],Line_max[i]+Line_step[i],Line_step[i]))
+			if np.arange(Line_min[i],Line_max[i]+add[i],Line_step[i]).shape[0] != checks[i]:
+				print(f"[WARN] The profiles might we wrong written {np.arange(Line_min[i],Line_max[i]+add[i],Line_step[i]).shape[0]} vs {checks[i]}")
+			ll = np.append(ll,np.arange(Line_min[i],Line_max[i]+add[i],Line_step[i]))
 
 		# Create arrays of the Stokes vector in the given wavelength range
 		# Cut data as needed

@@ -90,17 +90,24 @@ def read_config(filename, check = True, change_config = False):
 	if Dict['mode'] == "1C" or Dict['mode'] == "2C":
 		Dict['map'] = np.array([int(i) for i in Dict["map"].split(',')], dtype=int)
 		Dict["quiet_sun"] = np.array([int(i) for i in Dict["quiet_sun"].split(',')])
+		# Convert the ranges into integers or floats
+		temp = [i. split(',') for i in Dict["range_wave"].split(';')]
+		Dict["range_wave"] = np.zeros((len(temp),3))
+		for i in range(0,len(temp)):
+			Dict["range_wave"][i,0] = float(temp[i][0])
+			Dict["range_wave"][i,1] = float(temp[i][1])
+			Dict["range_wave"][i,2] = float(temp[i][2])
+		
 
 	if Dict['mode'] == "MC":
 		Dict['num'] = int(Dict['num'])
 
-	# Convert the ranges into integers or floats
-	temp = [i. split(',') for i in Dict["range_wave"].split(';')]
-	for i in range(0,len(temp)):
-		temp[i][0] = float(temp[i][0])
-		temp[i][1] = float(temp[i][1])
-	
-	Dict["range_wave"] = np.array(temp)
+		# Convert the ranges into integers or floats
+		temp = [i. split(',') for i in Dict["range_wave"].split(';')]
+		for i in range(0,len(temp)):
+			temp[i][0] = float(temp[i][0])
+			temp[i][1] = float(temp[i][1])
+		Dict["range_wave"] = np.array(temp)
 
 	Dict['atoms'] = Dict["atoms"].split(';')	# Atoms
 
@@ -769,18 +776,19 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 
 	# Define minimum, step and maximum
 	Line_min = np.zeros(0)
-	Line_num = np.zeros(0)
+	Line_max = np.zeros(0)
 	Line_step = conf["range_wave"][:,1] # in mA
-	
+	print(range_wave)
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
-		Line_max  = np.append(Line_max,Line_min[i] + Line_step[i]/1e3*range_wave[i,2])
+		Line_max  = np.append(Line_max,Line_min[i] + Line_step[i]/1e3*(range_wave[i,2]-1))
 	
 	# Define wavelength grid to be saved
 	with open(filename, 'w') as f:
 		for i in range(len(atoms)):
 			ind = np.where(line['Line'] == int(atoms[i].split(',')[0]))[0][0] # Which index in line file corresponds to the atom
 			llambdas = (np.array([Line_min[i],Line_max[i]]) - line['wavelength'][ind])*1e3 # in mA ; Determine relative wavelengths
+			print(llambdas[i])
 			f.write(f"{atoms[i]}: {'%6.4f' % llambdas[0]},     {'%2.6f' % Line_step[i]},     {'%6.4f' % llambdas[-1]}\n")
 	
 
