@@ -139,7 +139,7 @@ def read_config(filename, check = True, change_config = False):
 	if Dict['mode'] == "1C" or Dict['mode'] == "2C":
 		Dict['map'] = np.array([int(i) for i in Dict["map"].split(',')], dtype=int)
 		Dict["quiet_sun"] = np.array([int(i) for i in Dict["quiet_sun"].split(',')])
-		
+		Dict["step_wave"] = np.array([float(i) for i in Dict["step_wave"].split(',')])
 	if Dict['mode'] == "MC":
 		Dict['num'] = int(Dict['num'])
 
@@ -517,7 +517,7 @@ def write_config_1c(File, conf):
 	weights = list_to_string(conf["weights"])
 	quiet_sun = list_to_string(conf["quiet_sun"])
 	random_pars = list_to_string(conf["random_pars"])
-	
+	Step = list_to_string(conf["step_wave"])
 
 	with open(File, 'w') as f:
 		f.write("# This is the config file, generated with create_config.py\n")
@@ -545,6 +545,7 @@ def write_config_1c(File, conf):
 		f.write(f"# \n")
 		f.write(f"model : {conf['model']} # Base Model for guess\n")
 		f.write(f"range_wave : {range_wave} # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.\n")
+		f.write(f"step_wave : {Step} # Step between wavelength points in mA to be considered as Step1,Step2,... First value belongs to first line in Grid file, etc.\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
@@ -609,7 +610,7 @@ def write_config_2c(File, conf):
 	weights = list_to_string(conf["weights"])
 	quiet_sun = list_to_string(conf["quiet_sun"])
 	random_pars = list_to_string(conf["random_pars"])
-	
+	Step = list_to_string(conf["step_wave"])
 
 	with open(File, 'w') as f:
 		f.write("# This is the config file, generated with create_config.py\n")
@@ -639,6 +640,7 @@ def write_config_2c(File, conf):
 		f.write(f"model1 : {conf['model1']} # Base Model 1 for guess\n")
 		f.write(f"model2 : {conf['model2']} # Base Model 2 for guess\n")
 		f.write(f"range_wave : {range_wave} # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.\n")
+		f.write(f"step_wave : {Step} # Step between wavelength points in mA to be considered as Step1,Step2,... First value belongs to first line in Grid file, etc.\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
@@ -821,7 +823,7 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 	# Define minimum, step and maximum
 	Line_min = np.zeros(0)
 	Line_max = np.zeros(0)
-	Line_step = (waves[1]-waves[0])*1e3 # in mA
+	Line_step = conf["step_wave"] # in mA
 	
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
@@ -832,7 +834,7 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 		for i in range(len(atoms)):
 			ind = np.where(line['Line'] == int(atoms[i].split(',')[0]))[0][0] # Which index in line file corresponds to the atom
 			llambdas = (np.array([Line_min[i],Line_max[i]]) - line['wavelength'][ind])*1e3 # in mA ; Determine relative wavelengths
-			f.write(f"{atoms[i]}: {'%6.4f' % llambdas[0]},     {'%2.6f' % Line_step},     {'%6.4f' % llambdas[-1]}\n")
+			f.write(f"{atoms[i]}: {'%6.4f' % llambdas[0]},     {'%2.6f' % Line_step[i]},     {'%6.4f' % llambdas[-1]}\n")
 	
 
 def write_grid_mc(conf, filename = 'Grid.grid'):

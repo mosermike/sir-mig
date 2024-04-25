@@ -115,14 +115,14 @@ def create_guesses(conf, output = "./", number = -1):
 	if number != -1:
 		Numbers = [number-1]
 
-	mod = m.Model(nx = len(Numbers), ny = 1, npar=len(File_T[0]))
+	mod = m.Model(nx = len(Numbers), ny = 1, nval=len(File_T[0]))
 
 	# Perform 'num' times
 	for i in range(len(Numbers)):
 		# Arrays with pars from the model
 		# Create arrays with all the columns as rows
-		
-		mod.log_tau[i,0]	= File_T[0]
+		if i == 0:
+			mod.log_tau	= File_T[0]
 		mod.T[i,0] 	      	= File_T[1]
 		mod.Pe[i,0] 	    = File_T[2]
 		mod.vmicro[i,0]	= File_T[3]
@@ -203,7 +203,7 @@ def create_guesses(conf, output = "./", number = -1):
 			
 			Ts = cool_T + factor * HSRA_T
 
-			mod.T[i,0] = np.interp(mod.log_tau[i,0], np.flip(log_taus), np.flip(Ts))
+			mod.T[i,0] = np.interp(mod.log_tau, np.flip(log_taus), np.flip(Ts))
 			
 			
 		#########################
@@ -280,7 +280,7 @@ def create_guesses(conf, output = "./", number = -1):
 
 	# Write the new models
 	for i in range(len(Numbers)):
-		mod.write(output + model.replace(".mod","") + str(Numbers[i]+1) + ".mod", Header,i,0)
+		mod.write_model(output + model.replace(".mod","") + str(Numbers[i]+1) + ".mod", Header,i,0)
 
 	
 

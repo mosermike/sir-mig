@@ -275,17 +275,17 @@ class Profile:
 			self.nw = nw
 			self.ns = ns
 
-			self.indx = f.read_record(dtype=fmt_type)
+			self.indx = f.read_record(dtype=fmt_type).astype(np.float64)
 
-			self.wave = f.read_record(dtype=fmt_type)
+			self.wave = f.read_record(dtype=fmt_type).astype(np.float64)
 
 			data = f.read_record(dtype=fmt_type)
 			data = data.reshape(nx,ny,nw,ns) * 1.
 
-			self.stki = data[:, :, :, 0]
-			self.stkq = data[:, :, :, 1]
-			self.stku = data[:, :, :, 2]
-			self.stkv = data[:, :, :, 3]
+			self.stki = data[:, :, :, 0].astype(np.float64)
+			self.stkq = data[:, :, :, 1].astype(np.float64)
+			self.stku = data[:, :, :, 2].astype(np.float64)
+			self.stkv = data[:, :, :, 3].astype(np.float64)
 		
 				
 		self.load = True
@@ -538,7 +538,7 @@ class Profile:
 		Q = self.stkq[x,y]
 		U = self.stku[x,y]
 		V = self.stkv[x,y]
-		
+
 		# Save data
 		f = open(filename, 'w')
 		for i in range(len(num)):

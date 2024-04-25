@@ -21,6 +21,7 @@ fts_file : path to fts file # Absolute fts file, blank = do not correct spectral
 model1 : model1.mod # Base Model 1 for guess
 model2 : model2.mod # Base Model 2 for guess
 range_wave : 6300,6304 # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.
+step_wave : step1 # Step of the wavelengths for each line in the grid file
 inv_out : inversion # Prefix of the output of the inversion files
 chi2 : chi2.npy # Output of the chi2 values (npy)
 line : Lines # Line file

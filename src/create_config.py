@@ -217,7 +217,7 @@ def config_1C():
     else:
         path		= input ("Path, where the files are: ")
     cube			= input ("Location of the Data cube for preprocessing (format is nx,ny,ns,nwave) as a npy file (can be left empty if no preprocessing): ")
-    cube_inv		= input ("Location of the Data cube used for the inversion (format is nx,ny,ns,nwave) in the path as a npy file: ")
+    cube_inv		= input ("Location of the Data cube used for the inversion (format is nx,ny,ns,nwave) in the path as a bin file: ")
     preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
     Map			= input ("Map in pixels (format xmin,xmax,ymin,ymax): ")
 
@@ -236,6 +236,7 @@ def config_1C():
     line			= input ("Line file                       [Lines]: ")
     atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
     Range		= input ("Ranges in the wavelengths (pixel or angstrom) to be considered (as 'min1,max1;min2,max2;...') defining the indices linewise as in grid file):" )
+    Step		= input ("Wavelength steps in mA (as 'step1,step2,...') defining the indices linewise as in grid file):" )
     random_guess	= input ("Number of random guess models (0 = use base model): ")
     if random_guess != '0':
         random_pars    = input ("Randomize these parameters [B,T,vlos,gamma]: ")
@@ -317,6 +318,7 @@ def config_1C():
         f.write(f"# \n")
         f.write(f"model : {model} # Base Model for guess\n")
         f.write(f"range_wave : {Range} # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.\n")
+        f.write(f"step_wave : {Step} # Step between wavelength points in mA to be considered as Step1,Step2,... First value belongs to first line in Grid file, etc.\n")
         f.write(f"inv_out : {inv_out} # Prefix of the output of the inversion files\n")
         f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")
         f.write(f"line : {line} # Line file\n")
@@ -381,6 +383,7 @@ def config_2C():
     line			= input ("Line file                       [Lines]: ")
     atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
     Range		= input ("Ranges in the wavelengths (pixel or angstrom) to be considered (as 'min1,max1;min2,max2;...') defining the indices linewise as in grid file):" )
+    Step		= input ("Wavelength steps in mA (as 'step1,step2,...') defining the indices linewise as in grid file):" )
     random_guess	= input ("Number of random guess models (0 = use base model): ")
     if random_guess != '0':
         random_pars    = input ("Randomize these parameters [B,T,vlos,gamma]: ")
@@ -481,6 +484,7 @@ def config_2C():
         f.write(f"model1 : {model1} # Base Model 1 for guess\n")
         f.write(f"model2 : {model2} # Base Model 2 for guess\n")
         f.write(f"range_wave : {Range} # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.\n")
+        f.write(f"step_wave : {Step} # Step between wavelength points in mA to be considered as Step1,Step2,... First value belongs to first line in Grid file, etc.\n")
         f.write(f"inv_out : {inv_out} # Prefix of the output of the inversion files\n")
         f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")
         f.write(f"line : {line} # Line file\n")
