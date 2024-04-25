@@ -77,7 +77,7 @@ def check_range(wave_inv, wave):
 
 	"""
 	# Check for the wavelength if it is in the inversion range:
-	if wave < np.min():
+	if wave < np.min(wave_inv):
 		print("Note that the given wavelength is not in the inversion range. Take closest one in range...")
 		wave = np.min(wave_inv)
 		return wave, 0

@@ -382,9 +382,7 @@ class Model:
 			print(f"[write] It seems that data was never read or saved. {fname} may contain no data")
 
 		# Consistency check for vlos
-		if np.mean(self.vlos) > 1e4:
-			print("[write] It seems that the data in the class are in cm/s and not in km/s as expected. It is corrected.")
-			print("	   If this is not wished or wrong, look at the function save in model.py.")
+		if np.mean(np.abs(self.vlos)) > 50:
 			self.vlos = self.vlos/1e5
 
 		f = FortranFile(fname, 'w')
@@ -423,7 +421,7 @@ class Model:
 		array[:,:,1] = self.Pe
 		array[:,:,2] = self.vmicro
 		array[:,:,3] = self.B
-		array[:,:,4] = self.vlos
+		array[:,:,4] = self.vlos*1e5
 		array[:,:,5] = self.gamma
 		array[:,:,6] = self.phi
 		if np.any(self.rho):
@@ -467,7 +465,7 @@ class Model:
 			return self
 		
 		# Correct that vlos is most likely wrong and in cm/s instead of km/s
-		if np.max(self.vlos) > 1.0e4:
+		if np.mean(np.abs(self.vlos)) > 50:
 			self.vlos = self.vlos / 1.0e5 
 
 		f = open(filename, 'w')
