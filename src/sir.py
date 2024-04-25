@@ -7,55 +7,6 @@ import fileinput, time, sys, os, definitions as d
 from os.path import exists
 import obs
 
-######################################################################
-def angstrom_to_pixel(waves, range_wave):
-	"""
-	Converts angstrom to pixel for a given waves file.
-	
-	Parameter
-	---------
-	waves : numpy array
-		Array containing the real wavelengths in Angstrom
-	range_wave : numpy array
-		Array containing the ranges in Angstrom
-
-	Return
-	------
-	Array with the ranges in pixel for the given waves array
-	"""
-	range_wave_new = np.copy(range_wave) # Otherwise the config is overwritten
-	for i in range(len(range_wave)):
-		if range_wave[i][0] >= waves[0]:
-			range_wave_new[i][0] = np.abs(waves-range_wave[i][0]).argmin()
-			range_wave_new[i][1] = np.abs(waves-range_wave[i][1]).argmin()
-	range_wave_new = range_wave_new.astype(int) # Convert to integer
-
-	return range_wave_new
-
-def pixel_to_angstrom(waves, range_wave):
-	"""
-	Converts pixel to angstrom for a given waves file.
-	
-	Parameter
-	---------
-	waves : numpy array
-		Array containing the real wavelengths in Angstrom
-	range_wave : numpy array
-		Array containing the ranges in Angstrom
-
-	Return
-	------
-	Array with the ranges in Angstrom for the given waves array
-	"""
-	range_wave_new = np.copy(range_wave) # Otherwise the config is overwritten
-	for i in range(len(range_wave)):
-		if range_wave[i][0]  < waves[0]:
-			range_wave_new[i][0] = waves[range_wave[i][0]]
-			range_wave_new[i][1] = waves[range_wave[i][1]]
-
-	return range_wave_new
-
-
 
 ######################################################################
 
@@ -139,7 +90,7 @@ def read_config(filename, check = True, change_config = False):
 	if Dict['mode'] == "1C" or Dict['mode'] == "2C":
 		Dict['map'] = np.array([int(i) for i in Dict["map"].split(',')], dtype=int)
 		Dict["quiet_sun"] = np.array([int(i) for i in Dict["quiet_sun"].split(',')])
-		Dict["step_wave"] = np.array([float(i) for i in Dict["step_wave"].split(',')])
+
 	if Dict['mode'] == "MC":
 		Dict['num'] = int(Dict['num'])
 
@@ -544,8 +495,8 @@ def write_config_1c(File, conf):
 		f.write(f"# Inversion configuration\n")
 		f.write(f"# \n")
 		f.write(f"model : {conf['model']} # Base Model for guess\n")
-		f.write(f"range_wave : {range_wave} # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.\n")
-		f.write(f"step_wave : {Step} # Step between wavelength points in mA to be considered as Step1,Step2,... First value belongs to first line in Grid file, etc.\n")
+		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
+		f.write(f"step_wave : {Step} # Step between wavelength points in mA as Step1,Step2,... for each line in Grid file\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
@@ -639,8 +590,7 @@ def write_config_2c(File, conf):
 		f.write(f"# \n")
 		f.write(f"model1 : {conf['model1']} # Base Model 1 for guess\n")
 		f.write(f"model2 : {conf['model2']} # Base Model 2 for guess\n")
-		f.write(f"range_wave : {range_wave} # Ranges of wavelengths (pixel or Angstrom) to be considered min1,max1;min2,max2;... First pair belongs to first line in Grid file, etc.\n")
-		f.write(f"step_wave : {Step} # Step between wavelength points in mA to be considered as Step1,Step2,... First value belongs to first line in Grid file, etc.\n")
+		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
@@ -817,17 +767,14 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 	line = read_line(os.path.join(conf['path'],conf['line']))
 	atoms = conf["atoms"]
 
-	# Change the ranges if it is given in angstroms, if needed
-	range_wave = pixel_to_angstrom(waves,range_wave)
-
 	# Define minimum, step and maximum
 	Line_min = np.zeros(0)
-	Line_max = np.zeros(0)
-	Line_step = conf["step_wave"] # in mA
+	Line_num = np.zeros(0)
+	Line_step = conf["range_wave"][:,1] # in mA
 	
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
-		Line_max  = np.append(Line_max,waves[np.argmin(np.abs(waves-range_wave[i,1]))])
+		Line_max  = np.append(Line_max,Line_min[i] + Line_step[i]/1e3*range_wave[i,2])
 	
 	# Define wavelength grid to be saved
 	with open(filename, 'w') as f:

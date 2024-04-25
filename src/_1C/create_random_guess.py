@@ -258,25 +258,6 @@ def create_guesses(conf, output = "./", number = -1):
 		if crho:
 			print("rho change not implemented")
 	
-		# For testing purpose to visualize how it looks (uncomment if wanted)
-		"""
-		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), sharex=True)
-
-		ax1.plot(mod.log_tau[i,0],mod.T[i,0])
-		ax2.plot(mod.log_tau[i,0],mod.B[i,0])
-		ax3.plot(mod.log_tau[i,0],mod.vlos[i,0])
-		ax4.plot(mod.log_tau[i,0],mod.gamma[i,0])
-		ax1.set_ylabel("T")
-		ax2.set_ylabel("B")
-		x3.set_ylabel("vlos")
-		ax4.set_ylabel(r"$\gamma$")
-		ax1.set_xlim(mod.log_tau[i,0,0],mod.log_tau[i,0,-1])
-		ax2.set_xlim(mod.log_tau[i,0,0],mod.log_tau[i,0,-1])
-		ax3.set_xlim(mod.log_tau[i,0,0],mod.log_tau[i,0,-1])
-		ax4.set_xlim(mod.log_tau[i,0,0],mod.log_tau[i,0,-1])
-
-		plt.show()
-		"""
 
 	# Write the new models
 	for i in range(len(Numbers)):

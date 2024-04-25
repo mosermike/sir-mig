@@ -204,20 +204,17 @@ class Profile:
 		
 		return self
 
-	def cut_to_wave(self, range_wave_pix):
+	def cut_to_wave(self, range_wave):
 		"""
 		Cut the data to the range in wavelengths
 
 		Parameters
 		----------
-		range_wave_pix : list
-			List with the ranges in pixel
+		range_wave : list
+			List with the ranges from the config file
 		"""
-		nws = [0]
+		nws = range_wave[:,2]
 		
-		# Determine number of points and then where the data is added
-		for i in range(len(range_wave_pix)):
-			nws.append(range_wave_pix[i][1]-range_wave_pix[i][0]+1+nws[i])
 		
 		# Initialize new arrays
 		lwave = np.zeros(shape=(nws[-1]), dtype=np.float32)
@@ -226,12 +223,13 @@ class Profile:
 		lstku = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
 		lstkv = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
 		
-		for i in range(len(range_wave_pix)):
-			lwave[nws[i]:nws[i+1]] = self.wave[range_wave_pix[i][0]:range_wave_pix[i][1]+1]
-			lstki[:,:,nws[i]:nws[i+1]] = self.stki[:,:,range_wave_pix[i][0]:range_wave_pix[i][1]+1]
-			lstkq[:,:,nws[i]:nws[i+1]] = self.stkq[:,:,range_wave_pix[i][0]:range_wave_pix[i][1]+1]
-			lstku[:,:,nws[i]:nws[i+1]] = self.stku[:,:,range_wave_pix[i][0]:range_wave_pix[i][1]+1]
-			lstkv[:,:,nws[i]:nws[i+1]] = self.stkv[:,:,range_wave_pix[i][0]:range_wave_pix[i][1]+1]
+		ind = [np.argmin(np.abs(self.wave-range_wave[i][0])) for i in range(len(range_wave))]
+		for i in range(len(range_wave)):
+			lwave[nws[i]:nws[i+1]] = self.wave[ind[i]:ind[i]+range_wave[i][2]]
+			lstki[:,:,nws[i]:nws[i+1]] = self.stki[:,:,ind[i]:ind[i]+range_wave[i][2]]
+			lstkq[:,:,nws[i]:nws[i+1]] = self.stkq[:,:,ind[i]:ind[i]+range_wave[i][2]]
+			lstku[:,:,nws[i]:nws[i+1]] = self.stku[:,:,ind[i]:ind[i]+range_wave[i][2]]
+			lstkv[:,:,nws[i]:nws[i+1]] = self.stkv[:,:,ind[i]:ind[i]+range_wave[i][2]]
 
 		self.wave = lwave
 		self.stki = lstki

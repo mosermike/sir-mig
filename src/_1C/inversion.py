@@ -108,7 +108,7 @@ def scatter_data(conf, comm, rank, size):
 	if rank == 0:
 		print("[Status] Load and scatter data ...")
 		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
-		stk.cut_to_wave(sir.angstrom_to_pixel(stk.wave, conf["range_wave"])) # Cut wavelength file to the wished area
+		stk.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
 		# Create one data cube
 		stki = stk.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
 		stkq = stk.stkq.reshape(-1, stk.nw) # Flatten Stokes Q corresponding to the tasks list
