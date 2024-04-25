@@ -410,7 +410,7 @@ def on_click_1C(event, obs, fit, Models, Map):
 		log_tau = log_tau[:ind_max+1]
 		ax11.plot(log_tau,Models.T[x,y,:ind_max+1])
 		ax21.plot(log_tau,Models.B[x,y,:ind_max+1])
-		ax31.plot(log_tau,Models.vlos[x,y,:ind_max+1]/1e5)
+		ax31.plot(log_tau,Models.vlos[x,y,:ind_max+1])
 		ax41.plot(log_tau,Models.gamma[x,y,:ind_max+1])
 		
 		ax11.set_title("Temperature T")

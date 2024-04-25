@@ -331,6 +331,7 @@ class Profile:
 		# Read all the files
 		for i in range(len(task['x'])):
 			file = f"{os.path.join(path,task['folders'][i])}/{filename}"
+			print(file)
 			ll, I, Q, U, V = read_profile_sir(file)
 			if( (i == 0) and (self.wave == 0).all()):
 				self.wave = ll
