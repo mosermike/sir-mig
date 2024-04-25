@@ -778,7 +778,7 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 	Line_min = np.zeros(0)
 	Line_max = np.zeros(0)
 	Line_step = conf["range_wave"][:,1] # in mA
-	print(range_wave)
+	
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
 		Line_max  = np.append(Line_max,Line_min[i] + Line_step[i]/1e3*(range_wave[i,2]-1))
@@ -788,7 +788,6 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 		for i in range(len(atoms)):
 			ind = np.where(line['Line'] == int(atoms[i].split(',')[0]))[0][0] # Which index in line file corresponds to the atom
 			llambdas = (np.array([Line_min[i],Line_max[i]]) - line['wavelength'][ind])*1e3 # in mA ; Determine relative wavelengths
-			print(llambdas[i])
 			f.write(f"{atoms[i]}: {'%6.4f' % llambdas[0]},     {'%2.6f' % Line_step[i]},     {'%6.4f' % llambdas[-1]}\n")
 	
 

@@ -287,15 +287,17 @@ class Model:
 			self.vlos[x, y] = data[5]/1e5
 			self.gamma[x, y] = data[6]
 			self.phi[x, y] = data[7]
-			if len(data) < 8:
-				print(file)
-			self.z[x, y] = data[8]
-			self.Pg[x, y] = data[9]
-			self.rho[x, y] = data[10]
+			if len(data) > 9:
+				self.z[x, y] = data[8]
+				self.Pg[x, y] = data[9]
+				self.rho[x, y] = data[10]
+				self.full = False
+			else:
+				self.full = True
 			self.fill[x,y] = float(header[1])
 
 		self.load = True
-		self.full = True
+		
 		
 		return self
 
