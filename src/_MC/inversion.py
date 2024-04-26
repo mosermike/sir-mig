@@ -264,7 +264,8 @@ def execute_inversion(conf, task_folder):
 
 		for i in range(conf["random_guess"]):
 			do_inversion = True
-			while do_inversion:
+			it = 0
+			while do_inversion and it < 50:
 				# Create New Guess
 				create_guesses(conf, output="./", number=i+1)
 				# Copy to the model
@@ -280,6 +281,18 @@ def execute_inversion(conf, task_folder):
 						break
 					else:
 						os.remove(chi_file)
+				else: # No inv.chi file generated => There might be a problem with sir.x => Break loop after it is greater than 50
+					it += 1
+
+			# If it is greater than 50, there might be something wrong with sir.x
+			if it >= 50:
+				print("[ERROR] Check your sir.x file and the log file in the .task fodlers. There might be a problem with sir.x")
+				# Print last log entry
+				with open('inv.log') as f:
+					for line in f:
+						pass
+					print("[LOG ENTRY]: ", line)
+				sys.exit()
 					
 			chi = sir.read_chi2(chi_file)
 

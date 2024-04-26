@@ -224,7 +224,8 @@ def execute_inversion(conf, task_folder):
 		# Perform inversion for each guess model and copy files
 
 		for i in range(conf["random_guess"]):
-			while True: # stop (repeating) inversion when chi2 file is correctly generated => inversion finished correctly
+			it = 0
+			while it < 50: # stop (repeating) inversion when chi2 file is correctly generated => inversion finished correctly or more than 50 iterations
 				# Create New Guess
 				create_guesses(conf, output="./", number=i+1)
 				# Copy to the model
@@ -240,7 +241,17 @@ def execute_inversion(conf, task_folder):
 						break  # Get out of the while loop
 					else:  # Do inversion again
 						os.remove(chi_file)
-			
+				else: # No inv.chi file generated => There might be a problem with sir.x => Break loop after it is greater than 50
+					it += 1
+			# If it is greater than 50, there might be something wrong with sir.x
+			if it >= 50:
+				print("[ERROR] Check your sir.x file and the log file in the .task fodlers. There might be a problem with sir.x")
+				# Print last log entry
+				with open('inv.log') as f:
+					for line in f:
+						pass
+					print("[LOG ENTRY]: ", line)
+				sys.exit()
 			# Read the chi2 file
 			chi = sir.read_chi2(chi_file)
 
@@ -424,8 +435,6 @@ def inversion(conf, comm, rank, size):
 	########################
 	# START INVERSION PART #
 	########################
-	chi2s = np.array([])  # Save chi number for print out above chi_lim
-	chi2s_num = np.array([], dtype=str)  # Save task number for print out above chi_lim
 	performed_models = 0  # Counts how many models are performed
 	total_jobs = 1  # Total performed jobs across all processes
 	tasks = create_task_folder_list(Map) # Structure tasks

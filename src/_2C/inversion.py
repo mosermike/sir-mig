@@ -224,7 +224,8 @@ def execute_inversion(conf, task_folder):
 
 		# Perform inversion for each guess model and copy files
 		for i in range(conf["random_guess"]):
-			while True: # Only stops an inversion, if the chi file is correct => inversion finished properly
+			it = 0
+			while it < 50: # Only stops an inversion, if the chi file is correct => inversion finished properly
 				# Create New Guess
 				create_guesses(conf, output = "./", number = i+1)
 				if not exists(f'{d.model1}' + str(i+1) + ".mod"):
@@ -243,6 +244,17 @@ def execute_inversion(conf, task_folder):
 						break # Get out of the while loop
 					else: # Do inversion again
 						os.remove(chi_file)
+				else: # No inv.chi file generated => There might be a problem with sir.x => Break loop after it is greater than 50
+					it += 1
+			# If it is greater than 50, there might be something wrong with sir.x
+			if it >= 50:
+				print("[ERROR] Check your sir.x file and the log file in the .task fodlers. There might be a problem with sir.x")
+				# Print last log entry
+				with open('inv.log') as f:
+					for line in f:
+						pass
+					print("[LOG ENTRY]: ", line)
+				sys.exit()
 
 			# Read chi2 file
 			chi = sir.read_chi2(chi_file, task=task_folder)
