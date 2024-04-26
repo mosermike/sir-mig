@@ -368,7 +368,7 @@ def execute_inversion(conf, task_folder):
 	return
 
 
-def inversion(conf, comm, rank, size):
+def inversion(conf, comm, rank, size, MPI):
 	"""
 	Performs the inversion of all the models.
 
@@ -376,11 +376,12 @@ def inversion(conf, comm, rank, size):
 	---------
 	conf : dict
 		Dictionary with all information from the config file
-	comm, rank, size : MPI vars
+	comm, rank, size, MPI : MPI variables
 		Variables defined as
-			- comm = MPI.COMM_WORLD
-			- rank = comm.Get_rank()
-			- size = comm.Get_size()
+		 - comm = MPI.COMM_WORLD
+		 - rank = comm.Get_rank()
+		 - size = comm.Get_size()
+		 - MPI = MPI library imported as from mpi4py import MPI
 	
 
 	Return

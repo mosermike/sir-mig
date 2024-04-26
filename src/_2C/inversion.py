@@ -357,7 +357,7 @@ def execute_inversion(conf, task_folder):
 
 	return chi2_best
 	
-def inversion(conf, comm, rank, size):
+def inversion(conf, comm, rank, size, MPI):
 	"""
 	Performs the inversion of all the models.
 
@@ -370,6 +370,7 @@ def inversion(conf, comm, rank, size):
 		 - comm = MPI.COMM_WORLD
 		 - rank = comm.Get_rank()
 		 - size = comm.Get_size()
+		 - MPI = MPI library imported as from mpi4py import MPI
 	
 	
 	Return

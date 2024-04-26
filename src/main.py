@@ -86,7 +86,7 @@ if conf['mode'] == '2C':
 	# PERFORM INVERSION #
 	#####################
 	import _2C.inversion
-	_2C.inversion.inversion(conf, comm, rank, size)
+	_2C.inversion.inversion(conf, comm, rank, size, MPI)
 
 if conf['mode'] == 'MC':
 	import _MC.create_models  # Creating Models
@@ -145,7 +145,7 @@ if conf['mode'] == 'MC':
 		#####################
 		# PERFORM INVERSION #
 		#####################
-		_MC.inversion.inversion(conf, comm, rank, size)
+		_MC.inversion.inversion(conf, comm, rank, size, MPI)
 
 
 

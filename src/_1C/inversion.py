@@ -344,13 +344,15 @@ def inversion(conf, comm, rank, size, MPI):
 
 	Parameter
 	---------
-	comm, rank, size : MPI variables
+	config : dict
+		Dictionary with all information from the config file
+	comm, rank, size, MPI : MPI variables
 		Variables defined as
 		 - comm = MPI.COMM_WORLD
 		 - rank = comm.Get_rank()
 		 - size = comm.Get_size()
-	config : dict
-		Dictionary with all information from the config file
+		 - MPI = MPI library imported as from mpi4py import MPI
+	
 
 	Return
 	------
