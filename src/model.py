@@ -161,7 +161,7 @@ class Model:
 	def read(self, fname, fmt_type=np.float64):
 		
 		f = FortranFile(fname, 'r')
-		first_rec = f.read_record(dtype=fmt_type)
+		first_rec = f.read_record(dtype=np.float32)
 
 		posv = first_rec[0]
 		negv = first_rec[1]
@@ -405,7 +405,7 @@ class Model:
 		towrite[7] = self.ny * 1.
 		towrite[8] = self.T.shape[2] * 1. # Number of values
 
-		f.write_record(np.float64(towrite))
+		f.write_record(np.float32(towrite))
 		
 		f.write_record(np.float64(self.log_tau))
 
