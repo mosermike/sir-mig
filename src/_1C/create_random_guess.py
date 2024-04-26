@@ -9,9 +9,6 @@ import sys
 import sir
 from os.path import exists
 import os
-import scipy.interpolate as inter
-import definitions as d
-import matplotlib.pyplot as plt
 import model as m
 
 def help():

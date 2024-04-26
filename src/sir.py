@@ -2,10 +2,11 @@
 Library for repeating functions for analyzing and/or plotting SIR data
 """
 import numpy as np 
-import matplotlib.pyplot as plt 
-import fileinput, time, sys, os, definitions as d
+import time
+import sys
+import os
+import definitions as d
 from os.path import exists
-import obs
 
 
 ######################################################################

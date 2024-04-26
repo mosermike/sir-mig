@@ -1,4 +1,6 @@
-
+"""
+Misc. Functions
+"""
 
 def initial(mode):
 	"""

@@ -23,27 +23,17 @@ if "-h" in sys.argv:
 	sys.exit()
 
 
-# Read the config file from the input
-conf = sir.read_config(sys.argv[1])
-initial(conf['mode'])
-
 # Implement MPI stuff
 from mpi4py import MPI
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
-	
 
-# Import libraries
-if conf["mode"] == "MC":
-	import _MC.create_models  # Creating Models
-	import _MC.add_noise	  # Adding Noise
-	import _MC.synthesis	  # Synthesis
-	import _MC.inversion	  # Inversion
-if conf["mode"] == "1C":
-	import _1C.inversion
-if conf["mode"] == "2C":
-	import _2C.inversion
+# Read the config file from the input
+conf = sir.read_config(sys.argv[1])
+if rank == 0:
+	initial(conf['mode'])
+
 comm.barrier()
 
 #####################
@@ -88,15 +78,21 @@ if conf['mode'] == "1C":
 	#####################
 	# PERFORM INVERSION #
 	#####################
-	_1C.inversion.inversion(conf, comm, rank, size)
+	import _1C.inversion
+	_1C.inversion.inversion(conf, comm, rank, size, MPI)
 
 if conf['mode'] == '2C':
 	#####################
 	# PERFORM INVERSION #
 	#####################
+	import _2C.inversion
 	_2C.inversion.inversion(conf, comm, rank, size)
 
 if conf['mode'] == 'MC':
+	import _MC.create_models  # Creating Models
+	import _MC.add_noise	  # Adding Noise
+	import _MC.synthesis	  # Synthesis
+	import _MC.inversion	  # Inversion
 	if rank == 0:
 		# Check for flags and print it out
 		if "--no-create" in sys.argv:

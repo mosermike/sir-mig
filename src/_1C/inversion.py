@@ -338,7 +338,7 @@ def execute_inversion(conf, task_folder):
 	return chi2_best
 
 
-def inversion(conf, comm, rank, size):
+def inversion(conf, comm, rank, size, MPI):
 	"""
 	Performs the inversion of all the models.
 
