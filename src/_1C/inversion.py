@@ -245,12 +245,12 @@ def execute_inversion(conf, task_folder):
 					it += 1
 			# If it is greater than 50, there might be something wrong with sir.x
 			if it >= 50:
-				print("[ERROR] Check your sir.x file and the log file in the .task fodlers. There might be a problem with sir.x")
+				print("[ERROR] Check your sir.x file and the log file in the .task folders. There might be a problem with sir.x")
 				# Print last log entry
 				with open('inv.log') as f:
 					for line in f:
 						pass
-					print("[LOG ENTRY]: ", line)
+					print("[LAST LOG ENTRY]: ", line)
 				sys.exit()
 			# Read the chi2 file
 			chi = sir.read_chi2(chi_file)
