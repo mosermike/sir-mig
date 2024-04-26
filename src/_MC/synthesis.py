@@ -3,13 +3,10 @@
 Perform synthesis of many profiles with simple parallelization using mpi4py
 """
 
-# TODO change profiles to one file!
 import os, shutil
-from mpi4py import MPI
 import glob
 import sys
 import sir
-#import model_1C as m
 import model as m
 import profile_stk as p
 import definitions as d

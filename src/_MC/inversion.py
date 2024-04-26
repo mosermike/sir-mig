@@ -10,7 +10,6 @@ import time
 import glob
 import sys
 import sir
-from mpi4py import MPI
 from _MC.create_random_guess import create_guesses
 from os.path import exists
 import datetime

@@ -4,44 +4,9 @@ import shutil
 from os.path import exists
 import sir
 import definitions as d
-
-import preprocess.merge
-import preprocess.correction_spectral_veil
-
-import _1C.inversion
-
-import _2C.inversion
-
-import _MC.create_models  # Creating Models
-import _MC.add_noise	  # Adding Noise
-import _MC.synthesis	  # Synthesis
-import _MC.inversion	  # Inversion
-
-
+from misc import *
 from mpi4py import MPI
 
-def initial(mode):
-	"""
-	Initial print outs and preparation
-
-	Parameter
-	---------
-	mode : string
-		Mode which is used
-	
-	Return
-	------
-	None
-	"""
-	print()
-	print("╭───────────────────────────────────────────────────╮")
-	print("│ SIR - MIG                                         │")
-	print("│ Version 1.0                                       │")
-	print("│ Multiple Initial Guesses                          │")
-	print(f"│ Mode: {mode}                                          │")
-	print("│ Author: Mike Moser                                │")
-	print("╰───────────────────────────────────────────────────╯")	
-	print()
 
 if "-h" in sys.argv:
 	print("main - Executes all the scripts (merging, normalisation, spectral veil correction, inversion)")
@@ -71,6 +36,16 @@ size = comm.Get_size()
 if rank == 0:
 	initial(conf['mode'])
 
+# Import libraries
+if conf["mode"] == "MC":
+	import _MC.create_models  # Creating Models
+	import _MC.add_noise	  # Adding Noise
+	import _MC.synthesis	  # Synthesis
+	import _MC.inversion	  # Inversion
+if conf["mode"] == "1C":
+	import _1C.inversion
+if conf["mode"] == "2C":
+	import _2C.inversion
 comm.barrier()
 
 #####################
@@ -79,6 +54,8 @@ comm.barrier()
 if (conf['mode'] == "1C" or conf['mode'] == "2C") and rank == 0:
 	
 	if conf['preprocess'] == "1":
+		import preprocess.merge
+		import preprocess.correction_spectral_veil
 		print("[STATUS] Preprocess data")
 		if exists(os.path.join(conf['path'],conf['cube_inv'])):
 				print("-------> Skipping preprocessing data (already performed)")

@@ -13,7 +13,6 @@ import obs
 import glob
 import model as m
 import profile_stk as p
-from mpi4py import MPI
 from _1C.create_random_guess import create_guesses
 from os.path import exists
 import datetime

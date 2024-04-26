@@ -3,15 +3,17 @@
 Perform inversion of many profiles with simple parallelization using mpi4py
 """
 
-import os, shutil, numpy as np, time, sys, sir, obs
-from mpi4py import MPI
+import os, shutil, numpy as np
+import time
+import sys
+import sir
+import obs
 from _2C.create_random_guess import create_guesses
 from os.path import exists
 import glob
-from multiprocessing import Process
 import datetime
 import definitions as d
-import model_2C as m
+import model as m
 import profile_stk as p
 
 def help():
