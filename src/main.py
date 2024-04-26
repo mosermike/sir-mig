@@ -5,8 +5,6 @@ from os.path import exists
 import sir
 import definitions as d
 from misc import *
-from mpi4py import MPI
-
 
 if "-h" in sys.argv:
 	print("main - Executes all the scripts (merging, normalisation, spectral veil correction, inversion)")
@@ -27,14 +25,14 @@ if "-h" in sys.argv:
 
 # Read the config file from the input
 conf = sir.read_config(sys.argv[1])
+initial(conf['mode'])
 
 # Implement MPI stuff
+from mpi4py import MPI
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()
-
-if rank == 0:
-	initial(conf['mode'])
+	
 
 # Import libraries
 if conf["mode"] == "MC":
