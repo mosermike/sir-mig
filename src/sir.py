@@ -856,7 +856,7 @@ def write_control_1c(filename, conf):
 		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
 		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
 		f.write('Abundances file               :'    + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
-		f.write('Initial guess model 1      (*):'+ model + '      !\n')
+		f.write('Initial guess model 1      (*):'+ d.model_inv + '      !\n')
 		f.write('Initial guess model 2         :\n')
 		f.write('Weight for Stokes I           :'   + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
 		f.write('Weight for Stokes Q           :'   + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
