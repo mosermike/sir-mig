@@ -351,8 +351,9 @@ document.write(`
                   
   <section id="functions">
 <h1>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h1>
-<section id="file-sir-py">
-<h2>File sir.py<a class="headerlink" href="#file-sir-py" title="Link to this heading">#</a></h2>
+<p>This list provides information for each function in each file.</p>
+<section id="sir-py">
+<h2>sir.py<a class="headerlink" href="#sir-py" title="Link to this heading">#</a></h2>
 <p>Library for repeating functions such as reading the config, writing SIR files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.list_to_string">
@@ -794,8 +795,8 @@ have one white space less</p>
 </dd></dl>
 
 </section>
-<section id="file-create-config-py">
-<h2>File create_config.py<a class="headerlink" href="#file-create-config-py" title="Link to this heading">#</a></h2>
+<section id="create-config-py">
+<h2>create_config.py<a class="headerlink" href="#create-config-py" title="Link to this heading">#</a></h2>
 <p>Functions to create the config files for the different modes.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="create_config.config_MC">
@@ -840,26 +841,191 @@ have one white space less</p>
 </dd></dl>
 
 </section>
-<section id="file-main-py">
-<h2>File main.py<a class="headerlink" href="#file-main-py" title="Link to this heading">#</a></h2>
+<section id="create-profiles">
+<h2>create_profiles<a class="headerlink" href="#create-profiles" title="Link to this heading">#</a></h2>
+<p>Function to create profiles with synthesis and adding noise
+.. autofunction:: create_profiles.add_noise
+.. autofunction:: create_profiles.synthesis</p>
+</section>
+<section id="inversion-py">
+<h2>inversion.py<a class="headerlink" href="#inversion-py" title="Link to this heading">#</a></h2>
+<p>Functions to perform the inversion</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="inversion.execute_inversion_1c">
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.execute_inversion_1c" title="Link to this definition">#</a></dt>
+<dd><p>Executes inversion and creates if needed random guesses. Make sure that
+when this function is entered, the os is in the right directory! This
+function can be used for the mode ‘MC’ and ‘1C’.</p>
+<section id="id36">
+<h3>Parameter<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>config<span class="classifier">dict</span></dt><dd><p>Dictionary containing the configuration of the simulation</p>
+</dd>
+</dl>
+</section>
+<section id="id37">
+<h3>Return<a class="headerlink" href="#id37" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>chi2<span class="classifier">float</span></dt><dd><p>Best chi2 value of the inversion(s)</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inversion.execute_inversion_2c">
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.execute_inversion_2c" title="Link to this definition">#</a></dt>
+<dd><p>Executes inversion and creates if needed random guesses. Make sure that
+when this function is entered, the os is in the right directory! This is
+used for the mode ‘2C’.</p>
+<section id="id38">
+<h3>Parameter<a class="headerlink" href="#id38" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>conf<span class="classifier">Dictionary</span></dt><dd><p>Dictionary containing the configuration of the simulation</p>
+</dd>
+</dl>
+</section>
+<section id="id39">
+<h3>Return<a class="headerlink" href="#id39" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>chi2<span class="classifier">float</span></dt><dd><p>Best chi2 value of the inversion(s)</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inversion.inversion_1c">
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.inversion_1c" title="Link to this definition">#</a></dt>
+<dd><p>Performs the inversion of all the models.</p>
+<section id="id40">
+<h3>Parameter<a class="headerlink" href="#id40" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>config<span class="classifier">dict</span></dt><dd><p>Dictionary with all information from the config file</p>
+</dd>
+<dt>comm, rank, size, MPI<span class="classifier">MPI variables</span></dt><dd><dl class="simple">
+<dt>Variables defined as</dt><dd><ul class="simple">
+<li><p>comm = MPI.COMM_WORLD</p></li>
+<li><p>rank = comm.Get_rank()</p></li>
+<li><p>size = comm.Get_size()</p></li>
+<li><p>MPI = MPI library imported as from mpi4py import MPI</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="id41">
+<h3>Return<a class="headerlink" href="#id41" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inversion.inversion_2c">
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.inversion_2c" title="Link to this definition">#</a></dt>
+<dd><p>Performs the inversion of all the models.</p>
+<section id="id42">
+<h3>Parameter<a class="headerlink" href="#id42" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>conf<span class="classifier">dict</span></dt><dd><p>Dictionary with all information from the config file</p>
+</dd>
+<dt>comm, rank, size<span class="classifier">MPI variables</span></dt><dd><dl class="simple">
+<dt>Variables defined as</dt><dd><ul class="simple">
+<li><p>comm = MPI.COMM_WORLD</p></li>
+<li><p>rank = comm.Get_rank()</p></li>
+<li><p>size = comm.Get_size()</p></li>
+<li><p>MPI = MPI library imported as from mpi4py import MPI</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="id43">
+<h3>Return<a class="headerlink" href="#id43" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inversion.inversion_mc">
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.inversion_mc" title="Link to this definition">#</a></dt>
+<dd><p>Performs the inversion of all the models.</p>
+<section id="id44">
+<h3>Parameter<a class="headerlink" href="#id44" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>conf<span class="classifier">dict</span></dt><dd><p>Dictionary with all information from the config file</p>
+</dd>
+<dt>comm, rank, size, MPI<span class="classifier">MPI variables</span></dt><dd><dl class="simple">
+<dt>Variables defined as</dt><dd><ul class="simple">
+<li><p>comm = MPI.COMM_WORLD</p></li>
+<li><p>rank = comm.Get_rank()</p></li>
+<li><p>size = comm.Get_size()</p></li>
+<li><p>MPI = MPI library imported as from mpi4py import MPI</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="id45">
+<h3>Return<a class="headerlink" href="#id45" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inversion.scatter_data">
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.scatter_data" title="Link to this definition">#</a></dt>
+<dd><p>Scatters the data equally into all the ranks</p>
+<section id="id46">
+<h3>Parameter<a class="headerlink" href="#id46" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>conf<span class="classifier">Dict</span></dt><dd><p>Config information</p>
+</dd>
+<dt>path<span class="classifier">string</span></dt><dd><p>Path where we are</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="inversion.scatter_data_mc">
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.scatter_data_mc" title="Link to this definition">#</a></dt>
+<dd><p>Scatters the data equally into all the ranks for the MC simulation</p>
+<section id="id47">
+<h3>Parameter<a class="headerlink" href="#id47" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>conf<span class="classifier">Dict</span></dt><dd><p>Config information</p>
+</dd>
+<dt>path<span class="classifier">string</span></dt><dd><p>Path where we are</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="main-py">
+<h2>main.py<a class="headerlink" href="#main-py" title="Link to this heading">#</a></h2>
 <p>Main file to start the program</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="main.main">
 <span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.main" title="Link to this definition">#</a></dt>
 <dd><p>Function which executes the programme</p>
-<section id="id36">
-<h3>Parameters<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<section id="id48">
+<h3>Parameters<a class="headerlink" href="#id48" title="Link to this heading">#</a></h3>
 <p>None</p>
 </section>
-<section id="id37">
-<h3>Returns<a class="headerlink" href="#id37" title="Link to this heading">#</a></h3>
+<section id="id49">
+<h3>Returns<a class="headerlink" href="#id49" title="Link to this heading">#</a></h3>
 <p>None</p>
 </section>
 </dd></dl>
 
 </section>
-<section id="file-model-py">
-<h2>File model.py<a class="headerlink" href="#file-model-py" title="Link to this heading">#</a></h2>
+<section id="model-py">
+<h2>model.py<a class="headerlink" href="#model-py" title="Link to this heading">#</a></h2>
 <p>Function to read a binary model file with all the physical parameter</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="model.read_model">
@@ -867,13 +1033,67 @@ have one white space less</p>
 <dd></dd></dl>
 
 </section>
-<section id="file-misc-py">
-<h2>File misc.py<a class="headerlink" href="#file-misc-py" title="Link to this heading">#</a></h2>
-<p>Miscellaneous functions
-.. autofunction:: misc.initial</p>
+<section id="misc-py">
+<h2>misc.py<a class="headerlink" href="#misc-py" title="Link to this heading">#</a></h2>
+<p>Miscellaneous functions</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="misc.create_task_folder_list">
+<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">create_task_folder_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#misc.create_task_folder_list" title="Link to this definition">#</a></dt>
+<dd><p>Creates a list which folders should be created and executed. This is done so
+that the inversion itself can be executed linearly to make use of all cores.</p>
+<section id="id50">
+<h3>Parameter<a class="headerlink" href="#id50" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>arg<span class="classifier">numpy array or int</span></dt><dd><p>1x4 array containing the limits in x and y of the data or number of 1D models</p>
+</dd>
+</dl>
 </section>
-<section id="file-obs-py">
-<h2>File obs.py<a class="headerlink" href="#file-obs-py" title="Link to this heading">#</a></h2>
+<section id="id51">
+<h3>Return<a class="headerlink" href="#id51" title="Link to this heading">#</a></h3>
+<p>Dictionary with all the names of the task folders, x and y position</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="misc.initial">
+<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#misc.initial" title="Link to this definition">#</a></dt>
+<dd><p>Initial print outs and preparation</p>
+<section id="id52">
+<h3>Parameter<a class="headerlink" href="#id52" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>mode<span class="classifier">string</span></dt><dd><p>Mode which is used</p>
+</dd>
+</dl>
+</section>
+<section id="id53">
+<h3>Return<a class="headerlink" href="#id53" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="misc.x_y_add_zeros">
+<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">x_y_add_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#misc.x_y_add_zeros" title="Link to this definition">#</a></dt>
+<dd><p>Adds zeros so that the returning strings have 4 letters</p>
+<section id="id54">
+<h3>Parameter<a class="headerlink" href="#id54" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>x<span class="classifier">float</span></dt><dd><p>x position</p>
+</dd>
+<dt>y<span class="classifier">float</span></dt><dd><p>y position</p>
+</dd>
+</dl>
+</section>
+<section id="id55">
+<h3>Return<a class="headerlink" href="#id55" title="Link to this heading">#</a></h3>
+<p>x as a string of 4 letters
+y as a string of 4 letters</p>
+</section>
+</dd></dl>
+
+</section>
+<section id="obs-py">
+<h2>obs.py<a class="headerlink" href="#obs-py" title="Link to this heading">#</a></h2>
 <p>Functions related to the observation</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="obs.read_profile">
@@ -884,8 +1104,8 @@ have one white space less</p>
 <dt class="sig sig-object py" id="obs.write_psf">
 <span class="sig-prename descclassname"><span class="pre">obs.</span></span><span class="sig-name descname"><span class="pre">write_psf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#obs.write_psf" title="Link to this definition">#</a></dt>
 <dd><p>Writes the spectral point spread function with the value from the spectral veil correction</p>
-<section id="id38">
-<h3>Parameter<a class="headerlink" href="#id38" title="Link to this heading">#</a></h3>
+<section id="id56">
+<h3>Parameter<a class="headerlink" href="#id56" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>config<span class="classifier">dict</span></dt><dd><p>Dictionary containing all the information of the config file</p>
 </dd>
@@ -893,29 +1113,29 @@ have one white space less</p>
 </dd>
 </dl>
 </section>
-<section id="id39">
-<h3>Return<a class="headerlink" href="#id39" title="Link to this heading">#</a></h3>
+<section id="id57">
+<h3>Return<a class="headerlink" href="#id57" title="Link to this heading">#</a></h3>
 <p>None</p>
 </section>
 </dd></dl>
 
 </section>
-<section id="file-profile-stk-py">
-<h2>File profile_stk.py<a class="headerlink" href="#file-profile-stk-py" title="Link to this heading">#</a></h2>
+<section id="profile-stk-py">
+<h2>profile_stk.py<a class="headerlink" href="#profile-stk-py" title="Link to this heading">#</a></h2>
 <p>Function to read a binary profile file with the four Stokes Parameter</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="profile_stk.read_profile">
 <span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.read_profile" title="Link to this definition">#</a></dt>
 <dd><p>Reads a profile and returns a class</p>
-<section id="id40">
-<h3>Parameters<a class="headerlink" href="#id40" title="Link to this heading">#</a></h3>
+<section id="id58">
+<h3>Parameters<a class="headerlink" href="#id58" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>file<span class="classifier">str</span></dt><dd><p>String with the filename</p>
 </dd>
 </dl>
 </section>
-<section id="id41">
-<h3>Returns<a class="headerlink" href="#id41" title="Link to this heading">#</a></h3>
+<section id="id59">
+<h3>Returns<a class="headerlink" href="#id59" title="Link to this heading">#</a></h3>
 <p>class Profile</p>
 </section>
 </dd></dl>
@@ -969,7 +1189,7 @@ have one white space less</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-sir-py">File sir.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sir-py">sir.py</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.list_to_string"><code class="docutils literal notranslate"><span class="pre">list_to_string()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.option"><code class="docutils literal notranslate"><span class="pre">option()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_chi2"><code class="docutils literal notranslate"><span class="pre">read_chi2()</span></code></a></li>
@@ -993,27 +1213,43 @@ have one white space less</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_profile"><code class="docutils literal notranslate"><span class="pre">write_profile()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-create-config-py">File create_config.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-config-py">create_config.py</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_config.config_MC"><code class="docutils literal notranslate"><span class="pre">config_MC()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_config.config_1C"><code class="docutils literal notranslate"><span class="pre">config_1C()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_config.config_2C"><code class="docutils literal notranslate"><span class="pre">config_2C()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-main-py">File main.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-profiles">create_profiles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion-py">inversion.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.execute_inversion_1c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_1c()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.execute_inversion_2c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_2c()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.inversion_1c"><code class="docutils literal notranslate"><span class="pre">inversion_1c()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.inversion_2c"><code class="docutils literal notranslate"><span class="pre">inversion_2c()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.inversion_mc"><code class="docutils literal notranslate"><span class="pre">inversion_mc()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.scatter_data"><code class="docutils literal notranslate"><span class="pre">scatter_data()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.scatter_data_mc"><code class="docutils literal notranslate"><span class="pre">scatter_data_mc()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-py">main.py</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-model-py">File model.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-py">model.py</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-misc-py">File misc.py</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-obs-py">File obs.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misc-py">misc.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc.create_task_folder_list"><code class="docutils literal notranslate"><span class="pre">create_task_folder_list()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc.initial"><code class="docutils literal notranslate"><span class="pre">initial()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc.x_y_add_zeros"><code class="docutils literal notranslate"><span class="pre">x_y_add_zeros()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obs-py">obs.py</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obs.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obs.write_psf"><code class="docutils literal notranslate"><span class="pre">write_psf()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-profile-stk-py">File profile_stk.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile-stk-py">profile_stk.py</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
 </ul>
 </li>
