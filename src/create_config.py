@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Create a config file as expected for the inversion
 """
@@ -18,6 +19,17 @@ def help():
 	sys.exit()
 
 def config_MC():
+	"""
+	Creates a config file for the Monte-Carlo simulation by asking questions.
+
+	Parameters
+	----------
+	None
+
+	Returns
+	-------
+	None
+	"""
 	File = input("File name: ")
 
 	if exists(File):
@@ -205,6 +217,17 @@ def config_MC():
 	
 
 def config_1C():
+	"""
+	Creates a config file for the 1 Component Inversion by asking questions.
+
+	Parameters
+	----------
+	None
+
+	Returns
+	-------
+	None
+	"""
 	File = input("File name: ")
 
 	if exists(File):
@@ -349,6 +372,17 @@ def config_1C():
 		
 
 def config_2C():
+	"""
+	Creates a config file for the 2 Components Inversion by asking questions.
+
+	Parameters
+	----------
+	None
+
+	Returns
+	-------
+	None
+	"""
 	File = input("File name: ")
 
 	if exists(File):

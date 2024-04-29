@@ -1,5 +1,5 @@
 """
-Class Profile
+Class Profile with all the tools to read and write the Stokes Profiles
 
 """
 
@@ -7,129 +7,7 @@ import numpy as np
 import os
 import sys
 from scipy.io import FortranFile
-def read_grid(filename):
-	"""
-	Reads the grid file
-	
-	Parameter
-	---------
-	filename : string
-		File to be read
-	
-	Return
-	-------
-	dict : Dictionary
-		Dict. with 'Line', 'min', 'step' and 'max' in it
-	"""
-	# Open the file and read lines
-	with open(filename) as f:
-		strings = f.readlines()
 
-	# Remove last line if it contains no information
-	if ":" not in strings[-1]:
-		strings = strings[:-1]
-
-	# Remove leading spaces
-	for i in range(len(strings)):
-		while(strings[i][0] == ' '):
-			strings[i] = strings[i][1:]
-	
-	# Create arrays
-	Line	  = []
-	ll_min	= np.empty(len(strings))
-	ll_step    = np.empty(len(strings))
-	ll_max	= np.empty(len(strings))
-
-	
-	# Remove multiple spaces and split 
-	strings = [i.replace(':', ': ')   for i in strings] # Add space to make sure it is split correctly
-	while any('  ' in x for x in strings):
-		strings = [i.replace('  ', ' ')   for i in strings]
-	strings = [i.split(' ') for i in strings]
-
-	# Fill arrays with data	
-	for i in range(len(strings)):
-		Line.append(strings[i][0][:-1].split(','))
-		ll_min[i]  = float(strings[i][1].replace(",",""))
-		ll_step[i] = float(strings[i][2].replace(",",""))
-		ll_max[i]  = float(strings[i][3].replace(",",""))
-
-	Dict = {
-			'Line'		: Line,
-			'min'		: ll_min,
-			'step'		: ll_step,
-			'max'		: ll_max,
-		  }
-	
-	return Dict
-
-
-def read_profile_sir(filename):
-	"""
-	Reads the first LINE data from a profile computed by SIR
-	
-	Parameter
-	---------
-	filename : string
-		String containing the path of the file
-	
-	Return
-	------
-	ll : numpy.array
-		Wavelengths in A
-	I : numpy.array
-		Stokes I
-	Q : numpy.array
-		Stokes Q
-	U : numpy.array
-		Stokes U
-	V : numpy.array 
-		Stokes V
-	"""
-	data = np.loadtxt(filename).transpose()
-	line = data[0].astype(int)
-	ll = data[1].astype(np.float32)
-	I  = data[2].astype(np.float32)
-	Q  = data[3].astype(np.float32)
-	U  = data[4].astype(np.float32)
-	V  = data[5].astype(np.float32)
-
-	return np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
-
-def read_profile_sir_mc(filename):
-	"""
-	Reads the first LINE data from a profile computed by SIR
-	
-	Parameter
-	---------
-	filename : string
-		String containing the path of the file
-	
-	Return
-	------
-	ll : numpy.array
-		Wavelengths in A
-	I : numpy.array
-		Stokes I
-	Q : numpy.array
-		Stokes Q
-	U : numpy.array
-		Stokes U
-	V : numpy.array 
-		Stokes V
-	"""
-	if not os.path.exists(filename):
-		print(f"[ERROR] File {filename} does not exist.")
-
-	data = np.loadtxt(filename).transpose()
-	line = data[0].astype(int)
-	ll = data[1].astype(np.float32)
-	I  = data[2].astype(np.float32)
-	Q  = data[3].astype(np.float32)
-	U  = data[4].astype(np.float32)
-	V  = data[5].astype(np.float32)
-
-	return line, np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
 
 class Profile:
 	"""
@@ -182,6 +60,131 @@ class Profile:
 		self.stkv = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
 
 		self.data_cut = False
+
+	def __read_grid(filename):
+		"""
+		Reads the grid file
+		
+		Parameter
+		---------
+		filename : string
+			File to be read
+		
+		Return
+		-------
+		dict : Dictionary
+			Dict. with 'Line', 'min', 'step' and 'max' in it
+		"""
+		# Open the file and read lines
+		with open(filename) as f:
+			strings = f.readlines()
+
+		# Remove last line if it contains no information
+		if ":" not in strings[-1]:
+			strings = strings[:-1]
+
+		# Remove leading spaces
+		for i in range(len(strings)):
+			while(strings[i][0] == ' '):
+				strings[i] = strings[i][1:]
+		
+		# Create arrays
+		Line	  = []
+		ll_min	= np.empty(len(strings))
+		ll_step    = np.empty(len(strings))
+		ll_max	= np.empty(len(strings))
+
+		
+		# Remove multiple spaces and split 
+		strings = [i.replace(':', ': ')   for i in strings] # Add space to make sure it is split correctly
+		while any('  ' in x for x in strings):
+			strings = [i.replace('  ', ' ')   for i in strings]
+		strings = [i.split(' ') for i in strings]
+
+		# Fill arrays with data	
+		for i in range(len(strings)):
+			Line.append(strings[i][0][:-1].split(','))
+			ll_min[i]  = float(strings[i][1].replace(",",""))
+			ll_step[i] = float(strings[i][2].replace(",",""))
+			ll_max[i]  = float(strings[i][3].replace(",",""))
+
+		Dict = {
+				'Line'		: Line,
+				'min'		: ll_min,
+				'step'		: ll_step,
+				'max'		: ll_max,
+			}
+		
+		return Dict
+
+
+	def __read_profile_sir(filename):
+		"""
+		Reads the first LINE data from a profile computed by SIR
+		
+		Parameter
+		---------
+		filename : string
+			String containing the path of the file
+		
+		Return
+		------
+		ll : numpy.array
+			Wavelengths in A
+		I : numpy.array
+			Stokes I
+		Q : numpy.array
+			Stokes Q
+		U : numpy.array
+			Stokes U
+		V : numpy.array 
+			Stokes V
+		"""
+		data = np.loadtxt(filename).transpose()
+		line = data[0].astype(int)
+		ll = data[1].astype(np.float32)
+		I  = data[2].astype(np.float32)
+		Q  = data[3].astype(np.float32)
+		U  = data[4].astype(np.float32)
+		V  = data[5].astype(np.float32)
+
+		return np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
+
+	def __read_profile_sir_mc(filename):
+		"""
+		Reads the first LINE data from a profile computed by SIR
+		
+		Parameter
+		---------
+		filename : string
+			String containing the path of the file
+		
+		Return
+		------
+		ll : numpy.array
+			Wavelengths in A
+		I : numpy.array
+			Stokes I
+		Q : numpy.array
+			Stokes Q
+		U : numpy.array
+			Stokes U
+		V : numpy.array 
+			Stokes V
+		"""
+		if not os.path.exists(filename):
+			print(f"[ERROR] File {filename} does not exist.")
+
+		data = np.loadtxt(filename).transpose()
+		line = data[0].astype(int)
+		ll = data[1].astype(np.float32)
+		I  = data[2].astype(np.float32)
+		Q  = data[3].astype(np.float32)
+		U  = data[4].astype(np.float32)
+		V  = data[5].astype(np.float32)
+
+		return line, np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
+
 
 	def cut_to_map(self, Map):
 		"""
@@ -321,7 +324,7 @@ class Profile:
 		
 		# Read the profile
 		file = f"{os.path.join(path,task['folders'][0])}/{filename}"
-		ll, _, _, _, _ = read_profile_sir(file)
+		ll, _, _, _, _ = self.__read_profile_sir(file)
 		self.nw = len(ll)
 		self.stki = np.zeros(shape=(nx, ny, len(ll)), dtype=np.float64)
 		self.stkq = np.zeros(shape=(nx, ny, len(ll)), dtype=np.float64)
@@ -331,7 +334,7 @@ class Profile:
 		# Read all the files
 		for i in range(len(task['x'])):
 			file = f"{os.path.join(path,task['folders'][i])}/{filename}"
-			ll, I, Q, U, V = read_profile_sir(file)
+			ll, I, Q, U, V = self.__read_profile_sir(file)
 			if( (i == 0) and (self.wave == 0).all()):
 				self.wave = ll
 			x, y = task['x'][i]-task['x'][0], task['y'][i]-task['y'][0]
@@ -364,7 +367,7 @@ class Profile:
 			print('[read_profiles] The profiles do not exist. Make sure, that sir is executed correctly and fortran is installed.')
 			sys.exit()
 
-		line, _, _, _, _, _ = read_profile_sir_mc(os.path.join(path,tasks['folders'][0]) + '/' + filename)
+		line, _, _, _, _, _ = self.__read_profile_sir_mc(os.path.join(path,tasks['folders'][0]) + '/' + filename)
 		self.nw = len(line)
 		self.nx = len(tasks['folders'])
 		self.ny = 1
@@ -374,7 +377,7 @@ class Profile:
 		self.stkv = np.zeros(shape=(self.nx,1,self.nw))
 
 		for n in range(self.nx):
-			line, ll, I, Q, U, V = read_profile_sir_mc(os.path.join(path,tasks['folders'][n]) + '/' + filename)
+			line, ll, I, Q, U, V = self.__read_profile_sir_mc(os.path.join(path,tasks['folders'][n]) + '/' + filename)
 			if n == 0:
 				self.indx = line
 				self.wave = ll
@@ -510,7 +513,7 @@ class Profile:
 			print("[WARN] The data was not cut. Consider running Profile.cut_to_wave! Make sure that only data used in the inversion is loaded!")
 
 		# Load data from config
-		grid = read_grid(Grid) # Grid file
+		grid = self.__read_grid(Grid) # Grid file
 				
 		# Read the grid
 		Line      = grid['Line']
@@ -583,7 +586,19 @@ class Profile:
 
 
 def read_profile(file):
+	"""
+	Reads a profile and returns a class
 
+	Parameters
+	----------
+	file : str
+		String with the filename
+
+	Returns
+	-------
+	class Profile
+	
+	"""
 	pro = Profile(0,0,0)
 	pro.read(file)
 

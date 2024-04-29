@@ -1,3 +1,7 @@
+"""
+Class Model with all the tools to read and write the models
+
+"""
 import numpy as np 
 import os
 from scipy.io import FortranFile

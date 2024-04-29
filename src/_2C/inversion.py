@@ -653,8 +653,3 @@ def inversion(conf, comm, rank, size, MPI):
 
 	return chi2s, chi2s_num
 
-
-
-
-	
-

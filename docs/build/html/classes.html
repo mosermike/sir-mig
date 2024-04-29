@@ -1,0 +1,1253 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Classes &#8212; SIR-MIG  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'classes';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Functions" href="functions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">SIR-MIG  documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="functions.html">
+                        Functions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Classes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="api.html">
+                        API
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="functions.html">
+                        Functions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Classes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="api.html">
+                        API
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Classes</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="classes">
+<h1>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h1>
+<section id="file-model-py">
+<h2>File model.py<a class="headerlink" href="#file-model-py" title="Link to this heading">#</a></h2>
+<p>Class model with all the physical parameter</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="model.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model" title="Link to this definition">#</a></dt>
+<dd><p>Class containing the models of a simulation</p>
+<dl class="simple">
+<dt>Variables are:</dt><dd><ul class="simple">
+<li><p>log_tau</p></li>
+<li><p>T</p></li>
+<li><p>Pe</p></li>
+<li><p>vmicro</p></li>
+<li><p>B</p></li>
+<li><p>vlos</p></li>
+<li><p>gamma</p></li>
+<li><p>phi</p></li>
+<li><p>z</p></li>
+<li><p>pg</p></li>
+<li><p>rho</p></li>
+</ul>
+</dd>
+<dt>There are several functions:</dt><dd><ul class="simple">
+<li><p>read: Read a numpy file containing models and stores it into the class variables</p></li>
+<li><p>read_results: Reads the results from the inversion of SIR</p></li>
+<li><p>write: Writes a Model to a SIR readable file</p></li>
+<li><p>save: Saves the models as a numpy file</p></li>
+<li><p>set_limit: Cuts the data to a specific log_tau value (used for plotting)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialisation of the class with the models</p>
+<section id="parameter">
+<h3>Parameter<a class="headerlink" href="#parameter" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">str, optional</span></dt><dd><p>File name of the model to be loaded. Default: None (= no reading)</p>
+</dd>
+<dt>filename_fill<span class="classifier">str, optional</span></dt><dd><p>File name of the filling factor</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.correct_phi">
+<span class="sig-name descname"><span class="pre">correct_phi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.correct_phi" title="Link to this definition">#</a></dt>
+<dd><p>SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation
+those values should be corrected so that I have values from 0 to 360 degrees.</p>
+<section id="id1">
+<h3>Parameter<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+<section id="return">
+<h3>Return<a class="headerlink" href="#return" title="Link to this heading">#</a></h3>
+<p>class</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.cut_to_map">
+<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.cut_to_map" title="Link to this definition">#</a></dt>
+<dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>Map<span class="classifier">list</span></dt><dd><p>List with the ranges in pixel in x and y direction</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.get_attribute">
+<span class="sig-name descname"><span class="pre">get_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.get_attribute" title="Link to this definition">#</a></dt>
+<dd><p>Returns a specific physical parameter. This can be used if ones only wants a specific
+parameter depending on a string/input</p>
+<section id="id2">
+<h3>Parameter<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>string<span class="classifier">str</span></dt><dd><p>Determines which physical parameter is returned
+Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, fill</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h3>Return<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>The wished physical parameter</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.read" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.read_results">
+<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.read_results" title="Link to this definition">#</a></dt>
+<dd><p>Reads all the errors from the inversion</p>
+<section id="id4">
+<h3>Parameter<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>task<span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
+</dd>
+<dt>filename<span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt>path<span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt>nx<span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h3>Return<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>class with the parameters</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.set_dim">
+<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.set_dim" title="Link to this definition">#</a></dt>
+<dd><p>Sets the dimensions if no data is loaded yet</p>
+<section id="id6">
+<h3>Parameter<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>nx<span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt>npars<span class="classifier">int</span></dt><dd><p>Number of values per physical parameter</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.set_limit">
+<span class="sig-name descname"><span class="pre">set_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.set_limit" title="Link to this definition">#</a></dt>
+<dd><p>Cuts the arrays to a specific log tau value (should only be used for plotting)</p>
+<section id="id7">
+<h3>Parameter<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>lim<span class="classifier">int</span></dt><dd><p>log tau value to which the values are cut</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.write" title="Link to this definition">#</a></dt>
+<dd><p>Write data into a binary fortran file</p>
+<section id="id8">
+<h3>Parameter<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>fname<span class="classifier">str</span></dt><dd><p>File name</p>
+</dd>
+<dt>fmt_type<span class="classifier">type</span></dt><dd><p>type which is used to save it =&gt; numpy.float64 used</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.write_model">
+<span class="sig-name descname"><span class="pre">write_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.write_model" title="Link to this definition">#</a></dt>
+<dd><p>Write a model with the given data in a specific format.</p>
+<section id="id9">
+<h3>Parameter<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>Name of the saved file</p>
+</dd>
+<dt>Header<span class="classifier">string</span></dt><dd><p>Header of the model</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Return<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">correct_phi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd><p>SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation
+those values should be corrected so that I have values from 0 to 360 degrees.</p>
+<section id="id11">
+<h3>Parameter<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+<section id="id12">
+<h3>Return<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>class</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id13" title="Link to this definition">#</a></dt>
+<dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
+<section id="id14">
+<h3>Parameters<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>Map<span class="classifier">list</span></dt><dd><p>List with the ranges in pixel in x and y direction</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id15">
+<span class="sig-name descname"><span class="pre">get_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id15" title="Link to this definition">#</a></dt>
+<dd><p>Returns a specific physical parameter. This can be used if ones only wants a specific
+parameter depending on a string/input</p>
+<section id="id16">
+<h3>Parameter<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>string<span class="classifier">str</span></dt><dd><p>Determines which physical parameter is returned
+Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, fill</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h3>Return<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>The wished physical parameter</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id18">
+<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id18" title="Link to this definition">#</a></dt>
+<dd><p>Reads all the errors from the inversion</p>
+<section id="id19">
+<h3>Parameter<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>task<span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
+</dd>
+<dt>filename<span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt>path<span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt>nx<span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</section>
+<section id="id20">
+<h3>Return<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>class with the parameters</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id21">
+<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npars</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id21" title="Link to this definition">#</a></dt>
+<dd><p>Sets the dimensions if no data is loaded yet</p>
+<section id="id22">
+<h3>Parameter<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>nx<span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt>npars<span class="classifier">int</span></dt><dd><p>Number of values per physical parameter</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id23">
+<span class="sig-name descname"><span class="pre">set_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id23" title="Link to this definition">#</a></dt>
+<dd><p>Cuts the arrays to a specific log tau value (should only be used for plotting)</p>
+<section id="id24">
+<h3>Parameter<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>lim<span class="classifier">int</span></dt><dd><p>log tau value to which the values are cut</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id25" title="Link to this definition">#</a></dt>
+<dd><p>Write data into a binary fortran file</p>
+<section id="id26">
+<h3>Parameter<a class="headerlink" href="#id26" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>fname<span class="classifier">str</span></dt><dd><p>File name</p>
+</dd>
+<dt>fmt_type<span class="classifier">type</span></dt><dd><p>type which is used to save it =&gt; numpy.float64 used</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id27">
+<span class="sig-name descname"><span class="pre">write_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id27" title="Link to this definition">#</a></dt>
+<dd><p>Write a model with the given data in a specific format.</p>
+<section id="id28">
+<h3>Parameter<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>Name of the saved file</p>
+</dd>
+<dt>Header<span class="classifier">string</span></dt><dd><p>Header of the model</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h3>Return<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="file-profile-stk-py">
+<h2>File profile_stk.py<a class="headerlink" href="#file-profile-stk-py" title="Link to this heading">#</a></h2>
+<p>Class profile_stk with the four Stokes Parameter</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="profile_stk.Profile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">Profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile" title="Link to this definition">#</a></dt>
+<dd><p>Class containing the models of a simulation</p>
+<dl class="simple">
+<dt>Variables are:</dt><dd><ul class="simple">
+<li><p>wave</p></li>
+<li><p>stki</p></li>
+<li><p>stkq</p></li>
+<li><p>stku</p></li>
+<li><p>stkv</p></li>
+</ul>
+</dd>
+<dt>There are several functions:</dt><dd><ul class="simple">
+<li><p>read: Read a numpy file containing models and stores it into the class variables</p></li>
+<li><p>read_results: Reads the results from the inversion of SIR</p></li>
+<li><p>write: Writes a Model to a SIR readable file</p></li>
+<li><p>save: Saves the models as a numpy file</p></li>
+<li><p>set_limit: Cuts the data to a specific log_tau value (used for plotting)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialisation of the class with the Profiles</p>
+<section id="id30">
+<h3>Parameter<a class="headerlink" href="#id30" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>nx<span class="classifier">int</span></dt><dd><p>Integer of pixels in x direction</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>Integer of pixels in y direction</p>
+</dd>
+<dt>nw<span class="classifier">int</span></dt><dd><p>Number of wavelength points</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.__read_grid">
+<span class="sig-name descname"><span class="pre">__read_grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.__read_grid" title="Link to this definition">#</a></dt>
+<dd><p>Reads the grid file</p>
+<section id="id31">
+<h3>Parameter<a class="headerlink" href="#id31" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>File to be read</p>
+</dd>
+</dl>
+</section>
+<section id="id32">
+<h3>Return<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>dict<span class="classifier">Dictionary</span></dt><dd><p>Dict. with ‘Line’, ‘min’, ‘step’ and ‘max’ in it</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.__read_profile_sir">
+<span class="sig-name descname"><span class="pre">__read_profile_sir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.__read_profile_sir" title="Link to this definition">#</a></dt>
+<dd><p>Reads the first LINE data from a profile computed by SIR</p>
+<section id="id33">
+<h3>Parameter<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>String containing the path of the file</p>
+</dd>
+</dl>
+</section>
+<section id="id34">
+<h3>Return<a class="headerlink" href="#id34" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>ll<span class="classifier">numpy.array</span></dt><dd><p>Wavelengths in A</p>
+</dd>
+<dt>I<span class="classifier">numpy.array</span></dt><dd><p>Stokes I</p>
+</dd>
+<dt>Q<span class="classifier">numpy.array</span></dt><dd><p>Stokes Q</p>
+</dd>
+<dt>U<span class="classifier">numpy.array</span></dt><dd><p>Stokes U</p>
+</dd>
+<dt>V<span class="classifier">numpy.array </span></dt><dd><p>Stokes V</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.__read_profile_sir_mc">
+<span class="sig-name descname"><span class="pre">__read_profile_sir_mc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.__read_profile_sir_mc" title="Link to this definition">#</a></dt>
+<dd><p>Reads the first LINE data from a profile computed by SIR</p>
+<section id="id35">
+<h3>Parameter<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>String containing the path of the file</p>
+</dd>
+</dl>
+</section>
+<section id="id36">
+<h3>Return<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>ll<span class="classifier">numpy.array</span></dt><dd><p>Wavelengths in A</p>
+</dd>
+<dt>I<span class="classifier">numpy.array</span></dt><dd><p>Stokes I</p>
+</dd>
+<dt>Q<span class="classifier">numpy.array</span></dt><dd><p>Stokes Q</p>
+</dd>
+<dt>U<span class="classifier">numpy.array</span></dt><dd><p>Stokes U</p>
+</dd>
+<dt>V<span class="classifier">numpy.array </span></dt><dd><p>Stokes V</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.cut_to_map">
+<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.cut_to_map" title="Link to this definition">#</a></dt>
+<dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
+<section id="id37">
+<h3>Parameters<a class="headerlink" href="#id37" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>Map<span class="classifier">list</span></dt><dd><p>List with the ranges in pixel in x and y direction</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.cut_to_wave">
+<span class="sig-name descname"><span class="pre">cut_to_wave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">range_wave</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.cut_to_wave" title="Link to this definition">#</a></dt>
+<dd><p>Cut the data to the range in wavelengths</p>
+<section id="id38">
+<h3>Parameters<a class="headerlink" href="#id38" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>range_wave<span class="classifier">list</span></dt><dd><p>List with the ranges from the config file</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.read" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.read_results">
+<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.read_results" title="Link to this definition">#</a></dt>
+<dd><p>Reads all the errors from the inversion</p>
+<section id="id39">
+<h3>Parameter<a class="headerlink" href="#id39" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>task<span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
+</dd>
+<dt>filename<span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt>path<span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt>nx<span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</section>
+<section id="id40">
+<h3>Return<a class="headerlink" href="#id40" title="Link to this heading">#</a></h3>
+<p>class with the parameters</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.read_results_MC">
+<span class="sig-name descname"><span class="pre">read_results_MC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.read_results_MC" title="Link to this definition">#</a></dt>
+<dd><p>Reads all the profiles of the synthesis or inversion</p>
+<dl class="simple">
+<dt>config<span class="classifier">dict</span></dt><dd><p>Config information</p>
+</dd>
+<dt>tasks<span class="classifier">dict</span></dt><dd><p>Dictionary with the folder names</p>
+</dd>
+<dt>Type<span class="classifier">string, optional</span></dt><dd><p>Indicating if synthesis or inversion. Default: ‘syn’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.set_dim">
+<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.set_dim" title="Link to this definition">#</a></dt>
+<dd><p>Sets the dimensions if no data is loaded yet</p>
+<section id="id41">
+<h3>Parameter<a class="headerlink" href="#id41" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>nx<span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt>nw<span class="classifier">int</span></dt><dd><p>Number of wavelength points</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.write" title="Link to this definition">#</a></dt>
+<dd><p>Write data into a binary fortran file</p>
+<section id="id42">
+<h3>Parameter<a class="headerlink" href="#id42" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>fname<span class="classifier">str</span></dt><dd><p>File name</p>
+</dd>
+<dt>fmt_type<span class="classifier">type</span></dt><dd><p>type which is used to save it =&gt; numpy.float64 used</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.write_profile">
+<span class="sig-name descname"><span class="pre">write_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Grid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.write_profile" title="Link to this definition">#</a></dt>
+<dd><p>Writes data to profiles as described in the config file
+Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
+<section id="id43">
+<h3>Parameter<a class="headerlink" href="#id43" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>String containing the output path of the profile</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt>Grid<span class="classifier">string</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.write_profile_mc">
+<span class="sig-name descname"><span class="pre">write_profile_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.write_profile_mc" title="Link to this definition">#</a></dt>
+<dd><p>Writes data to profiles as described in the config file</p>
+<section id="id44">
+<h3>Parameter<a class="headerlink" href="#id44" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>String containing the output path of the profile</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt>Grid<span class="classifier">string</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id45">
+<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id45" title="Link to this definition">#</a></dt>
+<dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
+<section id="id46">
+<h3>Parameters<a class="headerlink" href="#id46" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>Map<span class="classifier">list</span></dt><dd><p>List with the ranges in pixel in x and y direction</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id47">
+<span class="sig-name descname"><span class="pre">cut_to_wave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">range_wave</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id47" title="Link to this definition">#</a></dt>
+<dd><p>Cut the data to the range in wavelengths</p>
+<section id="id48">
+<h3>Parameters<a class="headerlink" href="#id48" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>range_wave<span class="classifier">list</span></dt><dd><p>List with the ranges from the config file</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id49">
+<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id49" title="Link to this definition">#</a></dt>
+<dd><p>Reads all the errors from the inversion</p>
+<section id="id50">
+<h3>Parameter<a class="headerlink" href="#id50" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>task<span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
+</dd>
+<dt>filename<span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt>path<span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt>nx<span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</section>
+<section id="id51">
+<h3>Return<a class="headerlink" href="#id51" title="Link to this heading">#</a></h3>
+<p>class with the parameters</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id52">
+<span class="sig-name descname"><span class="pre">read_results_MC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id52" title="Link to this definition">#</a></dt>
+<dd><p>Reads all the profiles of the synthesis or inversion</p>
+<dl class="simple">
+<dt>config<span class="classifier">dict</span></dt><dd><p>Config information</p>
+</dd>
+<dt>tasks<span class="classifier">dict</span></dt><dd><p>Dictionary with the folder names</p>
+</dd>
+<dt>Type<span class="classifier">string, optional</span></dt><dd><p>Indicating if synthesis or inversion. Default: ‘syn’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id53">
+<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id53" title="Link to this definition">#</a></dt>
+<dd><p>Sets the dimensions if no data is loaded yet</p>
+<section id="id54">
+<h3>Parameter<a class="headerlink" href="#id54" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>nx<span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
+</dd>
+<dt>ny<span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt>nw<span class="classifier">int</span></dt><dd><p>Number of wavelength points</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id55">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id55" title="Link to this definition">#</a></dt>
+<dd><p>Write data into a binary fortran file</p>
+<section id="id56">
+<h3>Parameter<a class="headerlink" href="#id56" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>fname<span class="classifier">str</span></dt><dd><p>File name</p>
+</dd>
+<dt>fmt_type<span class="classifier">type</span></dt><dd><p>type which is used to save it =&gt; numpy.float64 used</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id57">
+<span class="sig-name descname"><span class="pre">write_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Grid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id57" title="Link to this definition">#</a></dt>
+<dd><p>Writes data to profiles as described in the config file
+Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
+<section id="id58">
+<h3>Parameter<a class="headerlink" href="#id58" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>String containing the output path of the profile</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt>Grid<span class="classifier">string</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id59">
+<span class="sig-name descname"><span class="pre">write_profile_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id59" title="Link to this definition">#</a></dt>
+<dd><p>Writes data to profiles as described in the config file</p>
+<section id="id60">
+<h3>Parameter<a class="headerlink" href="#id60" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">string</span></dt><dd><p>String containing the output path of the profile</p>
+</dd>
+<dt>x<span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt>y<span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt>Grid<span class="classifier">string</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="functions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Functions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-model-py">File model.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.__init__"><code class="docutils literal notranslate"><span class="pre">Model.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.correct_phi"><code class="docutils literal notranslate"><span class="pre">Model.correct_phi()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Model.cut_to_map()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.get_attribute"><code class="docutils literal notranslate"><span class="pre">Model.get_attribute()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.read"><code class="docutils literal notranslate"><span class="pre">Model.read()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.read_results"><code class="docutils literal notranslate"><span class="pre">Model.read_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.set_dim"><code class="docutils literal notranslate"><span class="pre">Model.set_dim()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.set_limit"><code class="docutils literal notranslate"><span class="pre">Model.set_limit()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.write"><code class="docutils literal notranslate"><span class="pre">Model.write()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.write_model"><code class="docutils literal notranslate"><span class="pre">Model.write_model()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Model.correct_phi()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">Model.cut_to_map()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">Model.get_attribute()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><code class="docutils literal notranslate"><span class="pre">Model.read_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><code class="docutils literal notranslate"><span class="pre">Model.set_dim()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><code class="docutils literal notranslate"><span class="pre">Model.set_limit()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id25"><code class="docutils literal notranslate"><span class="pre">Model.write()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27"><code class="docutils literal notranslate"><span class="pre">Model.write_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#file-profile-stk-py">File profile_stk.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile"><code class="docutils literal notranslate"><span class="pre">Profile</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.__init__"><code class="docutils literal notranslate"><span class="pre">Profile.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.__read_grid"><code class="docutils literal notranslate"><span class="pre">Profile.__read_grid()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.__read_profile_sir"><code class="docutils literal notranslate"><span class="pre">Profile.__read_profile_sir()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.__read_profile_sir_mc"><code class="docutils literal notranslate"><span class="pre">Profile.__read_profile_sir_mc()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_map()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.cut_to_wave"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_wave()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read"><code class="docutils literal notranslate"><span class="pre">Profile.read()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read_results"><code class="docutils literal notranslate"><span class="pre">Profile.read_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read_results_MC"><code class="docutils literal notranslate"><span class="pre">Profile.read_results_MC()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.set_dim"><code class="docutils literal notranslate"><span class="pre">Profile.set_dim()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.write"><code class="docutils literal notranslate"><span class="pre">Profile.write()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.write_profile"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.write_profile_mc"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile_mc()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_map()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id47"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_wave()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id49"><code class="docutils literal notranslate"><span class="pre">Profile.read_results()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52"><code class="docutils literal notranslate"><span class="pre">Profile.read_results_MC()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id53"><code class="docutils literal notranslate"><span class="pre">Profile.set_dim()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id55"><code class="docutils literal notranslate"><span class="pre">Profile.write()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id57"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id59"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile_mc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/classes.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Mike.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

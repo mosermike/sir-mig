@@ -7,56 +7,6 @@ from astropy.io import fits
 import definitions as d
 from os.path import exists
 
-##############################################################################################
-def load_data(conf, filename = '', add = '', add_path = True):
-	"""
-	Load the data cube as given in the config
-	
-	Parameter
-	---------
-	config : dict
-		Dictionary with all the configurations
-	filename : string, optional
-		If empty, filename from config is used. Default = ''
-	add : string, optional
-		Add this string before the extension to open corrected or
-		normalised data cube. Default: ''
-	add_path : bool, optional
-		Add the path in the config. Default: True
-
-	Return
-	------
-	numpy array
-
-	"""
-	if filename == '':
-		filename = conf['cube']
-
-	# Open norm or corrected data 
-	filename = filename.replace('.fits',add + '.fits').replace('.npy',add + '.npy')
-
-	if add_path:
-		cube = os.path.join(conf['path'],filename)
-	else:
-		cube = filename
-
-	if not exists(cube):
-		print(f"[load data] File {cube} does not exist!")
-		if add == d.end_norm:
-			print(f"            Is the normalised data cube created?")
-		sys.exit()
-		
-	if ".npy" in cube:
-		data = np.load(cube)
-	else:
-		example = fits.open(cube)
-		data = example[0].data
-		data = data
-
-	return data
-
-##############################################################################################
-
 def read_profile(profile, grid, line_file, waves):
 
 	# Read grid and line file to transform the relative llambdas

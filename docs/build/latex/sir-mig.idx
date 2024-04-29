@@ -1,0 +1,77 @@
+\indexentry{list\_to\_string() (in module sir)@\spxentry{list\_to\_string()}\spxextra{in module sir}|hyperpage}{4}
+\indexentry{option() (in module sir)@\spxentry{option()}\spxextra{in module sir}|hyperpage}{4}
+\indexentry{read\_chi2() (in module sir)@\spxentry{read\_chi2()}\spxextra{in module sir}|hyperpage}{4}
+\indexentry{read\_chi2s() (in module sir)@\spxentry{read\_chi2s()}\spxextra{in module sir}|hyperpage}{5}
+\indexentry{read\_grid() (in module sir)@\spxentry{read\_grid()}\spxextra{in module sir}|hyperpage}{5}
+\indexentry{read\_line() (in module sir)@\spxentry{read\_line()}\spxextra{in module sir}|hyperpage}{5}
+\indexentry{read\_config() (in module sir)@\spxentry{read\_config()}\spxextra{in module sir}|hyperpage}{6}
+\indexentry{read\_control() (in module sir)@\spxentry{read\_control()}\spxextra{in module sir}|hyperpage}{6}
+\indexentry{read\_model() (in module sir)@\spxentry{read\_model()}\spxextra{in module sir}|hyperpage}{6}
+\indexentry{read\_profile() (in module sir)@\spxentry{read\_profile()}\spxextra{in module sir}|hyperpage}{7}
+\indexentry{write\_config\_1c() (in module sir)@\spxentry{write\_config\_1c()}\spxextra{in module sir}|hyperpage}{8}
+\indexentry{write\_config\_2c() (in module sir)@\spxentry{write\_config\_2c()}\spxextra{in module sir}|hyperpage}{8}
+\indexentry{write\_config\_mc() (in module sir)@\spxentry{write\_config\_mc()}\spxextra{in module sir}|hyperpage}{8}
+\indexentry{write\_config() (in module sir)@\spxentry{write\_config()}\spxextra{in module sir}|hyperpage}{8}
+\indexentry{write\_control\_1c() (in module sir)@\spxentry{write\_control\_1c()}\spxextra{in module sir}|hyperpage}{9}
+\indexentry{write\_control\_2c() (in module sir)@\spxentry{write\_control\_2c()}\spxextra{in module sir}|hyperpage}{9}
+\indexentry{write\_control\_mc() (in module sir)@\spxentry{write\_control\_mc()}\spxextra{in module sir}|hyperpage}{9}
+\indexentry{write\_grid() (in module sir)@\spxentry{write\_grid()}\spxextra{in module sir}|hyperpage}{9}
+\indexentry{write\_grid\_mc() (in module sir)@\spxentry{write\_grid\_mc()}\spxextra{in module sir}|hyperpage}{10}
+\indexentry{write\_model() (in module sir)@\spxentry{write\_model()}\spxextra{in module sir}|hyperpage}{10}
+\indexentry{write\_profile() (in module sir)@\spxentry{write\_profile()}\spxextra{in module sir}|hyperpage}{11}
+\indexentry{config\_MC() (in module create\_config)@\spxentry{config\_MC()}\spxextra{in module create\_config}|hyperpage}{11}
+\indexentry{config\_1C() (in module create\_config)@\spxentry{config\_1C()}\spxextra{in module create\_config}|hyperpage}{12}
+\indexentry{config\_2C() (in module create\_config)@\spxentry{config\_2C()}\spxextra{in module create\_config}|hyperpage}{12}
+\indexentry{main() (in module main)@\spxentry{main()}\spxextra{in module main}|hyperpage}{12}
+\indexentry{read\_model() (in module model)@\spxentry{read\_model()}\spxextra{in module model}|hyperpage}{13}
+\indexentry{read\_profile() (in module obs)@\spxentry{read\_profile()}\spxextra{in module obs}|hyperpage}{13}
+\indexentry{write\_psf() (in module obs)@\spxentry{write\_psf()}\spxextra{in module obs}|hyperpage}{13}
+\indexentry{Model (class in model)@\spxentry{Model}\spxextra{class in model}|hyperpage}{13}
+\indexentry{\_\_init\_\_() (model.Model method)@\spxentry{\_\_init\_\_()}\spxextra{model.Model method}|hyperpage}{14}
+\indexentry{correct\_phi() (model.Model method)@\spxentry{correct\_phi()}\spxextra{model.Model method}|hyperpage}{14}
+\indexentry{cut\_to\_map() (model.Model method)@\spxentry{cut\_to\_map()}\spxextra{model.Model method}|hyperpage}{14}
+\indexentry{get\_attribute() (model.Model method)@\spxentry{get\_attribute()}\spxextra{model.Model method}|hyperpage}{15}
+\indexentry{read() (model.Model method)@\spxentry{read()}\spxextra{model.Model method}|hyperpage}{15}
+\indexentry{read\_results() (model.Model method)@\spxentry{read\_results()}\spxextra{model.Model method}|hyperpage}{15}
+\indexentry{set\_dim() (model.Model method)@\spxentry{set\_dim()}\spxextra{model.Model method}|hyperpage}{15}
+\indexentry{set\_limit() (model.Model method)@\spxentry{set\_limit()}\spxextra{model.Model method}|hyperpage}{16}
+\indexentry{write() (model.Model method)@\spxentry{write()}\spxextra{model.Model method}|hyperpage}{16}
+\indexentry{write\_model() (model.Model method)@\spxentry{write\_model()}\spxextra{model.Model method}|hyperpage}{16}
+\indexentry{correct\_phi() (model.Model method)@\spxentry{correct\_phi()}\spxextra{model.Model method}|hyperpage}{17}
+\indexentry{cut\_to\_map() (model.Model method)@\spxentry{cut\_to\_map()}\spxextra{model.Model method}|hyperpage}{17}
+\indexentry{get\_attribute() (model.Model method)@\spxentry{get\_attribute()}\spxextra{model.Model method}|hyperpage}{17}
+\indexentry{read\_results() (model.Model method)@\spxentry{read\_results()}\spxextra{model.Model method}|hyperpage}{17}
+\indexentry{set\_dim() (model.Model method)@\spxentry{set\_dim()}\spxextra{model.Model method}|hyperpage}{18}
+\indexentry{set\_limit() (model.Model method)@\spxentry{set\_limit()}\spxextra{model.Model method}|hyperpage}{18}
+\indexentry{write() (model.Model method)@\spxentry{write()}\spxextra{model.Model method}|hyperpage}{18}
+\indexentry{write\_model() (model.Model method)@\spxentry{write\_model()}\spxextra{model.Model method}|hyperpage}{19}
+\indexentry{Profile (class in profile\_stk)@\spxentry{Profile}\spxextra{class in profile\_stk}|hyperpage}{19}
+\indexentry{\_\_init\_\_() (profile\_stk.Profile method)@\spxentry{\_\_init\_\_()}\spxextra{profile\_stk.Profile method}|hyperpage}{19}
+\indexentry{\_\_read\_grid() (profile\_stk.Profile method)@\spxentry{\_\_read\_grid()}\spxextra{profile\_stk.Profile method}|hyperpage}{20}
+\indexentry{\_\_read\_profile\_sir() (profile\_stk.Profile method)@\spxentry{\_\_read\_profile\_sir()}\spxextra{profile\_stk.Profile method}|hyperpage}{20}
+\indexentry{\_\_read\_profile\_sir\_mc() (profile\_stk.Profile method)@\spxentry{\_\_read\_profile\_sir\_mc()}\spxextra{profile\_stk.Profile method}|hyperpage}{20}
+\indexentry{cut\_to\_map() (profile\_stk.Profile method)@\spxentry{cut\_to\_map()}\spxextra{profile\_stk.Profile method}|hyperpage}{21}
+\indexentry{cut\_to\_wave() (profile\_stk.Profile method)@\spxentry{cut\_to\_wave()}\spxextra{profile\_stk.Profile method}|hyperpage}{21}
+\indexentry{read() (profile\_stk.Profile method)@\spxentry{read()}\spxextra{profile\_stk.Profile method}|hyperpage}{21}
+\indexentry{read\_results() (profile\_stk.Profile method)@\spxentry{read\_results()}\spxextra{profile\_stk.Profile method}|hyperpage}{21}
+\indexentry{read\_results\_MC() (profile\_stk.Profile method)@\spxentry{read\_results\_MC()}\spxextra{profile\_stk.Profile method}|hyperpage}{22}
+\indexentry{set\_dim() (profile\_stk.Profile method)@\spxentry{set\_dim()}\spxextra{profile\_stk.Profile method}|hyperpage}{22}
+\indexentry{write() (profile\_stk.Profile method)@\spxentry{write()}\spxextra{profile\_stk.Profile method}|hyperpage}{22}
+\indexentry{write\_profile() (profile\_stk.Profile method)@\spxentry{write\_profile()}\spxextra{profile\_stk.Profile method}|hyperpage}{23}
+\indexentry{write\_profile\_mc() (profile\_stk.Profile method)@\spxentry{write\_profile\_mc()}\spxextra{profile\_stk.Profile method}|hyperpage}{23}
+\indexentry{cut\_to\_map() (profile\_stk.Profile method)@\spxentry{cut\_to\_map()}\spxextra{profile\_stk.Profile method}|hyperpage}{23}
+\indexentry{cut\_to\_wave() (profile\_stk.Profile method)@\spxentry{cut\_to\_wave()}\spxextra{profile\_stk.Profile method}|hyperpage}{24}
+\indexentry{read\_results() (profile\_stk.Profile method)@\spxentry{read\_results()}\spxextra{profile\_stk.Profile method}|hyperpage}{24}
+\indexentry{read\_results\_MC() (profile\_stk.Profile method)@\spxentry{read\_results\_MC()}\spxextra{profile\_stk.Profile method}|hyperpage}{24}
+\indexentry{set\_dim() (profile\_stk.Profile method)@\spxentry{set\_dim()}\spxextra{profile\_stk.Profile method}|hyperpage}{24}
+\indexentry{write() (profile\_stk.Profile method)@\spxentry{write()}\spxextra{profile\_stk.Profile method}|hyperpage}{25}
+\indexentry{write\_profile() (profile\_stk.Profile method)@\spxentry{write\_profile()}\spxextra{profile\_stk.Profile method}|hyperpage}{25}
+\indexentry{write\_profile\_mc() (profile\_stk.Profile method)@\spxentry{write\_profile\_mc()}\spxextra{profile\_stk.Profile method}|hyperpage}{25}
+\indexentry{module@\spxentry{module}!create\_config@\spxentry{create\_config}|hyperpage}{26}
+\indexentry{create\_config@\spxentry{create\_config}!module@\spxentry{module}|hyperpage}{26}
+\indexentry{module@\spxentry{module}!sir@\spxentry{sir}|hyperpage}{26}
+\indexentry{sir@\spxentry{sir}!module@\spxentry{module}|hyperpage}{26}
+\indexentry{module@\spxentry{module}!model@\spxentry{model}|hyperpage}{27}
+\indexentry{model@\spxentry{model}!module@\spxentry{module}|hyperpage}{27}
+\indexentry{module@\spxentry{module}!profile\_stk@\spxentry{profile\_stk}|hyperpage}{28}
+\indexentry{profile\_stk@\spxentry{profile\_stk}!module@\spxentry{module}|hyperpage}{28}

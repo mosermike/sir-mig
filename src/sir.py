@@ -15,8 +15,8 @@ def read_config(filename, check = True, change_config = False):
 	"""
 	Reads a config file for the inversion
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Path of the control file
 	check : bool, optional
@@ -25,8 +25,8 @@ def read_config(filename, check = True, change_config = False):
 		config file is read to be changed (=> Do not try to load anything) (Default: False)
 	
 
-	Return
-	------
+	Returns
+	-------
 	Dict : dict
 		Dict containing all the information from the config file
 	
@@ -431,6 +431,7 @@ def list_to_string(temp, let = ','):
 	Parameter
 	---------
 	temp : list
+		List with the information which is converted into a string
 	let : str
 		Letter which is added as a separation
 
