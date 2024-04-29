@@ -10,7 +10,7 @@ import time
 import glob
 import sys
 import sir
-from _MC.create_random_guess import create_guesses
+from create_random_guess import create_guesses_1c as create_guesses
 from os.path import exists
 import datetime
 import definitions as d
@@ -240,14 +240,16 @@ def execute_inversion(conf, task_folder):
 	None
 	"""
 	# Define parameters for simplicity reasons
-	shutil.move(conf['model'], d.model_inv)
+	shutil.copy(conf['model'], d.model_inv)
 	model = d.model_inv
 	guess1 = d.model_inv.replace(".mod", "")  # For simplicity
 	cycles = conf["cycles"]
 	chi_file = d.inv_trol_file[:d.inv_trol_file.rfind('.')] + ".chi"
 	
+	# Remove chi2 result file in case it exists
 	if exists(chi_file):
 		os.remove(chi_file)
+
 	###################
 	# START INVERSION #
 	###################
@@ -255,9 +257,6 @@ def execute_inversion(conf, task_folder):
 	if conf["random_guess"] > 0:
 		# Initialize the chi2 map
 		chi2 = np.zeros(conf["random_guess"])
-
-		# Create random guesses depending on the configurations
-		create_guesses(conf, output="./")
 
 		# Perform inversion for each guess model and copy files
 
@@ -268,7 +267,7 @@ def execute_inversion(conf, task_folder):
 				# Create New Guess
 				create_guesses(conf, output="./", number=i+1)
 				# Copy to the model
-				shutil.copy(guess1 + str(i+1) + ".mod", model)
+				shutil.copy(d.model + str(i+1) + ".mod", d.model_inv)
 				# Execute inversion
 				os.system(f"echo {d.inv_trol_file} | ./sir.x >> inv.log 2>&1")
 				# Sometimes it does not converge and when only 8 cols are used, the programme could crash
@@ -353,12 +352,12 @@ def execute_inversion(conf, task_folder):
 			shutil.copy(f"{guess1}__{str(chi2_best+1)}.mod", f"{guess1}_{cycles}.mod")
 			shutil.copy(f"{guess1}__{str(chi2_best+1)}.err", f"{guess1}_{cycles}.err")
 			shutil.copy(f"{guess1}__{str(chi2_best+1)}.per", f"{guess1}_{cycles}.per")
-			shutil.copy(f"{guess1}{str(chi2_best+1)}.mod", f"{d.best_guess}")  # Copy best guess model
+			shutil.copy(f"{d.model}{str(chi2_best+1)}.mod", f"{d.best_guess}")  # Copy best guess model
 
 	else:
 		# Perform inversion once and read chi2 value
 		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
-		shutil.copy(model, d.best_guess)
+		shutil.move(model, d.best_guess)
 		# Remove not needed files
 		for i in range(int(cycles)-1):
 			os.remove(f"{guess1}_{i+1}.mod")

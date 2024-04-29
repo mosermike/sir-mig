@@ -48,6 +48,7 @@ best_guess1 = 'best_guess1.mod'  # Name of the best guess model (best model is s
 best_guess2 = 'best_guess2.mod'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
 task_start = ".task_"	# Start of the task folders
 profile = 'profile.per' # Name of the observed profile in the synthesis/inversion
+model = 'model_'  # Generic name for creating guesses for Model 1 for 1C
 model1 = 'model1_'  # Generic name for creating guesses for Model 1 for 2C
 model2 = 'model2_'  # Generic name for creating guesses for Model 2 for 2C
 profile_obs = profile  # Name of the observed profile in the inversion

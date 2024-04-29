@@ -61,7 +61,7 @@ class Profile:
 
 		self.data_cut = False
 
-	def __read_grid(filename):
+	def __read_grid(self, filename):
 		"""
 		Reads the grid file
 		
@@ -118,7 +118,7 @@ class Profile:
 		return Dict
 
 
-	def __read_profile_sir(filename):
+	def __read_profile_sir(self, filename):
 		"""
 		Reads the first LINE data from a profile computed by SIR
 		
@@ -150,7 +150,7 @@ class Profile:
 
 		return np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
 
-	def __read_profile_sir_mc(filename):
+	def __read_profile_sir_mc(self, filename):
 		"""
 		Reads the first LINE data from a profile computed by SIR
 		
@@ -597,7 +597,7 @@ def read_profile(file):
 	Returns
 	-------
 	class Profile
-	
+
 	"""
 	pro = Profile(0,0,0)
 	pro.read(file)

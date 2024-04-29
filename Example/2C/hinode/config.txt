@@ -20,6 +20,7 @@ fts_file : path to fts file # Absolute fts file, blank = do not correct spectral
 # 
 model1 : model1.mod # Base Model 1 for guess
 model2 : model2.mod # Base Model 2 for guess
+fill : 0.5,0.5 # Filling factors for both models separated by a ',' (if random_guess > 0)
 range_wave : ll1_min,step1, num1;ll2_min,step2, num2 # # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.
 inv_out : inversion # Prefix of the output of the inversion files
 chi2 : chi2.npy # Output of the chi2 values (npy)

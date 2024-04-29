@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Visualizes the spectra and model interactively at different pixels.
 """

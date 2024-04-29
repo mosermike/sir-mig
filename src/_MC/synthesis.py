@@ -95,7 +95,7 @@ def create_task_folder_list(num):
 	return Dict
 
 
-def synthesis(conf, comm, rank, size):
+def synthesis(conf, comm, rank, size, MPI):
 	"""
 	Performs the synthesis of all the models.
 

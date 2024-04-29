@@ -418,11 +418,14 @@ def config_2C():
 	random_guess	= input ("Number of random guess models (0 = use base model): ")
 	if random_guess != '0':
 		random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
+		fill		= input ("Filling factor for the two models? Seperated by a ',': ")
 	else:
 		random_pars = ''
+		fill = ''
 	guess1		= input ("Take bin file as initial guess for model 1? Write name of the file, if used: ")
 	guess2		= input ("Take bin file as initial guess for model 2? Write name of the file, if used: ")
-	psf			 = input ("Filename of psf (.dat file, if it does not exist => Compute from spectral veil corr., blank = not used): ")
+	psf			= input ("Filename of psf (.dat file, if it does not exist => Compute from spectral veil corr., blank = not used): ")
+	fill		= input ("Filling factor for the two models? Seperated by a ',': ")
 
 	weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
 	nodes_temp1	= input ("Nodes 1 in temperature  (as list)		: ")
@@ -514,6 +517,7 @@ def config_2C():
 		f.write(f"# \n")
 		f.write(f"model1 : {model1} # Base Model 1 for guess\n")
 		f.write(f"model2 : {model2} # Base Model 2 for guess\n")
+		f.write(f"fill : {fill} # Filling factors for both models separated by a ',' (if random_guess > 0)\n")
 		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
 		f.write(f"inv_out : {inv_out} # Prefix of the output of the inversion files\n")
 		f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")

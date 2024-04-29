@@ -599,6 +599,7 @@ def write_config_2c(File, conf):
 		f.write(f"# \n")
 		f.write(f"model1 : {conf['model1']} # Base Model 1 for guess\n")
 		f.write(f"model2 : {conf['model2']} # Base Model 2 for guess\n")
+		f.write(f"fill : {conf['fill']} # Filling factors for both models separated by a ',' (if random_guess > 0)\n")
 		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")

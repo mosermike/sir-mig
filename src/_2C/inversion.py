@@ -8,7 +8,7 @@ import time
 import sys
 import sir
 import obs
-from _2C.create_random_guess import create_guesses
+from create_random_guess import create_guesses_2c as create_guesses
 from os.path import exists
 import glob
 import datetime

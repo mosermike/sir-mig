@@ -147,7 +147,7 @@ def main():
 			# Perform Synthesis #
 			#####################
 			if not "--no-syn" in sys.argv:
-				_MC.synthesis.synthesis(conf, comm, rank, size)
+				_MC.synthesis.synthesis(conf, comm, rank, size, MPI)
 
 			comm.barrier()
 
