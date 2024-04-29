@@ -11,88 +11,8 @@ import model as m
 import profile_stk as p
 import definitions as d
 import numpy as np
+from misc import create_task_folder_list
 
-def help():
-	"""
-	Help page
-	"""	
-	print("synthesis - Executes the synthesis")
-	print("Usage: python synthesis.py [OPTION]")
-	print()
-	print("1:  Config file")
-	sys.exit()
-	
-def x_y_add_zeros(x,y):
-	"""
-	Adds zeros so that the returning strings have 4 letters
-
-	Parameter
-	---------
-	x : float
-		x position
-	y : float
-		y position
-
-	Return
-	------
-	x as a string of 4 letters
-	y as a string of 4 letters
-	"""
-	if x < 10:
-		x_str = "000" + str(x)
-	elif x < 100:
-		x_str = "00" + str(x)
-	elif x < 1000:
-		x_str = "0" + str(x)
-	else:
-		x_str = str(x)
-	if y < 10:
-		y_str = "000" + str(y)
-	elif y < 100:
-		y_str = "00" + str(y)
-	elif y < 1000:
-		y_str = "0" + str(y)
-	else:
-		y_str = str(y)
-
-	return x_str, y_str
-
-
-def create_task_folder_list(num):
-	"""
-	Creates a list which folders should be created and executed. This is done so
-	that the inversion itself can be executed linearly to make use of all cores.
-
-	Parameter
-	---------
-	num : int
-		Number of models
-
-	Return
-	------
-	Dictionary with all the names of the task folders, x and y position
-	"""
-	# Create arrays
-	tasks = []
-	xs = []
-	ys = []
-	
-	y = 0
-	# Determine task folder names
-	for x in range(num):
-		x_str, y_str = x_y_add_zeros(x,0)
-
-		tasks.append(d.task_start + x_str + "_" + y_str)
-		xs.append(x)
-		ys.append(y)
-	Dict = {
-			'folders' : tasks,
-			'x' : np.array(xs),
-			'y' : np.array(ys),
-	
-	}
-
-	return Dict
 
 
 def synthesis(conf, comm, rank, size, MPI):
@@ -197,3 +117,61 @@ def synthesis(conf, comm, rank, size, MPI):
 		print(f"\r-------> Finished with {conf['num']} synthesised models.")
 
 	comm.barrier()
+
+
+"""
+*****************************************************************************
+*								ADDING NOISE TO								*
+*									PROFILES								*
+*****************************************************************************
+"""
+
+def add_noise(conf: dict, verbose: bool = True) -> None:
+	"""
+	Adds noise to the Stokes Profiles
+
+	Parameter
+	---------
+	conf : dict
+		Information from the config file
+	verbose : bool, optional
+		Print out status. Default: True
+
+	Return
+	------
+	None
+
+
+	"""
+	if verbose:
+		print("[STATUS] Add noise to the synthesised profiles")
+	##################
+	# READ ARGUMENTS #
+	##################
+	path = conf["path"]
+	Input = os.path.join(path, conf["syn_out"])			# Input synthesised model profiles/syn
+	Output = os.path.join(path, conf["noise_out"])		# Generic output profiles/noise
+
+	noise_I = conf['noise_I']  # Noise in I
+	noise_Q = conf['noise_Q']  # Noise in Q
+	noise_U = conf['noise_U']  # Noise in U
+	noise_V = conf['noise_V']  # Noise in V
+
+	#############################
+	# ADD NOISE TO EACH PROFILE #
+	#############################
+	syn = p.read_profile(Input)
+
+	noise_Is = np.random.normal(scale=float(noise_I), size=(syn.nx, syn.ny, syn.nw))
+	noise_Qs = np.random.normal(scale=float(noise_Q), size=(syn.nx, syn.ny, syn.nw))
+	noise_Us = np.random.normal(scale=float(noise_U), size=(syn.nx, syn.ny, syn.nw))
+	noise_Vs = np.random.normal(scale=float(noise_V), size=(syn.nx, syn.ny, syn.nw))
+
+	syn.stki = syn.stki + noise_Is
+	syn.stkq = syn.stkq + noise_Qs
+	syn.stku = syn.stku + noise_Us
+	syn.stkv = syn.stkv + noise_Vs
+
+	syn.write(Output)
+
+	return

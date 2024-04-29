@@ -111,8 +111,7 @@ def main():
 
 	if conf['mode'] == 'MC':
 		import create_models  # Creating Models
-		import add_noise	  # Adding Noise
-		import synthesis	  # Synthesis
+		import create_profiles  # Create profiles
 		if rank == 0:
 			# Check for flags and print it out
 			if "--no-create" in sys.argv:
@@ -144,7 +143,7 @@ def main():
 			# Perform Synthesis #
 			#####################
 			if not "--no-syn" in sys.argv:
-				synthesis.synthesis(conf, comm, rank, size, MPI)
+				create_profiles.synthesis(conf, comm, rank, size, MPI)
 
 			comm.barrier()
 
@@ -156,7 +155,7 @@ def main():
 					print("-------> Skip adding noise ...")
 				else:
 					print("[STATUS] Add noise")
-					add_noise.add_noise(conf, False)
+					create_profiles.add_noise(conf, False)
 		else:
 			if rank == 0:
 				print("[STATUS] Only perform inversion")
