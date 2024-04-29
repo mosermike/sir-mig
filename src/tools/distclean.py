@@ -33,12 +33,12 @@ if conf['path'] != os.path.abspath(os.getcwd()):
 		sys.exit()
 
 if conf['mode'] == "1C":
-
-	os.system(f"rm -rv {os.path.join(path,conf['cube'].replace('.npy','')+d.end_norm + '.npy')}")
+	if conf["preprocess"] == "1":
+		os.system(f"rm -rv {os.path.join(path,conf['cube'].replace('.bin','')+d.end_norm + '.bin')}")
 	os.system(f"rm -rv {inv_out+d.end_stokes}")
 	os.system(f"rm -rv {inv_out+d.end_models}")
 	os.system(f"rm -rv {inv_out+d.end_errors}")
-	os.system(f"rm -rv {os.path.join(path,d.best_guess.replace('.mod','.npy'))}")
+	os.system(f"rm -rv {os.path.join(path,d.best_guess.replace('.mod','.bin'))}")
 	os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
 	os.system(f"rm -rv {os.path.join(path,conf['waves'])}")
 	os.system(f"rm -rv {os.path.join(path,d.inv_trol_file)}")
@@ -50,14 +50,14 @@ if conf['mode'] == "1C":
 		os.system(f"rm -rv {os.path.join(path,conf['psf'])}")
 
 elif conf['mode'] == '2C':
-	os.system(f"rm -rv {os.path.join(path,conf['cube'].replace('.npy','')+d.end_norm + '.npy')}")
+	os.system(f"rm -rv {os.path.join(path,conf['cube'].replace('.bin','')+d.end_norm + '.bin')}")
 	os.system(f"rm -rv {inv_out+d.end_stokes}")
 	os.system(f"rm -rv {inv_out+d.end_models1}")
 	os.system(f"rm -rv {inv_out+d.end_models2}")
 	os.system(f"rm -rv {inv_out+d.end_errors1}")
 	os.system(f"rm -rv {inv_out+d.end_errors2}")
-	os.system(f"rm -rv {os.path.join(path,d.best_guess1.replace('.mod','.npy'))}")
-	os.system(f"rm -rv {os.path.join(path,d.best_guess2.replace('.mod','.npy'))}")
+	os.system(f"rm -rv {os.path.join(path,d.best_guess1.replace('.mod','.bin'))}")
+	os.system(f"rm -rv {os.path.join(path,d.best_guess2.replace('.mod','.bin'))}")
 	os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
 	os.system(f"rm -rv {os.path.join(path,conf['waves'])}")
 	os.system(f"rm -rv {os.path.join(path,d.inv_trol_file)}")
@@ -72,8 +72,8 @@ elif conf['mode'] == "MC":
 	if conf["guess"] != '':
 		guess   = os.path.join(path,conf["guess"])
 		os.system(f"rm -rf {guess}")
-	os.system(f"rm -rv {os.path.join(path,d.syn_trol_file)}")
-	os.system(f"rm -rv {os.path.join(path,d.inv_trol_file)}")
+	os.system(f"rm -rf {os.path.join(path,d.syn_trol_file)}")
+	os.system(f"rm -rf {os.path.join(path,d.inv_trol_file)}")
 	os.system(f"rm -rf {os.path.join(path, d.Grid)}")
 	os.system(f"rm -rf {os.path.join(path, conf['chi2'])}")
 	os.system(f"rm -rf {os.path.join(path, conf['model_out'])}")
@@ -82,7 +82,7 @@ elif conf['mode'] == "MC":
 	os.system(f"rm -rf {inv_out + d.end_stokes}*")
 	os.system(f"rm -rf {inv_out + d.end_models}")
 	os.system(f"rm -rf {inv_out + d.end_errors}")
-	os.system(f"rm -rf {os.path.join(path,d.best_guess.replace('.mod','.npy'))}")
+	os.system(f"rm -rf	{os.path.join(path,d.best_guess.replace('.mod','.bin'))}")
 
 else:
 	print("[distclean] Mode unknown")

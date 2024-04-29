@@ -17,6 +17,8 @@ from astropy.convolution import convolve_fft, convolve
 from shutil import which
 
 # TODO SAVE AS PROFILE BINARY FILE
+print("TODO AS A BINARY FILE")
+sys.exit()
 #############
 # Help page #
 #############

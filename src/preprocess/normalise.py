@@ -12,6 +12,8 @@ import definitions as d
 import obs
 
 # TODO SAVE AS PROFILE BINARY FILE
+print("TODO AS A BINARY FILE")
+sys.exit()
 
 def help():
 	print("normalise.py - Normalises a data cube")

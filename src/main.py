@@ -6,7 +6,7 @@ from os.path import exists
 import sir
 import definitions as d
 from misc import *
-
+import inversion
 def help():
 	"""
 	Help Page
@@ -101,21 +101,18 @@ def main():
 		#####################
 		# PERFORM INVERSION #
 		#####################
-		import _1C.inversion
-		_1C.inversion.inversion(conf, comm, rank, size, MPI)
+		inversion.inversion_1c(conf, comm, rank, size, MPI)
 
 	if conf['mode'] == '2C':
 		#####################
 		# PERFORM INVERSION #
 		#####################
-		import _2C.inversion
-		_2C.inversion.inversion(conf, comm, rank, size, MPI)
+		inversion.inversion_2c(conf, comm, rank, size, MPI)
 
 	if conf['mode'] == 'MC':
-		import _MC.create_models  # Creating Models
-		import _MC.add_noise	  # Adding Noise
-		import _MC.synthesis	  # Synthesis
-		import _MC.inversion	  # Inversion
+		import create_models  # Creating Models
+		import add_noise	  # Adding Noise
+		import synthesis	  # Synthesis
 		if rank == 0:
 			# Check for flags and print it out
 			if "--no-create" in sys.argv:
@@ -138,7 +135,7 @@ def main():
 					print("-------> Skip creating models ...")
 				else:
 					print("[STATUS] Create Models")
-					_MC.create_models.create_models(conf)
+					create_models.create_models(conf)
 				print("[STATUS] Perform synthesis")
 
 			comm.barrier()
@@ -147,7 +144,7 @@ def main():
 			# Perform Synthesis #
 			#####################
 			if not "--no-syn" in sys.argv:
-				_MC.synthesis.synthesis(conf, comm, rank, size, MPI)
+				synthesis.synthesis(conf, comm, rank, size, MPI)
 
 			comm.barrier()
 
@@ -159,7 +156,7 @@ def main():
 					print("-------> Skip adding noise ...")
 				else:
 					print("[STATUS] Add noise")
-					_MC.add_noise.add_noise(conf, False)
+					add_noise.add_noise(conf, False)
 		else:
 			if rank == 0:
 				print("[STATUS] Only perform inversion")
@@ -168,7 +165,7 @@ def main():
 			#####################
 			# PERFORM INVERSION #
 			#####################
-			_MC.inversion.inversion(conf, comm, rank, size, MPI)
+			inversion.inversion_mc(conf, comm, rank, size, MPI)
 
 
 

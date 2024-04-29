@@ -11,6 +11,8 @@ sys.path.append("..")
 import sir
 import definitions as d
 # TODO SAVE AS PROFILE BINARY FILE
+print("TODO AS A BINARY FILE")
+sys.exit()
 
 def help_page():
 	print("merge - Merging data into a data cube")

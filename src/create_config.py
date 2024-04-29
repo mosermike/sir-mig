@@ -136,7 +136,7 @@ def config_MC():
 	if abundance == '':
 		abundance = 'THEVENIN'
 	if vmacro == '':
-		abundance = '0.1000'
+		vmacro = '0.1000'
 	if chi2 == '':
 		chi2 = 'chi2.npy'
 	if line == '':
@@ -438,7 +438,7 @@ def config_2C():
 	nodes_vlos2	= input ("Nodes 2 in velocity los (as list)        : ")
 	nodes_gamma2	= input ("Nodes 2 in inclination/gamma (as list)   : ")
 	nodes_phi2	= input ("Nodes 2 in azimuth/phi (as list)         : ")
-
+	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
 	mu_cos		= input ("mu = cos theta                         : ")
 	abundance		= input ("Abundance file               [THEVENIN]: ")
 	chi2			= input ("File for chi2 map            [chi2.npy]: ")
@@ -486,6 +486,8 @@ def config_2C():
 		chi2 = 'chi2.npy'
 	if weights == '':
 		weights = '1,1,1,1'
+	if vmacro == '':
+		vmacro = '0.1000'
 	if random_pars == '':
 		random_pars = "B,T,vlos,gamma"
 	if gas_pressure == "-1":
@@ -541,6 +543,7 @@ def config_2C():
 		f.write(f"nodes_vlos2 : {nodes_vlos2} # Nodes in vlos\n")
 		f.write(f"nodes_gamma2 : {nodes_gamma2} # Nodes in gamma\n")
 		f.write(f"nodes_phi2 : {nodes_phi2} # Nodes in phi\n")
+		f.write(f"vmacro : {vmacro} # Macroturbulence velocity\n")
 		f.write(f"mu_cos : {mu_cos} # mu = cos theta\n")
 		f.write(f"abundance : {abundance} # Abundance file\n")
 		f.write(f"gas_pressure : {gas_pressure} # Gas Pressure Boundary condition\n")
