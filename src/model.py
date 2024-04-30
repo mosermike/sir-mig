@@ -20,15 +20,16 @@ class Model:
 		- gamma
 		- phi
 		- z
-		- pg
+		- Pg
 		- rho
+		- fill
 
 
 	There are several functions:
-		- read: Read a numpy file containing models and stores it into the class variables
+		- read: Read a binary file containing models and stores it into the class variables
 		- read_results: Reads the results from the inversion of SIR
-		- write: Writes a Model to a SIR readable file
-		- save: Saves the models as a numpy file
+		- write_model: Writes a Model to a SIR readable file
+		- write: Saves the models as a binary file
 		- set_limit: Cuts the data to a specific log_tau value (used for plotting)
 
 
@@ -61,7 +62,7 @@ class Model:
 		self.z = np.zeros(shape=(nx,ny,nval), dtype=np.float64)
 		self.Pg = np.zeros(shape=(nx,ny,nval), dtype=np.float64)
 		self.rho = np.zeros(shape=(nx,ny,nval), dtype=np.float64)
-		self.fill = np.zeros(shape=(nx,ny), dtype=np.float64)
+		self.fill = np.ones(shape=(nx,ny), dtype=np.float64)
 
 	def correct_phi(self):
 		"""
@@ -161,6 +162,46 @@ class Model:
 			return self.fill
 		return None
 
+	def interp(self, new_tau):
+		"""
+		Interpolate the model to a new log tau scale.
+
+		Parameter
+		---------
+		new_tau : numpy array
+			New log tau scale
+		
+		Return
+		------
+		None
+		"""
+		# Perform some checks
+		if self.nval != len(new_tau):
+			print(f"[interp] Error as the shape is incorecct ({len(new_tau)} vs. {self.nval})")
+			return self
+		if new_tau[-1] < self.log_tau[-1]:
+			print(f"[interp] Error as the scale exceeds the borders of the model ({new_tau[-1]} vs. {self.log_tau[-1]})")
+			return self
+		if new_tau[0] > self.log_tau[0]:
+			print(f"[interp] Error as the scale exceeds the borders of the model ({new_tau[0]} vs. {self.log_tau[0]})")
+			return self
+		
+		for x in self.nx:
+			for y in self.y:
+				self.T[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.T[x,y]))
+				self.Pe[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.Pe[x,y]))
+				self.vmicro[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.vmicro[x,y]))
+				self.B[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.B[x,y]))
+				self.vlos[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.vlos[x,y]))
+				self.gamma[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.gamma[x,y]))
+				self.phi[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.phi[x,y]))
+				if self.full or np.any(self.z):
+					self.z[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.z[x,y]))
+					self.Pg[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.Pg[x,y]))
+					self.rho[x,y] = np.interp(new_tau, np.flip(self.log_tau), np.flip(self.rho[x,y]))
+		self.log_tau = new_tau
+
+		return self
 
 	def read(self, fname, fmt_type=np.float64):
 		
@@ -474,7 +515,7 @@ class Model:
 
 		f = open(filename, 'w')
 		f.write(f"{header}\n")
-		if self.full:
+		if self.full or np.any(self.rho):
 			for n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11 in zip(self.log_tau, self.T[x, y], self.Pe[x, y],
 																	self.vmicro[x, y], self.B[x, y], self.vlos[x, y]*1.0e5,
 																	self.gamma[x, y], self.phi[x, y], self.z[x, y],
