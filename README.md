@@ -68,10 +68,6 @@ in the src directory of the SIR code.
 		python [path to here]/src/correction_spectral_veil.py [config file]
 	```
 
-  4. Performing the inversion:
-	```
-		mpirun -np [num. of processes] python [path to here]/src/inversion.py [config file]
-	```
  3. To plot the results at specific wavelengths and log taus, use the script
 	```
 		python [path to here]/src/plot/result.py [config.py]
@@ -93,26 +89,17 @@ In the directory `example`, several files are put. An examplary config file for 
 ```bash
 .
 ├── create_config.py                  - Create config file as expected from the code
+├── create_models.py                  - Create models with 2 or 3 nodes and T based on HSRA.
+├── create_profiles.py                - Performs the MC synthesis and adds noise to the created, random profiles
+├── create_random_guess.py            - Creates random guesses for the inversion
 ├── definitions.py                    - Global definitions
+├── inversion.py                      - Performs the inversion
 ├── main.py                           - Main script to be executed
 ├── mml.mplstyle                      - Matplotlib stylesheet
-├── model_1C.py                       - Class for the model of 1 Component
-├── model_2C.py                       - Class for the model of 2 Components (includes the filling factor)
+├── model.py                          - Class for the model
 ├── obs.py                            - Scripts related to observations
 ├── profile_stk.py                    - Class profile 
 ├── sir.py                            - Script containing import functions related to SIR and the code (reading config, writing control files, etc.)
-├── _1C                               - Code for the 1 component inversion
-│   ├── create_random_guess.py        - Creates random guesses for the inversion
-│   └── inversion.py                  - Performs the inversion
-├── _2C                               - Code for the 2 component inversion
-│   ├── create_random_guess.py        - Creates random guesses for the inversion
-│   └── inversion.py                  - Performs the inversion
-├── _MC                               - Code for the Monte-Carlo-Simulation
-│   ├── add_noise.py                  - Adding noise to the created, random profiles
-│   ├── create_models.py              - Create models with 2 or 3 nodes and T based on HSRA.
-│   ├── create_random_guess.py        - Creates random guess models
-│   ├── inversion.py                  - Performs the MC inversion
-│   └── synthesis.py                  - Performs the MC synthesis
 ├── plots                             - Directory with several plots for the different modes 
 │   ├── _1C
 │   │   ├── inversion.py              - Plots one single inversion and saves it by using the config file
