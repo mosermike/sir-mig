@@ -13,6 +13,7 @@ Class model with all the physical parameter
    .. automethod:: correct_phi
    .. automethod:: cut_to_map
    .. automethod:: get_attribute
+   .. automethod:: interp
    .. automethod:: read
    .. automethod:: read_results
    .. automethod:: set_dim

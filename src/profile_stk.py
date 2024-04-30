@@ -15,6 +15,7 @@ class Profile:
 
 	Variables are:
 		- wave
+		- indx (= line numbers in mode 'MC')
 		- stki
 		- stkq
 		- stku
@@ -24,8 +25,8 @@ class Profile:
 	There are several functions:
 		- read: Read a numpy file containing models and stores it into the class variables
 		- read_results: Reads the results from the inversion of SIR
-		- write: Writes a Model to a SIR readable file
-		- save: Saves the models as a numpy file
+		- write_profile: Writes a Model to a SIR readable file
+		- write: Saves the models as a numpy file
 		- set_limit: Cuts the data to a specific log_tau value (used for plotting)
 
 
