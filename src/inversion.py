@@ -286,9 +286,17 @@ def execute_inversion_1c(conf, task_folder):
 				print("[ERROR] Check your sir.x file and the log file in the .task folders. There might be a problem with sir.x")
 				# Print last log entry
 				with open('inv.log') as f:
+					lines = []
 					for line in f:
-						pass
-					print("[LAST LOG ENTRY]: ", line)
+						lines.append(line)
+					print("[LAST LOG ENTRIES]: ")
+					print("------------------------------ ")
+					print(lines[-3])
+					print(lines[-2])
+					print(lines[-1])
+					print("------------------------------ ")
+				del lines
+
 				sys.exit()
 			# Read the chi2 file
 			chi = sir.read_chi2(chi_file)
@@ -433,9 +441,16 @@ def execute_inversion_2c(conf, task_folder):
 				print("[ERROR] Check your sir.x file and the log file in the .task folders. There might be a problem with sir.x")
 				# Print last log entry
 				with open('inv.log') as f:
+					lines = []
 					for line in f:
-						pass
-					print("[LAST LOG ENTRY]: ", line)
+						lines.append(line)
+					print("[LAST LOG ENTRIES]: ")
+					print("------------------------------ ")
+					print(lines[-3])
+					print(lines[-2])
+					print(lines[-1])
+					print("------------------------------ ")
+					del lines
 				sys.exit()
 
 			# Read chi2 file
