@@ -336,7 +336,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 				g.create_guesses_1c(conf, output="./", number=i+1)
 
 				# Copy to the model
-				shutil.copy(guess1 + str(i+1) + ".mod",model)
+				shutil.copy(d.model + str(i+1) + ".mod", d.model_inv)
 
 				# Execute inversion again
 				os.system(f"echo {d.inv_trol_file} | ./sir.x >> inv.log 2>&1")
@@ -347,7 +347,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 				# +1 iteration
 				it += 1
 			
-			shutil.copy(f"{guess1}.mod", f"{d.best_guess}")  # Copy best guess model
+			shutil.copy(f"{d.model_inv}", f"{d.best_guess}")  # Copy best guess model
 
 			# Warn if the repetition of the inverse needed to be done more than 20 times
 			if it > 10:
@@ -370,13 +370,16 @@ def execute_inversion_1c(conf, task_folder, rank):
 			header[0] = float(conf['vmacro'])
 			tem = np.loadtxt(conf['model'], skiprows=1)
 			if len(tem) > 8:
-				sir.write_model(conf['model'], header, tem[0], tem[1], tem[2], tem[3], tem[4], tem[5], tem[6], tem[7], tem[8], tem[9], tem[10])
+				sir.write_model(conf["model"], header, tem[0], tem[1], tem[2], tem[3], tem[4], tem[5], tem[6], tem[7], tem[8], tem[9], tem[10])
 			else:
-				sir.write_model(conf['model'], header, tem[0], tem[1], tem[2], tem[3], tem[4], tem[5], tem[6], tem[7])
+				sir.write_model(conf["model"], header, tem[0], tem[1], tem[2], tem[3], tem[4], tem[5], tem[6], tem[7])
 		
+		# Copy to the model
+		shutil.copy(conf["model"], d.model_inv)
+
 		# Perform inversion once and read chi2 value
 		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
-		shutil.move(model, d.best_guess)
+		shutil.move(d.model_inv, d.best_guess)
 		
 		# Remove not needed files to make space for the next inversion
 		for j in range(int(cycles)-1):
@@ -496,10 +499,9 @@ def execute_inversion_2c(conf, task_folder, rank):
 			while chi2_best == 0.0:
 				# Create New Guess
 				g.create_guesses_2c(conf, output = "./", number = 1)
-
 				# Copy to the model
-				shutil.copy("model1_1.mod",d.guess1)
-				shutil.copy("model2_1.mod",d.guess2)
+				shutil.copy(f"{d.model1}1.mod",d.guess1)
+				shutil.copy(f"{d.model2}1.mod",d.guess2)
 
 				# Execute inversion again
 				os.system(f"echo {d.inv_trol_file} | ./sir.x >> inv.log 2>&1")
@@ -1275,15 +1277,26 @@ def inversion_2c(conf, comm, rank, size, MPI):
 
 		# Create shapes of the arrays which are filled and saved later
 		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
-		#stokes_inv	= np.ones (shape=(Map[1]-Map[0]+1,Map[3]-Map[2]+1,4 ,data.shape[3]))
+
+		if rank == 0:
+			print("-------> Read Profiles ...")
 		stokes_inv = p.Profile(stk.nx, stk.ny, stk.nw)
+
 		stokes_inv.wave = stk.wave # Copy wavelength positions
-		models_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
-		models_inv2		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
-		errors_inv1		= m.Error(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
-		errors_inv2		= m.Error(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
-		best_guesses1	= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
-		best_guesses2	= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, npar=len(log_tau))
+		stokes_inv.read_results(tasks, f"best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
+
+		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
+
+		del stokes_inv
+
+		if rank == 0:
+			print("-------> Read Models ...")
+		models_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		models_inv2		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		errors_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		errors_inv2		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		best_guesses1	= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		best_guesses2	= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		chi2			= np.zeros(shape=(Map[1]-Map[0]+1,Map[3]-Map[2]+1))
 
 
@@ -1293,7 +1306,13 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		errors_inv2.read_results(tasks, 'best2.err', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses1.read_results(tasks, d.best_guess1, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses2.read_results(tasks, d.best_guess2, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
-		stokes_inv.read_results(tasks, f"best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
+		
+		models_inv1.write(conf['inv_out'] + d.end_models1)
+		models_inv2.write(conf['inv_out'] + d.end_models2)
+		errors_inv1.write(conf['inv_out'] + d.end_errors1)
+		errors_inv2.write(conf['inv_out'] + d.end_errors2)
+		best_guesses1.write(d.best_guess1.replace(".mod",".bin"))
+		best_guesses2.write(d.best_guess2.replace(".mod",".bin"))
 
 		# Collect data from task folders and delete the folder
 		for i in range(len(tasks['x'])):
@@ -1314,15 +1333,6 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			if not exists(temp[:temp.rfind('/')]):
 				os.mkdir(temp[:temp.rfind('/')])
 
-		# Save as npy files
-		#np.save(conf['inv_out'] + d.end_stokes, stokes_inv)
-		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
-		models_inv1.write(conf['inv_out'] + d.end_models1)
-		models_inv2.write(conf['inv_out'] + d.end_models2)
-		errors_inv1.write(conf['inv_out'] + d.end_errors1)
-		errors_inv2.write(conf['inv_out'] + d.end_errors2)
-		best_guesses1.write(d.best_guess1.replace(".mod",".bin"))
-		best_guesses2.write(d.best_guess2.replace(".mod",".bin"))
 		np.save(conf['chi2'],chi2)
 		
 		# Print needed time

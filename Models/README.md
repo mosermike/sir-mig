@@ -17,8 +17,7 @@ One-component quiet Sun models:
 	atmcl1-5-2500.mod .. Quiet sun model from log tau 0.5 to -2.5
 	atmcl1-500-1.mod .. Linear decreasing magnetic field and constant vlos
 	model-B2000.mod .. Model with B = 2000, const. in B,vlos,phi,gamma and from log tau 1 to -2.9
-	hsra.mod   ...  Harvard Smithsonian Reference Atmosphere (Gingerich O.,
-           	        Noyes R.W., Kalkofen W., & Cuny Y., 1971. Sol. Phys. 18, 347)
+	hsra.mod   ...  Harvard Smithsonian Reference Atmosphere (Gingerich O.,Noyes R.W., Kalkofen W., & Cuny Y., 1971. Sol. Phys. 18, 347)
 	
 
 Umbra models:
