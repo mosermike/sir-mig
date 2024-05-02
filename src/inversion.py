@@ -286,9 +286,9 @@ def execute_inversion_1c(conf, task_folder, rank):
 					it += 1
 			# If it is greater than 50, there might be something wrong with sir.x
 			if it >= 50:
-				print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
 				# Print last log entry
 				if rank == 0:
+					print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
 					with open('inv.log') as f:
 						lines = []
 						for line in f:
@@ -333,7 +333,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 				shutil.copy(model, "bad_guess" + str(i+1) + ".mod")
 
 				# Create New Guess
-				g.create_guesses_1(conf, output="./", number=i+1)
+				g.create_guesses_1c(conf, output="./", number=i+1)
 
 				# Copy to the model
 				shutil.copy(guess1 + str(i+1) + ".mod",model)
@@ -446,9 +446,9 @@ def execute_inversion_2c(conf, task_folder, rank):
 					it += 1
 			# If it is greater than 50, there might be something wrong with sir.x
 			if it >= 50:
-				print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
-				# Print last log entry
 				if rank == 0:
+					print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
+					# Print last log entry
 					with open('inv.log') as f:
 						lines = []
 						for line in f:
