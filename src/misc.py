@@ -2,6 +2,7 @@
 Misc. Functions
 """
 import numpy as np
+import definitions as d
 
 def initial(mode):
 	"""
