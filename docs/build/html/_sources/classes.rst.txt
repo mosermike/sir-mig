@@ -15,6 +15,7 @@ Class model with all the physical parameter
    .. automethod:: get_attribute
    .. automethod:: interp
    .. automethod:: read
+   .. automethod:: read_mod
    .. automethod:: read_results
    .. automethod:: set_dim
    .. automethod:: set_limit
