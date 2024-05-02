@@ -647,7 +647,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	########################
 	performed_models = 0  # Counts how many models are performed
 	total_jobs = 1  # Total performed jobs across all processes
-	tasks = create_task_folder_list(Map) # Structure tasks
+	tasks = misc.create_task_folder_list(Map) # Structure tasks
 	max_jobs = len(tasks['folders'])  # For comm.allreduce function
 
 	#########################
@@ -741,7 +741,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		print("[STATUS] Gathering results...")
 
 		# Redefine tasks as now all the tasks are read
-		tasks = create_task_folder_list(Map) # Structure tasks
+		tasks = misc.create_task_folder_list(Map) # Structure tasks
 
 		# Create shapes of the arrays which are filled and saved later
 		stokes_inv = p.Profile(0,0,0)
@@ -973,8 +973,8 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		print("[STATUS] Gathering results...")
 		start = time.time()
 
-		tasks = create_task_folder_list(conf["num"])
-
+		tasks = misc.create_task_folder_list(conf["num"])
+		
 		# Read the profiles and models
 		print("-------> Read Profiles ...")
 		stokes = p.Profile(0,0,0)
@@ -1153,7 +1153,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	chi2s_num = np.array([], dtype=str) # Save task number for print out above chi_lim
 	performed_models = 0 # Counts how many models are performed
 	total_jobs = 1 # Total performed jobs across all processes
-	tasks = create_task_folder_list(Map)
+	tasks = misc.create_task_folder_list(Map)
 	max_jobs = len(tasks['folders']) # For comm.allreduce function
 
 	# Load and scatter data => Saving memory and time
@@ -1247,7 +1247,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		print("[STATUS] Gathering results...", end='', flush=False)
 
 		# Redefine tasks as now all the tasks are read
-		tasks = create_task_folder_list(Map) # Structure tasks
+		tasks = misc.create_task_folder_list(Map) # Structure tasks
 
 		# Create shapes of the arrays which are filled and saved later
 		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
