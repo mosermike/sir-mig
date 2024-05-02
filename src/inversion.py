@@ -348,7 +348,9 @@ def execute_inversion_1c(conf, task_folder, rank):
 				it += 1
 			
 			shutil.copy(f"{d.model_inv}", f"{d.best_guess}")  # Copy best guess model
-
+			shutil.move(f"{guess1}_{cycles}.mod", f"best.mod")
+			shutil.move(f"{guess1}_{cycles}.err", f"best.err")
+			shutil.move(f"{guess1}_{cycles}.per", f"best.per")
 			# Warn if the repetition of the inverse needed to be done more than 20 times
 			if it > 10:
 				print(f"\nNote that the while loop run in {task_folder[task_folder.rfind('/')+1:]} took {it} iterations because chi2 was 0.0...")
@@ -358,9 +360,9 @@ def execute_inversion_1c(conf, task_folder, rank):
 
 			chi2_best = chi2.argmin()
 			shutil.copy(f"inv.chi__{str(chi2_best+1)}",chi_file)
-			shutil.copy(f"{guess1}__{str(chi2_best+1)}.mod", f"{guess1}_{cycles}.mod")
-			shutil.copy(f"{guess1}__{str(chi2_best+1)}.err", f"{guess1}_{cycles}.err")
-			shutil.copy(f"{guess1}__{str(chi2_best+1)}.per", f"{guess1}_{cycles}.per")
+			shutil.move(f"{guess1}__{str(chi2_best+1)}.mod", f"best.mod")
+			shutil.move(f"{guess1}__{str(chi2_best+1)}.err", f"best.err")
+			shutil.move(f"{guess1}__{str(chi2_best+1)}.per", f"best.per")
 			shutil.copy(f"{d.model}{str(chi2_best+1)}.mod", f"{d.best_guess}") # Copy best guess model
 
 	else:
@@ -379,8 +381,11 @@ def execute_inversion_1c(conf, task_folder, rank):
 
 		# Perform inversion once and read chi2 value
 		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
+			
+		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.mod", f"best.mod")
+		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.err", f"best.err")
+		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.per", f"best.per")
 		shutil.move(d.model_inv, d.best_guess)
-		
 		# Remove not needed files to make space for the next inversion
 		for j in range(int(cycles)-1):
 			os.remove(f"{guess1}_{j+1}.mod")
@@ -777,15 +782,15 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		best_guesses = m.Model(0,0,0)
 
 		print("-------> Read Models ...")
-		models_inv.read_results(tasks, f'{model1}_{cycles}.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
-		errors_inv.read_results(tasks, f'{model1}_{cycles}.err', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
+		models_inv.read_results(tasks, 'best.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
+		errors_inv.read_results(tasks, 'best.err', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses.read_results(tasks, d.best_guess, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
 		# Correct for phi ambiguity (no difference between 0 and 180 measurable)
 		#models_inv.correct_phi()
 
 		print("-------> Read Profiles ...")
-		stokes_inv.read_results(tasks, f"{model1}_{cycles}.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
+		stokes_inv.read_results(tasks, "best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
 		chi2 = np.zeros(shape=(Map[1]-Map[0]+1, Map[3]-Map[2]+1))
 
@@ -1004,7 +1009,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		# Read the profiles and models
 		print("-------> Read Profiles ...")
 		stokes = p.Profile(0,0,0)
-		stokes.read_results_MC(path, tasks, f"{d.model_inv.replace('.mod','')}_{conf['cycles']}.per")
+		stokes.read_results_MC(path, tasks, "best.per")
 		stokes.write(f"{os.path.join(path,conf['inv_out'])}{d.end_stokes}")
 
 		print("-------> Read Models ...")
@@ -1012,8 +1017,8 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		errors = m.Model(conf["num"],1,0)	# Error
 		guess  = m.Model(conf["num"],1,0)   # Best guess model
 		
-		models.read_results(tasks, f"{d.model_inv.replace('.mod','')}_{conf['cycles']}.mod", path, int(conf['num']), 1)
-		errors.read_results(tasks, f"{d.model_inv.replace('.mod','')}_{conf['cycles']}.err", path, int(conf['num']), 1)
+		models.read_results(tasks, "best.mod", path, int(conf['num']), 1)
+		errors.read_results(tasks, "best.err", path, int(conf['num']), 1)
 		guess.read_results(tasks, d.best_guess, path, int(conf['num']), 1)
 		
 		models.write(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
