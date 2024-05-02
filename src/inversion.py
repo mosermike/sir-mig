@@ -229,7 +229,7 @@ def scatter_data_mc(conf, comm, rank, size):
 *****************************************************************************
 """
 
-def execute_inversion_1c(conf, task_folder):
+def execute_inversion_1c(conf, task_folder, rank):
 	"""
 	Executes inversion and creates if needed random guesses. Make sure that
 	when this function is entered, the os is in the right directory! This
@@ -239,7 +239,10 @@ def execute_inversion_1c(conf, task_folder):
 	---------
 	config : dict
 		Dictionary containing the configuration of the simulation
-
+	task_folder : dict
+		Dictionary with the folders and x and y positions
+	rank : int
+		Process Number
 	Return
 	------
 	chi2 : float
@@ -283,21 +286,22 @@ def execute_inversion_1c(conf, task_folder):
 					it += 1
 			# If it is greater than 50, there might be something wrong with sir.x
 			if it >= 50:
-				print("[ERROR] Check your sir.x file and the log file in the .task folders. There might be a problem with sir.x")
+				print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
 				# Print last log entry
-				with open('inv.log') as f:
-					lines = []
-					for line in f:
-						lines.append(line)
-					print("[LAST LOG ENTRIES]: ")
-					print("------------------------------ ")
-					print(lines[-3])
-					print(lines[-2])
-					print(lines[-1])
-					print("------------------------------ ")
-				del lines
+				if rank == 0:
+					with open('inv.log') as f:
+						lines = []
+						for line in f:
+							lines.append(line)
+						print("[LAST LOG ENTRIES]: ")
+						print("------------------------------ ")
+						print(lines[-3])
+						print(lines[-2])
+						print(lines[-1])
+						print("------------------------------ ")
+					del lines
 
-				sys.exit()
+					sys.exit()
 			# Read the chi2 file
 			chi = sir.read_chi2(chi_file)
 
@@ -382,7 +386,7 @@ def execute_inversion_1c(conf, task_folder):
 
 	return
 
-def execute_inversion_2c(conf, task_folder):
+def execute_inversion_2c(conf, task_folder, rank):
 	"""
 	Executes inversion and creates if needed random guesses. Make sure that
 	when this function is entered, the os is in the right directory! This is
@@ -392,6 +396,10 @@ def execute_inversion_2c(conf, task_folder):
 	---------
 	conf : Dictionary
 		Dictionary containing the configuration of the simulation
+	task_folder : dict
+		Dictionary with the folders and x and y positions
+	rank : int
+		Process Number
 
 	Return
 	------
@@ -438,20 +446,21 @@ def execute_inversion_2c(conf, task_folder):
 					it += 1
 			# If it is greater than 50, there might be something wrong with sir.x
 			if it >= 50:
-				print("[ERROR] Check your sir.x file and the log file in the .task folders. There might be a problem with sir.x")
+				print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
 				# Print last log entry
-				with open('inv.log') as f:
-					lines = []
-					for line in f:
-						lines.append(line)
-					print("[LAST LOG ENTRIES]: ")
-					print("------------------------------ ")
-					print(lines[-3])
-					print(lines[-2])
-					print(lines[-1])
-					print("------------------------------ ")
-					del lines
-				sys.exit()
+				if rank == 0:
+					with open('inv.log') as f:
+						lines = []
+						for line in f:
+							lines.append(line)
+						print("[LAST LOG ENTRIES]: ")
+						print("------------------------------ ")
+						print(lines[-3])
+						print(lines[-2])
+						print(lines[-1])
+						print("------------------------------ ")
+						del lines
+					sys.exit()
 
 			# Read chi2 file
 			chi = sir.read_chi2(chi_file, task=task_folder)
@@ -708,7 +717,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		#####################
 		# Create random guesses and select best value and perform inversion
 		os.chdir(task_folder)
-		execute_inversion_1c(conf, task_folder)
+		execute_inversion_1c(conf, task_folder, rank)
 		
 		#########################################
 		# Check chi2 and print out informations #
@@ -952,7 +961,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		# Create random guesses and select best value and perform inversion
 		os.chdir(task_folder)
 		
-		execute_inversion_1c(conf, task_folder)
+		execute_inversion_1c(conf, task_folder, rank)
 		
 		performed_models += 1
 	
@@ -1218,7 +1227,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		###############################
 		# Create random guesses and select best value and perform inversion
 		os.chdir(task_folder)
-		chi2_best = execute_inversion_2c(conf, task_folder)
+		chi2_best = execute_inversion_2c(conf, task_folder, rank)
 		
 		##############################################
 		#	Check chi2 and print out informations	#
