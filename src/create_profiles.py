@@ -36,13 +36,7 @@ def synthesis(conf, comm, rank, size, MPI):
 	###################################################
 	# Define parameters for easier understanding
 	path = conf["path"]
-	model = conf["model"]
-	model1 = model.replace('.mod','') # For simplicity reasons defined
-
-	cycles = conf['cycles'] # How many cycles
-	line_file = conf['line'] # line file
 	abundance_file = conf['abundance'] # Abundance file	
-	end='.per' # ending of the file for the profile
 	
 	models = m.read_model(os.path.join(path, conf['model_out']))
 
@@ -66,7 +60,6 @@ def synthesis(conf, comm, rank, size, MPI):
 	####################################
 	#		START INVERSION PART	#
 	####################################
-	num = conf['num']
 
 	performed_models = 0 # Counts how many models are performed
 	finished_jobs = 0
@@ -83,8 +76,8 @@ def synthesis(conf, comm, rank, size, MPI):
 		for sir_file in sir_files:
 			shutil.copy(os.path.join(path, sir_file), os.path.join(task_folder, sir_file))
 		
-		# Extract model from the npy file
-		models.write_model(os.path.join(task_folder,d.model_syn), d.header, i, 0)
+		# Extract model
+		models.write_model(os.path.join(task_folder,d.model_syn), i, 0)
 	
 		# Perform synthesis
 		os.chdir(task_folder)

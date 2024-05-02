@@ -117,7 +117,7 @@ def create_models(conf: dict) -> None:
 	# LOAD DATA #
 	#############
 	File = np.loadtxt(Input, skiprows=1)
-
+	header = np.genfromtxt(Input,max_rows=1)
 	# Create arrays with all the columns as rows
 	File_T = File.transpose()
 	log_tau0 = File_T[0]
@@ -143,6 +143,10 @@ def create_models(conf: dict) -> None:
 	create_points = split_to_float(conf['create_points'])
 
 	model = m.Model(int(num), 1, len(log_tau0))
+	for i in range(num):
+		model.vmacro[i,0] = float(conf["vmacro"])
+		model.fill[i,0] = header[1]
+		model.stray_light[i,0] = header[2]
 	model.load = True
 	#################
 	# LINEAR MODELS #

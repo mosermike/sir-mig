@@ -42,7 +42,6 @@ inv_trol_file = 'inv.trol'  # inversion control file CLEAN
 guess = "guess.mod"  # Guess model as in control file for 1C and MC
 guess1 = 'guess1.mod'  # Guess Model 1 for control file and inversion for 2C
 guess2 = 'guess2.mod'  # Guess Model 2 for control file and inversion for 2C
-header = "   0.100000      1.00000	   0.00000"  # Header used for writing a model
 best_guess = 'best_guess.mod'  # Name of the best guess model (best model is saved under this name) KEEP
 best_guess1 = 'best_guess1.mod'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
 best_guess2 = 'best_guess2.mod'  # Name of the best guess model (best model is saved under this name) for 2C KEEP

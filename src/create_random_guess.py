@@ -97,6 +97,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi) -> m.M
 	# LOAD DATA #
 	#############
 	File   = np.loadtxt(model, skiprows=1)
+	header = np.genfromtxt(model,max_rows=1)
 	File_T = File.transpose()
 
 	mod = m.Model(nx = 1, ny = 1, nval=len(File_T[0]))
@@ -117,6 +118,12 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi) -> m.M
 		mod.Pg[0,0]		= File_T[9]
 		mod.rho[0,0]	= File_T[10]
 		mod.full = True
+
+	# Assign Header Information
+	mod.vmacro[0,0] = header[0]
+	mod.fill[0,0] = header[1]
+	mod.stray_light[0,0] = header[2]
+
 	mod.load = True
 
 	###############################
@@ -241,7 +248,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi) -> m.M
 
 def create_guesses_1c(conf, output = "./", number = 0):
 	"""
-	Create random guesses.
+	Create random guess.
 
 	Parameters
 	----------
@@ -259,22 +266,15 @@ def create_guesses_1c(conf, output = "./", number = 0):
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################
-
-	num   = conf['random_guess']  # Number of random guesses
-
-	# Macroturbulence velocity
-	if conf["mode"] == "MC":
-		vmacro = 0.1
-	else:
-		vmacro = conf["vmacro"]
-
 	lim_B = split_to_float(conf["lim_B"])
 	lim_vlos = split_to_float(conf[f"lim_vlos"])
 	lim_gamma = split_to_float(conf[f"lim_gamma"])
 	lim_phi = split_to_float(conf[f"lim_phi"])
 
 	mod = create_guess(conf["model"], conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
-	mod.write_model(output + f"{d.model}{number}.mod", f"   {vmacro}  {1.0}  0.000", 0, 0)
+	# Macroturbulence velocity
+	mod.vmacro[0,0] = conf["vmacro"]
+	mod.write_model(output + f"{d.model}{number}.mod", 0, 0)
 
 
 def create_guesses_2c(conf, output = "./", number = 0):
@@ -307,11 +307,13 @@ def create_guesses_2c(conf, output = "./", number = 0):
 		lim_gamma		= split_to_float(conf[f"lim_gamma{j}"])
 		lim_phi			= split_to_float(conf[f"lim_phi{j}"])
 
-		mod = create_guess(model, conf["vmacro"], conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi, conf["fill"].split(',')[j-1])
+		mod = create_guess(model, conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
+		mod.fill[0,0] = conf['fill'].split(',')[j] # Assign filling factor from config
+		mod.vmacro[0,0] = conf["vmacro"] # Assign vmacro from config
 		if j == 1:
-			mod.write_model(output + f"{d.model1}" + str(number) + ".mod", f"   {conf['vmacro']}  {conf['fill'].split(',')[0]}  0.000", 0, 0)
+			mod.write_model(output + f"{d.model1}" + str(number) + ".mod", 0, 0)
 		else:
-			mod.write_model(output + f"{d.model2}" + str(number) + ".mod", f"   {conf['vmacro']}  {conf['fill'].split(',')[1]}  0.000", 0, 0)
+			mod.write_model(output + f"{d.model2}" + str(number) + ".mod", 0, 0)
 
 if __name__ == "__main__":
 	if "-h" in sys.argv:

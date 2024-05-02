@@ -62,7 +62,9 @@ class Model:
 		self.z = np.zeros(shape=(nx,ny,nval), dtype=np.float64)
 		self.Pg = np.zeros(shape=(nx,ny,nval), dtype=np.float64)
 		self.rho = np.zeros(shape=(nx,ny,nval), dtype=np.float64)
-		self.fill = np.ones(shape=(nx,ny), dtype=np.float64)
+		self.vmacro = np.zeros(shape=(nx, ny), dtype=np.float64)
+		self.fill = np.zeros(shape=(nx, ny), dtype=np.float64)
+		self.stray_light = np.zeros(shape=(nx, ny), dtype=np.float64)
 
 	def correct_phi(self):
 		"""
@@ -237,10 +239,21 @@ class Model:
 			tmp = f.read_record(dtype=fmt_type)
 			self.log_tau = tmp * 1.
 			
+			# Read vmacro
+			tmp = f.read_record(dtype=fmt_type)
+			array = tmp * 1.
+			self.vmacro = array.reshape(self.nx, self.ny)
+
 			# Read filling factor
 			tmp = f.read_record(dtype=fmt_type)
 			array = tmp * 1.
 			self.fill = array.reshape(self.nx, self.ny)
+
+			# Read fstray light factor
+			tmp = f.read_record(dtype=fmt_type)
+			array = tmp * 1.
+			self.stray_light = array.reshape(self.nx, self.ny)
+
 
 			# Read model parameter
 			tmp = f.read_record(dtype=fmt_type)
@@ -271,6 +284,59 @@ class Model:
 			return np.nan
 
 		f.close()
+
+		return self
+	
+	def read_mod(self, fname, fmt_type=np.float64):
+		"""
+		Reads a model file from SIR and assigns the value to the class.
+		This class will then create the class with nx = ny = 1. 
+
+		Parameters
+		----------
+		fname : str
+			Name of the .mod file
+
+		Return
+		------
+		Class with the loaded data from the model.
+		"""
+		if self.load:
+			print("[read_mod] Data is already loaded! Change load of this class to False.")
+			return self
+		
+		# Load Data
+		data = np.loadtxt(fname, skiprows=1).transpose()
+		header = np.genfromtxt(fname,max_rows=1)
+
+		# Set Dimensions
+		self.set_dim(1,1,len(data[0]))
+
+		# Store data
+		self.log_tau	= data[0]
+		self.T[0,0]		= data[1]
+		self.Pe[0,0]	 	= data[2]
+		self.vmicro[0,0] 	= data[3]
+		self.B[0,0]	 	= data[4]
+		self.vlos[0,0]     	= data[5]
+		self.gamma[0,0]  	= data[6]
+		self.phi[0,0]	= data[7]
+		if len(data) > 8:
+			self.z[0,0]   = data[8]
+			self.Pg[0,0]  = data[9]
+			self.rho[0,0] = data[10]
+			self.full = True
+		else:
+			self.full = False
+
+		self.load = True
+		
+		self.vmacro[0,0] = header[0]
+		self.fill[0,0] = header[1]
+		self.stray_light[0,0] = header[2]
+
+		del data
+
 
 		return self
 
@@ -314,7 +380,9 @@ class Model:
 		self.z = np.zeros(shape=(nx, ny, self.nval), dtype=np.float64)
 		self.Pg = np.zeros(shape=(nx, ny, self.nval), dtype=np.float64)
 		self.rho = np.zeros(shape=(nx, ny, self.nval), dtype=np.float64)
+		self.vmacro = np.zeros(shape=(nx, ny), dtype=np.float64)
 		self.fill = np.zeros(shape=(nx, ny), dtype=np.float64)
+		self.stray_light = np.zeros(shape=(nx, ny), dtype=np.float64)
 		
 		del temp  # Remove the temporary array from the memory
 
@@ -339,7 +407,9 @@ class Model:
 				self.full = False
 			else:
 				self.full = True
+			self.vmacro[x,y] = float(header[0])
 			self.fill[x,y] = float(header[1])
+			self.stray_light[x,y] = float(header[2])
 
 		self.load = True
 		
@@ -347,7 +417,7 @@ class Model:
 		return self
 
 	
-	def set_dim(self, nx, ny, npars):
+	def set_dim(self, nx, ny, nval):
 		"""
 		Sets the dimensions if no data is loaded yet
 
@@ -357,7 +427,7 @@ class Model:
 			Number of Models in x
 		ny : int
 			Number of Models in y
-		npars : int
+		nval : int
 			Number of values per physical parameter
 
 		"""
@@ -365,20 +435,23 @@ class Model:
 			print("[set_dim] Data is already loaded and therefore dimensions cannot be set.")
 			return self
 
-		self.log_tau = np.zeros(shape=(npars), dtype=np.float64)
-		self.T = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.Pe = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.vmicro = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.B = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.vlos = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.gamma = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.phi = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.z = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.Pg = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
-		self.rho = np.zeros(shape=(nx, ny, npars), dtype=np.float64)
+		self.log_tau = np.zeros(shape=(nval), dtype=np.float64)
+		self.T = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.Pe = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.vmicro = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.B = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.vlos = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.gamma = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.phi = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.z = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.Pg = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.rho = np.zeros(shape=(nx, ny, nval), dtype=np.float64)
+		self.vmacro = np.zeros(shape=(nx, ny), dtype=np.float64)
 		self.fill = np.zeros(shape=(nx, ny), dtype=np.float64)
+		self.stray_light = np.zeros(shape=(nx, ny), dtype=np.float64)
 		self.nx = nx * 1
 		self.nx = ny * 1
+		self.nval = nval * 1
 
 		return self
 
@@ -454,7 +527,9 @@ class Model:
 		
 		f.write_record(np.float64(self.log_tau))
 
+		f.write_record(np.float64(self.vmacro.flatten()))
 		f.write_record(np.float64(self.fill.flatten()))
+		f.write_record(np.float64(self.stray_light.flatten()))
 
 		if np.any(self.rho):
 			array = np.zeros(shape=(self.nx,self.ny,10,self.nval))
@@ -482,8 +557,7 @@ class Model:
 
 		return self
 
-	# TODO header
-	def write_model(self, filename, header, x, y):
+	def write_model(self, filename, x, y):
 		"""
 		Write a model with the given data in a specific format.
 
@@ -491,8 +565,6 @@ class Model:
 		---------
 		filename : string
 			Name of the saved file
-		Header : string
-			Header of the model
 		x : int
 			Integer determining which model
 		y : int
@@ -514,7 +586,7 @@ class Model:
 			self.vlos = self.vlos / 1.0e5 
 
 		f = open(filename, 'w')
-		f.write(f"{header}\n")
+		f.write(f"   {self.vmacro[x,y]}  {self.fill[x,y]}  {self.stray_light[x,y]}\n")
 		if self.full or np.any(self.rho):
 			for n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11 in zip(self.log_tau, self.T[x, y], self.Pe[x, y],
 																	self.vmicro[x, y], self.B[x, y], self.vlos[x, y]*1.0e5,

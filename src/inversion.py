@@ -686,7 +686,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			# Write the new initial model from here:
 			x1 = x - Map[0]  # x position taking the Map into account
 			y1 = y - Map[2]  # y position taking the Map into account
-			guess.write_model(os.path.join(task_folder, model), d.header, x1, y1)
+			guess.write_model(os.path.join(task_folder, model), x1, y1)
 
 		#####################
 		# Perform inversion #
@@ -1190,13 +1190,13 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
-			guess1.write_model(os.path.join(task_folder,model1), header1,x1,y1)
+			guess1.write_model(os.path.join(task_folder,model1),x1,y1)
 			
 		if conf["guess2"] != '':
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
-			guess1.write_model(os.path.join(task_folder,model2), header2,x1,y1)
+			guess1.write_model(os.path.join(task_folder,model2),x1,y1)
 
 		###############################
 		# 	Perform inversion		#
