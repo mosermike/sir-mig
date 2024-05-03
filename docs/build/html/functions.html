@@ -152,6 +152,13 @@
                 
 
                     <li class="nav-item">
+                      <a class="nav-link nav-internal" href="plots.html">
+                        Plotting
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
@@ -256,6 +263,13 @@ document.write(`
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="classes.html">
                         Classes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="plots.html">
+                        Plotting
                       </a>
                     </li>
                 
@@ -852,19 +866,23 @@ have one white space less</p>
 <p>Functions to perform the inversion</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.execute_inversion_1c">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.execute_inversion_1c" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.execute_inversion_1c" title="Link to this definition">#</a></dt>
 <dd><p>Executes inversion and creates if needed random guesses. Make sure that
 when this function is entered, the os is in the right directory! This
 function can be used for the mode ‘MC’ and ‘1C’.</p>
 <section id="id36">
-<h3>Parameter<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<h3>Parameters<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>config<span class="classifier">dict</span></dt><dd><p>Dictionary containing the configuration of the simulation</p>
+</dd>
+<dt>task_folder<span class="classifier">dict</span></dt><dd><p>Dictionary with the folders and x and y positions</p>
+</dd>
+<dt>rank<span class="classifier">int</span></dt><dd><p>Process Number</p>
 </dd>
 </dl>
 </section>
 <section id="id37">
-<h3>Return<a class="headerlink" href="#id37" title="Link to this heading">#</a></h3>
+<h3>Returns<a class="headerlink" href="#id37" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>chi2<span class="classifier">float</span></dt><dd><p>Best chi2 value of the inversion(s)</p>
 </dd>
@@ -874,7 +892,7 @@ function can be used for the mode ‘MC’ and ‘1C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.execute_inversion_2c">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.execute_inversion_2c" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#inversion.execute_inversion_2c" title="Link to this definition">#</a></dt>
 <dd><p>Executes inversion and creates if needed random guesses. Make sure that
 when this function is entered, the os is in the right directory! This is
 used for the mode ‘2C’.</p>
@@ -882,6 +900,10 @@ used for the mode ‘2C’.</p>
 <h3>Parameter<a class="headerlink" href="#id38" title="Link to this heading">#</a></h3>
 <dl class="simple">
 <dt>conf<span class="classifier">Dictionary</span></dt><dd><p>Dictionary containing the configuration of the simulation</p>
+</dd>
+<dt>task_folder<span class="classifier">dict</span></dt><dd><p>Dictionary with the folders and x and y positions</p>
+</dd>
+<dt>rank<span class="classifier">int</span></dt><dd><p>Process Number</p>
 </dd>
 </dl>
 </section>

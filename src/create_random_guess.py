@@ -38,7 +38,7 @@ def split_to_float(string, letter = ","):
 	return np.array([float(i) for i in strings])
 
 
-def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi) -> m.Model:
+def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 	"""
 	Create random guesses.
 

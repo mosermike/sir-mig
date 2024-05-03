@@ -234,19 +234,22 @@ def execute_inversion_1c(conf, task_folder, rank):
 	when this function is entered, the os is in the right directory! This
 	function can be used for the mode 'MC' and '1C'.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary containing the configuration of the simulation
 	task_folder : dict
 		Dictionary with the folders and x and y positions
 	rank : int
 		Process Number
-	Return
-	------
+	
+	Returns
+	-------
 	chi2 : float
 		Best chi2 value of the inversion(s)
+	
 	"""
+
 	# Define parameters for simplicity reasons
 	shutil.copy(conf['model'], d.model_inv)
 	model = d.model_inv
@@ -392,6 +395,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 			os.remove(f"{guess1}_{j+1}.per")
 
 	return
+
 
 def execute_inversion_2c(conf, task_folder, rank):
 	"""

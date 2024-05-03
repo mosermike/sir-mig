@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>create_config &#8212; SIR-MIG  documentation</title>
+    <title>visualizer &#8212; SIR-MIG  documentation</title>
   
   
   
@@ -39,11 +39,10 @@
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/create_config';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/visualizer';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="sir" href="sir.html" />
-    <link rel="prev" title="API" href="../api.html" />
+    <link rel="prev" title="profile_stk" href="profile_stk.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -311,11 +310,11 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">create_config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_config.html">create_config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sir.html">sir</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="profile_stk.html">profile_stk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="visualizer.html">visualizer</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">visualizer</a></li>
 </ul>
 </div>
 </nav></div>
@@ -356,7 +355,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">create_config</li>
+    <li class="breadcrumb-item active" aria-current="page">visualizer</li>
   </ul>
 </nav>
 </div>
@@ -373,23 +372,44 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-create_config">
-<span id="create-config"></span><h1>create_config<a class="headerlink" href="#module-create_config" title="Link to this heading">#</a></h1>
-<p>Create a config file as expected for the inversion</p>
+  <section id="module-visualizer">
+<span id="visualizer"></span><h1>visualizer<a class="headerlink" href="#module-visualizer" title="Link to this heading">#</a></h1>
+<p>Visualizes the spectra and model interactively at different pixels.</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../functions.html#create_config.config_1C" title="create_config.config_1C"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_1C</span></code></a>()</p></td>
-<td><p>Creates a config file for the 1 Component Inversion by asking questions.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_range</span></code>(wave_inv, wave)</p></td>
+<td><p>Check if the given wavelength is in the range</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../functions.html#create_config.config_2C" title="create_config.config_2C"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_2C</span></code></a>()</p></td>
-<td><p>Creates a config file for the 2 Components Inversion by asking questions.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">determine_resolution</span></code>(string, pos[, primary])</p></td>
+<td><p>Cuts a string from xrandr and extracts the width and height of the monitor</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../functions.html#create_config.config_MC" title="create_config.config_MC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_MC</span></code></a>()</p></td>
-<td><p>Creates a config file for the Monte-Carlo simulation by asking questions.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_display_size</span></code>()</p></td>
+<td><p>Gets the size of the display which is needed for positioning the figure</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_display_size_2monitors</span></code>()</p></td>
+<td><p>Gets the size of the display which is needed for positioning the figure for the second monitor</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">help</span></code>()</p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_figure</span></code>(position[, width, height, Monitor])</p></td>
+<td><p>Move and resize a window to a set of standard positions on the screen.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_click_1C</span></code>(event, obs, fit, Models, Map)</p></td>
+<td><p>Opens a figure with the I, Q, U and V in the chosen pixel in the picture.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_click_2C</span></code>(event, obs, fit, Models1, ...)</p></td>
+<td><p>Opens a figure with the I, Q, U and V in the chosen pixel in the picture.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_handling</span></code>(signum, frame)</p></td>
+<td><p>Closes the program without printing the traceback as this is the way to finsish the program.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../plots.html#visualizer.visualizer_1C" title="visualizer.visualizer_1C"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualizer_1C</span></code></a>(conf, wave)</p></td>
+<td><p>Plots the Stokes vector with obs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../plots.html#visualizer.visualizer_2C" title="visualizer.visualizer_2C"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualizer_2C</span></code></a>(conf, wave)</p></td>
+<td><p>Plots the Stokes vector with obs.</p></td>
 </tr>
 </tbody>
 </table>
@@ -406,22 +426,13 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../api.html"
+       href="profile_stk.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">API</p>
+        <p class="prev-next-title">profile_stk</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="sir.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">sir</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -436,7 +447,7 @@ document.write(`
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/generated/create_config.rst.txt">
+    <a href="../_sources/generated/visualizer.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

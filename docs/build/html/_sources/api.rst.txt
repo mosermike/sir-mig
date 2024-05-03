@@ -8,3 +8,4 @@ API
    sir
    model
    profile_stk
+   visualizer

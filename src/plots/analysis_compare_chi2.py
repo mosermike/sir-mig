@@ -4,8 +4,9 @@ Compares two simulations by computing and plotting the chi2 value as well as com
 
 import numpy as np 
 import sys, os
-sys.path.append(sys.path[0] + "../..")
-import sir, model_1C as m
+sys.path.append(sys.path[0] + "..")
+import sir
+import model as m
 import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists

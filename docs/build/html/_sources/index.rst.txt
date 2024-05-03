@@ -36,6 +36,8 @@ Check out the :doc:`functions` section for a list of functions.
 
 Check out the :doc:`classes` section for a list of classes which are used to read and write the Stokes profiles and the models.
 
+Check out the :doc:`plots` section for a list of functions to plot the results.
+
 
 .. note::
 
@@ -49,5 +51,6 @@ Contents
    usage
    functions
    classes
+   plots
    api
    

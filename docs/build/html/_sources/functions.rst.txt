@@ -30,6 +30,7 @@ Library for repeating functions such as reading the config, writing SIR files.
 .. autofunction:: sir.write_model
 .. autofunction:: sir.write_profile
 
+
 create_config.py
 ----------------
 
@@ -38,6 +39,7 @@ Functions to create the config files for the different modes.
 .. autofunction:: create_config.config_MC
 .. autofunction:: create_config.config_1C
 .. autofunction:: create_config.config_2C
+
 
 create_profiles
 ---------------
@@ -58,6 +60,7 @@ Functions to perform the inversion
 .. autofunction:: inversion.inversion_mc
 .. autofunction:: inversion.scatter_data
 .. autofunction:: inversion.scatter_data_mc
+
 
 main.py
 -------
