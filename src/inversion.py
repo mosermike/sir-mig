@@ -615,7 +615,8 @@ def inversion_1c(conf, comm, rank, size, MPI):
 
 	# Read inversion stuff
 	Map = conf['map']
-	
+	abundance_file = conf['abundance']  # Abundance file
+
 	# Write the control file with the information from the config file
 	if rank == 0:
 		print("-------> Write control and grid file")
@@ -624,9 +625,8 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
 		sir.write_grid(conf, stk.wave, os.path.join(path,d.Grid))
 		del stk
-	abundance_file = conf['abundance']  # Abundance file
+	
 	# Write psf function, if needed
-	if rank == 1 or (size < 2 and rank == 0):
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
 			if not exists(os.path.join(path, conf['psf'])):
@@ -639,7 +639,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			print(f"-------> File {conf['guess']} used as initial guess/base model")
 		guess = m.read_model(os.path.join(path,conf["guess"]))
 		
-	if rank == 2 or (size < 3 and rank == 0):
+	if rank == 0:
 		# Check if there are old task folders and delete them => can result to errors
 		if len(glob.glob(os.path.join(path,d.task_start + "*"))) > 0:
 			print("-------> Deleting old task folders")
@@ -690,7 +690,8 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	#########################
 	# Load and scatter data => Saving memory and time
 	stk, tasks = scatter_data(conf, comm, rank, size)
-
+	comm.barrier()
+	
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
 	start_time = time.time()

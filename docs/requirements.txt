@@ -1,3 +1,4 @@
+# These pacakges are required to create the documentation
 # Obtained by running the commands below
 # pip install pipreqs
 # conda install --yes --file requirements.txt -c conda-forge
@@ -8,8 +9,6 @@ astropy==6.0.1
 matplotlib==3.7.1
 scipy==1.13.0
 mpi4py==3.1.6
-
-# For the documentation
-#sphinx==7.3.7
-#pydata-sphinx-theme==0.15.2
+sphinx==7.3.7
+pydata-sphinx-theme==0.15.2
 
