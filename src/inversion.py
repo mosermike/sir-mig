@@ -674,7 +674,10 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			if 'rho' in random_pars:
 				print_out += "Density, "
 			print(print_out[0:-2] + ".")
-			print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
+			if conf['random_guess'] == 1:
+				print(f"-------> Create {conf['random_guess']} random guess per pixel.")
+			else:
+				print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
 		else:
 			print(f"-------> Use Base Model '{conf['model']}' as initial guess.")
 
@@ -917,6 +920,10 @@ def inversion_mc(conf, comm, rank, size, MPI):
 			if 'rho' in random_pars:
 				print_out += "Density, "
 			print(print_out[0:-2] + ".")
+			if conf['random_guess'] == 1:
+				print(f"-------> Create {conf['random_guess']} random guess per pixel.")
+			else:
+				print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
 		else:
 			if rank == 0:
 				print(f"-------> Use Base Model '{conf['model']}' as initial guess.")
@@ -1171,6 +1178,10 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			if 'rho' in random_pars:
 				print_out += "Density, "
 			print(print_out[0:-2] + ".")
+			if conf['random_guess'] == 1:
+				print(f"-------> Create {conf['random_guess']} random guess per pixel.")
+			else:
+				print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
 		else:
 			print(f"-------> Use Base Model '{conf['model']}' as initial guess.")
 
