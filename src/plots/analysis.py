@@ -321,7 +321,10 @@ if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
 	conf = sir.read_config(sys.argv[1])
-	analysis(conf)
+	if conf["mode"] == "MC":
+		analysis(conf)
+	else:
+		print(f"[visualizer] Mode '{conf['mode']}' unknown or not defined")
 	
 		
 

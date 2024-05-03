@@ -1,8 +1,6 @@
 """
 Misc. Functions
 """
-import numpy as np
-import definitions as d
 
 def initial(mode):
 	"""
@@ -76,6 +74,8 @@ def create_task_folder_list(arg):
 	------
 	Dictionary with all the names of the task folders, x and y position
 	"""
+	import numpy as np
+	import definitions as d
 	# Create arrays
 	tasks = []
 	xs = []

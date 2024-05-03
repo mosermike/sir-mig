@@ -2,19 +2,12 @@
 Functions related to observations and to conversions between SIR format and numpy files
 """
 import numpy as np
-import sys, os, sir
-from astropy.io import fits 
-import definitions as d
-from os.path import exists
 
 def read_profile(profile, grid, line_file, waves):
-
+	import sir
 	# Read grid and line file to transform the relative llambdas
 	grid = sir.read_grid(grid)
 	Lines = grid['Line']
-	Mins  = grid['min']
-	Steps = grid['step']
-	Maxs  = grid['max']
 
 	#Line file
 	line = sir.read_line(line_file)
@@ -57,6 +50,11 @@ def write_psf(conf, filename):
 	None
 
 	"""
+	import definitions as d
+	from os.path import exists
+	import sys
+	import os
+
 	waves = np.load(os.path.join(conf['path'],conf['waves'])) # Wavelengths
 	Delta_ll = waves[1]-waves[0]
 

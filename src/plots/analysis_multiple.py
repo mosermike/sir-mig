@@ -405,12 +405,13 @@ if __name__ == "__main__":
 		confs = [sir.read_config(i, check=False) for i in confs]
 	else:
 		confs  = [sir.read_config(sys.argv[1])]
-
-	# Labels
-	labels = []
-	for i in range(len(confs)):
-		ll = input(f"Label {i+1}: ")
-		labels.append(ll)
-
-	analysis_multiple(confs,labels)
+	if confs[0]["mode"] == "MC":
+		#Labels
+		labels = []
+		for i in range(len(confs)):
+			ll = input(f"Label {i+1}: ")
+			labels.append(ll)
+		analysis_multiple(confs,labels)
+	else:
+		print(f"[visualizer] Mode '{confs[0]['mode']}' unknown or not defined")
 

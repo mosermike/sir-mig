@@ -4,17 +4,10 @@ Create random generated guess models depenidng on the configuration file
 Options are 'T', 'Pe', 'vmicro', 'B', 'vlos', 'gamma', 'phi', 'z', 'Pg', 'rho'
 """
 
-# TODO
-
 import numpy as np 
 import sys 
 import sir
-from os.path import exists
-import os
-import scipy.interpolate as inter
-import definitions as d
-import matplotlib.pyplot as plt
-import model as m
+
 
 def help():
 	print("create_random_guess - Creates random guesses")
@@ -68,6 +61,8 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi) -> m.M
 	------
 	Class Model with the random Model
 	"""
+	import definitions as d
+	import model as m
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################

@@ -320,6 +320,11 @@ def on_click_1C(event, obs, fit, Models, Map):
 		global ax31
 		global ax41
 
+		if (event.xdata == None):
+			return
+		elif (event.ydata == None):
+			return
+		
 		# Read and print the position on the Map	
 		x = int(event.xdata + 0.5) - Map[0]
 		y = int(event.ydata + 0.5) - Map[2]
@@ -442,7 +447,7 @@ def on_click_1C(event, obs, fit, Models, Map):
 		
 		plt.show()
 
-def visualiser_1C(conf, wave):
+def visualizer_1C(conf, wave):
 	"""
 	Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
 
@@ -742,7 +747,7 @@ def on_click_2C(event, obs, fit, Models1, Models2, Map):
 		
 		plt.show()
 
-def visualiser_2C(conf, wave):
+def visualizer_2C(conf, wave):
 	"""
 	Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
 
@@ -894,9 +899,9 @@ if __name__ == "__main__":
 		help()
 	conf = sir.read_config(sys.argv[1])
 	if conf["mode"] == "1C":
-		visualiser_1C(conf, float(sys.argv[2]))
+		visualizer_1C(conf, float(sys.argv[2]))
 	elif conf["mode"] == "2C":
-		visualiser_2C(conf, float(sys.argv[2]))
+		visualizer_2C(conf, float(sys.argv[2]))
 	elif conf["mode"] == "MC":
 		print("[visualizer] Not defined for mode 'MC'")
 	else:

@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 import sys
 import os
-import shutil
 from os.path import exists
 import sir
-import definitions as d
-from misc import *
-import inversion
+
 def help():
 	"""
 	Help Page
@@ -55,6 +52,7 @@ def main():
 	# Read the config file from the input
 	conf = sir.read_config(sys.argv[1])
 	if rank == 0:
+		from misc import initial
 		initial(conf['mode'])
 
 	comm.barrier()
@@ -91,6 +89,8 @@ def main():
 			if conf['fts_file'] != '':
 				preprocess.correction_spectral_veil.correct_spectral_veil(conf)
 			elif not exists(os.path.join(conf['path'],conf['cube_inv'])) and len(conf['quiet_sun']) > 1:
+				import shutil
+				import definitions as d
 				shutil.copy(os.path.join(conf['path'],conf['cube']) + d.end_norm, os.path.join(conf['path'],conf['cube_inv']))
 			else:
 				print("[main] No preprocessing steps are actually performed. Is 'preprocess=1' really needed in the config file?")
@@ -101,17 +101,20 @@ def main():
 		#####################
 		# PERFORM INVERSION #
 		#####################
+		import inversion
 		inversion.inversion_1c(conf, comm, rank, size, MPI)
 
-	if conf['mode'] == '2C':
+	elif conf['mode'] == '2C':
 		#####################
 		# PERFORM INVERSION #
 		#####################
+		import inversion
 		inversion.inversion_2c(conf, comm, rank, size, MPI)
 
-	if conf['mode'] == 'MC':
+	elif conf['mode'] == 'MC':
 		import create_models  # Creating Models
 		import create_profiles  # Create profiles
+		import inversion
 		if rank == 0:
 			# Check for flags and print it out
 			if "--no-create" in sys.argv:

@@ -2,10 +2,8 @@
 Library for repeating functions for analyzing and/or plotting SIR data
 """
 import numpy as np 
-import time
 import sys
 import os
-import definitions as d
 from os.path import exists
 
 
@@ -460,6 +458,7 @@ def write_config_1c(File, conf):
 		Dictionary with all the informations
 	"""
 	print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
+	import time
 	time.sleep(2)
 	# Revert, range_wave, map and weights
 	range_wave = ''
@@ -552,8 +551,8 @@ def write_config_2c(File, conf):
 		Dictionary with all the informations
 	"""
 	print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
+	import time
 	time.sleep(2)
-
 	# Revert, range_wave, map and weights
 	range_wave = ''
 	temp = conf["range_wave"]
@@ -656,6 +655,7 @@ def write_config_mc(File, conf):
 		Dictionary with all the informations
 	"""
 	print("[write_config] Note that manually added comments will be overwritten! 1s left to abort ...")
+	import time
 	time.sleep(2)
 	
 	# Revert, range_wave, map and weights
@@ -834,7 +834,7 @@ def write_control_1c(filename, conf):
 		Dictionary with the information from the config file
 	
 	"""
-	model		= conf['model']		# Base Model
+	import definitions as d
 	psf			= conf['psf']		# Use psf by spectral veil
 	cycles		= conf['cycles']		# Number of cycles
 	weights		= conf['weights']		# Weights in the control file
@@ -910,6 +910,7 @@ def write_control_2c(filename, conf):
 		Dictionary with the information from the config file
 	
 	"""
+	import definitions as d
 	model1		= d.guess1			# Base Model 1
 	model2		= d.guess2			# Base Model 2
 	psf			= conf['psf']			# Use psf by spectral veil
@@ -994,6 +995,7 @@ def write_control_mc(filename, conf, Type = 'inv'):
 		which type of control file is created ('syn' for synthesis, 'inv' for inversion)
 	
 	"""
+	import definitions as d
 	if Type == 'syn':
 		model = d.model_syn
 	elif Type == 'inv':
@@ -1160,6 +1162,7 @@ def read_chi2s(conf, tasks):
 		Numpy array with all chi2 values
 	
 	"""
+	import definitions as d
 	if conf['mode'] != "MC":
 		print("[ERROR] This function 'read_chi2s' is only defined for the mode MC")
 		return np.empty()

@@ -9,7 +9,6 @@ import numpy as np
 import time
 import sys
 import sir
-import obs
 import glob
 import model as m
 import profile_stk as p
@@ -627,6 +626,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
 			if not exists(os.path.join(path, conf['psf'])):
+				import obs
 				obs.write_psf(conf, os.path.join(path, conf['psf']))
 	
 	# Create guess from npy file if wanted
@@ -1092,6 +1092,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
 			if not exists(os.path.join(path,conf['psf'])):
+				import obs
 				obs.write_psf(conf, os.path.join(path,conf['psf']))
 
 	# Create guess from npy file if wanted

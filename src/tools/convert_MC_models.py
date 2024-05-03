@@ -23,5 +23,6 @@ mod.z = data[:, :, 8]
 mod.Pg = data[:, :, 9]
 mod.rho = data[:, :, 10]
 mod.fill += 1
+mod.vmacro += 0.1
 
 mod.write(sys.argv[1])

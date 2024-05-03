@@ -5,7 +5,6 @@ Perform synthesis of many profiles with simple parallelization using mpi4py
 
 import os, shutil
 import glob
-import sys
 import sir
 import model as m
 import profile_stk as p

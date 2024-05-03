@@ -278,5 +278,13 @@ if __name__ == "__main__":
 		help()
 	conf1 = sir.read_config(sys.argv[1])
 	conf2 = sir.read_config(sys.argv[2])
-	analysis_compare_chi2(conf1,conf2)
+	if conf1["mode"] == "MC" and conf2['mode']:
+		analysis_compare_chi2(conf1,conf2)
+	else:
+		if conf1["mode"] == "MC":
+			print(f"[visualizer] Mode '{conf2['mode']}' of config 2 unknown or not defined")
+		elif conf2["mode"] == "MC":
+			print(f"[visualizer] Mode '{conf1['mode']}' of config 1 unknown or not defined")
+		else:
+			print(f"[visualizer] Mode '{conf1['mode']}' and '{conf2['mode']}'unknown or not defined")
 		
