@@ -45,6 +45,9 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 
+html_logo = 'SIR-MIG.svg'
+html_favicon = 'SIR-MIG.ico'
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
