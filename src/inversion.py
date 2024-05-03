@@ -627,6 +627,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		del stk
 	
 	# Write psf function, if needed
+	if rank == 0:
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
 			if not exists(os.path.join(path, conf['psf'])):
@@ -691,7 +692,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	# Load and scatter data => Saving memory and time
 	stk, tasks = scatter_data(conf, comm, rank, size)
 	comm.barrier()
-	
+
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
 	start_time = time.time()
