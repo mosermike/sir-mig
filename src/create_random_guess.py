@@ -261,6 +261,7 @@ def create_guesses_1c(conf, output = "./", number = 0):
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################
+	import definitions as d
 	lim_B = split_to_float(conf["lim_B"])
 	lim_vlos = split_to_float(conf[f"lim_vlos"])
 	lim_gamma = split_to_float(conf[f"lim_gamma"])
@@ -292,8 +293,7 @@ def create_guesses_2c(conf, output = "./", number = 0):
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################
-
-	num   = conf['random_guess']  # Number of random guesses
+	import definitions as d
 
 	for j in [1,2]:
 		model = conf[f"model{j}"]		# Base Model
