@@ -5,7 +5,8 @@ Plots the result of the SIR inversion
 import numpy as np 
 import matplotlib.pyplot as plt
 from os.path import exists
-import os, sys
+import os
+import sys
 sys.path.append(sys.path[0] + "/..")
 sys.path.append(sys.path[0] + "/../tools")
 import sir
@@ -16,7 +17,7 @@ import profile_stk as p
 
 # TODO do the figure size as in gris_firtez
 
-def help():
+def _help():
 	"""
 	Help Page
 	"""
@@ -75,7 +76,7 @@ def help():
 	sys.exit()
 
 
-def check_range(wave_inv, wave):
+def _check_range(wave_inv, wave):
 	"""
 	Check if the given wavelength is in the range
 
@@ -108,8 +109,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 	"""
 	Plots the result of the inversion 1C
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dict. with all the information from the config
 	wave : float
@@ -119,10 +120,91 @@ def result_1C(conf, wave, tau, waveV = -1):
 	waveV : float, optional
 		Wavelength for Stokes V in A (-1 not used), Default: -1
 
-	Return
+	Returns
 	-------
 	None
 
+	Other Parameters
+	----------------
+	Additional parameters given as an argument when the script is executed.
+	-data [str]
+		Rel. path to the spectral veil corrected data if standard labelling is not used, optional.
+	-stokes [str]
+		Rel. path to the Stokes result if standard labelling is not used, optional.
+	-models [str]
+		Rel. path to the Models of the inversion if standard labelling is not used.
+	-errors
+			Rel. path to the Errors of the inversion if standard labelling is not used.
+	-chi
+			Rel. path to the chi2 file of the inversion if standard labelling is not used.
+	-save [str], optional
+			Additional save path. Default './'.
+	-add [str]
+			Additional text in filenames
+	-label [str]
+			Add label text
+	-title1 [str]
+			Title in Result Stokes plot
+	-title2 [str]
+			Title in Obs. Stokes plot
+	-title3 [str]
+			Title in Model 1 plot
+	-xtitle [float]
+			Changing the x position of the title
+	-T
+			Plot temperature in K
+	-Pe
+			Plot electron pressure in dyn/cm^2
+	-vmicro
+			Plot microturbulence in cm/s
+	-B
+			Plot magentic field strength in Gauss
+	-vlos
+			Plot line of sight velocity in km/s
+	-gamma
+			Plot inclination by subtracting in deg
+	-phi
+			Plot azimuth by adding in deg
+	-z
+			Plot real height in km
+	-Pg
+			Plot gas pressure in dyn/cm^2
+	-rho
+			Plot density
+	-vertical
+			Plot spectra vertically
+	-chi2
+			Plot chi2
+	-plot_chi2
+			Plot chi2 in the 4 subplots plot
+	-waveQ [float]
+			Plot Stokes Q in another wavelength position in A
+	-waveU [float]
+			Plot Stokes U in another wavelength position in A
+	-waveV [float]
+			Plot Stokes V in another wavelength position in A
+	-logT [float]
+			Plot Temperature at this log tau.
+	-logB [float]
+			Plot Magnetic Field at this log tau.
+	-logV [float]
+			Plot LoS Velocity at this log tau.
+	-logI [float]
+			Plot Inclination at this log tau.
+	-limitxy [float,float,float,float]
+			Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+	-limitT [float,float]
+			Set the limit for the colorbar in the temperature.
+	-limitB [float,float]
+			Set the limit for the colorbar in the magnetic field.
+	-limitchi2 [float,float]
+			Set the limit for the colorbar in chi2.
+	-limitI [float,float]
+			Set the limit for the colorbar in Stokes I.
+	-arc
+			Print x and y axis in arcseconds
+	-flipx
+			Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
 	"""
 
 		# Import library
@@ -195,18 +277,18 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 
 	# Check whether the wavelength is in range
-	wave, wave_ind = check_range(stokes_inv.wave, wave)
+	wave, wave_ind = _check_range(stokes_inv.wave, wave)
 	
 	if "-waveV" in sys.argv:
 		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
-		waveV = check_range(stokes_inv.wave, waveV)
+		waveV = _check_range(stokes_inv.wave, waveV)
 
 	if int(waveV) != -1:
-		waveV = check_range(stokes_inv.wave, waveV)
+		waveV = _check_range(stokes_inv.wave, waveV)
 
 	if "-waveQ" in sys.argv:
 		waveQ = float(sys.argv[sys.argv.index("-waveQ")+1])
-		waveQ = check_range(stokes_inv.wave, waveQ)
+		waveQ = _check_range(stokes_inv.wave, waveQ)
 	else:
 		waveQ = wave
 	waveQ_ind1 = np.argmin(abs(waves-waveQ))
@@ -214,7 +296,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 	if "-waveU" in sys.argv:
 		waveU = float(sys.argv[sys.argv.index("-waveU")+1])
-		waveU = check_range(stokes_inv.wave, waveU)
+		waveU = _check_range(stokes_inv.wave, waveU)
 	else:
 		waveU = wave
 	waveU_ind1 = np.argmin(abs(waves-waveU))
@@ -715,8 +797,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	"""
 	Plots the result of the inversion for 2C
 
-	Parameter
-	---------
+	Parameters
+	----------
 	conf : dict
 		Dict. with all the information from the config
 	wave : float
@@ -728,9 +810,99 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	plot_stokes : bool, optional
 		Plot the stokes vector. Default: True
 
-	Return
+	Returns
 	-------
 	None
+
+	Other Parameters
+	----------------
+	Additional parameters given as an argument when the script is executed.
+	-data [str]
+		Rel. path to the spectral veil corrected data if standard labelling is not used, optional.
+	-stokes [str]
+		Rel. path to the Stokes result if standard labelling is not used, optional.
+	-models1 [str]
+		Rel. path to the Models 1 of the inversion if standard labelling is not used.
+	-models2 [str]
+		Rel. path to the Models 2 of the inversion if standard labelling is not used.
+	-errors
+			Rel. path to the Errors of the inversion if standard labelling is not used.
+	-chi
+			Rel. path to the chi2 file of the inversion if standard labelling is not used.
+	-save [str], optional
+			Additional save path. Default './'.
+	-add [str]
+			Additional text in filenames
+	-label [str]
+			Add label text
+	-title1 [str]
+			Title in Result Stokes plot
+	-title2 [str]
+			Title in Obs. Stokes plot
+	-title3 [str]
+			Title in Model 1 plot
+	-title4 [str]
+			Title in Model 2 plot with 4 plots
+	-xtitle [float]
+			Changing the x position of the title
+	-T
+			Plot temperature in K
+	-Pe
+			Plot electron pressure in dyn/cm^2
+	-vmicro
+			Plot microturbulence in cm/s
+	-B
+			Plot magentic field strength in Gauss
+	-vlos
+			Plot line of sight velocity in km/s
+	-gamma
+			Plot inclination by subtracting in deg
+	-phi
+			Plot azimuth by adding in deg
+	-z
+			Plot real height in km
+	-Pg
+			Plot gas pressure in dyn/cm^2
+	-rho
+			Plot density
+	-vertical
+			Plot spectra vertically
+	-chi2
+			Plot chi2
+	-fill
+			Plot the filling factor
+	-plot_chi2
+			Plot chi2 in the 4 subplots plot
+	-plot_fill
+			Plot filling factor in the 4 subplots plot
+	-waveQ [float]
+			Plot Stokes Q in another wavelength position in A
+	-waveU [float]
+			Plot Stokes U in another wavelength position in A
+	-waveV [float]
+			Plot Stokes V in another wavelength position in A
+	-logT [float]
+			Plot Temperature at this log tau.
+	-logB [float]
+			Plot Magnetic Field at this log tau.
+	-logV [float]
+			Plot LoS Velocity at this log tau.
+	-logI [float]
+			Plot Inclination at this log tau.
+	-limitxy [float,float,float,float]
+			Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+	-limitT [float,float]
+			Set the limit for the colorbar in the temperature.
+	-limitB [float,float]
+			Set the limit for the colorbar in the magnetic field.
+	-limitchi2 [float,float]
+			Set the limit for the colorbar in chi2.
+	-limitI [float,float]
+			Set the limit for the colorbar in Stokes I.
+	-arc
+			Print x and y axis in arcseconds
+	-flipx
+			Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
 
 	"""
 
@@ -766,23 +938,23 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		stokes_inv = p.read_profile(filename)
 
 	# Check whether the wavelength is in range
-	wave = check_range(stokes.wave, wave)
+	wave = _check_range(stokes.wave, wave)
 	
 	if "-waveQ" in sys.argv:
 		waveQ = float(sys.argv[sys.argv.index("-waveQ")+1])
-		waveQ = check_range(stokes_inv.wave, waveQ)
+		waveQ = _check_range(stokes_inv.wave, waveQ)
 	else:
 		waveQ = wave
 
 	if "-waveU" in sys.argv:
 		waveU = float(sys.argv[sys.argv.index("-waveU")+1])
-		waveU = check_range(stokes_inv.wave, waveU)
+		waveU = _check_range(stokes_inv.wave, waveU)
 	else:
 		waveU = wave
 
 	if "-waveV" in sys.argv:
 		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
-		waveV = check_range(stokes_inv.wave, waveV)
+		waveV = _check_range(stokes_inv.wave, waveV)
 	else:
 		waveV = wave
 	
@@ -1351,7 +1523,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
-		help()
+		_help()
 	conf = sir.read_config(sys.argv[1])
 
 	if conf['mode'] == '1C':

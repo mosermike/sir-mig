@@ -1,6 +1,9 @@
-#!/usr/bin/env python
 """
-Perform inversion of many profiles with simple parallelization using mpi4py
+Inversion
+=========
+
+Perform inversion of many profiles with simple parallelization using mpi4py.
+
 """
 
 import os
@@ -26,14 +29,25 @@ import misc
 """
 def scatter_data(conf, comm, rank, size):
 	"""
-	Scatters the data equally into all the ranks
+	Scatters the data equally into all the processes.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	conf : Dict
 		Config information
-	path : string
-		Path where we are
+	comm : Intercomm
+		MPI communicator
+	rank : int
+		Number of actual process
+	size : int
+		Number of available processes
+
+	Returns
+	-------
+	out : Profile
+		Stokes Profiles used in each process
+	out : dict
+		Dictionary with the folders, x and y positions for each process
 	"""
 	path = conf["path"]
 	
@@ -123,14 +137,25 @@ def scatter_data(conf, comm, rank, size):
 
 def scatter_data_mc(conf, comm, rank, size):
 	"""
-	Scatters the data equally into all the ranks for the MC simulation
+	Scatters the data equally into all the ranks for the MC simulation.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	conf : Dict
 		Config information
-	path : string
-		Path where we are
+	comm : Intercomm
+		MPI communicator
+	rank : int
+		Number of actual process
+	size : int
+		Number of available processes
+
+	Returns
+	-------
+	out : Profile
+		Stokes Profiles for each process
+	out : Dict
+		Dictionary with all the folders, x and y position for each process
 	"""
 	
 	if rank == 0:
@@ -245,7 +270,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 	
 	Returns
 	-------
-	chi2 : float
+	out : float
 		Best chi2 value of the inversion(s)
 	
 	"""
@@ -403,8 +428,8 @@ def execute_inversion_2c(conf, task_folder, rank):
 	when this function is entered, the os is in the right directory! This is
 	used for the mode '2C'.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	conf : Dictionary
 		Dictionary containing the configuration of the simulation
 	task_folder : dict
@@ -412,9 +437,9 @@ def execute_inversion_2c(conf, task_folder, rank):
 	rank : int
 		Process Number
 
-	Return
-	------
-	chi2 : float
+	Returns
+	-------
+	out : float
 		Best chi2 value of the inversion(s)
 	"""
 	# Define parameters for simplicity reasons
@@ -583,22 +608,24 @@ def execute_inversion_2c(conf, task_folder, rank):
 
 def inversion_1c(conf, comm, rank, size, MPI):
 	"""
-	Performs the inversion of all the models.
+	Performs the inversion of all the models for the 1 component inversion.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary with all information from the config file
-	comm, rank, size, MPI : MPI variables
-		Variables defined as
-		 - comm = MPI.COMM_WORLD
-		 - rank = comm.Get_rank()
-		 - size = comm.Get_size()
-		 - MPI = MPI library imported as from mpi4py import MPI
+	comm : Intercomm
+		MPI communicator
+	rank : int
+		Number of actual process
+	size : int
+		Number of available processes
+	MPI : library
+		 MPI library imported as 'from mpi4py import MPI'
 	
 
-	Return
-	------
+	Returns
+	-------
 	None
 	"""
 	####################################
@@ -849,22 +876,24 @@ def inversion_1c(conf, comm, rank, size, MPI):
 
 def inversion_mc(conf, comm, rank, size, MPI):
 	"""
-	Performs the inversion of all the models.
+	Performs the inversion of all the models for the MC simulation.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	conf : dict
 		Dictionary with all information from the config file
-	comm, rank, size, MPI : MPI variables
-		Variables defined as
-		 - comm = MPI.COMM_WORLD
-		 - rank = comm.Get_rank()
-		 - size = comm.Get_size()
-		 - MPI = MPI library imported as from mpi4py import MPI
+	comm : Intercomm
+		MPI communicator
+	rank : int
+		Number of actual process
+	size : int
+		Number of available processes
+	MPI : library
+		MPI library imported as 'from mpi4py import MPI'
 	
 
-	Return
-	------
+	Returns
+	-------
 	None
 
 	"""
@@ -1062,23 +1091,26 @@ def inversion_mc(conf, comm, rank, size, MPI):
 
 def inversion_2c(conf, comm, rank, size, MPI):
 	"""
-	Performs the inversion of all the models.
+	Performs the inversion of all the models for the 2 component inversion.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	conf : dict
 		Dictionary with all information from the config file
-	comm, rank, size : MPI variables
-		Variables defined as
-		 - comm = MPI.COMM_WORLD
-		 - rank = comm.Get_rank()
-		 - size = comm.Get_size()
-		 - MPI = MPI library imported as from mpi4py import MPI
+	comm : Intercomm
+		MPI communicator
+	rank : int
+		Number of actual process
+	size : int
+		Number of available processes
+	MPI : library
+		MPI library imported as 'from mpi4py import MPI'
 	
 	
-	Return
-	------
+	Returns
+	-------
 	None
+
 	"""
 	###################################################
 	#		READ PARAMETERS FROM CONFIG FILE		#	

@@ -1,13 +1,11 @@
-.. Temp documentation master file, created by
-   sphinx-quickstart on Mon Apr 29 11:33:54 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to SIR MIG's documentation!
-===================================
+SIR-MIG Documentation
+=====================
+
+**Welcome to SIR MIG's documentation!**
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
 
@@ -34,6 +32,8 @@ Check out the :doc:`usage` section for further information.
 
 Check out the :doc:`functions` section for a list of functions.
 
+Check out the :doc:`preprocess` module for a description of functions which are used to preprocess data.
+
 Check out the :doc:`classes` section for a list of classes which are used to read and write the Stokes profiles and the models.
 
 Check out the :doc:`plots` section for a list of functions to plot the results.
@@ -45,12 +45,15 @@ Check out the :doc:`plots` section for a list of functions to plot the results.
 
 Contents
 --------
-
 .. toctree::
+  :maxdepth: 1
 
-   usage
-   functions
-   classes
-   plots
-   api
+  usage
+  functions
+  classes
+  inversion
+  preprocess
+  simulation
+  plots
+  api
    

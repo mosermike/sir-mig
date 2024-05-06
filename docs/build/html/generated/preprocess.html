@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>visualizer &#8212; SIR-MIG  documentation</title>
+    <title>preprocess &#8212; SIR-MIG  documentation</title>
   
   
   
@@ -39,11 +39,13 @@
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/visualizer';</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/preprocess';</script>
     <link rel="icon" href="../_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="preprocess" href="preprocess.html" />
+    <link rel="next" title="visualizer" href="visualizer.html" />
+    <link rel="prev" title="profile_stk" href="profile_stk.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -379,8 +381,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="sir.html">sir</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="profile_stk.html">profile_stk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="preprocess.html">preprocess</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">visualizer</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualizer.html">visualizer</a></li>
 </ul>
 </div>
 </nav></div>
@@ -421,7 +423,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">visualizer</li>
+    <li class="breadcrumb-item active" aria-current="page">preprocess</li>
   </ul>
 </nav>
 </div>
@@ -438,17 +440,62 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-visualizer">
-<span id="visualizer"></span><h1>visualizer<a class="headerlink" href="#module-visualizer" title="Link to this heading">#</a></h1>
-<p>Visualizes the spectra and model interactively at different pixels.</p>
+  <section id="module-preprocess">
+<span id="preprocess"></span><h1>preprocess<a class="headerlink" href="#module-preprocess" title="Link to this heading">#</a></h1>
+<section id="preprocessing">
+<h2>Preprocessing<a class="headerlink" href="#preprocessing" title="Link to this heading">#</a></h2>
+<p>These module provides functions to preprocess data such as merging, normalisation and correction for a spectral veil for groundbased telescopes.</p>
+<section id="merging-data">
+<h3>Merging Data<a class="headerlink" href="#merging-data" title="Link to this heading">#</a></h3>
+<p>Merging data downloaded from SDC to a data cube or Hinode data. It puts the 3D arrays into a 4D array to be easier
+accessible. In total, four different measurements can be put into 4 data cubes at the same time. For more measurements
+in the same folder, the script must be adapted.</p>
+</section>
+<section id="normalise-data">
+<h3>Normalise Data<a class="headerlink" href="#normalise-data" title="Link to this heading">#</a></h3>
+<p>Normalises a data cube by computing the average intensity from a quiet sun region</p>
+</section>
+<section id="spectral-veil-correction">
+<h3>Spectral veil correction<a class="headerlink" href="#spectral-veil-correction" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>Convolve the FTS data with a Gaussian and a constant value for the spectral veil using</dt><dd><p><div class="math notranslate nohighlight">
+\[I = (1 - \nu) [I_{FTS} * g(\lambda, \sigma)] + \nu I_c.\]</div>
+</p>
+</dd>
+</dl>
+<p>It computes the best fit parameter sigma and nu. Afterwards, it corrects the fits data.
+It writes the results into single files and into a corrected data cube.</p>
+</section>
+</section>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../plots.html#visualizer.visualizer_1C" title="visualizer.visualizer_1C"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualizer_1C</span></code></a>(conf, wave)</p></td>
-<td><p>Plots the Stokes vector with obs.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../preprocess.html#preprocess.argmin" title="preprocess.argmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argmin</span></code></a>(x)</p></td>
+<td><p>Find the argument of the minimum in an multi-dimensional array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../plots.html#visualizer.visualizer_2C" title="visualizer.visualizer_2C"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualizer_2C</span></code></a>(conf, wave)</p></td>
-<td><p>Plots the Stokes vector with obs.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../preprocess.html#preprocess.chi2" title="preprocess.chi2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chi2</span></code></a>(y_fit, y_obs)</p></td>
+<td><p>Computes the merit-function $chi^2$.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../preprocess.html#preprocess.convective_blueshift" title="preprocess.convective_blueshift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convective_blueshift</span></code></a>(ll, I)</p></td>
+<td><p>Determines the shifted $lambda_0$ due to convective blueshift.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../preprocess.html#preprocess.correct_spectral_veil" title="preprocess.correct_spectral_veil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correct_spectral_veil</span></code></a>(conf)</p></td>
+<td><p>Correct the spectral veil in the data. This function calls the following functions:</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../preprocess.html#preprocess.gaussian" title="preprocess.gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gaussian</span></code></a>(x[, mean, sigma, norm])</p></td>
+<td><p>Computes the value of a Gaussian at position x.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../preprocess.html#preprocess.merge" title="preprocess.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a>(conf, dir, ending)</p></td>
+<td><p>Merges data to a cube</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../preprocess.html#preprocess.normalise" title="preprocess.normalise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalise</span></code></a>(conf)</p></td>
+<td><p>Normalise the data cube by the given quiet sun range</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../preprocess.html#preprocess.optimise_chi" title="preprocess.optimise_chi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimise_chi</span></code></a>(nu, sigma, I, I_obs)</p></td>
+<td><p>Optimises two parameters by computing the chi2 merit function and finding the minima of the two parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../preprocess.html#preprocess.vac_to_air" title="preprocess.vac_to_air"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vac_to_air</span></code></a>(wavelength[, method])</p></td>
+<td><p>Computes the wavelength from vacuum to air by using (Ciddor, 1996) eq.</p></td>
 </tr>
 </tbody>
 </table>
@@ -465,13 +512,22 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="preprocess.html"
+       href="profile_stk.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">preprocess</p>
+        <p class="prev-next-title">profile_stk</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="visualizer.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">visualizer</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -484,9 +540,26 @@ document.write(`
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocessing">Preprocessing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-data">Merging Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalise-data">Normalise Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-veil-correction">Spectral veil correction</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/generated/visualizer.rst.txt">
+    <a href="../_sources/generated/preprocess.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

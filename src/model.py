@@ -1,5 +1,8 @@
 """
-Class Model with all the tools to read and write the models
+Model
+=====
+
+Class Model with all the tools to read and write the models. The class contains all the information from the model.
 
 """
 import numpy as np 

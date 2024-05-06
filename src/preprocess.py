@@ -1,38 +1,313 @@
+
 """
+
+Preprocessing
+=============
+
+These module provides functions to preprocess data such as merging, normalisation and correction for a spectral veil for groundbased telescopes.
+
+Merging Data
+------------
+
+Merging data downloaded from SDC to a data cube or Hinode data. It puts the 3D arrays into a 4D array to be easier
+accessible. In total, four different measurements can be put into 4 data cubes at the same time. For more measurements
+in the same folder, the script must be adapted.
+
+Normalise Data
+--------------
+
+Normalises a data cube by computing the average intensity from a quiet sun region
+
+Spectral veil correction
+------------------------
+
 Convolve the FTS data with a Gaussian and a constant value for the spectral veil using
-	I = (1 - nu) [I_FTS * g(lambda, sigma)] + nu Ic.
+	$$I = (1 - \\nu) [I_{FTS} * g(\\lambda, \\sigma)] + \\nu I_c.$$
+
 It computes the best fit parameter sigma and nu. Afterwards, it corrects the fits data.
 It writes the results into single files and into a corrected data cube.
+
+
+
+
 """
 
-import sys, os, shutil, obs
-sys.path.append("..")
-import sir
-import definitions as d
 import numpy as np
+from astropy.io import fits
+import os
+import sys
+import shutil
+import definitions as d
+import profile_stk as p
 import matplotlib.pyplot as plt
 from os.path import exists
-from astropy.convolution import convolve_fft, convolve
+from astropy.convolution import convolve_fft
 from shutil import which
-import profile_stk as p
 
-#############
-# Help page #
-#############
-def help():
-	print("correction_spectral_veil.py - Imports FTS data, shifts it, convolve it and compares it to the data")
-	print("Usage: python correction_spectral_veil.py [OPTION]")
-	print()
-	sir.option("[1. Pos.]","config file")
-	sys.exit()
 
-#################################################################################################3
+def merge(conf, dir, ending):
+	"""
+	
+	Merges data to a cube
+
+	Parameters
+	----------
+	conf : dict
+		Dictionary with the information from the config file
+	dir : str
+		Directory of the fits
+	ending : str
+		Ending of the dataset (for GRIS data)
+	Returns
+	-------
+	None
+
+	"""
+	if conf['instrument'] not in d.instruments:
+		print(f"-------> Instrument {conf['instrument']} is not known. Consider adding it to the definitions.py script.")
+		print(f"-------> The code assumes that all files in {dir} ending with '.fits' belong to the data.")
+		print(f"-------> The code will try to make it work and will ask you for some inputs.")
+		print(f"-------> Consider adapting the script yourself or make an issue in the corresponding git website.")
+
+	output = os.path.join(conf['path'], conf['cube'])  # where it is saved
+
+	# Files in the folders from different measurements
+	filenames = []
+
+	# Add all fits files in a list
+	for File in sorted(os.listdir(dir)):
+		if File.endswith(".fits"):
+			if ("_" + ending + "_0" in File and conf['instrument'] == 'GRIS') or (conf['instrument'] != 'GRIS'):
+				filenames.append(dir + File)
+
+	####################
+	# Create data cube #
+	####################
+
+	example = fits.open(filenames[0])
+	stokes = example[0].data
+	header = example[0].header
+
+	#########################################
+	# 	Load data and store it in an array	#
+	#########################################
+	# Get no. of wavelengths and pixels ; Reshape the array in a different order
+	# ADAPT for another instrument here for the structure
+	if conf['instrument'] == 'Hinode':
+		nw = stokes.shape[2]
+		nx = len(filenames)
+		ny = stokes.shape[1]
+	elif conf['instrument'] == 'GRIS':
+		nw = stokes.shape[1]
+		nx = len(filenames)
+		ny = stokes.shape[2]
+	else:
+		temp = input("Specify which entry corresponds to (nw and ny) as a list: [for GRIS: 1,2] ").split("'")
+		print("-------> The code assumes that the number of files corresponds to the x direction.")
+		nw = stokes.shape[int(temp[0])]
+		nx = len(filenames)
+		ny = stokes.shape[int(temp[1])]
+
+	print('# Pixels in x  = ', nx)
+	print('# Pixels in y  = ', ny)
+	print('# Wavelengths  = ', nw)
+
+	data = np.empty((nx, ny, 4, nw))  # shape 4, wavelength, y, 1
+
+	# Create data cube
+	for i in range(len(filenames)):
+		if i % 100 == 0:
+			print(i)
+
+		# Load data from one file
+		example = fits.open(filenames[i])
+
+		stokes = example[0].data
+		if conf['instrument'] == 'Hinode':
+			header = example[0].header
+			spbshft = header['SPBSHFT']
+			stokes = example[0].data.astype(np.float32)
+			stokes = np.transpose(stokes, axes=(1, 0, 2))
+
+			# Correction
+			if spbshft > 0:
+				stokes[:, 0, :] *= 2
+				negative = np.where(stokes[:, 0, :] < 0.0)
+				stokes[:, 0, :][negative] += 65536.
+
+			if spbshft > 1:
+				stokes[:, 3, :] *= 2
+			if spbshft > 2:
+				stokes[:, 1, :] *= 2
+				stokes[:, 2, :] *= 2
+
+			data[i] = stokes[:, :, :]
+
+		elif conf['instrument'] == 'GRIS':
+			stokes = np.transpose(stokes, axes=(3, 2, 0, 1))  # Structure of GRIS stokes, nw, ny, nx
+			data[i] = stokes[0, :, :, :]
+		else:  # ADAPT for another instrument here for the structure
+			print("-------> It assumes the structure as GRIS if it has dim 4.")
+			print("-------> It assumes the structure as Hinode if it has dim. 3.")
+			if len(stokes.shape) == 4:
+				stokes = np.transpose(stokes, axes=(3, 2, 0, 1))  # wanted structure nx, ny, stokes, nw
+			elif len(stokes.shape) == 3:
+				stokes = np.transpose(stokes, axes=(1, 0, 2))  # wanted structure nx, ny, stokes, nw
+			else:
+				print("        Manual adaptation necessary!")
+				return
+
+			data[i] = stokes[0, :, :, :]
+
+	data = data.reshape(nx, ny, 4, nw)  # shape x, y, values, wavelengths
+
+	##############################
+	# Determine real wavelengths #
+	##############################
+	if conf['instrument'] == 'GRIS':
+		print("[STATUS] Create wavelength arrays assuming the header as for GRIS data")
+		ll_a = header["CRVAL3"]
+		ll_b = header["CDELT3"]
+		llambda = ll_a + ll_b * np.arange(0, header["NAXIS3"])  # Measured wavelength for each pixel
+	elif conf['instrument'] == 'Hinode':
+		llambda = np.linspace(6300.87730065, 6303.25996109, 112)
+	else:
+		print(f"Instrument {conf['instrument']} not known. Define wavelength grid manually:")
+		mins = input("Lower wavelength in A: ")
+		maxs = input("Upper wavelength in A: ")
+		values = input("Number of spectral points: ")
+		llambda = np.linspace(float(mins), float(maxs), int(values))
+
+	if conf['shift_wave'] != '0':
+		print(f"Wavelength Grid shifted by {conf['shift_wave']} mA.")
+	llambda = llambda + float(conf['shift_wave']) * 1e-3
+
+	print("-------> Assign data ...")
+	pro = p.Profile(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
+	pro.wave = llambda
+	pro.stki = data[:,:,0,:]
+	pro.stkq = data[:,:,0,:]
+	pro.stku = data[:,:,0,:]
+	pro.stkv = data[:,:,0,:]
+
+	print("-------> Saving data (this might take a while) ...")
+	pro.write(output)
+
+	print("Saved as \"%s\"" % output)
+
+	# Save some information from the header
+	filename = os.path.join(conf['path'], d.header_infos)
+	with open(filename, 'w') as f:
+		if conf['instrument'] == 'GRIS':
+			f.write(f"POINT_ID={header['POINT_ID']}\n")
+			f.write(f"DATE-OBS={header['DATE-OBS']}\n")
+			f.write(f"CTYPE1={header['CTYPE1']}\n")
+			f.write(f"CUNIT1={header['CUNIT1']}\n")
+			f.write(f"CRVAL1={header['CRVAL1']}\n")
+			f.write(f"CDELT1={header['CDELT1']}\n")
+			f.write(f"CUNIT2={header['CUNIT2']}\n")
+			f.write(f"CRVAL2={header['CRVAL2']}\n")
+			f.write(f"CDELT2={header['CDELT2']}\n")
+			f.write(f"CRVAL3={header['CRVAL3']}\n")
+			f.write(f"CDELT3={header['CDELT3']}\n")
+			f.write(f"NAXIS2={header['NAXIS2']}\n")
+			f.write(f"NAXIS3={header['NAXIS3']}\n")
+			f.write(f"NAXIS4={header['NAXIS4']}\n")
+			f.write(f"POINT_ID={header['POINT_ID']}\n")
+			f.write(f"POINT_ID={header['POINT_ID']}\n")
+			f.write(f"DSUN_OBS={header['DSUN_OBS']}")
+			f.write(f"SHIFT={conf['shift_wave']}\n")
+		elif conf['instrument'] == 'Hinode':
+			f.write(f"CRVAL1={header['CRVAL1']}\n")
+			f.write(f"CDELT1={header['CDELT1']}\n")
+			f.write(f"CRVAL2={header['CRVAL2']}\n")
+			f.write(f"CDELT2={header['CDELT2']}\n")
+			f.write(f"SC_ATTX={header['SC_ATTX']}\n")
+			f.write(f"XSCALE={header['XSCALE']}\n")
+			f.write(f"XCEN={header['XCEN']}\n")
+			f.write(f"YCEN={header['YCEN']}\n")
+			f.write(f"CRPIX2={header['CRPIX2']}\n")
+			f.write(f"SPBSHFT={header['SPBSHFT']}\n")
+			f.write(f"SHIFT={conf['shift_wave']}")
+		else:
+			print("[NOTE]   No header information file created as instrument is unknown!")
+
+#################
+#	NORMALISE	#
+#################
+
+def normalise(conf):
+	"""
+	Normalise the data cube by the given quiet sun range
+
+	Parameters
+	----------
+	conf : dict
+		Dictionary with the information from the config file
+	"""
+	stokes = p.read_profile(os.path.join(conf["path"], conf["cube"]))
+
+	if len(conf['quiet_sun']) > 1:
+		print("[STATUS] Normalise data ...")
+		# Check if data needs to be normalised
+		if np.mean(stokes.stki) < 10:
+			print("Is the data already normalised? Abort")
+			return
+
+		ll = stokes.wave
+
+		if conf['instrument'] in d.ll_lit_norm:
+			ll1      = np.argmin(abs(ll-d.ll_lit_norm[conf['instrument']][0]))	 # Find lower limit of wavelength for continuum
+			ll2      = np.argmin(abs(ll-d.ll_lit_norm[conf['instrument']][1]))	 # Find upper limit of wavelength for continuum
+		else:
+			print("[WARN] No instrument defined/Instrument not implemented for Normalisation")
+			ll1		= input("Lower Limit of wavelength for continuum in Angstrom: ")
+			ll1		= input("Upper Limit of wavelength for continuum in Angstrom: ")
+
+		# Read quiet sun file
+		x1	  = conf['quiet_sun'][0]		# Lower limit for region in x
+		x2	  = conf['quiet_sun'][1]+1	# Upper limit for region in x
+		y1	  = conf['quiet_sun'][2]		# Lower limit for region in y
+		y2	  = conf['quiet_sun'][3]+1	# Upper limit for region in y
+		
+		# Compute continuum intensity in quiet sun region
+		Ic  = np.mean(stokes[x1:x2,y1:y2,0,ll1:ll2])  # Average continuum intensity in quiet sun
+
+		# Divide through the mean
+		stokes.stki /= Ic
+		stokes.stkq /= Ic
+		stokes.stku /= Ic
+		stokes.stkv /= Ic
+	else:
+		print("-------> Skipping normalisation")
+
+	print("-------> Saving data (this might take a while) ...")
+	if ".bin" in conf['cube']:
+		stokes.write(os.path.join(conf['path'],conf['cube']).replace(".bin",d.end_norm))
+	else:
+		stokes.write(os.path.join(conf['path'],conf['cube']) + d.end_norm)
+
+#################################
+#	SPECTRAL VEIL CORRECTION	#
+#################################
 
 def argmin(x):
 	"""
 	Find the argument of the minimum in an multi-dimensional
 	array. It seems to be faster than any numpy-built-in 
-	function as shown in https://stackoverflow.com/questions/30180241/numpy-get-the-column-and-row-index-of-the-minimum-value-of-a-2d-array
+	function as shown in https://stackoverflow.com/questions/30180241/numpy-get-the-column-and-row-index-of-the-minimum-value-of-a-2d-array.
+
+	Parameters
+	----------
+	x : mxn numpy array
+		Numpy array with the dataq
+	
+	Returns
+	-------
+	out : int
+		First index
+	out : int
+		Second index
 	"""
 	k = x.argmin()
 	ncol = x.shape[1]
@@ -42,7 +317,7 @@ def argmin(x):
 
 def chi2(y_fit, y_obs):
      r"""
-     Computes the merit-function $\chi^2$.
+     Computes the merit-function $\chi^2$. The used equation is $$\chi^2 = \sum_i y_{\text{fit}} - y_{\text{obs}}.$$
      
      Parameters
      ----------
@@ -51,8 +326,8 @@ def chi2(y_fit, y_obs):
      y_fit : numpy array
           Array with computed values, e.g. from a fit
 
-     Return
-     ------
+     Returns
+     -------
      out : float
           $\chi^2$-value
      
@@ -89,9 +364,9 @@ def gaussian(x, mean = 0, sigma = 1, norm = True):
 
 #################################################################################################3
 
-def lambda_0(ll,I):
+def convective_blueshift(ll,I):
 	"""
-	Determines the shifted lambda_0 due to convective blueshift
+	Determines the shifted $\\lambda_0$ due to convective blueshift.
 
 	Parameters
 	----------
@@ -123,13 +398,14 @@ def optimise_chi(nu, sigma, I, I_obs):
 	"""
 	Optimises two parameters by computing the chi2 merit function and finding
 	the minima of the two parameters. The steps are the following
-	 - Compute the chi2 values
-	 - Compute the discrete minima in each parameter
-	 - Perform two polynomial fits to find the optimal minimum
-	 - Compute the uncertainty of the fit
 	
-	Parameter
-	---------
+	 1. Compute the chi2 values
+	 2. Compute the discrete minima in each parameter
+	 3. Perform two polynomial fits to find the optimal minimum
+	 4. Compute the uncertainty of the fit
+	
+	Parameters
+	----------
 	nu : array
 		Array containing the nus which were used
 	sigma : array
@@ -139,17 +415,17 @@ def optimise_chi(nu, sigma, I, I_obs):
 	I_obs : array
 		Array containing the observed intensity
 	
-	Return
-	------
-	sigma_min : float
+	Returns
+	-------
+	out : float
 		Optimised sigma
-	usigma_min : float
+	out : float
 		Uncertainty of the optimised sigma
-	nu_min : float
+	out : float
 		Optimised nu
-	unu_min : float
+	out : float
 		Uncertainty of the optimised nu
-	chis : ndarray
+	out : ndarray
 		Array containing all the chi2 for all possible combinations of nu and sigma
 	
 	"""
@@ -193,56 +469,51 @@ def optimise_chi(nu, sigma, I, I_obs):
 
 #################################################################################################3
 
-def vac_to_air(wavelength):
-	"""
+def vac_to_air(wavelength, method = "Ciddor1996"):
+	r"""
 	Computes the wavelength from vacuum to air by using (Ciddor, 1996) eq. 1.
 
-	Note that this equation is only valid for wavelengths between 2300A and 16900A and
+	Note that this equation is only valid for wavelengths between $2300 A$ and $16900 A$ and
 	it should be better in the infrared than Edlen.
-	Note that the CO2 concentration is here assumed to be 450 ppm but it is most likely
-	not constant in general.
+
+	**Note that the CO2 concentration is here assumed to be 450 ppm but it is most likely not constant in general.**
 	
 	Parameters
 	----------
 	wavelength : float
-		Wavelenght in Angstrom to be converted
+		Wavelength in Angstrom to be converted
+	method : str, optional
+		Determines which method is used. Only the method "Ciddor1996" is implemented so far. Default: "Ciddor1996"
 
-	Return
-	------
+
+	Returns
+	-------
 	out : float
 		Corresponding wavelength in air in Angstrom
 	"""
-	sigma2 = (1e4 / wavelength)**2 # squared wavenumber in mum^-1
-	refr    = (1 + 5.792105e-2 / (238.0185 - sigma2) + 1.67917e-3 / (57.362 - sigma2))
-	return wavelength / refr
+	if method == "Ciddor1996":
+		sigma2 = (1e4 / wavelength)**2 # squared wavenumber in mum^-1
+		refr    = (1 + 5.792105e-2 / (238.0185 - sigma2) + 1.67917e-3 / (57.362 - sigma2))
+		wave_air = wavelength/refr
+	else:
+		print(f"[vac_to_air] Method {method} not defined.")
+	return wave_air
 
-#################################################################################################3
-
-def veil_correction(I_obs, nu, Ic = 1.):
-	"""
-	Correct the spectrum for the spectral veil by simly inverting
-	the convoluted equation.
-
-	Parameter
-	---------
-	I_obs : array
-		Observed data
-	nu : float
-		Optimized fraction of spectral veil
-	Ic : float, optional
-		Continuum intensity of the FTS. Default is "1.0".
-	"""
-	
-	return (I_obs - nu*Ic) / (1 - nu)
 
 #################################################################################################3
 
 def correct_spectral_veil(conf):
 	"""
-	Correct spectral veil
+	Correct the spectral veil in the data. This function calls the following functions:
+	 - argmin()
+	 - chi2()
+	 - gaussian()
+	 - lambda_0()
+	 - optimise_chi()
+	 - vac_to_air()
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary with all the information from the config file
 
@@ -352,7 +623,7 @@ def correct_spectral_veil(conf):
 
 	# Compute wavelength in vacuum and in air
 	ll = 1e8 / wn # in wavelength in A
-	ll_ciddor = vac_to_air(ll) # Ciddor, 1996 method
+	ll_ciddor = vac_to_air(ll, "Ciddor1996") # Ciddor, 1996 method
 
 	#################
 	#    Data		 #
@@ -363,7 +634,7 @@ def correct_spectral_veil(conf):
 	# Correct convective blueshift / Shift in GRIS data
 	ll1_lit = np.argmin(abs(ll_gris-ll_lit))		 # Find position at ll_lit defined in definitions.py
 	border = 40								 # Find minima around this value
-	ll1, l0 = lambda_0(ll_gris[ll1_lit-border:ll1_lit+border], stokes.stki[x1:x2,y1:y2,ll1_lit-border:ll1_lit+border]) # Determine the minima position and value of the shifted GRIS spectrum
+	ll1, l0 = convective_blueshift(ll_gris[ll1_lit-border:ll1_lit+border], stokes.stki[x1:x2,y1:y2,ll1_lit-border:ll1_lit+border]) # Determine the minima position and value of the shifted GRIS spectrum
 	ll_gris += ll_lit-l0 # Shift the wavelength
 
 	######################################################################################
@@ -492,16 +763,3 @@ def correct_spectral_veil(conf):
 
 	print("-------> Saving data (this might take a while) ...")
 	stokes.write(os.path.join(conf['path'],conf['cube_inv']))
-
-
-if __name__ == "__main__":
-	if "-h" in sys.argv:
-		help()
-	conf = sir.read_config(sys.argv[1])	
-	correct_spectral_veil(conf)
-
-
-
-
-
-

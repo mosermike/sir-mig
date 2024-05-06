@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 """
+
 Visualizes the spectra and model interactively at different pixels.
+
 """
 import matplotlib.pyplot as plt
 import numpy as np
-import sys, os
+import sys
+import os
 sys.path.append(sys.path[0] + "/..")
 from matplotlib.backend_bases import MouseButton
 import sir
-import obs
 from os.path import exists
 import definitions as d
 import signal
 import profile_stk as p
 import model as m
 
-def signal_handling(signum,frame):
+def _signal_handling(signum,frame):
 	"""
 	Closes the program without printing the traceback as this is the way to finsish the program.
 	"""
@@ -29,7 +31,7 @@ def signal_handling(signum,frame):
 	sys.exit()
 
 
-def help():
+def _help():
 	print("visualizer - Visualizes the spectra and model.")
 	print("Usage: python visualizer [OPTION]")
 	print()
@@ -56,11 +58,10 @@ def help():
 	sir.option("-rho","Plot density")
 	sir.option("-vertical","Plot spectra vertically")
 	sir.option("-chi2","Plot chi2")
-	sir.option("-wave_V","Plot Stokes V in another wavelength position in A")
 
 	sys.exit()
 
-def check_range(wave_inv, wave):
+def _check_range(wave_inv, wave):
 	"""
 	Check if the given wavelength is in the range
 
@@ -90,7 +91,7 @@ def check_range(wave_inv, wave):
 	return wave, np.argmin(abs(wave_inv-wave))
 
 
-def determine_resolution(string, pos, primary=False):
+def _determine_resolution(string, pos, primary=False):
 	"""
 	Cuts a string from xrandr and extracts the width and height of the monitor
 
@@ -114,7 +115,7 @@ def determine_resolution(string, pos, primary=False):
 	return [added_width,int(width)], height
 
 
-def get_display_size_2monitors():
+def __get_display_size_2monitors():
 	"""
 	Gets the size of the display which is needed for positioning the figure for the second monitor
 
@@ -144,33 +145,33 @@ def get_display_size_2monitors():
 	# 3 Monitors
 	if len(resolution) == 4:
 		if "primary" in resolution[2]:
-			width, height = determine_resolution(resolution, 2, True)
-			width2, height2 = determine_resolution(resolution, 3, False)
+			width, height = _determine_resolution(resolution, 2, True)
+			width2, height2 = _determine_resolution(resolution, 3, False)
 		elif "primary" in resolution[3]:
-			width, height = determine_resolution(resolution, 3, True)
-			width2, height2 = determine_resolution(resolution, 2, False)
+			width, height = _determine_resolution(resolution, 3, True)
+			width2, height2 = _determine_resolution(resolution, 2, False)
 		else:
-			width, height = determine_resolution(resolution, 1, True)
-			width2, height2 = determine_resolution(resolution, 2, False)
+			width, height = _determine_resolution(resolution, 1, True)
+			width2, height2 = _determine_resolution(resolution, 2, False)
 	# 2 Monitors
 	elif len(resolution) == 3:
 		if "primary" in resolution[1]:
-			width, height = determine_resolution(resolution, 1, True)
-			width2, height2 = determine_resolution(resolution, 2, False)
+			width, height = _determine_resolution(resolution, 1, True)
+			width2, height2 = _determine_resolution(resolution, 2, False)
 		elif "primary" in resolution[2]:
-			width, height = determine_resolution(resolution, 2, True)
-			width2, height2 = determine_resolution(resolution, 1, False)
+			width, height = _determine_resolution(resolution, 2, True)
+			width2, height2 = _determine_resolution(resolution, 1, False)
 	# Do sth to at least assign existing values
 	else:
 		if "primary" not in resolution[1]:
-			width, height = determine_resolution(resolution, 1, False)
+			width, height = _determine_resolution(resolution, 1, False)
 		if "primary" not in resolution[2]:
-			width2, height2 = determine_resolution(resolution, 2, False)
+			width2, height2 = _determine_resolution(resolution, 2, False)
 	
 	return width, height, width2, height2
 
 
-def get_display_size():
+def _get_display_size():
 	"""
 	Gets the size of the display which is needed for positioning the figure
 
@@ -201,7 +202,7 @@ def get_display_size():
 		# Consider two or three monitors
 		width2 = height2 = -1
 		if len(resolution) > 5:
-			width, height, width2, height2 = get_display_size_2monitors()
+			width, height, width2, height2 = __get_display_size_2monitors()
 	except:
 		print("The function 'get_display_size_2monitors' did not work properly.")
 		print("Consider creating an issue on the gitlab page with your output of xrandr.")
@@ -209,12 +210,12 @@ def get_display_size():
 
 	return width, int(height), width2, int(height2)
 
-def move_figure(position, width = 10, height = 10, Monitor = "1"):
+def _move_figure(position, width = 10, height = 10, Monitor = "1"):
 	'''
 	Move and resize a window to a set of standard positions on the screen.
 	Possible positions are:
 	top, bottom, left, right, top-left, top-right, bottom-left, bottom-right
-	To be used: define px (abs. width) and py (abs. height) as a global variable with the result from get_display_size()
+	To be used: define px (abs. width) and py (abs. height) as a global variable with the result from _get_display_size()
 
 	Source: https://stackoverflow.com/questions/7449585/how-do-you-set-the-absolute-position-of-figure-windows-with-matplotlib
 
@@ -240,7 +241,7 @@ def move_figure(position, width = 10, height = 10, Monitor = "1"):
 	ah = int(height)
 	
 	
-	# px etc. are defined with px, py, px2, py2 = get_display_size()
+	# px etc. are defined with px, py, px2, py2 = _get_display_size()
 	if Monitor == "1":
 		if position == "top":
 			# x-top-left-corner, y-top-left-corner, x-width, y-width (in pixels)
@@ -287,7 +288,7 @@ def move_figure(position, width = 10, height = 10, Monitor = "1"):
 		elif position == "bottom-right":
 			mgr.window.setGeometry(int(px2[0]), int(py2), aw,ah)
 
-def on_click_1C(event, obs, fit, Models, Map):
+def _on_click_1C(event, obs, fit, Models, Map):
 	"""
 	Opens a figure with the I, Q, U and V in the chosen pixel in the picture.
 	The chose pixel is determined by clicking on a figure
@@ -356,9 +357,9 @@ def on_click_1C(event, obs, fit, Models, Map):
 			# In this position, the width and height are ignored which were set on the windows!
 			size1 = fig1.get_size_inches()
 			if px2 == -1:
-				move_figure("right1")
+				_move_figure("right1")
 			else:
-				move_figure("right1", Monitor="2")
+				_move_figure("right1", Monitor="2")
 
 		ll1 = obs.wave
 		ll2 = fit.wave
@@ -404,9 +405,9 @@ def on_click_1C(event, obs, fit, Models, Map):
 			plt.get_current_fig_manager().set_window_title('Model_' + str(rand))
 			size2 = fig2.get_size_inches()
 			if px2 == -1:
-				move_figure("right2")
+				_move_figure("right2")
 			else:
-				move_figure("right2", Monitor="2")
+				_move_figure("right2", Monitor="2")
 			
 
 
@@ -451,13 +452,61 @@ def visualizer_1C(conf, wave):
 	"""
 	Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		All the information from the config file
 	wave : float
 		Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map
 
+	Returns
+	-------
+	None
+
+	Other Parameters
+	----------------
+	Additional parameters given as an argument when the script is executed.
+	-data [str]
+		Rel. path to the spectral veil corrected data if standard labelling is not used.
+	-stokes [str]
+		"Rel. path to the Stokes result if standard labelling is not used.
+	-models [str]
+		Rel. path to the Models of the inversion if standard labelling is not used.
+	-chi [str]
+		Rel. path to the chi2 file of the inversion if standard labelling is not used.
+	-save [str], optional
+		Additional save path. Default: './'
+	-add [str]
+		Additional text in filenames
+	-label [str]
+		Add label text
+	-title [str]
+		Title in Stokes plot
+	-T
+		Plot temperature in K
+	-Pe
+		Plot electron pressure in dyn/cm^2
+	-vmicro
+		Plot microturbulence in cm/s
+	-B
+		Plot magentic field strength in Gauss
+	-vlos
+		Plot line of sight velocity in km/s
+	-inc
+		Plot inclination in deg
+	-azi
+		Plot azimuth in deg
+	-z
+		Plot real height in km
+	-Pg
+		Plot gas pressure in dyn/cm^2
+	-rho
+		Plot density
+	-vertical
+		Plot spectra vertically
+	-chi2
+		Plot chi2
+	
 	"""
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
@@ -509,7 +558,7 @@ def visualizer_1C(conf, wave):
 
 	print("Opening visualizer ...")
 	global px, py, px2, py2
-	px, py, px2, py2 = get_display_size()
+	px, py, px2, py2 = _get_display_size()
 	
 	global fig
 
@@ -548,7 +597,7 @@ def visualizer_1C(conf, wave):
 				fig, ax = plt.subplots(figsize=[imgscale * 1.4, imgscale * frac])
 				plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
 				size = fig.get_size_inches()
-				move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+				_move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
 				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(tau))
 				if inputs[i] == '-chi2':
 					ax.set_title(titles[i])
@@ -569,25 +618,25 @@ def visualizer_1C(conf, wave):
 				cbar.set_label(label = labels[i], loc = 'center')
 				############
 				break
-		plt.connect('button_press_event', lambda event: on_click_1C(event, stokes, stokes_inv, models_inv, Map))
+		plt.connect('button_press_event', lambda event: _on_click_1C(event, stokes, stokes_inv, models_inv, Map))
 
 		plt.show()
 
 	else:
 		# Check whether the wavelength is in range
-		wave, wave_ind = check_range(stokes_inv.wave, wave)
+		wave, wave_ind = _check_range(stokes_inv.wave, wave)
 		fig, ax = plt.subplots()
 		plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
 		size = fig.get_size_inches()
-		move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+		_move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
 
 		im = ax.imshow(stokes_inv.stki[:,:,wave_ind].transpose(), #cmap = 'gist_gray',
 					origin=d.origin, extent=Map)
-		plt.connect('button_press_event', lambda event: on_click_1C(event, stokes, stokes_inv, models_inv, Map))
+		plt.connect('button_press_event', lambda event: _on_click_1C(event, stokes, stokes_inv, models_inv, Map))
 		plt.show()
 
 
-def on_click_2C(event, obs, fit, Models1, Models2, Map):
+def _on_click_2C(event, obs, fit, Models1, Models2, Map):
 	"""
 	Opens a figure with the I, Q, U and V in the chosen pixel in the picture.
 	The chose pixel is determined by clicking on a figure
@@ -654,9 +703,9 @@ def on_click_2C(event, obs, fit, Models1, Models2, Map):
 			fig1, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2)
 			plt.get_current_fig_manager().set_window_title('Stokes_' + str(rand))
 			if px1 == -1:
-				move_figure("right1")
+				_move_figure("right1")
 			else:
-				move_figure("right1", Monitor="2")
+				_move_figure("right1", Monitor="2")
 
 		ll1 = obs.wave
 		ll2 = fit.wave
@@ -700,9 +749,9 @@ def on_click_2C(event, obs, fit, Models1, Models2, Map):
 			fig2, ((ax11,ax21),(ax31,ax41)) = plt.subplots(2,2)
 			plt.get_current_fig_manager().set_window_title('Model_' + str(rand))
 			if px2 == -1:
-				move_figure("right2")
+				_move_figure("right2")
 			else:
-				move_figure("right2", Monitor="2")
+				_move_figure("right2", Monitor="2")
 
 		log_tau = Models1.log_tau
 		ind_max = np.argmin(np.abs(log_tau	+ 3))
@@ -751,12 +800,60 @@ def visualizer_2C(conf, wave):
 	"""
 	Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	conf : dict
 		All the information from the config file
 	wave : float
 		Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map
+
+	Returns
+	-------
+	None
+
+	Other Parameters
+	----------------
+	Additional parameters given as an argument when the script is executed.
+	-data [str]
+		Rel. path to the spectral veil corrected data if standard labelling is not used.
+	-stokes [str]
+		"Rel. path to the Stokes result if standard labelling is not used.
+	-models [str]
+		Rel. path to the Models of the inversion if standard labelling is not used.
+	-chi [str]
+		Rel. path to the chi2 file of the inversion if standard labelling is not used.
+	-save [str]
+		Additional save path (optional, default './')
+	-add [str]
+		Additional text in filenames
+	-label [str]
+		Add label text
+	-title [str]
+		Title in Stokes plot
+	-T
+		Plot temperature in K
+	-Pe
+		Plot electron pressure in dyn/cm^2
+	-vmicro
+		Plot microturbulence in cm/s
+	-B
+		Plot magentic field strength in Gauss
+	-vlos
+		Plot line of sight velocity in km/s
+	-inc
+		Plot inclination in deg
+	-azi
+		Plot azimuth in deg
+	-z
+		Plot real height in km
+	-Pg
+		Plot gas pressure in dyn/cm^2
+	-rho
+		Plot density
+	-vertical
+		Plot spectra vertically
+	-chi2
+		Plot chi2
 
 	"""
 	# Import library
@@ -812,11 +909,11 @@ def visualizer_2C(conf, wave):
 
 	waves = stokes_inv.wave
 	# Check whether the wavelength is in range
-	wave, wave_ind = check_range(waves, wave)
+	wave, wave_ind = _check_range(waves, wave)
 
 	print("Opening visualizer ...")
 	global px, py, px2, py2
-	px, py, px2, py2 = get_display_size()
+	px, py, px2, py2 = _get_display_size()
 
 	global fig
 
@@ -855,7 +952,7 @@ def visualizer_2C(conf, wave):
 				fig, ax = plt.subplots(figsize=[imgscale * 1.4, imgscale * frac])
 				plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
 				size = fig.get_size_inches()
-				move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+				_move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
 				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(tau))
 				if inputs[i] == '-chi2':
 					ax.set_title(titles[i])
@@ -876,7 +973,7 @@ def visualizer_2C(conf, wave):
 				cbar.set_label(label = labels[i], loc = 'center')
 				############
 				break
-		plt.connect('button_press_event', lambda event: on_click_2C(event, stokes, stokes_inv, models1_inv, models2_inv, Map))
+		plt.connect('button_press_event', lambda event: _on_click_2C(event, stokes, stokes_inv, models1_inv, models2_inv, Map))
 
 		plt.show()
 
@@ -884,19 +981,19 @@ def visualizer_2C(conf, wave):
 		fig, ax = plt.subplots()
 		plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
 		size = fig.get_size_inches()
-		move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+		_move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
 
 		im = ax.imshow(stokes_inv.stki[:,:,wave_ind].transpose(), #cmap = 'gist_gray',
 					origin=d.origin, extent=Map)
-		plt.connect('button_press_event', lambda event: on_click_2C(event, stokes, stokes_inv, models1_inv, models2_inv, Map))
+		plt.connect('button_press_event', lambda event: _on_click_2C(event, stokes, stokes_inv, models1_inv, models2_inv, Map))
 
 		plt.show()
 
 # Used if executed directly
 if __name__ == "__main__":
-	signal.signal(signal.SIGINT,signal_handling) 
+	signal.signal(signal.SIGINT,_signal_handling) 
 	if "-h" in sys.argv:
-		help()
+		_help()
 	conf = sir.read_config(sys.argv[1])
 	if conf["mode"] == "1C":
 		visualizer_1C(conf, float(sys.argv[2]))

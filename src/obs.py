@@ -3,7 +3,33 @@ Functions related to observations and to conversions between SIR format and nump
 """
 import numpy as np
 
-def read_profile(profile, grid, line_file, waves):
+def read_profile(profile, grid, line_file):
+	"""
+	Reads a profile from a SIR .per file
+
+	Parameters
+	----------
+	profile : str
+		String with the profile name
+	grid : str
+		Grid file name
+	line_file : str
+		Filename of the line file
+
+	Returns
+	-------
+	out : numpy.array
+		Array with the wavelengths
+	out : numpy.array
+		Array with Stokes I
+	out : numpy.array
+		Array with Stokes Q
+	out : numpy.array
+		Array with Stokes U
+	out : numpy.array
+		Array with Stokes V
+
+	"""
 	import sir
 	# Read grid and line file to transform the relative llambdas
 	grid = sir.read_grid(grid)
@@ -38,15 +64,15 @@ def write_psf(conf, filename):
 	"""
 	Writes the spectral point spread function with the value from the spectral veil correction
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary containing all the information of the config file
 	filename : string
 		Filename under which the file is saved
 
-	Return
-	------
+	Returns
+	-------
 	None
 
 	"""

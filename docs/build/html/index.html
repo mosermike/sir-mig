@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Welcome to SIR MIG’s documentation! &#8212; SIR-MIG  documentation</title>
+    <title>SIR-MIG Documentation &#8212; SIR-MIG  documentation</title>
   
   
   
@@ -39,6 +39,7 @@
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -158,18 +159,47 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="plots.html">
+                      <a class="nav-link nav-internal" href="inversion.html">
+                        Inversion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="preprocess.html">
+                        Preprocessing
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="plots.html">
                         Plotting
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="api.html">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
                         API
                       </a>
                     </li>
                 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -276,18 +306,47 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="plots.html">
+                      <a class="nav-link nav-internal" href="inversion.html">
+                        Inversion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="preprocess.html">
+                        Preprocessing
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="plots.html">
                         Plotting
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="api.html">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
                         API
                       </a>
                     </li>
                 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
         
@@ -336,8 +395,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="welcome-to-sir-mig-s-documentation">
-<h1>Welcome to SIR MIG’s documentation!<a class="headerlink" href="#welcome-to-sir-mig-s-documentation" title="Link to this heading">#</a></h1>
+  <section id="sir-mig-documentation">
+<h1>SIR-MIG Documentation<a class="headerlink" href="#sir-mig-documentation" title="Link to this heading">#</a></h1>
+<p><strong>Welcome to SIR MIG’s documentation!</strong></p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -361,6 +421,7 @@ There are three different modes selectable:</p>
 <p>It is also possible to use it without random guesses.</p>
 <p>Check out the <a class="reference internal" href="usage.html"><span class="doc">Usage</span></a> section for further information.</p>
 <p>Check out the <a class="reference internal" href="functions.html"><span class="doc">Functions</span></a> section for a list of functions.</p>
+<p>Check out the <a class="reference internal" href="preprocess.html"><span class="doc">Preprocessing</span></a> module for a description of functions which are used to preprocess data.</p>
 <p>Check out the <a class="reference internal" href="classes.html"><span class="doc">Classes</span></a> section for a list of classes which are used to read and write the Stokes profiles and the models.</p>
 <p>Check out the <a class="reference internal" href="plots.html"><span class="doc">Plotting</span></a> section for a list of functions to plot the results.</p>
 <div class="admonition note">
@@ -371,153 +432,33 @@ There are three different modes selectable:</p>
 <h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#installation">Installation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="functions.html">Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#sir-py">sir.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.list_to_string"><code class="docutils literal notranslate"><span class="pre">list_to_string()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.option"><code class="docutils literal notranslate"><span class="pre">option()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_chi2"><code class="docutils literal notranslate"><span class="pre">read_chi2()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_chi2s"><code class="docutils literal notranslate"><span class="pre">read_chi2s()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_grid"><code class="docutils literal notranslate"><span class="pre">read_grid()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_line"><code class="docutils literal notranslate"><span class="pre">read_line()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_config"><code class="docutils literal notranslate"><span class="pre">read_config()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_control"><code class="docutils literal notranslate"><span class="pre">read_control()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_config_1c"><code class="docutils literal notranslate"><span class="pre">write_config_1c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_config_2c"><code class="docutils literal notranslate"><span class="pre">write_config_2c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_config_mc"><code class="docutils literal notranslate"><span class="pre">write_config_mc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_config"><code class="docutils literal notranslate"><span class="pre">write_config()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_control_1c"><code class="docutils literal notranslate"><span class="pre">write_control_1c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_control_2c"><code class="docutils literal notranslate"><span class="pre">write_control_2c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_control_mc"><code class="docutils literal notranslate"><span class="pre">write_control_mc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_grid"><code class="docutils literal notranslate"><span class="pre">write_grid()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_grid_mc"><code class="docutils literal notranslate"><span class="pre">write_grid_mc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_model"><code class="docutils literal notranslate"><span class="pre">write_model()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#sir.write_profile"><code class="docutils literal notranslate"><span class="pre">write_profile()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#create-config-py">create_config.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#create_config.config_MC"><code class="docutils literal notranslate"><span class="pre">config_MC()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#create_config.config_1C"><code class="docutils literal notranslate"><span class="pre">config_1C()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#create_config.config_2C"><code class="docutils literal notranslate"><span class="pre">config_2C()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#create-profiles">create_profiles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#inversion-py">inversion.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#inversion.execute_inversion_1c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_1c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#inversion.execute_inversion_2c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_2c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#inversion.inversion_1c"><code class="docutils literal notranslate"><span class="pre">inversion_1c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#inversion.inversion_2c"><code class="docutils literal notranslate"><span class="pre">inversion_2c()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#inversion.inversion_mc"><code class="docutils literal notranslate"><span class="pre">inversion_mc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#inversion.scatter_data"><code class="docutils literal notranslate"><span class="pre">scatter_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#inversion.scatter_data_mc"><code class="docutils literal notranslate"><span class="pre">scatter_data_mc()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#main-py">main.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#model-py">model.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#model.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#misc-py">misc.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#misc.create_task_folder_list"><code class="docutils literal notranslate"><span class="pre">create_task_folder_list()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#misc.initial"><code class="docutils literal notranslate"><span class="pre">initial()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#misc.x_y_add_zeros"><code class="docutils literal notranslate"><span class="pre">x_y_add_zeros()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#obs-py">obs.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#obs.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#obs.write_psf"><code class="docutils literal notranslate"><span class="pre">write_psf()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html#profile-stk-py">profile_stk.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="functions.html#profile_stk.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="classes.html#file-model-py">File model.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="classes.html#model.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.__init__"><code class="docutils literal notranslate"><span class="pre">Model.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.correct_phi"><code class="docutils literal notranslate"><span class="pre">Model.correct_phi()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Model.cut_to_map()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.get_attribute"><code class="docutils literal notranslate"><span class="pre">Model.get_attribute()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.interp"><code class="docutils literal notranslate"><span class="pre">Model.interp()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.read"><code class="docutils literal notranslate"><span class="pre">Model.read()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.read_mod"><code class="docutils literal notranslate"><span class="pre">Model.read_mod()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.read_results"><code class="docutils literal notranslate"><span class="pre">Model.read_results()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.set_dim"><code class="docutils literal notranslate"><span class="pre">Model.set_dim()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.set_limit"><code class="docutils literal notranslate"><span class="pre">Model.set_limit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.write"><code class="docutils literal notranslate"><span class="pre">Model.write()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#model.Model.write_model"><code class="docutils literal notranslate"><span class="pre">Model.write_model()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id0"><code class="docutils literal notranslate"><span class="pre">Model.correct_phi()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id17"><code class="docutils literal notranslate"><span class="pre">Model.cut_to_map()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id19"><code class="docutils literal notranslate"><span class="pre">Model.get_attribute()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id22"><code class="docutils literal notranslate"><span class="pre">Model.interp()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id25"><code class="docutils literal notranslate"><span class="pre">Model.read_mod()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id28"><code class="docutils literal notranslate"><span class="pre">Model.read_results()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id31"><code class="docutils literal notranslate"><span class="pre">Model.set_dim()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id33"><code class="docutils literal notranslate"><span class="pre">Model.set_limit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id35"><code class="docutils literal notranslate"><span class="pre">Model.write()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id37"><code class="docutils literal notranslate"><span class="pre">Model.write_model()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="classes.html#file-profile-stk-py">File profile_stk.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="classes.html#profile_stk.Profile"><code class="docutils literal notranslate"><span class="pre">Profile</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.__init__"><code class="docutils literal notranslate"><span class="pre">Profile.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.__read_grid"><code class="docutils literal notranslate"><span class="pre">Profile.__read_grid()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.__read_profile_sir"><code class="docutils literal notranslate"><span class="pre">Profile.__read_profile_sir()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.__read_profile_sir_mc"><code class="docutils literal notranslate"><span class="pre">Profile.__read_profile_sir_mc()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_map()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.cut_to_wave"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_wave()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.read"><code class="docutils literal notranslate"><span class="pre">Profile.read()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.read_results"><code class="docutils literal notranslate"><span class="pre">Profile.read_results()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.read_results_MC"><code class="docutils literal notranslate"><span class="pre">Profile.read_results_MC()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.set_dim"><code class="docutils literal notranslate"><span class="pre">Profile.set_dim()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.write"><code class="docutils literal notranslate"><span class="pre">Profile.write()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.write_profile"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#profile_stk.Profile.write_profile_mc"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile_mc()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id55"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_map()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id57"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_wave()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id59"><code class="docutils literal notranslate"><span class="pre">Profile.read_results()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id62"><code class="docutils literal notranslate"><span class="pre">Profile.read_results_MC()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id63"><code class="docutils literal notranslate"><span class="pre">Profile.set_dim()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id65"><code class="docutils literal notranslate"><span class="pre">Profile.write()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id67"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="classes.html#id69"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile_mc()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="plots.html#analysis.analysis"><code class="docutils literal notranslate"><span class="pre">analysis()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="plots.html#analysis_compare_chi2.analysis_compare_chi2"><code class="docutils literal notranslate"><span class="pre">analysis_compare_chi2()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="plots.html#analysis_multiple.analysis_multiple"><code class="docutils literal notranslate"><span class="pre">analysis_multiple()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="plots.html#result.result_1C"><code class="docutils literal notranslate"><span class="pre">result_1C()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="plots.html#result.result_2C"><code class="docutils literal notranslate"><span class="pre">result_2C()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="plots.html#visualizer.visualizer_1C"><code class="docutils literal notranslate"><span class="pre">visualizer_1C()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="plots.html#visualizer.visualizer_2C"><code class="docutils literal notranslate"><span class="pre">visualizer_2C()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="generated/create_config.html">create_config</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/sir.html">sir</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/model.html">model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/profile_stk.html">profile_stk</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/visualizer.html">visualizer</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html">Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html#inversion.execute_inversion_1c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_1c()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html#inversion.execute_inversion_2c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_2c()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html#inversion.inversion_1c"><code class="docutils literal notranslate"><span class="pre">inversion_1c()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html#inversion.inversion_2c"><code class="docutils literal notranslate"><span class="pre">inversion_2c()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html#inversion.inversion_mc"><code class="docutils literal notranslate"><span class="pre">inversion_mc()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html#inversion.scatter_data"><code class="docutils literal notranslate"><span class="pre">scatter_data()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html#inversion.scatter_data_mc"><code class="docutils literal notranslate"><span class="pre">scatter_data_mc()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.argmin"><code class="docutils literal notranslate"><span class="pre">argmin()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.chi2"><code class="docutils literal notranslate"><span class="pre">chi2()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.convective_blueshift"><code class="docutils literal notranslate"><span class="pre">convective_blueshift()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.correct_spectral_veil"><code class="docutils literal notranslate"><span class="pre">correct_spectral_veil()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.merge"><code class="docutils literal notranslate"><span class="pre">merge()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.normalise"><code class="docutils literal notranslate"><span class="pre">normalise()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.optimise_chi"><code class="docutils literal notranslate"><span class="pre">optimise_chi()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html#preprocess.vac_to_air"><code class="docutils literal notranslate"><span class="pre">vac_to_air()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html#simulation.add_noise"><code class="docutils literal notranslate"><span class="pre">add_noise()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html#simulation.create_models"><code class="docutils literal notranslate"><span class="pre">create_models()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html#simulation.synthesis"><code class="docutils literal notranslate"><span class="pre">synthesis()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
 </div>
 </section>
@@ -560,7 +501,7 @@ There are three different modes selectable:</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Welcome to SIR MIG’s documentation!</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">SIR-MIG Documentation</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#indices-and-tables">Indices and tables</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a></li>

@@ -1,5 +1,9 @@
 """
+sir
+===
+
 Library for repeating functions for analyzing and/or plotting SIR data
+
 """
 import numpy as np 
 import sys
@@ -25,7 +29,7 @@ def read_config(filename, check = True, change_config = False):
 
 	Returns
 	-------
-	Dict : dict
+	out : dict
 		Dict containing all the information from the config file
 	
 	"""
@@ -155,14 +159,14 @@ def read_control(filename):
 	"""
 	Reads a control file in the scheme SIR expects it.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Path of the control file
 	
-	Return
-	------
-	Dict : dict
+	Returns
+	-------
+	out : dict
 		Dict containing all the information from the control file
 	
 	"""
@@ -186,35 +190,36 @@ def read_model(filename):
 	"""
 	Reads a model file and returns all parameters
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		String containing the path of the file
 
-	Return
-	------
-	log_tau : numpy.array
+	Returns
+	-------
+	out : numpy.array
 		Log tau
-	T : numpy.array
+	out : numpy.array
 		Temperature in K
-	Pe : numpy.array
+	out : numpy.array
 		Electron pressure in dyn/cm^2
-	v_micro : numpy.array
+	out : numpy.array
 		Microturbulence velocity in cm/s
-	B : numpy.array
+	out : numpy.array
 		Magnetic field strength in Gauss
-	vlos : numpy.array
+	out : numpy.array
 		Line-of-sight velocity in cm/s
-	inc : numpy.array
+	out : numpy.array
 		Inclination in deg
-	azimuth : numpy.array
+	out : numpy.array
 		Azimuth angle in deg
-	z : numpy.array, optional
+	out : numpy.array, optional
 		Height in km
-	Pg : numpy.array, optional
+	otu : numpy.array, optional
 		Gas pressure in dyn/cm^2
-	rho : numpy.array, optional
+	out : numpy.array, optional
 		Density in g/cm^3
+
 	"""	
 	# Open file
 
@@ -247,25 +252,26 @@ def read_profile(filename, num = 0):
 	"""
 	Reads the first LINE data from a profile computed by SIR
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		String containing the path of the file
 	num : int, optional
 		Number of the line which is loaded. Default: 0 (use first one from line)
 
-	Return
-	------
-	ll : numpy.array
+	Returns
+	-------
+	out : numpy.array
 		Wavelengths in A
-	I : numpy.array
+	out : numpy.array
 		Stokes I
-	Q : numpy.array
+	out : numpy.array
 		Stokes Q
-	U : numpy.array
+	out : numpy.array
 		Stokes U
-	V : numpy.array 
+	out : numpy.array 
 		Stokes V
+	
 	"""
 	num = int(num) # num must be an integer
 	
@@ -297,15 +303,16 @@ def read_grid(filename):
 	"""
 	Reads the grid file
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		File to be read
 	
-	Return
+	Returns
 	-------
-	dict : Dictionary
+	dict : dict
 		Dict. with 'Line', 'min', 'step' and 'max' in it
+
 	"""
 	# Open the file and read lines
 	with open(filename) as f:
@@ -354,16 +361,17 @@ def read_line(filename):
 	"""
 	Reads the line file
 
-	Parameter
+	Parameters
 	---------
 	filename : string
 		File to be read
 	
-	Return
+	Returns
 	-------
-	dict : Dictionary
+	out : dict
 		Dict. with 'Line', 'Ion', 'wavelength', 'factor', 'Exc_Pot', log_gf',
 		'Transition', 'alpha' and 'sigma' in it
+
 	"""
 	# Open the file and read lines
 	with open(filename) as f:
@@ -426,16 +434,18 @@ def list_to_string(temp, let = ','):
 	"""
 	Convert a list to a string
 
-	Parameter
-	---------
+	Parameters
+	----------
 	temp : list
 		List with the information which is converted into a string
 	let : str
 		Letter which is added as a separation
 
-	Return
-	------
-	string with the information from the list
+	Returns
+	-------
+	out : str
+		Information from the list
+
 	"""
 	temp1 = ''
 	for i in range(len(temp)):
@@ -456,6 +466,10 @@ def write_config_1c(File, conf):
 		Save path
 	conf : dict
 		Dictionary with all the informations
+
+	Returns
+	-------
+	None
 	"""
 	print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
 	import time
@@ -549,6 +563,11 @@ def write_config_2c(File, conf):
 		Save path
 	conf : dict
 		Dictionary with all the informations
+
+	Returns
+	-------
+	None
+
 	"""
 	print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
 	import time
@@ -653,6 +672,11 @@ def write_config_mc(File, conf):
 		Save path
 	conf : dict
 		Dictionary with all the informations
+
+	Returns
+	-------
+	None
+
 	"""
 	print("[write_config] Note that manually added comments will be overwritten! 1s left to abort ...")
 	import time
@@ -748,6 +772,11 @@ def write_config(File, conf):
 		Save path
 	conf : dict
 		Dictionary with all the informations
+
+	Returns
+	-------
+	None
+
 	"""
 	if conf["mode"] == "MC":
 		write_config_mc(File, conf)
@@ -764,12 +793,17 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 	"""
 	Writes the Grid file with data from the config file
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary containing all the information from the config file
 	filename : string, optional
 		String containing the name of the Grid file. Default: Grid.grid
+
+	Returns
+	-------
+	None
+
 	"""
 
 	# Load data from config
@@ -798,12 +832,17 @@ def write_grid_mc(conf, filename = 'Grid.grid'):
 	"""
 	Writes the Grid file with data from the config file
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary containing all the information from the config file
 	filename : string, optional
 		String containing the name of the Grid file. Default: Grid.grid
+	
+	Returns
+	-------
+	None
+
 	"""
 
 	# Load data from config
@@ -826,13 +865,17 @@ def write_control_1c(filename, conf):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Save filename of the control file. Typically it is inv.trol
 	config : dict
 		Dictionary with the information from the config file
 	
+	Returns
+	-------
+	None
+
 	"""
 	import definitions as d
 	psf			= conf['psf']		# Use psf by spectral veil
@@ -902,13 +945,16 @@ def write_control_2c(filename, conf):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Save filename of the control file. Typically it is inv.trol
 	conf : dict
 		Dictionary with the information from the config file
 	
+	Returns
+	-------
+	None
 	"""
 	import definitions as d
 	model1		= d.guess1			# Base Model 1
@@ -985,8 +1031,8 @@ def write_control_mc(filename, conf, Type = 'inv'):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Save filename of the control file. Typically it is inv.trol
 	config : dict
@@ -994,6 +1040,9 @@ def write_control_mc(filename, conf, Type = 'inv'):
 	Type : string
 		which type of control file is created ('syn' for synthesis, 'inv' for inversion)
 	
+	Returns
+	-------
+	None
 	"""
 	import definitions as d
 	if Type == 'syn':
@@ -1077,8 +1126,8 @@ def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth
 	Write a model with the given data in a specific format. Note that negative values
 	have one white space less
 
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Name of the saved file
 	Header : string
@@ -1106,8 +1155,8 @@ def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth
 	rho : numpy.array, optional
 		Density in g/cm^3
 
-	Return
-	------
+	Returns
+	-------
 	None
 	"""
 	if z is not None:
@@ -1128,15 +1177,15 @@ def option(text1, text2):
 	"""
 	Print an option in a help page
 
-	Parameter
-	---------
+	Parameters
+	----------
 	text1 : str
 		First text
 	text2 : str
 		Second text
 	
-	Return
-	------
+	Returns
+	-------
 	None
 	"""
 	print(f"{text1}")
@@ -1149,16 +1198,16 @@ def read_chi2s(conf, tasks):
 	"""
 	Reads all the chi2 from the inversion
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Config parameters
 	tasks : dict
 		Dictionary with the used folders
 	
-	Return
-	------
-	chi2 : numpy array
+	Returns
+	-------
+	out : numpy array
 		Numpy array with all chi2 values
 	
 	"""
@@ -1184,8 +1233,8 @@ def write_profile(filename, profiles, pos):
 	"""
 	Write a profile for a specific model number to a file
 
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Name of the saved file
 	profiles : list
@@ -1195,8 +1244,8 @@ def write_profile(filename, profiles, pos):
 	pos : int
 		Position which model is saved
 
-	Return
-	------
+	Returns
+	-------
 	None
 	"""
 
@@ -1212,15 +1261,15 @@ def option(text1, text2):
 	"""
 	Print an option in a help page
 
-	Parameter
-	---------
+	Parameters
+	----------
 	text1 : str
 		First text
 	text2 : str
 		Second text
 	
-	Return
-	------
+	Returns
+	-------
 	None
 	"""
 	print(f"{text1}")
@@ -1235,17 +1284,17 @@ def read_chi2(filename, task = ''):
 	"""
 	Reads the last chi value in a inv.chi file
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	filename : string
 		Path of the chi file
 	task : string, optional
 		Prints out in which folder the chi2 file does not exist. Default: ''
 
 	
-	Return
-	------
-	chi2 : float
+	Returns
+	-------
+	out : float
 		Best chi2 value of the fit
 	
 	

@@ -41,26 +41,6 @@ Functions to create the config files for the different modes.
 .. autofunction:: create_config.config_2C
 
 
-create_profiles
----------------
-Function to create profiles with synthesis and adding noise
-.. autofunction:: create_profiles.add_noise
-.. autofunction:: create_profiles.synthesis
-
-
-inversion.py
-------------
-
-Functions to perform the inversion
-
-.. autofunction:: inversion.execute_inversion_1c
-.. autofunction:: inversion.execute_inversion_2c
-.. autofunction:: inversion.inversion_1c
-.. autofunction:: inversion.inversion_2c
-.. autofunction:: inversion.inversion_mc
-.. autofunction:: inversion.scatter_data
-.. autofunction:: inversion.scatter_data_mc
-
 
 main.py
 -------

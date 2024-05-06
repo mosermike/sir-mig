@@ -1,5 +1,9 @@
 """
-Class Profile with all the tools to read and write the Stokes Profiles
+
+Profile
+=======
+
+Class Profile with all the tools to read and write the Stokes Profiles.
 
 """
 

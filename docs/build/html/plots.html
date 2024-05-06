@@ -44,7 +44,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API" href="api.html" />
-    <link rel="prev" title="Classes" href="classes.html" />
+    <link rel="prev" title="Simulation" href="simulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -158,19 +158,48 @@
                     </li>
                 
 
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="inversion.html">
+                        Inversion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="preprocess.html">
+                        Preprocessing
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                      <a class="nav-link dropdown-item nav-internal" href="#">
                         Plotting
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="api.html">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
                         API
                       </a>
                     </li>
                 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -274,19 +303,48 @@ document.write(`
                     </li>
                 
 
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="inversion.html">
+                        Inversion
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="preprocess.html">
+                        Preprocessing
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                      <a class="nav-link dropdown-item nav-internal" href="#">
                         Plotting
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="api.html">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
                         API
                       </a>
                     </li>
                 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
         
@@ -373,133 +431,513 @@ document.write(`
   <section id="plotting">
 <h1>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h1>
 <p>This list provides information for plotting results.</p>
+<p id="module-analysis">Analyses the quality of the Monte Carlo Simulation by computing the standard deviations</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="analysis.analysis">
 <span class="sig-prename descclassname"><span class="pre">analysis.</span></span><span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analysis.analysis" title="Link to this definition">#</a></dt>
 <dd><p>Analysis of a MC simulation by plotting the standard deviations</p>
-<section id="parameter">
-<h2>Parameter<a class="headerlink" href="#parameter" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>config<span class="classifier">dict</span></dt><dd><p>Configurations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Configurations</p>
 </dd>
 </dl>
-</section>
-<section id="return">
-<h2>Return<a class="headerlink" href="#return" title="Link to this heading">#</a></h2>
-<p>None</p>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>There are optional options which change the plots. Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default ‘./’.</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames.</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Compare temperature in K</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Compare magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Compare line of sight velocity in cm/s</p>
+</dd>
+<dt><strong>-inc</strong></dt><dd><p>Compare inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-azi</strong></dt><dd><p>Compare azimuth by adding in deg</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title of the 4 figures plot</p>
+</dd>
+<dt><strong>-xtitle [float]</strong></dt><dd><p>x position of title in Stokes plot</p>
+</dd>
+<dt><strong>-max</strong></dt><dd><p>Plot the maximum differences</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot the last plot vertical</p>
+</dd>
+<dt><strong>-v</strong></dt><dd><p>Print out tables with values at different log taus.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
+<p id="module-analysis_compare_chi2">Compares two simulations by computing and plotting the chi2 value as well as computing the mean value.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="analysis_compare_chi2.analysis_compare_chi2">
 <span class="sig-prename descclassname"><span class="pre">analysis_compare_chi2.</span></span><span class="sig-name descname"><span class="pre">analysis_compare_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analysis_compare_chi2.analysis_compare_chi2" title="Link to this definition">#</a></dt>
 <dd><p>Compares the chi2 of two simulations for different physical parameters.</p>
-<section id="id1">
-<h2>Parameter<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>conf1<span class="classifier">dict</span></dt><dd><p>Configuration for simulation 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>conf1</strong><span class="classifier">dict</span></dt><dd><p>Configuration for simulation 1</p>
 </dd>
-<dt>conf2<span class="classifier">dict</span></dt><dd><p>Configuration for simulation 2</p>
+<dt><strong>conf2</strong><span class="classifier">dict</span></dt><dd><p>Configuration for simulation 2</p>
 </dd>
 </dl>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default: ‘./’</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames</p>
+</dd>
+<dt><strong>-label [str]</strong></dt><dd><p>Add label text</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in cm/s</p>
+</dd>
+<dt><strong>-inc</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-azi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-add1 [str]</strong></dt><dd><p>Additional text in label for model 1</p>
+</dd>
+<dt><strong>-add2 [str]</strong></dt><dd><p>Additional text in label for model 2</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
+<p id="module-analysis_multiple">Analyses the quality of multiple Monte Carlo Simulations</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="analysis_multiple.analysis_multiple">
 <span class="sig-prename descclassname"><span class="pre">analysis_multiple.</span></span><span class="sig-name descname"><span class="pre">analysis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analysis_multiple.analysis_multiple" title="Link to this definition">#</a></dt>
 <dd><p>Analysis multiple simulations and puts it in one plot</p>
-<section id="id2">
-<h2>Parameter<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>confs<span class="classifier">list</span></dt><dd><p>List of dictionaries with the configs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>confs</strong><span class="classifier">list</span></dt><dd><p>List of dictionaries with the configs</p>
 </dd>
-<dt>labels<span class="classifier">list</span></dt><dd><p>List of strings with the labels for each plot</p>
+<dt><strong>labels</strong><span class="classifier">list</span></dt><dd><p>List of strings with the labels for each plot</p>
 </dd>
 </dl>
-</section>
-<section id="id3">
-<h2>Return<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>None</p>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>There are optional options which change the plots. Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default ‘./’.</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Compare temperature in K</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Compare magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Compare line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-inc</strong></dt><dd><p>Compare inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-azi</strong></dt><dd><p>Compare azimuth by adding in deg</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title of the 4 figures plot</p>
+</dd>
+<dt><strong>-xtitle [float]</strong></dt><dd><p>x position of title in Stokes plot</p>
+</dd>
+<dt><strong>-limitT</strong></dt><dd><p>Set y limits in T as ‘ymin,ymax’</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot the last plot vertical</p>
+</dd>
+<dt><strong>-v</strong></dt><dd><p>print out tables with values at different log taus.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.</p>
 </dd></dl>
 
+<p id="module-result">Plots the result of the SIR inversion</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="result.result_1C">
 <span class="sig-prename descclassname"><span class="pre">result.</span></span><span class="sig-name descname"><span class="pre">result_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waveV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#result.result_1C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the result of the inversion 1C</p>
-<section id="id4">
-<h2>Parameter<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>config<span class="classifier">dict</span></dt><dd><p>Dict. with all the information from the config</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dict. with all the information from the config</p>
 </dd>
-<dt>wave<span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes vector is plottet</p>
+<dt><strong>wave</strong><span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes vector is plottet</p>
 </dd>
-<dt>tau<span class="classifier">float</span></dt><dd><p>log tau value where the model is plotted</p>
+<dt><strong>tau</strong><span class="classifier">float</span></dt><dd><p>log tau value where the model is plotted</p>
 </dd>
-<dt>waveV<span class="classifier">float, optional</span></dt><dd><p>Wavelength for Stokes V in A (-1 not used), Default: -1</p>
+<dt><strong>waveV</strong><span class="classifier">float, optional</span></dt><dd><p>Wavelength for Stokes V in A (-1 not used), Default: -1</p>
 </dd>
 </dl>
-</section>
-<section id="id5">
-<h2>Return<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-<p>None</p>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-data [str]</strong></dt><dd><p>Rel. path to the spectral veil corrected data if standard labelling is not used, optional.</p>
+</dd>
+<dt><strong>-stokes [str]</strong></dt><dd><p>Rel. path to the Stokes result if standard labelling is not used, optional.</p>
+</dd>
+<dt><strong>-models [str]</strong></dt><dd><p>Rel. path to the Models of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-errors</strong></dt><dd><p>Rel. path to the Errors of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-chi</strong></dt><dd><p>Rel. path to the chi2 file of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default ‘./’.</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames</p>
+</dd>
+<dt><strong>-label [str]</strong></dt><dd><p>Add label text</p>
+</dd>
+<dt><strong>-title1 [str]</strong></dt><dd><p>Title in Result Stokes plot</p>
+</dd>
+<dt><strong>-title2 [str]</strong></dt><dd><p>Title in Obs. Stokes plot</p>
+</dd>
+<dt><strong>-title3 [str]</strong></dt><dd><p>Title in Model 1 plot</p>
+</dd>
+<dt><strong>-xtitle [float]</strong></dt><dd><p>Changing the x position of the title</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-chi2</strong></dt><dd><p>Plot chi2</p>
+</dd>
+<dt><strong>-plot_chi2</strong></dt><dd><p>Plot chi2 in the 4 subplots plot</p>
+</dd>
+<dt><strong>-waveQ [float]</strong></dt><dd><p>Plot Stokes Q in another wavelength position in A</p>
+</dd>
+<dt><strong>-waveU [float]</strong></dt><dd><p>Plot Stokes U in another wavelength position in A</p>
+</dd>
+<dt><strong>-waveV [float]</strong></dt><dd><p>Plot Stokes V in another wavelength position in A</p>
+</dd>
+<dt><strong>-logT [float]</strong></dt><dd><p>Plot Temperature at this log tau.</p>
+</dd>
+<dt><strong>-logB [float]</strong></dt><dd><p>Plot Magnetic Field at this log tau.</p>
+</dd>
+<dt><strong>-logV [float]</strong></dt><dd><p>Plot LoS Velocity at this log tau.</p>
+</dd>
+<dt><strong>-logI [float]</strong></dt><dd><p>Plot Inclination at this log tau.</p>
+</dd>
+<dt><strong>-limitxy [float,float,float,float]</strong></dt><dd><p>Limit in the x and y plot as a list xmin,xmax,ymin,xmax</p>
+</dd>
+<dt><strong>-limitT [float,float]</strong></dt><dd><p>Set the limit for the colorbar in the temperature.</p>
+</dd>
+<dt><strong>-limitB [float,float]</strong></dt><dd><p>Set the limit for the colorbar in the magnetic field.</p>
+</dd>
+<dt><strong>-limitchi2 [float,float]</strong></dt><dd><p>Set the limit for the colorbar in chi2.</p>
+</dd>
+<dt><strong>-limitI [float,float]</strong></dt><dd><p>Set the limit for the colorbar in Stokes I.</p>
+</dd>
+<dt><strong>-arc</strong></dt><dd><p>Print x and y axis in arcseconds</p>
+</dd>
+<dt><strong>-flipx</strong></dt><dd><p>Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="result.result_2C">
 <span class="sig-prename descclassname"><span class="pre">result.</span></span><span class="sig-name descname"><span class="pre">result_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#result.result_2C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the result of the inversion for 2C</p>
-<section id="id6">
-<h2>Parameter<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>conf<span class="classifier">dict</span></dt><dd><p>Dict. with all the information from the config</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dict. with all the information from the config</p>
 </dd>
-<dt>wave<span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes vector is plottet</p>
+<dt><strong>wave</strong><span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes vector is plottet</p>
 </dd>
-<dt>tau<span class="classifier">float</span></dt><dd><p>log tau value where the model is plotted</p>
+<dt><strong>tau</strong><span class="classifier">float</span></dt><dd><p>log tau value where the model is plotted</p>
 </dd>
-<dt>Type<span class="classifier">string, optional</span></dt><dd><p>prefix for determining which model is used. Default: ‘_1’</p>
+<dt><strong>Type</strong><span class="classifier">string, optional</span></dt><dd><p>prefix for determining which model is used. Default: ‘_1’</p>
 </dd>
-<dt>plot_stokes<span class="classifier">bool, optional</span></dt><dd><p>Plot the stokes vector. Default: True</p>
+<dt><strong>plot_stokes</strong><span class="classifier">bool, optional</span></dt><dd><p>Plot the stokes vector. Default: True</p>
 </dd>
 </dl>
-</section>
-<section id="id7">
-<h2>Return<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
-<p>None</p>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-data [str]</strong></dt><dd><p>Rel. path to the spectral veil corrected data if standard labelling is not used, optional.</p>
+</dd>
+<dt><strong>-stokes [str]</strong></dt><dd><p>Rel. path to the Stokes result if standard labelling is not used, optional.</p>
+</dd>
+<dt><strong>-models1 [str]</strong></dt><dd><p>Rel. path to the Models 1 of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-models2 [str]</strong></dt><dd><p>Rel. path to the Models 2 of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-errors</strong></dt><dd><p>Rel. path to the Errors of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-chi</strong></dt><dd><p>Rel. path to the chi2 file of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default ‘./’.</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames</p>
+</dd>
+<dt><strong>-label [str]</strong></dt><dd><p>Add label text</p>
+</dd>
+<dt><strong>-title1 [str]</strong></dt><dd><p>Title in Result Stokes plot</p>
+</dd>
+<dt><strong>-title2 [str]</strong></dt><dd><p>Title in Obs. Stokes plot</p>
+</dd>
+<dt><strong>-title3 [str]</strong></dt><dd><p>Title in Model 1 plot</p>
+</dd>
+<dt><strong>-title4 [str]</strong></dt><dd><p>Title in Model 2 plot with 4 plots</p>
+</dd>
+<dt><strong>-xtitle [float]</strong></dt><dd><p>Changing the x position of the title</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-chi2</strong></dt><dd><p>Plot chi2</p>
+</dd>
+<dt><strong>-fill</strong></dt><dd><p>Plot the filling factor</p>
+</dd>
+<dt><strong>-plot_chi2</strong></dt><dd><p>Plot chi2 in the 4 subplots plot</p>
+</dd>
+<dt><strong>-plot_fill</strong></dt><dd><p>Plot filling factor in the 4 subplots plot</p>
+</dd>
+<dt><strong>-waveQ [float]</strong></dt><dd><p>Plot Stokes Q in another wavelength position in A</p>
+</dd>
+<dt><strong>-waveU [float]</strong></dt><dd><p>Plot Stokes U in another wavelength position in A</p>
+</dd>
+<dt><strong>-waveV [float]</strong></dt><dd><p>Plot Stokes V in another wavelength position in A</p>
+</dd>
+<dt><strong>-logT [float]</strong></dt><dd><p>Plot Temperature at this log tau.</p>
+</dd>
+<dt><strong>-logB [float]</strong></dt><dd><p>Plot Magnetic Field at this log tau.</p>
+</dd>
+<dt><strong>-logV [float]</strong></dt><dd><p>Plot LoS Velocity at this log tau.</p>
+</dd>
+<dt><strong>-logI [float]</strong></dt><dd><p>Plot Inclination at this log tau.</p>
+</dd>
+<dt><strong>-limitxy [float,float,float,float]</strong></dt><dd><p>Limit in the x and y plot as a list xmin,xmax,ymin,xmax</p>
+</dd>
+<dt><strong>-limitT [float,float]</strong></dt><dd><p>Set the limit for the colorbar in the temperature.</p>
+</dd>
+<dt><strong>-limitB [float,float]</strong></dt><dd><p>Set the limit for the colorbar in the magnetic field.</p>
+</dd>
+<dt><strong>-limitchi2 [float,float]</strong></dt><dd><p>Set the limit for the colorbar in chi2.</p>
+</dd>
+<dt><strong>-limitI [float,float]</strong></dt><dd><p>Set the limit for the colorbar in Stokes I.</p>
+</dd>
+<dt><strong>-arc</strong></dt><dd><p>Print x and y axis in arcseconds</p>
+</dd>
+<dt><strong>-flipx</strong></dt><dd><p>Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
+<p id="module-visualizer">Visualizes the spectra and model interactively at different pixels.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="visualizer.visualizer_1C">
 <span class="sig-prename descclassname"><span class="pre">visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#visualizer.visualizer_1C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.</p>
-<section id="id8">
-<h2>Parameter<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>config<span class="classifier">dict</span></dt><dd><p>All the information from the config file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>All the information from the config file</p>
 </dd>
-<dt>wave<span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map</p>
+<dt><strong>wave</strong><span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map</p>
 </dd>
 </dl>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-data [str]</strong></dt><dd><p>Rel. path to the spectral veil corrected data if standard labelling is not used.</p>
+</dd>
+<dt><strong>-stokes [str]</strong></dt><dd><p>“Rel. path to the Stokes result if standard labelling is not used.</p>
+</dd>
+<dt><strong>-models [str]</strong></dt><dd><p>Rel. path to the Models of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-chi [str]</strong></dt><dd><p>Rel. path to the chi2 file of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default: ‘./’</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames</p>
+</dd>
+<dt><strong>-label [str]</strong></dt><dd><p>Add label text</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title in Stokes plot</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-inc</strong></dt><dd><p>Plot inclination in deg</p>
+</dd>
+<dt><strong>-azi</strong></dt><dd><p>Plot azimuth in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-chi2</strong></dt><dd><p>Plot chi2</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="visualizer.visualizer_2C">
 <span class="sig-prename descclassname"><span class="pre">visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#visualizer.visualizer_2C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.</p>
-<section id="id9">
-<h2>Parameter<a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
-<dl class="simple">
-<dt>conf<span class="classifier">dict</span></dt><dd><p>All the information from the config file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>All the information from the config file</p>
 </dd>
-<dt>wave<span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map</p>
+<dt><strong>wave</strong><span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map</p>
 </dd>
 </dl>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-data [str]</strong></dt><dd><p>Rel. path to the spectral veil corrected data if standard labelling is not used.</p>
+</dd>
+<dt><strong>-stokes [str]</strong></dt><dd><p>“Rel. path to the Stokes result if standard labelling is not used.</p>
+</dd>
+<dt><strong>-models [str]</strong></dt><dd><p>Rel. path to the Models of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-chi [str]</strong></dt><dd><p>Rel. path to the chi2 file of the inversion if standard labelling is not used.</p>
+</dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Additional save path (optional, default ‘./’)</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames</p>
+</dd>
+<dt><strong>-label [str]</strong></dt><dd><p>Add label text</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title in Stokes plot</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-inc</strong></dt><dd><p>Plot inclination in deg</p>
+</dd>
+<dt><strong>-azi</strong></dt><dd><p>Plot azimuth in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-chi2</strong></dt><dd><p>Plot chi2</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -515,12 +953,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="classes.html"
+       href="simulation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Classes</p>
+        <p class="prev-next-title">Simulation</p>
       </div>
     </a>
     <a class="right-next"

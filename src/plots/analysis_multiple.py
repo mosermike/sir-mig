@@ -1,5 +1,7 @@
 """
+
 Analyses the quality of multiple Monte Carlo Simulations
+
 """
 
 import numpy as np 
@@ -17,7 +19,7 @@ import os
 #############
 # Help page #
 #############
-def help():
+def _help():
 	"""
 	Help Page
 	"""
@@ -43,7 +45,7 @@ def help():
 	sys.exit()
 
 
-def get_attribute(model, att):
+def _get_attribute(model, att):
 	'''
 	Returns a model parameter depending on a string
 
@@ -83,16 +85,48 @@ def analysis_multiple(confs, labels):
 	"""
 	Analysis multiple simulations and puts it in one plot
 
-	Parameter
-	---------
+	Parameters
+	----------
 	confs : list
 		List of dictionaries with the configs
 	labels : list
 		List of strings with the labels for each plot
 
-	Return
-	------
+	Returns
+	-------
 	None
+
+	Other Parameters
+	----------------
+	There are optional options which change the plots. Additional parameters given as an argument when the script is executed.
+	-save [str], optional
+		Additional save path. Default './'.
+	-add [str]
+		Additional text in filenames
+	-T
+		Compare temperature in K
+	-B
+		Compare magentic field strength in Gauss
+	-vlos
+		Compare line of sight velocity in km/s
+	-inc
+		Compare inclination by subtracting in deg
+	-azi
+		Compare azimuth by adding in deg
+	-title [str]
+		Title of the 4 figures plot
+	-xtitle [float]
+		x position of title in Stokes plot
+	-limitT
+		Set y limits in T as 'ymin,ymax'
+	-vertical
+		Plot the last plot vertical
+	-v
+		print out tables with values at different log taus.
+	
+	Notes
+	-----
+	Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.
 
 	"""
 	# Import library
@@ -225,7 +259,7 @@ def analysis_multiple(confs, labels):
 
 			for n in range(len(log_taus)):
 				# Standard deviation
-				std = np.sqrt(np.sum((get_attribute(fits[n],att[i]) - get_attribute(syns[n], att[i]))**2, axis=0)/(nums[n]-1))	 
+				std = np.sqrt(np.sum((_get_attribute(fits[n],att[i]) - _get_attribute(syns[n], att[i]))**2, axis=0)/(nums[n]-1))	 
 				ax1.plot(fits[n].log_tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 				stds.append(std)
 			# Set limits
@@ -397,7 +431,7 @@ def analysis_multiple(confs, labels):
 if __name__ == "__main__":
 	# Print help page
 	if "-h" in sys.argv:
-		help()
+		_help()
 
 	# Config files
 	if "," in sys.argv[1]:

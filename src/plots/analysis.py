@@ -1,5 +1,7 @@
 """
+
 Analyses the quality of the Monte Carlo Simulation by computing the standard deviations
+
 """
 
 import numpy as np 
@@ -14,9 +16,10 @@ import matplotlib.pyplot as plt
 from os.path import exists
 from tools.change_config_path import change_config_path
 
-def std_dev(data, syn):
+def _std_dev(data, syn):
 	"""
 	Computes the standard deviation along log tau
+
 	"""
 
 	std = np.zeros(data.shape[1])
@@ -28,9 +31,10 @@ def std_dev(data, syn):
 	return std
 
 
-def help():
+def _help():
 	"""
 	Help Page
+
 	"""
 	print("analysis - Analyses the quality of the Monte Carlo Simulation by plotting the standard deviations")
 	print("Usage: python analysis.py [OPTION]")
@@ -52,14 +56,20 @@ def help():
 	
 	sys.exit()
 
-def get_attribute(model, att):
+def _get_attribute(model, att):
 	'''
 	Returns a model parameter depending on a string
 
-	Parameter
-	---------
-	model : class Model
+	Parameters
+	----------
+	model : Model
+		Class with the Model
 	att : str
+		String which attribute is returned
+
+	Returns
+	-------
+	None
 
 	'''
 	if att == "tau":
@@ -89,18 +99,50 @@ def get_attribute(model, att):
 
 def analysis(conf):
 	"""
+
 	Analysis of a MC simulation by plotting the standard deviations
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Configurations
 
-	Return
-	------
+	Returns
+	-------
 	None
 
+	Other Parameters
+	----------------
+
+	There are optional options which change the plots. Additional parameters given as an argument when the script is executed.
+
+	-save [str], optional
+		Additional save path. Default './'.
+	-add [str]
+		Additional text in filenames.
+	-T
+		Compare temperature in K
+	-B
+		Compare magentic field strength in Gauss
+	-vlos
+		Compare line of sight velocity in cm/s
+	-inc
+		Compare inclination by subtracting in deg
+	-azi
+		Compare azimuth by adding in deg
+	-title [str]
+		Title of the 4 figures plot
+	-xtitle [float]
+		x position of title in Stokes plot
+	-max
+		Plot the maximum differences
+	-vertical
+		Plot the last plot vertical
+	-v
+		Print out tables with values at different log taus.
+
 	"""
+
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
 	if exists(dirname + '/../../mml.mplstyle'):
@@ -198,7 +240,7 @@ def analysis(conf):
 			plt.title(titles[i])
 
 			# Standard deviation
-			std = std_dev(get_attribute(data,att[i]),get_attribute(syn, att[i]))
+			std = _std_dev(_get_attribute(data,att[i]),_get_attribute(syn, att[i]))
 
 			ax1.plot(log_tau, std, label=r"$\sigma$" + labels[i], color='#FF2C00')
 			
@@ -238,16 +280,16 @@ def analysis(conf):
 
 		# Plot uncertainties
 		# Standard deviation
-		stdT = std_dev(data.T[:,0,:], syn.T[:,0,:])
+		stdT = _std_dev(data.T[:,0,:], syn.T[:,0,:])
 		ax1.plot(log_tau, stdT, label=r"$\sigma$" + labels_y[1], color = colors[0])
 
-		stdB = std_dev(data.B[:,0,:], syn.B[:,0,:])
+		stdB = _std_dev(data.B[:,0,:], syn.B[:,0,:])
 		ax2.plot(log_tau, stdB, label=r"$\sigma$" + labels_y[4], color = colors[1])
 
-		std = std_dev(data.vlos[:,0,:], syn.vlos[:,0,:])
+		std = _std_dev(data.vlos[:,0,:], syn.vlos[:,0,:])
 		ax3.plot(log_tau, std, label=r"$\sigma$" + labels_y[5], color = colors[2])
 
-		std = std_dev(data.gamma[:,0,:], syn.gamma[:,0,:])
+		std = _std_dev(data.gamma[:,0,:], syn.gamma[:,0,:])
 		ax4.plot(log_tau, std, label=r"$\sigma$" + labels_y[6], color = colors[3])
 
 		# Maximum difference
@@ -319,7 +361,7 @@ def analysis(conf):
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
-		help()
+		_help()
 	conf = sir.read_config(sys.argv[1])
 	if conf["mode"] == "MC":
 		analysis(conf)

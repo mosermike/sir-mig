@@ -6,14 +6,15 @@ def initial(mode):
 	"""
 	Initial print outs and preparation
 
-	Parameter
-	---------
+	Parameters
+	----------
 	mode : string
 		Mode which is used
 	
-	Return
-	------
+	Returns
+	-------
 	None
+
 	"""
 	print()
 	print("╭───────────────────────────────────────────────────╮")
@@ -29,17 +30,20 @@ def x_y_add_zeros(x, y):
 	"""
 	Adds zeros so that the returning strings have 4 letters
 
-	Parameter
-	---------
+	Parameters
+	----------
 	x : float
 		x position
 	y : float
 		y position
 
-	Return
-	------
-	x as a string of 4 letters
-	y as a string of 4 letters
+	Returns
+	-------
+	out : str
+		x as a string of 4 letters
+	out : str
+		y as a string of 4 letters
+
 	"""
 	if x < 10:
 		x_str = "000" + str(x)
@@ -65,14 +69,15 @@ def create_task_folder_list(arg):
 	Creates a list which folders should be created and executed. This is done so
 	that the inversion itself can be executed linearly to make use of all cores.
 
-	Parameter
-	---------
+	Parameters
+	----------
 	arg : numpy array or int
 		1x4 array containing the limits in x and y of the data or number of 1D models
 
-	Return
+	Returns
 	------
-	Dictionary with all the names of the task folders, x and y position
+	out : dict
+		Dictionary with all the names of the task folders, x and y position
 	"""
 	import numpy as np
 	import definitions as d

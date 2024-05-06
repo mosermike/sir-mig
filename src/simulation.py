@@ -1,6 +1,14 @@
 """
-Changing physical parameters linearly in B, inc, vlos and with splines in T multiple times. Note, that at least log tau
-1 to -4 must be covered.
+
+Simulation
+==========
+
+This module provides function to create Stokes Profiles by starting with the models. A typical procedure is the following:
+
+ 1. Create Models with 2 or 3 Nodes
+ 2. Perform Synthesis of the Models
+ 3. Add Noise to the synthesised Stokes Profiles
+
 """
 
 import numpy as np
@@ -12,70 +20,131 @@ import sys
 import os
 from os.path import exists
 import sir
-#import model_1C as m
 import model as m
 import definitions as d
+import shutil
+import glob
+import profile_stk as p
 
 
-def split_to_float(string, letter=","):
+from misc import create_task_folder_list
+
+
+def __split_to_float(string, letter=","):
 	"""
 	Splits the string into a list and converts the elements to floats
 
-	Parameter
-	---------
+	Parameters
+	----------
 	string : str
 		String in the format num1,num2,num3,...
 	letter : char
 		Defines the separation character
 	
-	Return
-	------
-	list containing the information from the string as a float
+	Returns
+	-------
+	out : list
+		list containing the information from the string as a float
 	"""
 	strings = string.split(letter)
 	return np.array([float(i) for i in strings])
 
+"""
+*****************************************************************************
+*								ADDING NOISE TO								*
+*									PROFILES								*
+*****************************************************************************
+"""
 
-def help():
+def add_noise(conf: dict, verbose: bool = True) -> None:
 	"""
-	Information on the function
+	Adds noise to the Stokes Profiles
+
+	Parameters
+	----------
+	conf : dict
+		Information from the config file
+	verbose : bool, optional
+		Print out status. Default: True
+
+	Returns
+	-------
+	None
+
+
 	"""
-	print("create_models - Changes components of a model with two or three nodes")
-	print("Usage: python create_models [OPTION]")
-	print()
-	sir.option("[1. Pos]","Config File")
-	sir.option("-save","Savepath for the histograms.")
+	if verbose:
+		print("[STATUS] Add noise to the synthesised profiles")
+	##################
+	# READ ARGUMENTS #
+	##################
+	path = conf["path"]
+	Input = os.path.join(path, conf["syn_out"])			# Input synthesised model profiles/syn
+	Output = os.path.join(path, conf["noise_out"])		# Generic output profiles/noise
 
-	sys.exit()
+	noise_I = conf['noise_I']  # Noise in I
+	noise_Q = conf['noise_Q']  # Noise in Q
+	noise_U = conf['noise_U']  # Noise in U
+	noise_V = conf['noise_V']  # Noise in V
 
+	#############################
+	# ADD NOISE TO EACH PROFILE #
+	#############################
+	syn = p.read_profile(Input)
 
+	noise_Is = np.random.normal(scale=float(noise_I), size=(syn.nx, syn.ny, syn.nw))
+	noise_Qs = np.random.normal(scale=float(noise_Q), size=(syn.nx, syn.ny, syn.nw))
+	noise_Us = np.random.normal(scale=float(noise_U), size=(syn.nx, syn.ny, syn.nw))
+	noise_Vs = np.random.normal(scale=float(noise_V), size=(syn.nx, syn.ny, syn.nw))
+
+	syn.stki = syn.stki + noise_Is
+	syn.stkq = syn.stkq + noise_Qs
+	syn.stku = syn.stku + noise_Us
+	syn.stkv = syn.stkv + noise_Vs
+
+	syn.write(Output)
+
+	return
+
+"""
+*****************************************************************************
+*								CREATE MODLES								*
+*								FOR SYNTHESIS								*
+*****************************************************************************
+"""
 def create_models(conf: dict) -> None:
 	"""
 	Creates random models depending on the configuration
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary with the info from the config file
 
+	Returns
+	-------
+	None
+
 	"""
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/mml.mplstyle'):
-		plt.style.use(dirname + '/mml.mplstyle')
-		# if dvipng is not installed, don't use latex
-		if which('dvipng') is None:
-			plt.rcParams["text.usetex"] = "False"
-			plt.rcParams["font.family"] = 'sans-serif'
-			plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
-		# if dvipng is not installed, don't use latex
-		if which('dvipng') is None:
-			plt.rcParams["text.usetex"] = "False"
-			plt.rcParams["font.family"] = 'sans-serif'
-			plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
 	else:
-		plt.rcParams["savefig.format"] = "pdf"
+		if exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			if which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			if which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 	###############################
 	# Define variables from input #
 	###############################
@@ -136,11 +205,11 @@ def create_models(conf: dict) -> None:
 	##########################################
 	# PREPARATION AND CHANGING OF PARAMETERS #
 	##########################################
-	create_B = np.array([split_to_float(i, letter=",") for i in conf['create_B'].split(';')])
-	create_vlos = np.array([split_to_float(i, letter=",") for i in conf['create_vlos'].split(';')])
-	create_gamma = np.array([split_to_float(i, letter=",") for i in conf['create_gamma'].split(';')])
-	create_phi = np.array([split_to_float(i, letter=",") for i in conf['create_phi'].split(';')])
-	create_points = split_to_float(conf['create_points'])
+	create_B = np.array([__split_to_float(i, letter=",") for i in conf['create_B'].split(';')])
+	create_vlos = np.array([__split_to_float(i, letter=",") for i in conf['create_vlos'].split(';')])
+	create_gamma = np.array([__split_to_float(i, letter=",") for i in conf['create_gamma'].split(';')])
+	create_phi = np.array([__split_to_float(i, letter=",") for i in conf['create_phi'].split(';')])
+	create_points = __split_to_float(conf['create_points'])
 
 	model = m.Model(int(num), 1, len(log_tau0))
 	for i in range(num):
@@ -603,17 +672,107 @@ def create_models(conf: dict) -> None:
 
 	return
 
+def synthesis(conf, comm, rank, size, MPI):
+	"""
+	Performs the synthesis of all the models.
 
-if __name__ == "__main__":
-	if "-h" in sys.argv:
-		help()
-	if len(sys.argv) < 2:
-		print("[ERROR] No config file provided!")
-		sys.exit()
-	elif not os.path.exists(sys.argv[1]):
-		print("[ERROR] Config file does not exist!")
-		sys.exit()
+	Parameters
+	----------
+	config : dict
+		Dcitionary with config information
+	rank : int
+		Number of this process
+	comm : Intracomm
+		Communicator from MPI
+	size : int
+		Number of processes
+	MPI : library
+		Library MPI
+
+	Returns
+	-------
+	None
+
+	"""
+	
+	comm.barrier()
+
+	###################################################
+	#		READ PARAMETERS FROM CONFIG FILE		#	
+	###################################################
+	# Define parameters for easier understanding
+	path = conf["path"]
+	abundance_file = conf['abundance'] # Abundance file	
+	
+	models = m.read_model(os.path.join(path, conf['model_out']))
+
+	####################################
+	#	CREATE GRID AND CONFIG FILE	#
+	####################################
+	if rank == 0:
+		sir.write_control_mc(os.path.join(path,d.syn_trol_file), conf, Type="syn")
+		sir.write_grid_mc(conf,os.path.join(path,d.Grid))
+			
+	if rank == 0:
+		# Check if there are old task folders and delete them => can result to errors
+		if len(glob.glob(os.path.join(path,d.task_start + "*"))) > 0:
+			print("-------> Deleting old task folders")
+			for i in glob.glob(os.path.join(path,d.task_start + "*")):
+				shutil.rmtree(i)
+	
+	comm.barrier() # Continues when all processes entered this function
+
+	
+	####################################
+	#		START INVERSION PART	#
+	####################################
+
+	performed_models = 0 # Counts how many models are performed
+	finished_jobs = 0
+
+	tasks = create_task_folder_list(conf['num'])
+
+	for i in range(rank, conf['num'], size):
+		# Create task folder
+		task_folder = os.path.join(path, tasks['folders'][i])
+		os.makedirs(task_folder, exist_ok=True)
 		
-	conf = sir.read_config(sys.argv[1])
+		# Copy SIR files and guess model
+		sir_files = [d.syn_trol_file, "sir.x", conf['line'], d.Grid, abundance_file]
+		for sir_file in sir_files:
+			shutil.copy(os.path.join(path, sir_file), os.path.join(task_folder, sir_file))
+		
+		# Extract model
+		models.write_model(os.path.join(task_folder,d.model_syn), i, 0)
+	
+		# Perform synthesis
+		os.chdir(task_folder)
+		os.system("echo " + d.syn_trol_file + " | " + " ./sir.x >/dev/null 2>/dev/null")
+		
+		performed_models += 1
 
-	create_models(conf)
+		if finished_jobs < (conf['num'] - conf['num'] % size):
+			finished_jobs = comm.allreduce(performed_models, op=MPI.SUM)
+
+		if rank == 0:
+			print(f"\rTotal finished Jobs: {finished_jobs}", end='', flush=False)
+
+		os.chdir('../') # Go back in case relative paths are used
+	os.chdir(path)
+	# Collect data and save it
+	if rank == 0:
+		print(f"\rTotal finished Jobs: {conf['num']}", end='', flush=False)
+		output =  os.path.join(path,conf["syn_out"]) # Output file
+		atoms = [i.split(",") for i in conf['atoms']]
+
+		# Read the profiles
+		stk = p.Profile(conf['num'],1,0)
+		stk.read_results_MC(path, tasks, d.profile)
+		
+		stk.write(f"{conf['syn_out']}")
+		
+		for i in range(conf['num']):
+			shutil.rmtree(tasks['folders'][i])
+		print(f"\r-------> Finished with {conf['num']} synthesised models.")
+
+	comm.barrier()

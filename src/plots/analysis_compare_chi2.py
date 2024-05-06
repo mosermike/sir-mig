@@ -11,7 +11,7 @@ import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists
 
-def help():
+def _help():
 	"""
 	Help Page
 	"""
@@ -37,7 +37,7 @@ def help():
 	sys.exit()
 
 
-def chi2_err(y_fit, y_obs, yerr):
+def _chi2_err(y_fit, y_obs, yerr):
 	r"""
 	Computes the merit-function $\chi^2$.
 	
@@ -62,12 +62,42 @@ def analysis_compare_chi2(conf1, conf2):
 	"""
 	Compares the chi2 of two simulations for different physical parameters.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	conf1 : dict
 		Configuration for simulation 1
 	conf2 : dict
 		Configuration for simulation 2
+
+	Returns
+	-------
+	None
+
+	Other Parameters
+	----------------
+	Additional parameters given as an argument when the script is executed.
+	-save [str], optional
+		Additional save path. Default: './'
+	-add [str]
+		Additional text in filenames
+	-label [str]
+		Add label text
+	-T
+		Plot temperature in K
+	-B
+		Plot magentic field strength in Gauss
+	-vlos
+		Plot line of sight velocity in cm/s
+	-inc
+		Plot inclination by subtracting in deg
+	-azi
+		Plot azimuth by adding in deg
+	-add1 [str]
+		Additional text in label for model 1
+	-add2 [str]
+		Additional text in label for model 2
+
+
 	"""
 
 	# Import library
@@ -173,19 +203,19 @@ def analysis_compare_chi2(conf1, conf2):
 		# Compute chi2 including the error
 		n = 0
 		if "-T" in sys.argv:
-			chi1[n, i] = chi2_err(Tf, Tm, eT)
+			chi1[n, i] = _chi2_err(Tf, Tm, eT)
 			n += 1
 		if "-B" in sys.argv:
-			chi1[n, i] = chi2_err(Bf, Bm, eB)
+			chi1[n, i] = _chi2_err(Bf, Bm, eB)
 			n += 1
 		if "-vlos" in sys.argv:
-			chi1[n, i] = chi2_err(vlosf, vlosm, evlos)
+			chi1[n, i] = _chi2_err(vlosf, vlosm, evlos)
 			n += 1
 		if "-inc" in sys.argv:
-			chi1[n, i] = chi2_err(incf, incm, einc)
+			chi1[n, i] = _chi2_err(incf, incm, einc)
 			n += 1
 		if "-azi" in sys.argv:
-			chi1[n, i] = chi2_err(azimuthf, azimuthm, eazimuth)
+			chi1[n, i] = _chi2_err(azimuthf, azimuthm, eazimuth)
 			n += 1
 
 	# Compute chi2 for second model
@@ -198,19 +228,19 @@ def analysis_compare_chi2(conf1, conf2):
 		# Compute chi2 including the error
 		n = 0
 		if "-T" in sys.argv:
-			chi2[n, i] = chi2_err(Tf, Tm, eT)
+			chi2[n, i] = _chi2_err(Tf, Tm, eT)
 			n += 1
 		if "-B" in sys.argv:
-			chi2[n, i] = chi2_err(Bf, Bm, eB)
+			chi2[n, i] = _chi2_err(Bf, Bm, eB)
 			n += 1
 		if "-vlos" in sys.argv:
-			chi2[n, i] = chi2_err(vlosf, vlosm, evlos)
+			chi2[n, i] = _chi2_err(vlosf, vlosm, evlos)
 			n += 1
 		if "-inc" in sys.argv:
-			chi2[n, i] = chi2_err(incf, incm, einc)
+			chi2[n, i] = _chi2_err(incf, incm, einc)
 			n += 1
 		if "-azi" in sys.argv:
-			chi2[n, i] = chi2_err(azimuthf, azimuthm, eazimuth)
+			chi2[n, i] = _chi2_err(azimuthf, azimuthm, eazimuth)
 			n += 1
 
 	#######################################################################
@@ -276,7 +306,7 @@ def analysis_compare_chi2(conf1, conf2):
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
-		help()
+		_help()
 	conf1 = sir.read_config(sys.argv[1])
 	conf2 = sir.read_config(sys.argv[2])
 	if conf1["mode"] == "MC" and conf2['mode']:

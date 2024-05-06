@@ -18,7 +18,7 @@ def help():
 	sys.exit(1)
 
 
-def split_to_float(string, letter = ","):
+def __split_to_float(string, letter = ","):
 	"""
 	Splits the string into a list and converts the elements to floats
 
@@ -262,10 +262,10 @@ def create_guesses_1c(conf, output = "./", number = 0):
 	#					Define variables from input					    #
 	###################################################################################
 	import definitions as d
-	lim_B = split_to_float(conf["lim_B"])
-	lim_vlos = split_to_float(conf[f"lim_vlos"])
-	lim_gamma = split_to_float(conf[f"lim_gamma"])
-	lim_phi = split_to_float(conf[f"lim_phi"])
+	lim_B = __split_to_float(conf["lim_B"])
+	lim_vlos = __split_to_float(conf[f"lim_vlos"])
+	lim_gamma = __split_to_float(conf[f"lim_gamma"])
+	lim_phi = __split_to_float(conf[f"lim_phi"])
 
 	mod = create_guess(conf["model"], conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
 	# Macroturbulence velocity
@@ -297,10 +297,10 @@ def create_guesses_2c(conf, output = "./", number = 0):
 
 	for j in [1,2]:
 		model = conf[f"model{j}"]		# Base Model
-		lim_B		= split_to_float(conf[f"lim_B{j}"])
-		lim_vlos		= split_to_float(conf[f"lim_vlos{j}"])
-		lim_gamma		= split_to_float(conf[f"lim_gamma{j}"])
-		lim_phi			= split_to_float(conf[f"lim_phi{j}"])
+		lim_B		= __split_to_float(conf[f"lim_B{j}"])
+		lim_vlos		= __split_to_float(conf[f"lim_vlos{j}"])
+		lim_gamma		= __split_to_float(conf[f"lim_gamma{j}"])
+		lim_phi			= __split_to_float(conf[f"lim_phi{j}"])
 
 		mod = create_guess(model, conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
 		mod.fill[0,0] = conf['fill'].split(',')[j] # Assign filling factor from config

@@ -58,13 +58,12 @@ def main():
 	comm.barrier()
 
 	#####################
-	# MERGING THE DATA	#
+	# PREPROCESS	#
 	#####################
 	if (conf['mode'] == "1C" or conf['mode'] == "2C") and rank == 0:
 		
 		if conf['preprocess'] == "1":
-			import preprocess.merge
-			import preprocess.correction_spectral_veil
+			import preprocess
 			print("[STATUS] Preprocess data")
 			if exists(os.path.join(conf['path'],conf['cube_inv'])):
 					print("-------> Skipping preprocessing data (already performed)")
@@ -78,11 +77,11 @@ def main():
 						ends = "001"
 					else:
 						ends = ''
-					preprocess.merge.merge(conf, Dir, ends)
+					preprocess.merge(conf, Dir, ends)
 			######################
 			# NORMALISE THE DATA #
 			######################
-			preprocess.normalise.normalise(conf)
+			preprocess.normalise(conf)
 			#########################
 			# CORRECT SPECTRAL VEIL #
 			#########################
@@ -112,8 +111,7 @@ def main():
 		inversion.inversion_2c(conf, comm, rank, size, MPI)
 
 	elif conf['mode'] == 'MC':
-		import create_models  # Creating Models
-		import create_profiles  # Create profiles
+		import simulation  # Creating Models
 		import inversion
 		if rank == 0:
 			# Check for flags and print it out
@@ -137,7 +135,7 @@ def main():
 					print("-------> Skip creating models ...")
 				else:
 					print("[STATUS] Create Models")
-					create_models.create_models(conf)
+					simulation.create_models(conf)
 				print("[STATUS] Perform synthesis")
 
 			comm.barrier()
@@ -146,7 +144,7 @@ def main():
 			# Perform Synthesis #
 			#####################
 			if not "--no-syn" in sys.argv:
-				create_profiles.synthesis(conf, comm, rank, size, MPI)
+				simulation.synthesis(conf, comm, rank, size, MPI)
 
 			comm.barrier()
 
@@ -158,7 +156,7 @@ def main():
 					print("-------> Skip adding noise ...")
 				else:
 					print("[STATUS] Add noise")
-					create_profiles.add_noise(conf, False)
+					simulation.add_noise(conf, False)
 		else:
 			if rank == 0:
 				print("[STATUS] Only perform inversion")

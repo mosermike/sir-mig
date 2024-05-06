@@ -8,4 +8,5 @@ API
    sir
    model
    profile_stk
+   preprocess
    visualizer

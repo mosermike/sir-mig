@@ -32,6 +32,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.graphviz',
     'sphinx.ext.autosummary',
+    'sphinx_math_dollar',
+    'numpydoc'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -67,3 +69,8 @@ import sys
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix() + "/src")
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix() + "/src/plots")
 
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
