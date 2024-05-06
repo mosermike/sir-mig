@@ -8,18 +8,11 @@ from os.path import exists
 import sys
 import os
 sys.path.append(sys.path[0] + "/..")
-import os, sys, sir, obs
+import os, sys, sir
 import definitions as d
+import profile_stk as p
 
-# Import library
-dirname = os.path.split(os.path.abspath(__file__))[0]
-if exists(dirname + '/../mml.mplstyle'):
-	plt.style.use(dirname + '/../mml.mplstyle')
-elif "mml" in plt.style.available:
-	plt.style.use('mml')
-
-
-def help():
+def _help():
 	print("Ic_test - Plots the continuum in the obs vs the fit to test the inversion.")
 	print("Usage: python Ic_test.py [OPTION]")
 	print()
@@ -38,39 +31,75 @@ def Ic_test(conf, num):
 	"""
 	Plots Ic fit vs I obs in a plot. It uses the first element in the wavelength range as continuum
 
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dict. with all the information from the config
 	num : int
 		determines which range is used (1 = 1st line in grid, etc.)
-	Return
+	
+	Returns
 	-------
 	None
 
+	Other Parameters
+	----------------
+	Additional parameters given as an argument when the script is executed.
+	-data [str]
+		Rel. path to the spectral veil corrected data if standard labelling is not used.
+	-stokes [str]
+		Rel. path to the Stokes result if standard labelling is not used.
+	-save [str], optional
+		Additional save path. Default './'.
+	-add [str]
+		Additional text in filenames.
+	-title [str]
+		Title in plot.
+	-num [int]
+		Determines which range is used (1 = 1st line in grid, etc.) if not the first one is wanted.
 	"""
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#
 	#############################################################
 	path = conf["path"]
-	waves = np.load(os.path.join(path, conf['waves']))
-	waves_inv = np.load(os.path.join(path,conf['inv_out']) + d.end_wave)
+	stokes_inv = p.read_profile(os.path.join(path,conf['inv_out']))
+	
 	Map = conf['map']
-	range_wave1 = sir.angstrom_to_pixel(waves, conf['range_wave'])
-	range_wave2 = sir.angstrom_to_pixel(waves_inv, conf['range_wave'])
 
 	if "-data" not in sys.argv:
-		stokes = obs.load_data(conf, filename=conf['cube_inv'])
+		stokes = p.read_profile(os.path.join(conf["path"],conf['cube_inv']))
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
-		stokes = obs.load_data(conf, filename = filename)
+		stokes = p.read_profile(filename)
 
 	if "-data" not in sys.argv:
-		stokes_inv = np.load(os.path.join(path,conf['inv_out'] + d.end_stokes))
+		stokes_inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
 	else:
 		filename = sys.argv[sys.argv.index("-stokes")+1]
-		stokes_inv = np.load(filename)
-
+		stokes_inv = p.read_profile(filename)
+	
+	dirname = os.path.split(os.path.abspath(__file__))[0]
+	
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 
 		
 	# Additional savepath
@@ -92,8 +121,8 @@ def Ic_test(conf, num):
 
 
 	# Determine the index to be plotted as continuum
-	wave_ind1 = range_wave1[num][0]
-	wave_ind2 = range_wave2[num][0]
+	wave_ind1 = 0 # Index for inversion stokes
+	wave_ind2 = np.argmin(np.abs(stokes.wave - stokes_inv.wave[0])) # Index for observations
 
 	#############################################################
 	#					PLOTTING STUFF					#
@@ -103,7 +132,7 @@ def Ic_test(conf, num):
 	############################
 	# Plot the Stokes profiles #
 	############################
-	ax.plot(stokes[Map[0]:Map[1]+1,Map[2]:Map[3]+1,0,wave_ind1].flatten(),stokes_inv[:,:,0,wave_ind2].flatten(), '.', label="")
+	ax.plot(stokes.stki[Map[0]:Map[1]+1,Map[2]:Map[3]+1,wave_ind2].flatten(),stokes_inv.stki[:,:,wave_ind1].flatten(), '.', label="")
 	xlim = ax.get_xlim()
 	ylim = ax.get_ylim()
 	ax.plot([0,10],[0,10], '--', label="Expected Relation")
@@ -136,7 +165,7 @@ def Ic_test(conf, num):
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
-		help()
+		_help()
 	conf = sir.read_config(sys.argv[1])
 
 	num = 0
