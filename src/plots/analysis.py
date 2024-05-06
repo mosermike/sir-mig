@@ -73,7 +73,7 @@ def _get_attribute(model, att):
 
 	'''
 	if att == "tau":
-		return model.log_tau
+		return model.tau
 	elif att == "T":
 		return model.T[:,0,:]
 	elif att == "Pe":
@@ -244,8 +244,8 @@ def analysis(conf):
 	# Cut data so that the plot limits are adjusted to the shorted range
 	syn.set_limit(lim_max)
 	data.set_limit(lim_max)
-	log_tau = data.log_tau
-	lim_max = data.log_tau[-1]
+	log_tau = data.tau
+	lim_max = data.tau[-1]
 
 	for i in range(len(inputs)):
 		if inputs[i] in sys.argv:

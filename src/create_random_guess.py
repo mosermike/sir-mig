@@ -100,7 +100,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 	#############################
 	# SAVE DATA FROM BASE MODEL #
  	#############################
-	mod.log_tau	= File_T[0]
+	mod.tau	= File_T[0]
 	mod.T[0,0] 	      	= File_T[1]
 	mod.Pe[0,0] 	    = File_T[2]
 	mod.vmicro[0,0]	= File_T[3]
@@ -184,7 +184,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 		cool_T = cool_T * np.random.uniform(0.95,1.05)
 		
 		Ts = cool_T + factor * HSRA_T
-		mod.T[0,0] = np.interp(mod.log_tau, np.flip(log_taus), np.flip(Ts))
+		mod.T[0,0] = np.interp(mod.tau, np.flip(log_taus), np.flip(Ts))
 		
 		
 	#########################

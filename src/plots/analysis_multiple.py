@@ -56,7 +56,7 @@ def _get_attribute(model, att):
 
 	'''
 	if att == "tau":
-		return model.log_tau
+		return model.tau
 	elif att == "T":
 		return model.T[:,0,:]
 	elif att == "Pe":
@@ -240,7 +240,7 @@ def analysis_multiple(confs, labels):
 		syn.correct_phi()
 		fit.correct_phi()
 
-		log_tau = fit.log_tau[0,0]
+		log_tau = fit.tau[0,0]
 
 		log_taus.append(log_tau)
 		syns.append(syn)
@@ -256,7 +256,7 @@ def analysis_multiple(confs, labels):
 	for i in range(len(fits)):
 		fits[i].set_limit(lim_max)
 		syns[i].set_limit(lim_max)
-	lim_max = fits[0].log_tau[0,0,-1]
+	lim_max = fits[0].tau[0,0,-1]
 	#####
 	# Plot the physical parameters separately as mentioned in the flags
 	#####
@@ -276,10 +276,10 @@ def analysis_multiple(confs, labels):
 			for n in range(len(log_taus)):
 				# Standard deviation
 				std = np.sqrt(np.sum((_get_attribute(fits[n],att[i]) - _get_attribute(syns[n], att[i]))**2, axis=0)/(nums[n]-1))	 
-				ax1.plot(fits[n].log_tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+				ax1.plot(fits[n].tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 				stds.append(std)
 			# Set limits
-			ax1.set_xlim(fits[0].log_tau[0,0][0], lim_max)
+			ax1.set_xlim(fits[0].tau[0,0][0], lim_max)
 
 			if inputs[i] == "-T":
 				ax1.set_ylim(limitT)
@@ -304,14 +304,14 @@ def analysis_multiple(confs, labels):
 				print()
 				print("-----------------------")
 				for i in [1, 0.5, 0.0, -0.5, -1, -1.5, -2]:
-					print("|  %1.2f |" % (fits[0].log_tau[0, np.abs(fits[0].log_tau - (i)).argmin()]), end="")
+					print("|  %1.2f |" % (fits[0].tau[0, np.abs(fits[0].tau - (i)).argmin()]), end="")
 					for j in range(len(fits)):
-						print("  %1.2f |" % (stds[j][np.abs(fits[j].log_tau[0] - (i)).argmin()]), end="")
+						print("  %1.2f |" % (stds[j][np.abs(fits[j].tau[0] - (i)).argmin()]), end="")
 					print()
 				print()
 				for j in range(len(fits)):
 					temp1 = np.argmin(stds[j])
-					print(f"Minima 1 at {fits[j].log_tau[0][temp1]} with {'%1.2f' % (stds[j][temp1])}")
+					print(f"Minima 1 at {fits[j].tau[0][temp1]} with {'%1.2f' % (stds[j][temp1])}")
 				print()
 				print()		
 
@@ -337,25 +337,25 @@ def analysis_multiple(confs, labels):
 	for n in range(len(log_taus)):	
 		std = np.sqrt(np.sum((fits[n].T[:,0,:] - syns[n].T[:,0,:])**2, axis=0)/(nums[n]-1))
 		stdTs.append(std)
-		ax1.plot(fits[n].log_tau[0,0], stdTs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax1.plot(fits[n].tau[0,0], stdTs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 		std = np.sqrt(np.sum((fits[n].B[:,0,:] - syns[n].B[:,0,:])**2, axis=0)/(nums[n]-1))
 		stdBs.append(std)
-		ax2.plot(fits[n].log_tau[0,0], stdBs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax2.plot(fits[n].tau[0,0], stdBs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 		std = np.sqrt(np.sum((fits[n].vlos[:,0,:] - syns[n].vlos[:,0,:])**2, axis=0)/(nums[n]-1))
-		ax3.plot(fits[n].log_tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax3.plot(fits[n].tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 		std = np.sqrt(np.sum((fits[n].gamma[:,0,:] - syns[n].gamma[:,0,:])**2, axis=0)/(nums[n]-1))
-		ax4.plot(fits[n].log_tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax4.plot(fits[n].tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 	##############
 	# Set limits #
 	##############
-	ax1.set_xlim(fits[0].log_tau[0,0][0], lim_max)
-	ax2.set_xlim(fits[0].log_tau[0,0][0], lim_max)
-	ax3.set_xlim(fits[0].log_tau[0,0][0], lim_max)
-	ax4.set_xlim(fits[0].log_tau[0,0][0], lim_max)
+	ax1.set_xlim(fits[0].tau[0,0][0], lim_max)
+	ax2.set_xlim(fits[0].tau[0,0][0], lim_max)
+	ax3.set_xlim(fits[0].tau[0,0][0], lim_max)
+	ax4.set_xlim(fits[0].tau[0,0][0], lim_max)
 
 	if "-limitT" in sys.argv:
 		ax1.set_ylim(limitT)
@@ -425,20 +425,20 @@ def analysis_multiple(confs, labels):
 		print()
 		print("--------------------------------------------------------------------------------------------")
 		for i in [1, 0.5, 0, -0.5, -1, -1.5, -2]:
-			print("|  %1.2f \t\t |" % (fits[0].log_tau[0, np.abs(fits[0].log_tau - i).argmin()]), end="")
+			print("|  %1.2f \t\t |" % (fits[0].tau[0, np.abs(fits[0].tau - i).argmin()]), end="")
 			for j in range(len(labels)):
 				for n in range(len(fits)):
 					if j == 0:
-						print("  %1.1f \t\t |" % (stdTs[n][np.abs(fits[n].log_tau[0] - i).argmin()]), end="")
+						print("  %1.1f \t\t |" % (stdTs[n][np.abs(fits[n].tau[0] - i).argmin()]), end="")
 					else:
-						print("  %1.1f \t\t |" % (stdBs[n][np.abs(fits[n].log_tau[0] - i).argmin()]), end="")
+						print("  %1.1f \t\t |" % (stdBs[n][np.abs(fits[n].tau[0] - i).argmin()]), end="")
 			print()
 
 		print()
 
 		for j in range(len(labels)):
 			temp1 = np.argmin(stdBs[j])
-			print(f"Minima {j+1} at {'%.2f' %fits[j].log_tau[0][temp1]} with {'%.3f' % stdBs[j][temp1]} G")
+			print(f"Minima {j+1} at {'%.2f' %fits[j].tau[0][temp1]} with {'%.3f' % stdBs[j][temp1]} G")
 
 	return
 ##################################################################

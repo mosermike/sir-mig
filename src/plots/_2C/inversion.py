@@ -15,7 +15,8 @@ from os.path import exists
 import os
 from change_config_path import change_config_path
 
-
+# TODO CHANGE TO MODEL
+sys.exit()
 def help():
 	"""
 	Help Page
@@ -63,16 +64,26 @@ def inversion(conf, x, y):
 	"""
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../../mml.mplstyle'):
-		plt.style.use(dirname + '/../../mml.mplstyle')
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
-
-	# Check if path exists
-	if not exists(conf['path']):
-		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")
-		if Inp == "y":
-			change_config_path(conf, os.path.abspath(os.getcwd()))
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 
 	############################
 	# READ INPUT AND LOAD DATA #

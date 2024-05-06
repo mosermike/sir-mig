@@ -231,7 +231,7 @@ def create_models(conf: dict) -> None:
 		vlos_0 = np.zeros(num)
 		for i in range(num):
 			# Set values to initial model
-			model.log_tau = np.copy(log_tau0)
+			model.tau = np.copy(log_tau0)
 			model.T[i,0] = np.copy(T0)
 			model.Pe[i,0] = np.copy(Pe0)
 			model.vmicro[i,0] = np.copy(vmicro0)
@@ -319,7 +319,7 @@ def create_models(conf: dict) -> None:
 				Ts[Ts > -1] = Ts[Ts > -1] * factor
 				Ts[Ts <= -1] = Ts[Ts <= -1] / factor
 
-				model.T[i,0] = np.interp(model.log_tau, np.flip(log_taus), np.flip(Ts))
+				model.T[i,0] = np.interp(model.tau, np.flip(log_taus), np.flip(Ts))
 
 			#########################
 			# NEW ELECTRON PRESSURE #
@@ -440,7 +440,7 @@ def create_models(conf: dict) -> None:
 		# Perform 'num' times
 		for i in range(num):
 			# Set values to initial model
-			model.log_tau = np.copy(log_tau0)
+			model.tau = np.copy(log_tau0)
 			model.T[i,0] = np.copy(T0)
 			model.Pe[i,0] = np.copy(Pe0)
 			model.vmicro[i,0] = np.copy(vmicro0)
@@ -478,7 +478,7 @@ def create_models(conf: dict) -> None:
 				B_m5[i] = np.random.uniform(create_B[1][0], create_B[1][1])  # @ 3rd point
 
 				spline = inter.CubicSpline(create_points, [B_m5[i], B_m1[i], B_p1[i]], bc_type='natural')
-				model.B[i,0] = spline(model.log_tau)
+				model.B[i,0] = spline(model.tau)
 				B00 = B_p1[i]
 
 			###################
@@ -547,7 +547,7 @@ def create_models(conf: dict) -> None:
 
 				Ts = Ts * np.linspace(factor, 1 / factor, len(log_taus))
 
-				model.T[i,0] = np.interp(model.log_tau, np.flip(log_taus), np.flip(Ts))
+				model.T[i,0] = np.interp(model.tau, np.flip(log_taus), np.flip(Ts))
 
 			#########################
 			# NEW ELECTRON PRESSURE	#
@@ -570,7 +570,7 @@ def create_models(conf: dict) -> None:
 				vlos_m1[i] = np.random.uniform(vlos_p1[i], vlos_m5[i])  # 2nd point
 
 				spline = inter.CubicSpline(create_points, [vlos_m5[i], vlos_m1[i], vlos_p1[i]], bc_type='natural')
-				model.vlos[i,0] = spline(model.log_tau) / 1e5
+				model.vlos[i,0] = spline(model.tau) / 1e5
 
 			###################
 			# NEW INCLINATION #
@@ -582,7 +582,7 @@ def create_models(conf: dict) -> None:
 
 				# Pchip to prevent overshooting to negative values
 				spline = Pchip(create_points, [inc_m5[i], inc_m1[i], inc_p1[i]])
-				model.gamma[i,0] = spline(model.log_tau)
+				model.gamma[i,0] = spline(model.tau)
 
 			###############
 			# NEW AZIMUTH #
@@ -594,7 +594,7 @@ def create_models(conf: dict) -> None:
 
 				# Pchip to prevent overshooting to negative values
 				spline = Pchip(create_points, [azi_m5[i], azi_m1[i], azi_p1[i]])
-				model.phi[i,0] = spline(model.log_tau)
+				model.phi[i,0] = spline(model.tau)
 
 			##############
 			# NEW HEIGHT #

@@ -411,7 +411,7 @@ def _on_click_1C(event, obs, fit, Models, Map):
 			
 
 
-		log_tau = Models.log_tau
+		log_tau = Models.tau
 		ind_max = np.argmin(np.abs(log_tau	+ 3))
 		
 		log_tau = log_tau[:ind_max+1]
@@ -573,7 +573,7 @@ def visualizer_1C(conf, wave):
 			filename = sys.argv[sys.argv.index("-chi")+1]
 			chi2_inv = np.load(filename)
 
-		ind = np.argmin(abs(models_inv.log_tau - tau))
+		ind = np.argmin(abs(models_inv.tau - tau))
 		
 
 		###################################################
@@ -753,7 +753,7 @@ def _on_click_2C(event, obs, fit, Models1, Models2, Map):
 			else:
 				_move_figure("right2", Monitor="2")
 
-		log_tau = Models1.log_tau
+		log_tau = Models1.tau
 		ind_max = np.argmin(np.abs(log_tau	+ 3))
 		
 		log_tau = log_tau[:ind_max+1]

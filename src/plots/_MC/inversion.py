@@ -7,7 +7,7 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../tools"))
 import sir
-import model_1C as m
+import model as m
 import definitions as d
 import matplotlib.pyplot as plt
 from change_config_path import change_config_path
@@ -59,10 +59,27 @@ def inversion(conf, num):
 	"""
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../../mml.mplstyle'):
-		plt.style.use(dirname + '/../../mml.mplstyle')
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+				
 	# Check if path exists
 	if not exists(conf['path']):
 		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")

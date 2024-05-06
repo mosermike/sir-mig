@@ -142,7 +142,7 @@ def plot_response(conf,filename, modelname):
 	range_wave = sir.pixel_to_angstrom(np.load(os.path.join(conf['path'],conf['waves'])), conf['range_wave'])
 	savepath = ''
 	if '-save' in sys.argv:
-		savepath = path + "/" + sys.argv[sys.argv.index("-save")+1]
+		savepath = conf["path"] + "/" + sys.argv[sys.argv.index("-save")+1]
 		if not exists(savepath[:savepath.rfind('/')]):
 			os.mkdir(savepath[:savepath.rfind('/')])
 

@@ -360,11 +360,11 @@ def result_1C(conf, wave, tau, waveV = -1):
 		add_label = sys.argv[sys.argv.index("-label")+1]
 
 	# Restrict models to the given tau
-	ind  = np.argmin(abs(models_inv.log_tau - tau))
-	indT = np.argmin(abs(models_inv.log_tau - logT))
-	indB = np.argmin(abs(models_inv.log_tau - logB))
-	indV = np.argmin(abs(models_inv.log_tau - logV))
-	indI = np.argmin(abs(models_inv.log_tau - logI))
+	ind  = np.argmin(abs(models_inv.tau - tau))
+	indT = np.argmin(abs(models_inv.tau - logT))
+	indB = np.argmin(abs(models_inv.tau - logB))
+	indV = np.argmin(abs(models_inv.tau - logV))
+	indI = np.argmin(abs(models_inv.tau - logI))
 
 	# Cut models to the specific log tau value
 	models_inv.nval = ind
@@ -1073,11 +1073,11 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		title4 = sys.argv[sys.argv.index("-title4")+1]
 
 	# Restrict models to the given tau
-	ind = np.argmin(abs(models_inv.log_tau - tau))
-	indT = np.argmin(abs(models_inv.log_tau - logT))
-	indB = np.argmin(abs(models_inv.log_tau - logB))
-	indV = np.argmin(abs(models_inv.log_tau - logV))
-	indI = np.argmin(abs(models_inv.log_tau - logI))
+	ind = np.argmin(abs(models_inv.tau - tau))
+	indT = np.argmin(abs(models_inv.tau - logT))
+	indB = np.argmin(abs(models_inv.tau - logB))
+	indV = np.argmin(abs(models_inv.tau - logV))
+	indI = np.argmin(abs(models_inv.tau - logI))
 
 	# Cut models to the specific log tau value
 	models_inv.nval = ind
