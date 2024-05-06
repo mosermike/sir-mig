@@ -39,6 +39,7 @@
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'classes';</script>
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
@@ -434,29 +435,38 @@ document.write(`
 <dt class="sig sig-object py" id="model.Model">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model" title="Link to this definition">#</a></dt>
 <dd><p>Class containing the models of a simulation</p>
-<dl class="simple">
-<dt>Variables are:</dt><dd><ul class="simple">
-<li><p>log_tau</p></li>
-<li><p>T</p></li>
-<li><p>Pe</p></li>
-<li><p>vmicro</p></li>
-<li><p>B</p></li>
-<li><p>vlos</p></li>
-<li><p>gamma</p></li>
-<li><p>phi</p></li>
-<li><p>z</p></li>
-<li><p>Pg</p></li>
-<li><p>rho</p></li>
-<li><p>fill</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>log_tau</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with the log tau</p>
 </dd>
-<dt>There are several functions:</dt><dd><ul class="simple">
-<li><p>read: Read a binary file containing models and stores it into the class variables</p></li>
-<li><p>read_results: Reads the results from the inversion of SIR</p></li>
-<li><p>write_model: Writes a Model to a SIR readable file</p></li>
-<li><p>write: Saves the models as a binary file</p></li>
-<li><p>set_limit: Cuts the data to a specific log_tau value (used for plotting)</p></li>
-</ul>
+<dt><strong>T</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Temperature in K</p>
+</dd>
+<dt><strong>Pe</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Electron Pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p>
+</dd>
+<dt><strong>vmicro</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Microturbulence Velocity in cm/s</p>
+</dd>
+<dt><strong>B</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Magnetic Field Strength in G</p>
+</dd>
+<dt><strong>vlos</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Line-of-Sight Velocity in km/s</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Inclination in deg</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Azimuth in deg</p>
+</dd>
+<dt><strong>z</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>z in km</p>
+</dd>
+<dt><strong>Pg</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Gas pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p>
+</dd>
+<dt><strong>rho</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Density in g/cm<span class="math notranslate nohighlight">\(^3\)</span></p>
+</dd>
+<dt><strong>vmacro</strong><span class="classifier">numpy.array</span></dt><dd><p>Macroturbulence Velocity in km/s</p>
+</dd>
+<dt><strong>fill</strong><span class="classifier">numpy.array</span></dt><dd><p>Filling factor</p>
+</dd>
+<dt><strong>stray_light</strong><span class="classifier">numpy.array</span></dt><dd><p>Stray Light Factor in Percent</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -474,30 +484,26 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="#model.Model.interp" title="model.Model.interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interp</span></code></a>(new_tau)</p></td>
 <td><p>Interpolate the model to a new log tau scale.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model.Model.read_mod" title="model.Model.read_mod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_mod</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model.Model.read" title="model.Model.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
+<td><p>Reads a binary model file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#model.Model.read_mod" title="model.Model.read_mod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_mod</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Reads a model file from SIR and assigns the value to the class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model.Model.read_results" title="model.Model.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model.Model.read_results" title="model.Model.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
 <td><p>Reads all the errors from the inversion</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model.Model.set_dim" title="model.Model.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nval)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#model.Model.set_dim" title="model.Model.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nval)</p></td>
 <td><p>Sets the dimensions if no data is loaded yet</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model.Model.set_limit" title="model.Model.set_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_limit</span></code></a>(lim)</p></td>
-<td><p>Cuts the arrays to a specific log tau value (should only be used for plotting)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model.Model.set_limit" title="model.Model.set_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_limit</span></code></a>(lim)</p></td>
+<td><p>Cuts the arrays to a specific log tau value (should only be used for plotting).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model.Model.write" title="model.Model.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#model.Model.write" title="model.Model.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Write data into a binary fortran file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model.Model.write_model" title="model.Model.write_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_model</span></code></a>(filename, x, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model.Model.write_model" title="model.Model.write_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_model</span></code></a>(filename, x, y)</p></td>
 <td><p>Write a model with the given data in a specific format.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="table">
-<tbody>
-<tr class="row-odd"><td><p><strong>read</strong></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -506,6 +512,18 @@ document.write(`
 <span class="sig-name descname"><span class="pre">correct_phi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.correct_phi" title="Link to this definition">#</a></dt>
 <dd><p>SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation
 those values should be corrected so that I have values from 0 to 360 degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -519,6 +537,11 @@ those values should be corrected so that I have values from 0 to 360 degrees.</p
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -526,13 +549,62 @@ those values should be corrected so that I have values from 0 to 360 degrees.</p
 <dt class="sig sig-object py" id="model.Model.get_attribute">
 <span class="sig-name descname"><span class="pre">get_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.get_attribute" title="Link to this definition">#</a></dt>
 <dd><p>Returns a specific physical parameter. This can be used if ones only wants a specific
-parameter depending on a string/input</p>
+parameter depending on a string/input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>string</strong><span class="classifier">str</span></dt><dd><p>Determines which physical parameter is returned
+Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, fill</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>The wished physical parameter</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model.Model.interp">
 <span class="sig-name descname"><span class="pre">interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.interp" title="Link to this definition">#</a></dt>
 <dd><p>Interpolate the model to a new log tau scale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_tau</strong><span class="classifier">numpy array</span></dt><dd><p>New log tau scale</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.read" title="Link to this definition">#</a></dt>
+<dd><p>Reads a binary model file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>Filename</p>
+</dd>
+<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>Type used to laod data. Default: np.float64</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -547,6 +619,11 @@ This class will then create the class with nx = ny = 1.</p>
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -554,30 +631,113 @@ This class will then create the class with nx = ny = 1.</p>
 <dt class="sig sig-object py" id="model.Model.read_results">
 <span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.read_results" title="Link to this definition">#</a></dt>
 <dd><p>Reads all the errors from the inversion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>task</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
+</dd>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model.Model.set_dim">
 <span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.set_dim" title="Link to this definition">#</a></dt>
 <dd><p>Sets the dimensions if no data is loaded yet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt><strong>nval</strong><span class="classifier">int</span></dt><dd><p>Number of values per physical parameter</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model.Model.set_limit">
 <span class="sig-name descname"><span class="pre">set_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.set_limit" title="Link to this definition">#</a></dt>
-<dd><p>Cuts the arrays to a specific log tau value (should only be used for plotting)</p>
+<dd><p>Cuts the arrays to a specific log tau value (should only be used for plotting).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lim</strong><span class="classifier">int</span></dt><dd><p>log tau value to which the values are cut</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model.Model.write">
 <span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.write" title="Link to this definition">#</a></dt>
 <dd><p>Write data into a binary fortran file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>File name</p>
+</dd>
+<dt><strong>fmt_type</strong><span class="classifier">type</span></dt><dd><p>type which is used to save it =&gt; numpy.float64 used</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model.Model.write_model">
 <span class="sig-name descname"><span class="pre">write_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.Model.write_model" title="Link to this definition">#</a></dt>
 <dd><p>Write a model with the given data in a specific format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Name of the saved file</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -586,23 +746,34 @@ This class will then create the class with nx = ny = 1.</p>
 <dt class="sig sig-object py" id="profile_stk.Profile">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">Profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile" title="Link to this definition">#</a></dt>
 <dd><p>Class containing the models of a simulation</p>
-<dl class="simple">
-<dt>Variables are:</dt><dd><ul class="simple">
-<li><p>wave</p></li>
-<li><p>indx (= line numbers in mode ‘MC’)</p></li>
-<li><p>stki</p></li>
-<li><p>stkq</p></li>
-<li><p>stku</p></li>
-<li><p>stkv</p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>wave</strong><span class="classifier">nump.array</span></dt><dd><p>Wavelength</p>
 </dd>
-<dt>There are several functions:</dt><dd><ul class="simple">
-<li><p>read: Read a numpy file containing models and stores it into the class variables</p></li>
-<li><p>read_results: Reads the results from the inversion of SIR</p></li>
-<li><p>write_profile: Writes a Model to a SIR readable file</p></li>
-<li><p>write: Saves the models as a numpy file</p></li>
-<li><p>set_limit: Cuts the data to a specific log_tau value (used for plotting)</p></li>
-</ul>
+<dt><strong>indx</strong><span class="classifier">numpy array</span></dt><dd><p>Index or line numbers in mode ‘MC’</p>
+</dd>
+<dt><strong>stki</strong><span class="classifier">mxn numpy.array</span></dt><dd><p>Stokes Parameter I</p>
+</dd>
+<dt><strong>stkq</strong><span class="classifier">mxn numpy.array</span></dt><dd><p>Stokes Parameter Q</p>
+</dd>
+<dt><strong>stku</strong><span class="classifier">mxn numpy.array</span></dt><dd><p>Stokes Parameter U</p>
+</dd>
+<dt><strong>stkv</strong><span class="classifier">mxn numpy.array</span></dt><dd><p>Stokes Parameter V</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in y</p>
+</dd>
+<dt><strong>ns</strong><span class="classifier">int</span></dt><dd><p>Number of Stokes Parameter</p>
+</dd>
+<dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Dimension in wavelength</p>
+</dd>
+<dt><strong>load</strong><span class="classifier">bool</span></dt><dd><p>Data was loaded</p>
+</dd>
+<dt><strong>data_cut</strong><span class="classifier">bool</span></dt><dd><p>Data was cut to the inversion range</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -614,11 +785,11 @@ This class will then create the class with nx = ny = 1.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.cut_to_wave" title="profile_stk.Profile.cut_to_wave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_wave</span></code></a>(range_wave)</p></td>
 <td><p>Cut the data to the range in wavelengths</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.read_results" title="profile_stk.Profile.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
-<td><p>Reads all the errors from the inversion</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.read" title="profile_stk.Profile.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
+<td><p>Reads a binary profile file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.read_results_MC" title="profile_stk.Profile.read_results_MC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results_MC</span></code></a>(path, tasks, filename)</p></td>
-<td><p>Reads all the profiles of the synthesis or inversion</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.read_results" title="profile_stk.Profile.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
+<td><p>Reads all the errors from the inversion</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.set_dim" title="profile_stk.Profile.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nw)</p></td>
 <td><p>Sets the dimensions if no data is loaded yet</p></td>
@@ -626,21 +797,21 @@ This class will then create the class with nx = ny = 1.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.veil_correction" title="profile_stk.Profile.veil_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">veil_correction</span></code></a>(nu[, Ic])</p></td>
 <td><p>Correct the spectrum for the spectral veil by simly inverting the convoluted equation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.write" title="profile_stk.Profile.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Write data into a binary fortran file</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.write_profile" title="profile_stk.Profile.write_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile</span></code></a>(filename, x, y, Grid)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.write_profile" title="profile_stk.Profile.write_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile</span></code></a>(filename, x, y, Grid)</p></td>
 <td><p>Writes data to profiles as described in the config file Note to call cut_to_wave, otherwise it writes the wrong profiles!</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.write_profile_mc" title="profile_stk.Profile.write_profile_mc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile_mc</span></code></a>(filename, x)</p></td>
-<td><p>Writes data to profiles as described in the config file</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.write_profile_mc" title="profile_stk.Profile.write_profile_mc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile_mc</span></code></a>(filename, x)</p></td>
+<td><p>Writes data to SIR profiles as described in the config file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.write" title="profile_stk.Profile.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
+<td><p>Write data into a binary fortran file</p></td>
 </tr>
 </tbody>
 </table>
 <table class="table">
 <tbody>
-<tr class="row-odd"><td><p><strong>read</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><strong>set_limit</strong></p></td>
+<td><p>Cuts the data to a specific log_tau value (used for plotting).</p></td>
 </tr>
 </tbody>
 </table>
@@ -665,8 +836,29 @@ This class will then create the class with nx = ny = 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>range_wave</strong><span class="classifier">list</span></dt><dd><p>List with the ranges from the config file</p>
+<dt><strong>range_wave</strong><span class="classifier">multidimensional list</span></dt><dd><p>List with the ranges from the config file</p>
 </dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.Profile.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.read" title="Link to this definition">#</a></dt>
+<dd><p>Reads a binary profile file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>Name of the binary file</p>
+</dd>
+<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>Type of the binary file. Default: np.float32</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -676,18 +868,48 @@ This class will then create the class with nx = ny = 1.</p>
 <dt class="sig sig-object py" id="profile_stk.Profile.read_results">
 <span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.read_results" title="Link to this definition">#</a></dt>
 <dd><p>Reads all the errors from the inversion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>task</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
+</dd>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="profile_stk.Profile.read_results_MC">
 <span class="sig-name descname"><span class="pre">read_results_MC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.read_results_MC" title="Link to this definition">#</a></dt>
-<dd><p>Reads all the profiles of the synthesis or inversion</p>
-<dl class="simple">
-<dt>config<span class="classifier">dict</span></dt><dd><p>Config information</p>
+<dd><p>Reads all the profiles for the simulation where indx is the line number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Config information</p>
 </dd>
-<dt>tasks<span class="classifier">dict</span></dt><dd><p>Dictionary with the folder names</p>
+<dt><strong>tasks</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the folder names</p>
 </dd>
-<dt>Type<span class="classifier">string, optional</span></dt><dd><p>Indicating if synthesis or inversion. Default: ‘syn’</p>
+<dt><strong>Type</strong><span class="classifier">string, optional</span></dt><dd><p>Indicating if synthesis or inversion. Default: ‘syn’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -696,6 +918,23 @@ This class will then create the class with nx = ny = 1.</p>
 <dt class="sig sig-object py" id="profile_stk.Profile.set_dim">
 <span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.set_dim" title="Link to this definition">#</a></dt>
 <dd><p>Sets the dimensions if no data is loaded yet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Number of wavelength points</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -712,6 +951,11 @@ the convoluted equation.</p>
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -719,6 +963,21 @@ the convoluted equation.</p>
 <dt class="sig sig-object py" id="profile_stk.Profile.write">
 <span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.write" title="Link to this definition">#</a></dt>
 <dd><p>Write data into a binary fortran file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>File name</p>
+</dd>
+<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>type which is used to save it =&gt; numpy.float32 used. Default: np.float32</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -726,12 +985,50 @@ the convoluted equation.</p>
 <span class="sig-name descname"><span class="pre">write_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Grid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.write_profile" title="Link to this definition">#</a></dt>
 <dd><p>Writes data to profiles as described in the config file
 Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>String containing the output path of the profile</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt><strong>Grid</strong><span class="classifier">str</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="profile_stk.Profile.write_profile_mc">
 <span class="sig-name descname"><span class="pre">write_profile_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#profile_stk.Profile.write_profile_mc" title="Link to this definition">#</a></dt>
-<dd><p>Writes data to profiles as described in the config file</p>
+<dd><p>Writes data to SIR profiles as described in the config file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>String containing the output path of the profile</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt><strong>Grid</strong><span class="classifier">str</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -789,6 +1086,7 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Model.cut_to_map()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.get_attribute"><code class="docutils literal notranslate"><span class="pre">Model.get_attribute()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.interp"><code class="docutils literal notranslate"><span class="pre">Model.interp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.read"><code class="docutils literal notranslate"><span class="pre">Model.read()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.read_mod"><code class="docutils literal notranslate"><span class="pre">Model.read_mod()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.read_results"><code class="docutils literal notranslate"><span class="pre">Model.read_results()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.Model.set_dim"><code class="docutils literal notranslate"><span class="pre">Model.set_dim()</span></code></a></li>
@@ -800,6 +1098,7 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile"><code class="docutils literal notranslate"><span class="pre">Profile</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_map()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.cut_to_wave"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_wave()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read"><code class="docutils literal notranslate"><span class="pre">Profile.read()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read_results"><code class="docutils literal notranslate"><span class="pre">Profile.read_results()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read_results_MC"><code class="docutils literal notranslate"><span class="pre">Profile.read_results_MC()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.set_dim"><code class="docutils literal notranslate"><span class="pre">Profile.set_dim()</span></code></a></li>

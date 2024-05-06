@@ -362,7 +362,7 @@ def read_line(filename):
 	Reads the line file
 
 	Parameters
-	---------
+	----------
 	filename : string
 		File to be read
 	

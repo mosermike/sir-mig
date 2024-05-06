@@ -75,7 +75,7 @@ def create_task_folder_list(arg):
 		1x4 array containing the limits in x and y of the data or number of 1D models
 
 	Returns
-	------
+	-------
 	out : dict
 		Dictionary with all the names of the task folders, x and y position
 	"""

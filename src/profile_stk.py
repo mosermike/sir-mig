@@ -17,21 +17,59 @@ class Profile:
 	"""
 	Class containing the models of a simulation
 
-	Variables are:
-		- wave
-		- indx (= line numbers in mode 'MC')
-		- stki
-		- stkq
-		- stku
-		- stkv
+	Parameters
+	----------
+	wave : nump.array
+		Wavelength
+	indx : numpy array
+		Index or line numbers in mode 'MC'
+	stki : mxn numpy.array
+		Stokes Parameter I
+	stkq : mxn numpy.array
+		Stokes Parameter Q
+	stku : mxn numpy.array
+		Stokes Parameter U
+	stkv : mxn numpy.array
+		Stokes Parameter V
+	nx : int
+		Dimension in x
+	ny : int
+		Dimension in y
+	ns : int
+		Number of Stokes Parameter
+	nw : int
+		Dimension in wavelength
+	load : bool
+		Data was loaded
+	data_cut : bool
+		Data was cut to the inversion range
+
+	Methods
+	-------
+	cut_to_map
+		Cuts the data to a map in x and y.
+	cut_to_wave
+		Cuts data up to a wavelength range.
+	read
+		Read a numpy file containing models and stores it into the class variables.
+	read_results
+		Reads the results from the inversion of SIR.
+	set_dim
+		Sets the dimension of the Arrays.
+	set_limit
+		Cuts the data to a specific log_tau value (used for plotting).
+	veil_correction
+		Corrects the spectral veil.
+	write_profile
+		Writes a profile file readable by SIR.
+	write_profile_mc
+		Writes a profile file readable by SIR for the MC simulation.
+	write
+		Writes the data to a file.
+
+	
 
 
-	There are several functions:
-		- read: Read a numpy file containing models and stores it into the class variables
-		- read_results: Reads the results from the inversion of SIR
-		- write_profile: Writes a Model to a SIR readable file
-		- write: Saves the models as a numpy file
-		- set_limit: Cuts the data to a specific log_tau value (used for plotting)
 
 
 	"""
@@ -39,16 +77,21 @@ class Profile:
 		"""
 		Initialisation of the class with the Profiles
 		
-		Parameter
-		---------
-		nx : int
+		Parameters
+		----------
+		nx : int, default=None
 			Integer of pixels in x direction
-		ny :  int
+		ny :  int, default=None
 			Integer of pixels in y direction
-		nw : int
+		nw : int, default=0
 			Number of wavelength points
+		
+		Returns
+		-------
+		None
+		
 		"""
-		filename = None
+
 		# Initialize with two integers
 		self.nx = nx	# Points in x
 		self.ny = ny	# Points in y
@@ -70,14 +113,14 @@ class Profile:
 		"""
 		Reads the grid file
 		
-		Parameter
-		---------
+		Parameters
+		----------
 		filename : string
 			File to be read
 		
-		Return
-		-------
-		dict : Dictionary
+		Returns
+		--------
+		out : dict
 			Dict. with 'Line', 'min', 'step' and 'max' in it
 		"""
 		# Open the file and read lines
@@ -127,22 +170,22 @@ class Profile:
 		"""
 		Reads the first LINE data from a profile computed by SIR
 		
-		Parameter
+		Parameters
 		---------
 		filename : string
 			String containing the path of the file
 		
-		Return
-		------
-		ll : numpy.array
+		Returns
+		-------
+		out : numpy.array
 			Wavelengths in A
-		I : numpy.array
+		out : numpy.array
 			Stokes I
-		Q : numpy.array
+		out : numpy.array
 			Stokes Q
-		U : numpy.array
+		out : numpy.array
 			Stokes U
-		V : numpy.array 
+		out : numpy.array 
 			Stokes V
 		"""
 		data = np.loadtxt(filename).transpose()
@@ -159,23 +202,24 @@ class Profile:
 		"""
 		Reads the first LINE data from a profile computed by SIR
 		
-		Parameter
-		---------
-		filename : string
+		Parameters
+		----------
+		filename : str
 			String containing the path of the file
 		
-		Return
-		------
-		ll : numpy.array
+		Returns
+		-------
+		out : numpy.array
 			Wavelengths in A
-		I : numpy.array
+		out : numpy.array
 			Stokes I
-		Q : numpy.array
+		out : numpy.array
 			Stokes Q
-		U : numpy.array
+		out : numpy.array
 			Stokes U
-		V : numpy.array 
+		out : numpy.array 
 			Stokes V
+
 		"""
 		if not os.path.exists(filename):
 			print(f"[ERROR] File {filename} does not exist.")
@@ -199,6 +243,7 @@ class Profile:
 		----------
 		Map : list
 			List with the ranges in pixel in x and y direction
+
 		"""
 		
 		self.nx = Map[1]-Map[0]+1
@@ -218,8 +263,9 @@ class Profile:
 
 		Parameters
 		----------
-		range_wave : list
+		range_wave : multidimensional list
 			List with the ranges from the config file
+
 		"""
 		# Number of wavelengths
 		temp = range_wave[:,2].astype(int)
@@ -255,7 +301,22 @@ class Profile:
 	
 
 	def read(self, fname, fmt_type=np.float32):
-		
+		"""
+		Reads a binary profile file
+
+		Parameters
+		----------
+		fname : str
+			Name of the binary file
+		fmt_type : type, optional
+			Type of the binary file. Default: np.float32
+
+		Returns
+		-------
+		None
+
+
+		"""
 		f = FortranFile(fname, 'r')
 		first_rec = f.read_record(dtype=fmt_type)
 
@@ -305,8 +366,8 @@ class Profile:
 		"""
 		Reads all the errors from the inversion
 		
-		Parameter
-		---------
+		Parameters
+		----------
 		task : dict
 			Dictionary with all the task folders, x and y positions
 		filename : str
@@ -319,9 +380,9 @@ class Profile:
 			how many results are read in y
 		
 
-		Return
-		------
-		class with the parameters
+		Returns
+		-------
+		None
 		"""	
 		# Set the dimensions
 		self.nx = nx
@@ -356,14 +417,20 @@ class Profile:
 
 	def read_results_MC(self, path, tasks, filename):
 		"""
-		Reads all the profiles of the synthesis or inversion
+		Reads all the profiles for the simulation where indx is the line number
 
+		Parameters
+		----------
 		config : dict
 			Config information
 		tasks : dict
 			Dictionary with the folder names
 		Type : string, optional
 			Indicating if synthesis or inversion. Default: 'syn'
+		
+		Returns
+		-------
+		None
 
 		"""
 			
@@ -407,8 +474,8 @@ class Profile:
 		"""
 		Sets the dimensions if no data is loaded yet
 
-		Parameter
-		---------
+		Parameters
+		----------
 		nx : int
 			Number of Models in x
 		ny : int
@@ -416,7 +483,12 @@ class Profile:
 		nw : int
 			Number of wavelength points
 		
+		Returns
+		-------
+		None
+
 		"""
+
 		if self.load:
 			print("[set_dim] Data is already loaded and therefore dimensions cannot be set.")
 			return self
@@ -446,6 +518,11 @@ class Profile:
 			Optimized fraction of spectral veil
 		Ic : float, optional
 			Continuum intensity of the FTS. Default is "1.0".
+
+		Returns
+		-------
+		None
+
 		"""
 		self.stki =  (self.stki - nu*Ic) / (1 - nu)
 		
@@ -455,12 +532,17 @@ class Profile:
 		"""
 		Write data into a binary fortran file
 
-		Parameter
-		---------
+		Parameters
+		----------
 		fname : str
 			File name 
-		fmt_type : type
-			type which is used to save it => numpy.float64 used
+		fmt_type : type, optional
+			type which is used to save it => numpy.float32 used. Default: np.float32
+
+		Returns
+		-------
+		None
+
 		"""
 		if (fmt_type != np.float32):
 			print('Not implemented yet!')
@@ -519,16 +601,21 @@ class Profile:
 		Writes data to profiles as described in the config file
 		Note to call cut_to_wave, otherwise it writes the wrong profiles!
 		
-		Parameter
-		---------
-		filename : string
+		Parameters
+		----------
+		filename : str
 			String containing the output path of the profile
 		x : int
 			Position in x
 		y : int
 			Position in y
-		Grid : string
+		Grid : str
 			Grid file
+		
+		Returns
+		-------
+		None
+
 		"""
 		if not self.data_cut:
 			print("[WARN] The data was not cut. Consider running Profile.cut_to_wave! Make sure that only data used in the inversion is loaded!")
@@ -585,18 +672,22 @@ class Profile:
 
 	def write_profile_mc(self, filename, x):
 		"""
-		Writes data to profiles as described in the config file
+		Writes data to SIR profiles as described in the config file
 		
-		Parameter
-		---------
-		filename : string
+		Parameters
+		----------
+		filename : str
 			String containing the output path of the profile
 		x : int
 			Position in x
 		y : int
 			Position in y
-		Grid : string
+		Grid : str
 			Grid file
+
+		Returns
+		-------
+		None
 		"""
 
 		# Save data

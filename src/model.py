@@ -13,40 +13,55 @@ class Model:
 	"""
 	Class containing the models of a simulation
 
-	Variables are:
-		- log_tau
-		- T
-		- Pe
-		- vmicro
-		- B
-		- vlos
-		- gamma
-		- phi
-		- z
-		- Pg
-		- rho
-		- fill
-
-
-	There are several functions:
-		- read: Read a binary file containing models and stores it into the class variables
-		- read_results: Reads the results from the inversion of SIR
-		- write_model: Writes a Model to a SIR readable file
-		- write: Saves the models as a binary file
-		- set_limit: Cuts the data to a specific log_tau value (used for plotting)
+	Parameters
+	----------
+	log_tau : numpy.array
+		Array with the log tau
+	T : numpy.ndarray
+		Temperature in K
+	Pe : numpy.ndarray
+		Electron Pressure in dyn/cm$^2$
+	vmicro : numpy.ndarray
+		Microturbulence Velocity in cm/s
+	B : numpy.ndarray
+		Magnetic Field Strength in G
+	vlos : numpy.ndarray
+		Line-of-Sight Velocity in km/s
+	gamma : numpy.ndarray
+		Inclination in deg
+	phi : numpy.ndarray
+		Azimuth in deg
+	z : numpy.ndarray
+		z in km
+	Pg : numpy.ndarray
+		Gas pressure in dyn/cm$^2$
+	rho : numpy.ndarray
+		Density in g/cm$^3$
+	vmacro : numpy.array
+		Macroturbulence Velocity in km/s
+	fill : numpy.array
+		Filling factor
+	stray_light : numpy.array
+		Stray Light Factor in Percent
 
 
 	"""
 	def __init__(self, nx = 0, ny = 0, nval = 0):
 		"""
-		Initialisation of the class with the models
+		Initialisation of the class with the models.
 		
-		Parameter
-		---------
-		filename : str, optional
-			File name of the model to be loaded. Default: None (= no reading)
-		filename_fill : str, optional
-			File name of the filling factor
+		Parameters
+		----------
+		nx : int, optional
+			Dimension in x. Default: 0.
+		ny : int, optional
+			Dimension in y. Default: 0.
+		nval : int, optional
+			Dimension in "z". Default: 0.
+		
+		Returns
+		-------
+		None
 		
 		"""
 		self.full = False			# Determines whether also z, pg, and rho exists
@@ -74,13 +89,14 @@ class Model:
 		SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation
 		those values should be corrected so that I have values from 0 to 360 degrees.
 
-		Parameter
-		---------
+		Parameters
+		----------
 		None
 		
-		Return
-		------
-		class
+		Returns
+		-------
+		None
+
 		"""
 		# No correction needed
 		if len(self.phi[self.phi < 0]) == len(self.phi[self.phi > 180]) == 0:
@@ -98,6 +114,11 @@ class Model:
 		----------
 		Map : list
 			List with the ranges in pixel in x and y direction
+
+		Returns
+		-------
+		None
+
 		"""
 		
 		self.nx = Map[1]-Map[0]+1
@@ -122,17 +143,19 @@ class Model:
 	def get_attribute(self, string):
 		"""
 		Returns a specific physical parameter. This can be used if ones only wants a specific
-		parameter depending on a string/input
+		parameter depending on a string/input.
 
-		Parameter
-		---------
+		Parameters
+		----------
 		string : str
 			Determines which physical parameter is returned
 			Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, fill
 
-		Return
-		------
-		The wished physical parameter
+		Returns
+		-------
+		out : float
+			The wished physical parameter
+
 		"""
 		
 		if string == "tau":
@@ -171,14 +194,15 @@ class Model:
 		"""
 		Interpolate the model to a new log tau scale.
 
-		Parameter
-		---------
+		Parameters
+		----------
 		new_tau : numpy array
 			New log tau scale
 		
-		Return
-		------
+		Returns
+		-------
 		None
+
 		"""
 		# Perform some checks
 		if self.nval != len(new_tau):
@@ -209,9 +233,23 @@ class Model:
 		return self
 
 	def read(self, fname, fmt_type=np.float64):
-		
+		"""
+		Reads a binary model file.
+
+		Parameters
+		----------
+		fname : str
+			Filename
+		fmt_type : type, optional
+			Type used to laod data. Default: np.float64
+
+		Returns
+		-------
+		None
+
+		"""
 		f = FortranFile(fname, 'r')
-		first_rec = f.read_record(dtype=np.float32)
+		first_rec = f.read_record(dtype=np.float32) # Must be float32 for compatibility reasons
 
 		posv = first_rec[0]
 		negv = first_rec[1]
@@ -300,9 +338,10 @@ class Model:
 		fname : str
 			Name of the .mod file
 
-		Return
-		------
-		Class with the loaded data from the model.
+		Returns
+		-------
+		None
+
 		"""
 		if self.load:
 			print("[read_mod] Data is already loaded! Change load of this class to False.")
@@ -348,8 +387,8 @@ class Model:
 		"""
 		Reads all the errors from the inversion
 		
-		Parameter
-		---------
+		Parameters
+		----------
 		task : dict
 			Dictionary with all the task folders, x and y positions
 		filename : str
@@ -362,9 +401,10 @@ class Model:
 			how many results are read in y
 		
 
-		Return
-		------
-		class with the parameters
+		Returns
+		-------
+		None
+
 		"""	
 		# Set the dimensions
 		self.nx = nx
@@ -424,8 +464,8 @@ class Model:
 		"""
 		Sets the dimensions if no data is loaded yet
 
-		Parameter
-		---------
+		Parameters
+		----------
 		nx : int
 			Number of Models in x
 		ny : int
@@ -433,6 +473,9 @@ class Model:
 		nval : int
 			Number of values per physical parameter
 
+		Returns
+		-------
+		None
 		"""
 		if self.load:
 			print("[set_dim] Data is already loaded and therefore dimensions cannot be set.")
@@ -460,12 +503,17 @@ class Model:
 
 	def set_limit(self, lim):
 		"""
-		Cuts the arrays to a specific log tau value (should only be used for plotting)
+		
+		Cuts the arrays to a specific log tau value (should only be used for plotting).
 
-		Parameter
-		---------
+		Parameters
+		----------
 		lim : int
 			log tau value to which the values are cut
+
+		Returns
+		-------
+		None
 
 		"""
 		if self.log_tau[-1] > lim:
@@ -488,12 +536,17 @@ class Model:
 		"""
 		Write data into a binary fortran file
 
-		Parameter
-		---------
+		Parameters
+		----------
 		fname : str
 			File name 
 		fmt_type : type
 			type which is used to save it => numpy.float64 used
+		
+		Returns
+		-------
+		None
+
 		"""
 		if (fmt_type != np.float64):
 			print('Not implemented yet!')
@@ -564,18 +617,19 @@ class Model:
 		"""
 		Write a model with the given data in a specific format.
 
-		Parameter
-		---------
-		filename : string
+		Parameters
+		----------
+		filename : str
 			Name of the saved file
 		x : int
 			Integer determining which model
 		y : int
 			Integer determining which model
 
-		Return
-		------
+		Returns
+		-------
 		None
+
 		"""
 		if x > self.nx:
 			print(f"[write] Error in writing the model in model.py. x = {x} is bigger than the dimension {self.nx} of the array")
@@ -608,7 +662,10 @@ class Model:
 
 def read_model(filename):
 	mod = Model(0,0,0)
-	mod.read(filename)
+	if ".mod" in filename:
+		mod.read_mod(filename)
+	else:
+		mod.read(filename)
 
 	return mod
 	

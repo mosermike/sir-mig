@@ -9,6 +9,8 @@ This list provides information for plotting results.
 	:members:
 .. automodule:: analysis_multiple
 	:members:
+.. automodule:: Ic_test
+	:members:
 .. automodule:: result
 	:members:
 .. automodule:: visualizer

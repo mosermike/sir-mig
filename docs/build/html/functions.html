@@ -545,22 +545,21 @@ document.write(`
 <dt class="sig sig-object py" id="sir.read_line">
 <span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#sir.read_line" title="Link to this definition">#</a></dt>
 <dd><p>Reads the line file</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt>filename<span class="classifier">string</span></dt><dd><p>File to be read</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>File to be read</p>
 </dd>
 </dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dict. with ‘Line’, ‘Ion’, ‘wavelength’, ‘factor’, ‘Exc_Pot’, log_gf’,
 ‘Transition’, ‘alpha’ and ‘sigma’ in it</p>
 </dd>
 </dl>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py function">
@@ -1040,8 +1039,10 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>arg</strong><span class="classifier">numpy array or int</span></dt><dd><p>1x4 array containing the limits in x and y of the data or number of 1D models</p>
 </dd>
-<dt><strong>Returns</strong></dt><dd></dd>
-<dt><strong>——</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the names of the task folders, x and y position</p>
 </dd>
 </dl>

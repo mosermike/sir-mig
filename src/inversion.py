@@ -849,7 +849,8 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			if not exists(temp[:temp.rfind('/')]):
 				os.mkdir(temp[:temp.rfind('/')])
 				
-		# Save as npy files
+		# Save data
+		print("-------> Write Data ...")
 		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
 		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
 		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
@@ -1063,6 +1064,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		errors.read_results(tasks, "best.err", path, int(conf['num']), 1)
 		guess.read_results(tasks, d.best_guess, path, int(conf['num']), 1)
 		
+		print("-------> Write Data ...")
 		models.write(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
 		errors.write(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
 		guess.write(f"{os.path.join(path,d.best_guess.replace('.mod','.bin'))}")
@@ -1333,8 +1335,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		# Create shapes of the arrays which are filled and saved later
 		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
 
-		if rank == 0:
-			print("-------> Read Profiles ...")
+		print("-------> Read Profiles ...")
 		stokes_inv = p.Profile(stk.nx, stk.ny, stk.nw)
 
 		stokes_inv.wave = stk.wave # Copy wavelength positions
@@ -1344,8 +1345,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 
 		del stokes_inv
 
-		if rank == 0:
-			print("-------> Read Models ...")
+		print("-------> Read Models ...")
 		models_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		models_inv2		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		errors_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
@@ -1362,6 +1362,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		best_guesses1.read_results(tasks, d.best_guess1, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses2.read_results(tasks, d.best_guess2, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		
+		print("-------> Write Data ...")
 		models_inv1.write(conf['inv_out'] + d.end_models1)
 		models_inv2.write(conf['inv_out'] + d.end_models2)
 		errors_inv1.write(conf['inv_out'] + d.end_errors1)

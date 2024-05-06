@@ -58,6 +58,7 @@ def merge(conf, dir, ending):
 		Directory of the fits
 	ending : str
 		Ending of the dataset (for GRIS data)
+
 	Returns
 	-------
 	None
@@ -195,6 +196,7 @@ def merge(conf, dir, ending):
 
 	print("Saved as \"%s\"" % output)
 
+	# TODO SAVE MU value
 	# Save some information from the header
 	filename = os.path.join(conf['path'], d.header_infos)
 	with open(filename, 'w') as f:
@@ -308,6 +310,7 @@ def argmin(x):
 		First index
 	out : int
 		Second index
+
 	"""
 	k = x.argmin()
 	ncol = x.shape[1]
@@ -351,8 +354,8 @@ def gaussian(x, mean = 0, sigma = 1, norm = True):
 	norm : bool, optional
 		Normalise by $\frac{1}{\sqrt(2\pi\sigma^2]}$. Default is True
 
-	Return
-	------
+	Returns
+	-------
 	out: float
 		Value in the Gaussian function at position x
 	
@@ -381,6 +384,7 @@ def convective_blueshift(ll,I):
 		Index of the mean shifted spectral core
 	out : float
 		Wavelength of the mean shifted spectral core
+
 	"""
 	Min = []
 	for i in range(I.shape[0]):
@@ -490,6 +494,7 @@ def vac_to_air(wavelength, method = "Ciddor1996"):
 	-------
 	out : float
 		Corresponding wavelength in air in Angstrom
+		
 	"""
 	if method == "Ciddor1996":
 		sigma2 = (1e4 / wavelength)**2 # squared wavenumber in mum^-1
@@ -508,7 +513,7 @@ def correct_spectral_veil(conf):
 	 - argmin()
 	 - chi2()
 	 - gaussian()
-	 - lambda_0()
+	 - convective_blueshift()
 	 - optimise_chi()
 	 - vac_to_air()
 
@@ -516,6 +521,10 @@ def correct_spectral_veil(conf):
 	----------
 	config : dict
 		Dictionary with all the information from the config file
+
+	Returns
+	-------
+	None
 
 	"""
 	

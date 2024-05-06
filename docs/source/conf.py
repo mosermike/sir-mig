@@ -74,3 +74,6 @@ source_suffix = {
     '.txt': 'markdown',
     '.md': 'markdown',
 }
+
+
+#numpydoc_show_class_members = False 

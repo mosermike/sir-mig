@@ -580,6 +580,45 @@ document.write(`
 <p>Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.</p>
 </dd></dl>
 
+<p id="module-Ic_test">Plots the result of the SIR inversion</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Ic_test.Ic_test">
+<span class="sig-prename descclassname"><span class="pre">Ic_test.</span></span><span class="sig-name descname"><span class="pre">Ic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ic_test.Ic_test" title="Link to this definition">#</a></dt>
+<dd><p>Plots Ic fit vs I obs in a plot. It uses the first element in the wavelength range as continuum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dict. with all the information from the config</p>
+</dd>
+<dt><strong>num</strong><span class="classifier">int</span></dt><dd><p>determines which range is used (1 = 1st line in grid, etc.)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-data [str]</strong></dt><dd><p>Rel. path to the spectral veil corrected data if standard labelling is not used.</p>
+</dd>
+<dt><strong>-stokes [str]</strong></dt><dd><p>Rel. path to the Stokes result if standard labelling is not used.</p>
+</dd>
+<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default ‘./’.</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames.</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title in plot.</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>Determines which range is used (1 = 1st line in grid, etc.) if not the first one is wanted.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <p id="module-result">Plots the result of the SIR inversion</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="result.result_1C">
@@ -991,6 +1030,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis.analysis"><code class="docutils literal notranslate"><span class="pre">analysis()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis_compare_chi2.analysis_compare_chi2"><code class="docutils literal notranslate"><span class="pre">analysis_compare_chi2()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis_multiple.analysis_multiple"><code class="docutils literal notranslate"><span class="pre">analysis_multiple()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Ic_test.Ic_test"><code class="docutils literal notranslate"><span class="pre">Ic_test()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result.result_1C"><code class="docutils literal notranslate"><span class="pre">result_1C()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result.result_2C"><code class="docutils literal notranslate"><span class="pre">result_2C()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizer.visualizer_1C"><code class="docutils literal notranslate"><span class="pre">visualizer_1C()</span></code></a></li>

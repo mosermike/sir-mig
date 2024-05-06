@@ -102,10 +102,26 @@ def analysis_compare_chi2(conf1, conf2):
 
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../../mml.mplstyle'):
-		plt.style.use(dirname + '/../../mml.mplstyle')
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 
 
 	###############################################
