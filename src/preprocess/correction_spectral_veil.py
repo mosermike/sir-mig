@@ -11,14 +11,11 @@ import sir
 import definitions as d
 import numpy as np
 import matplotlib.pyplot as plt
-from astropy.io import fits 
 from os.path import exists
 from astropy.convolution import convolve_fft, convolve
 from shutil import which
+import profile_stk as p
 
-# TODO SAVE AS PROFILE BINARY FILE
-print("TODO AS A BINARY FILE")
-sys.exit()
 #############
 # Help page #
 #############
@@ -240,7 +237,7 @@ def veil_correction(I_obs, nu, Ic = 1.):
 
 #################################################################################################3
 
-def correct_spectral_veil(conf, stokes = ''):
+def correct_spectral_veil(conf):
 	"""
 	Correct spectral veil
 
@@ -248,23 +245,23 @@ def correct_spectral_veil(conf, stokes = ''):
 	---------
 	config : dict
 		Dictionary with all the information from the config file
-	stokes : array, optional
-		Normalised data from the data cube ('' means to load the data from the config). Default: ''
 
 	"""
+	
 	# Do not do anything
 	if conf['fts_file'] == '':
-		print("[STATUS] No spectral veil correction")
+		print("-------> No spectral veil correction")
 		if not exists(os.path.join(conf["path"], conf["cube_inv"])):
-			if exists(os.path.join(conf["path"], conf["cube"]) + d.end_norm):
-				print("[STATUS] Copying the created normalised data cube to the file used for the inversion.")
-				shutil.copy(os.path.join(conf['path'],conf['cube']) + d.end_norm, os.path.join(conf['path'],conf['cube_inv'])) 
-			elif exists(os.path.join(conf["path"], conf["cube"])):
+			if len(conf['quiet_sun']) < 2 and exists(os.path.join(conf["path"], conf["cube"])):
 				print("[STATUS] Copying the non-preprocessed data cube to the file used for the inversion.")
 				shutil.copy(os.path.join(conf['path'],conf['cube']), os.path.join(conf['path'],conf['cube_inv'])) 
+			elif exists(os.path.join(conf["path"], conf["cube"]) + d.end_norm):
+				print("[STATUS] Copying the created normalised data cube to the file used for the inversion.")
+				shutil.copy(os.path.join(conf['path'],conf['cube']) + d.end_norm, os.path.join(conf['path'],conf['cube_inv'])) 
 			else:
-				print(f"[ERROR] File {conf['cube_inv']} does not exist and is not created. Are there data in the selected path?")
+				print(f"[ERROR] File {conf['cube_inv']} is not created. Are there data in the selected path?")
 		return
+	
 	print("[STATUS] Correct spectral veil ...")
 	if exists(os.path.join(conf['path'],conf['cube_inv'])):
 		temp = ''
@@ -274,26 +271,29 @@ def correct_spectral_veil(conf, stokes = ''):
 		if temp == 'n':
 			print("Abort (Consider changing the config file)")
 			sys.exit(1)
+
 	##########################
 	#	Plot settings		#
 	########################## 
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/mml.mplstyle'):
-		plt.style.use(dirname + '/mml.mplstyle')
-		# if dvipng is not installed, dont use latex
-		if which('dvipng') is None:
-			plt.rcParams["text.usetex"] = "False"
-			plt.rcParams["font.family"] = 'sans-serif'
-			plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
-		# if dvipng is not installed, dont use latex
-		if which('dvipng') is None:
-			plt.rcParams["text.usetex"] = "False"
-			plt.rcParams["font.family"] = 'sans-serif'
-			plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
 	else:
-		plt.rcParams["savefig.format"] = "pdf"
+		if exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			if which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			if which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 
 	######################################################################################
 	#						    DEFINE VARIABLES						    #
@@ -309,10 +309,14 @@ def correct_spectral_veil(conf, stokes = ''):
 	if stokes == '':
 		if len(conf['quiet_sun']) > 1:
 			print("-------> Load normalised data ...")
-			stokes = obs.load_data(conf, add = d.end_norm)
+			if ".bin" in conf["cube"]:
+				stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin",d.end_norm)))
+			else:
+				stokes = p.read_profile(os.path.join(conf["path"],conf["cube"] + d.end_norm))
 		else:
-			print("[STATUS] Load data ...")
-			stokes = obs.load_data(conf)
+			print("-------> Load merged data ...")
+			stokes = p.read_profile(os.path.join(conf["path"],conf["cube"]))
+			
 			
 	filename_fts  = conf['fts_file']
 	path = conf['path']
@@ -330,7 +334,7 @@ def correct_spectral_veil(conf, stokes = ''):
 
 
 	# GRIS
-	ll_gris = np.load(os.path.join(conf['path'],conf['waves']))
+	ll_gris = stokes.wave
 
 	######################################################################################
 	#						   SHIFT OF SPECTRUM						    #
@@ -354,12 +358,12 @@ def correct_spectral_veil(conf, stokes = ''):
 	#    Data		 #
 	#################
 	# Compute average intensity in quiet sun in data and shift it to lambda_0
-	i_gris = np.mean(stokes[x1:x2,y1:y2,0,:], axis=(0,1))
+	i_gris = np.mean(stokes.stki[x1:x2,y1:y2,:], axis=(0,1))
 
 	# Correct convective blueshift / Shift in GRIS data
 	ll1_lit = np.argmin(abs(ll_gris-ll_lit))		 # Find position at ll_lit defined in definitions.py
 	border = 40								 # Find minima around this value
-	ll1, l0 = lambda_0(ll_gris[ll1_lit-border:ll1_lit+border], stokes[x1:x2,y1:y2,0,ll1_lit-border:ll1_lit+border]) # Determine the minima position and value of the shifted GRIS spectrum
+	ll1, l0 = lambda_0(ll_gris[ll1_lit-border:ll1_lit+border], stokes.stki[x1:x2,y1:y2,ll1_lit-border:ll1_lit+border]) # Determine the minima position and value of the shifted GRIS spectrum
 	ll_gris += ll_lit-l0 # Shift the wavelength
 
 	######################################################################################
@@ -482,34 +486,19 @@ def correct_spectral_veil(conf, stokes = ''):
 	######################################################################################
 	print('[STATUS] Correct data ...')
 
-	nx, ny, ns, nw = stokes.shape[0], stokes.shape[1], stokes.shape[2], stokes.shape[3]
-	data = np.empty((nx, ny, ns, nw))
-
 	# Correct for spectral veil
-	data[:,:,0,:] = veil_correction(stokes[:,:,0,:], nu_min)
-	data[:,:,1,:] = stokes[:,:,1,:] # No correction needed in Q
-	data[:,:,2,:] = stokes[:,:,2,:] # No correction needed in U
-	data[:,:,3,:] = stokes[:,:,3,:] # No correction needed in V
-
-	# To save data convert to float32
-	data = data.astype(np.float32)
+	stokes.veil_correction(nu_min)
+	
 
 	print("-------> Saving data (this might take a while) ...")
-	if ".npy" in conf['cube_inv']:
-		np.save(os.path.join(conf['path'],conf['cube_inv']), data)
-	else:
-		# Write the merged data cube
-		example = fits.open(os.path.join(path,conf['cube']))
-		header = example[0].header
-		hdu = fits.PrimaryHDU(data)
-		hdu.header = header
-		hdu.writeto(os.path.join(path,conf['cube_inv']),overwrite=True)
+	stokes.write(os.path.join(conf['path'],conf['cube_inv']))
+
 
 if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
 	conf = sir.read_config(sys.argv[1])	
-	correct_spectral_veil(conf, stokes = '')
+	correct_spectral_veil(conf)
 
 
 

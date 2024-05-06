@@ -10,9 +10,7 @@ import sys
 sys.path.append("..")
 import sir
 import definitions as d
-# TODO SAVE AS PROFILE BINARY FILE
-print("TODO AS A BINARY FILE")
-sys.exit()
+import profile_stk as p
 
 def help_page():
 	print("merge - Merging data into a data cube")
@@ -132,9 +130,6 @@ def merge(conf, dir, ending):
 
 	data = data.reshape(nx, ny, 4, nw)  # shape x, y, values, wavelengths
 
-	# To save data convert to int32
-	data = data.astype(np.int32)
-
 	##############################
 	# Determine real wavelengths #
 	##############################
@@ -155,17 +150,17 @@ def merge(conf, dir, ending):
 	if conf['shift_wave'] != '0':
 		print(f"Wavelength Grid shifted by {conf['shift_wave']} mA.")
 	llambda = llambda + float(conf['shift_wave']) * 1e-3
-	
-	np.save(output_wave, llambda)
+
+	print("-------> Assign data ...")
+	pro = p.Profile(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
+	pro.wave = llambda
+	pro.stki = data[:,:,0,:]
+	pro.stkq = data[:,:,0,:]
+	pro.stku = data[:,:,0,:]
+	pro.stkv = data[:,:,0,:]
 
 	print("-------> Saving data (this might take a while) ...")
-	if ".npy" in output:
-		np.save(output, data)
-	else:
-		# Write the merged data cube
-		hdu = fits.PrimaryHDU(data)
-		hdu.header = fits.open(filenames[-1])[0].header
-		hdu.writeto(output, overwrite=True)
+	pro.write(output)
 
 	print("Saved as \"%s\"" % output)
 

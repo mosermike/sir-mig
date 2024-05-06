@@ -431,6 +431,22 @@ class Profile:
 
 		return self
 
+	def veil_correction(self, nu, Ic = 1.):
+		"""
+		Correct the spectrum for the spectral veil by simly inverting
+		the convoluted equation.
+
+		Parameters
+		----------
+		nu : float
+			Optimized fraction of spectral veil
+		Ic : float, optional
+			Continuum intensity of the FTS. Default is "1.0".
+		"""
+		self.stki =  (self.stki - nu*Ic) / (1 - nu)
+		
+		return self
+
 	def write(self, fname, fmt_type=np.float32):
 		"""
 		Write data into a binary fortran file

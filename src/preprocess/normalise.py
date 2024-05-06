@@ -4,16 +4,12 @@ Normalises a data cube
 
 from definitions import *
 import numpy as np
-from astropy.io import fits
-import sys, os
+import sys
+import os
 sys.path.append("..")
 import sir
 import definitions as d
-import obs
-
-# TODO SAVE AS PROFILE BINARY FILE
-print("TODO AS A BINARY FILE")
-sys.exit()
+import profile_stk as p
 
 def help():
 	print("normalise.py - Normalises a data cube")
@@ -22,22 +18,20 @@ def help():
 	sir.option("[1. Pos.]","config file")
 	sys.exit()
 
-def normalise(conf, stokes= ''):
+def normalise(conf):
 	"""
 	Normalise the data cube
 	"""
-	if stokes == '':
-		stokes = obs.load_data(conf)
-		stokes = stokes
+	stokes = p.read_profile(os.path.join(conf["path"], conf["cube"]))
 
 	if len(conf['quiet_sun']) > 1:
 		print("[STATUS] Normalise data ...")
 		# Check if data needs to be normalised
-		if np.mean(stokes[:,:,0,:]) < 50:
+		if np.mean(stokes.stki) < 10:
 			print("Is the data already normalised? Abort")
 			return
 
-		ll = np.load(os.path.join(conf['path'],conf['waves']))
+		ll = stokes.wave
 
 		if conf['instrument'] in d.ll_lit_norm:
 			ll1      = np.argmin(abs(ll-d.ll_lit_norm[conf['instrument']][0]))	 # Find lower limit of wavelength for continuum
@@ -57,31 +51,19 @@ def normalise(conf, stokes= ''):
 		Ic  = np.mean(stokes[x1:x2,y1:y2,0,ll1:ll2])  # Average continuum intensity in quiet sun
 
 		# Divide through the mean
-		stokes[:,:,0,:] = stokes[:,:,0,:]/Ic
-		stokes[:,:,1,:] = stokes[:,:,1,:]/Ic
-		stokes[:,:,2,:] = stokes[:,:,2,:]/Ic
-		stokes[:,:,3,:] = stokes[:,:,3,:]/Ic
-
-	if conf['fts_file'] == '':
-		if ".npy" in conf['cube_inv']:
-			np.save(os.path.join(conf['path'],conf['cube_inv']), stokes)
-		else:
-			# Write the merged data cube
-			example = fits.open(os.path.join(conf['path'],conf['cube']))
-			header = example[0].header
-			hdu = fits.PrimaryHDU(stokes)
-			hdu.header = header
-			hdu.writeto(os.path.join(conf['path'],conf['cube_inv']),overwrite=True)
-	print("-------> Saving data (this might take a while) ...")
-	if "npy" in conf['cube']:
-		np.save(os.path.join(conf['path'],conf['cube']).replace(".npy",d.end_norm + ".npy"), stokes)
+		stokes.stki /= Ic
+		stokes.stkq /= Ic
+		stokes.stku /= Ic
+		stokes.stkv /= Ic
 	else:
-		# Open the cube
-		header = fits.open(os.path.join(conf['path'],conf['cube']))[0].header
-		# Write to output
-		xxx = fits.PrimaryHDU(stokes)
-		xxx.header = header # Copy the header
-		xxx.writeto(os.path.join(conf['path'],conf['cube']).replace(".fits",d.end_norm + ".fits"),overwrite=True)
+		print("-------> Skipping normalisation")
+
+	print("-------> Saving data (this might take a while) ...")
+	if ".bin" in conf['cube']:
+		stokes.write(os.path.join(conf['path'],conf['cube']).replace(".bin",d.end_norm))
+	else:
+		stokes.write(os.path.join(conf['path'],conf['cube']) + d.end_norm)
+
 
 if __name__ == "__main__":
 	if "-h" in sys.argv:
