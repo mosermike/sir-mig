@@ -18,7 +18,7 @@ end_stokes = '_stokes.bin' # Ending inversion result stokes  KEEP
 end_models = '_models.bin' # Ending inversion result models  KEEP
 end_models1 = '_models_1.bin'  # Ending inversion result models 1 for 2C KEEP
 end_models2 = '_models_2.bin'  # Ending inversion result models 2 for 2C KEEP 
-end_norm = '_norm'  # Normalised ending in file KEEP
+end_norm = '_norm.bin'  # Normalised ending in file KEEP
 end_errors = '_errors.bin'  # Ending inversion result error KEEP
 end_errors1 = '_errors_1.bin'  # Ending inversion result error 1 for 2C KEEP
 end_errors2 = '_errors_2.bin'  # Ending inversion result error 2 for 2C KEEP
@@ -92,6 +92,6 @@ ll_relative = {
 # All defined instruments, add your instrument here if you want to add another one
 # Merge needs probably adaption. Especially where I noted ADAPT
 instruments = ["GRIS", "Hinode"]
-
+plt_lib = "" # Name for the matplotlib style sheet to plot if not the mml.mplstyle should be used, use the absolute path
 
 
