@@ -3,11 +3,9 @@
 Create a config file as expected for the inversion
 """
 
-import numpy as np 
 import sys 
 import sir
 from os.path import exists
-import os
 
 def help():
 	print("create_config.py - Create a config file for the inversion")

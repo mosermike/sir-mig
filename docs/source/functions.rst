@@ -50,12 +50,12 @@ Main file to start the program
 .. autofunction:: main.main
 
 
-model.py
---------
+model_atm.py
+------------
 
 Function to read a binary model file with all the physical parameter
 
-.. autofunction:: model.read_model
+.. autofunction:: model_atm.read_model
 
 misc.py
 -------

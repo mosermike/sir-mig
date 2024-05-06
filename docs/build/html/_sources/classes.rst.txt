@@ -1,7 +1,7 @@
 Classes
 =======
 
-.. autoclass:: model.Model
+.. autoclass:: model_atm.Model
    :members: 
 
 .. autoclass:: profile_stk.Profile

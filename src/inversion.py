@@ -13,7 +13,7 @@ import time
 import sys
 import sir
 import glob
-import model as m
+import model_atm as m
 import profile_stk as p
 import create_random_guess as g
 from os.path import exists

@@ -10,7 +10,7 @@ sys.path.append(sys.path[0] + "/../..")
 sys.path.append(os.path.join(sys.path[0], "/../../tools"))
 import sir
 import definitions as d
-from model import * # Class Model
+from model_atm import * # Class Model
 
 import matplotlib.pyplot as plt
 from os.path import exists
@@ -99,7 +99,6 @@ def _get_attribute(model, att):
 
 def analysis(conf):
 	"""
-
 	Analysis of a MC simulation by plotting the standard deviations
 
 	Parameters
@@ -113,12 +112,9 @@ def analysis(conf):
 
 	Other Parameters
 	----------------
-
-	There are optional options which change the plots. Additional parameters given as an argument when the script is executed.
-
-	-save [str], optional
+	-save : str, optional
 		Additional save path. Default './'.
-	-add [str]
+	-add : str, optional
 		Additional text in filenames.
 	-T
 		Compare temperature in K
@@ -130,9 +126,9 @@ def analysis(conf):
 		Compare inclination by subtracting in deg
 	-azi
 		Compare azimuth by adding in deg
-	-title [str]
+	-title : [str]
 		Title of the 4 figures plot
-	-xtitle [float]
+	-xtitle : [float]
 		x position of title in Stokes plot
 	-max
 		Plot the maximum differences
@@ -141,6 +137,8 @@ def analysis(conf):
 	-v
 		Print out tables with values at different log taus.
 
+	There are optional options which change the plots. Additional parameters given as an argument when the script is executed.
+		
 	"""
 
 	# Import library

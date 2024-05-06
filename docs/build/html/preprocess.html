@@ -191,13 +191,6 @@
                       </a>
                     </li>
                 
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="api.html">
-                        API
-                      </a>
-                    </li>
-                
                 </ul>
             </li>
             
@@ -336,13 +329,6 @@ document.write(`
                       </a>
                     </li>
                 
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="api.html">
-                        API
-                      </a>
-                    </li>
-                
                 </ul>
             </li>
             
@@ -458,22 +444,18 @@ It writes the results into single files and into a corrected data cube.</p>
 <dt class="sig sig-object py" id="preprocess.argmin">
 <span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">argmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#preprocess.argmin" title="Link to this definition">#</a></dt>
 <dd><p>Find the argument of the minimum in an multi-dimensional
-array. It seems to be faster than any numpy-built-in 
+array. It seems to be faster than any numpy-built-in
 function as shown in <a class="reference external" href="https://stackoverflow.com/questions/30180241/numpy-get-the-column-and-row-index-of-the-minimum-value-of-a-2d-array">https://stackoverflow.com/questions/30180241/numpy-get-the-column-and-row-index-of-the-minimum-value-of-a-2d-array</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>x</strong><span class="classifier">mxn numpy array</span></dt><dd><p>Numpy array with the dataq</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>x</strong> (<em>mxn numpy array</em>) – Numpy array with the dataq</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">int</span></dt><dd><p>First index</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">int</span></dt><dd><p>Second index</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>int</em>) – First index</p></li>
+<li><p><strong>out</strong> (<em>int</em>) – Second index</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -486,18 +468,16 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>y_obs</strong><span class="classifier">numpy array</span></dt><dd><p>Array with the observed values</p>
-</dd>
-<dt><strong>y_fit</strong><span class="classifier">numpy array</span></dt><dd><p>Array with computed values, e.g. from a fit</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_obs</strong> (<em>numpy array</em>) – Array with the observed values</p></li>
+<li><p><strong>y_fit</strong> (<em>numpy array</em>) – Array with computed values, e.g. from a fit</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p><span class="math notranslate nohighlight">\(\chi^2\)</span>-value</p>
+<dd class="field-even"><p><strong>out</strong> – <span class="math notranslate nohighlight">\(\chi^2\)</span>-value</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -508,20 +488,17 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 <dd><p>Determines the shifted <span class="math notranslate nohighlight">\(\lambda_0\)</span> due to convective blueshift.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>ll</strong><span class="classifier">array</span></dt><dd><p>Wavelengths in a given range</p>
-</dd>
-<dt><strong>I</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes I in the given range</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ll</strong> (<em>array</em>) – Wavelengths in a given range</p></li>
+<li><p><strong>I</strong> (<em>numpy.ndarray</em>) – Stokes I in the given range</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">int</span></dt><dd><p>Index of the mean shifted spectral core</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Wavelength of the mean shifted spectral core</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>int</em>) – Index of the mean shifted spectral core</p></li>
+<li><p><strong>out</strong> (<em>float</em>) – Wavelength of the mean shifted spectral core</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -542,15 +519,10 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the information from the config file</p>
+<dd class="field-odd"><p><strong>config</strong> (<em>dict</em>) – Dictionary with all the information from the config file</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -561,22 +533,18 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 <dd><p>Computes the value of a Gaussian at position x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>x</strong><span class="classifier">float</span></dt><dd><p>Wavelength</p>
-</dd>
-<dt><strong>mean</strong><span class="classifier">float</span></dt><dd><p>Mean of the Gaussian</p>
-</dd>
-<dt><strong>sigma</strong><span class="classifier">float</span></dt><dd><p>Width of the Gaussian</p>
-</dd>
-<dt><strong>norm</strong><span class="classifier">bool, optional</span></dt><dd><p>Normalise by <span class="math notranslate nohighlight">\(\frac{1}{\sqrt(2\pi\sigma^2]}\)</span>. Default is True</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – Wavelength</p></li>
+<li><p><strong>mean</strong> (<em>float</em>) – Mean of the Gaussian</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – Width of the Gaussian</p></li>
+<li><p><strong>norm</strong> (<em>bool</em><em>, </em><em>optional</em>) – Normalise by <span class="math notranslate nohighlight">\(\frac{1}{\sqrt(2\pi\sigma^2]}\)</span>. Default is True</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>out: float</dt><dd><p>Value in the Gaussian function at position x</p>
+<dd class="field-even"><p><strong>out</strong> – Value in the Gaussian function at position x</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -587,19 +555,14 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 <dd><p>Merges data to a cube</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conf</strong> (<em>dict</em>) – Dictionary with the information from the config file</p></li>
+<li><p><strong>dir</strong> (<em>str</em>) – Directory of the fits</p></li>
+<li><p><strong>ending</strong> (<em>str</em>) – Ending of the dataset (for GRIS data)</p></li>
+</ul>
 </dd>
-<dt><strong>dir</strong><span class="classifier">str</span></dt><dd><p>Directory of the fits</p>
-</dd>
-<dt><strong>ending</strong><span class="classifier">str</span></dt><dd><p>Ending of the dataset (for GRIS data)</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -610,10 +573,7 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 <dd><p>Normalise the data cube by the given quiet sun range</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>conf</strong> (<em>dict</em>) – Dictionary with the information from the config file</p>
 </dd>
 </dl>
 </dd></dl>
@@ -633,30 +593,22 @@ the minima of the two parameters. The steps are the following</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>nu</strong><span class="classifier">array</span></dt><dd><p>Array containing the nus which were used</p>
-</dd>
-<dt><strong>sigma</strong><span class="classifier">array</span></dt><dd><p>Array containing the sigmas which were used</p>
-</dd>
-<dt><strong>I</strong><span class="classifier">ndarray</span></dt><dd><p>Multidimensional array with the following format: I[nu, sigma, wavelength]. This are the fitted/computed data to be compared to the observed one</p>
-</dd>
-<dt><strong>I_obs</strong><span class="classifier">array</span></dt><dd><p>Array containing the observed intensity</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nu</strong> (<em>array</em>) – Array containing the nus which were used</p></li>
+<li><p><strong>sigma</strong> (<em>array</em>) – Array containing the sigmas which were used</p></li>
+<li><p><strong>I</strong> (<em>ndarray</em>) – Multidimensional array with the following format: I[nu, sigma, wavelength]. This are the fitted/computed data to be compared to the observed one</p></li>
+<li><p><strong>I_obs</strong> (<em>array</em>) – Array containing the observed intensity</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Optimised sigma</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Uncertainty of the optimised sigma</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Optimised nu</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Uncertainty of the optimised nu</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">ndarray</span></dt><dd><p>Array containing all the chi2 for all possible combinations of nu and sigma</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>float</em>) – Optimised sigma</p></li>
+<li><p><strong>out</strong> (<em>float</em>) – Uncertainty of the optimised sigma</p></li>
+<li><p><strong>out</strong> (<em>float</em>) – Optimised nu</p></li>
+<li><p><strong>out</strong> (<em>float</em>) – Uncertainty of the optimised nu</p></li>
+<li><p><strong>out</strong> (<em>ndarray</em>) – Array containing all the chi2 for all possible combinations of nu and sigma</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -670,18 +622,16 @@ it should be better in the infrared than Edlen.</p>
 <p><strong>Note that the CO2 concentration is here assumed to be 450 ppm but it is most likely not constant in general.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>wavelength</strong><span class="classifier">float</span></dt><dd><p>Wavelength in Angstrom to be converted</p>
-</dd>
-<dt><strong>method</strong><span class="classifier">str, optional</span></dt><dd><p>Determines which method is used. Only the method “Ciddor1996” is implemented so far. Default: “Ciddor1996”</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength</strong> (<em>float</em>) – Wavelength in Angstrom to be converted</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Determines which method is used. Only the method “Ciddor1996” is implemented so far. Default: “Ciddor1996”</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Corresponding wavelength in air in Angstrom</p>
+<dd class="field-even"><p><strong>out</strong> – Corresponding wavelength in air in Angstrom</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 sys.path(sys.path[0]+"/../")
-import model as m
+import model_atm as m
 # Convert old version to new version of SIR-MIG-MC of the models
 # 1st argument: first file
 # 3rd argument: destination
@@ -11,7 +11,7 @@ data = np.load(sys.argv[0])
 
 mod = m.Model(data.shape[0],data.shape[1], data.shape[3])
 
-mod.log_tau = data[0,0,0,:]
+mod.tau = data[0,0,0,:]
 mod.T = data[:,:,1]
 mod.Pe = data[:, :, 2]
 mod.vmicro = data[:, :, 3]

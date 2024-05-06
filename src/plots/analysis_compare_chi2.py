@@ -6,7 +6,7 @@ import numpy as np
 import sys, os
 sys.path.append(sys.path[0] + "..")
 import sir
-import model as m
+import model_atm as m
 import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists

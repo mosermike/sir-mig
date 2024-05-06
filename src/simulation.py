@@ -20,7 +20,7 @@ import sys
 import os
 from os.path import exists
 import sir
-import model as m
+import model_atm as m
 import definitions as d
 import shutil
 import glob

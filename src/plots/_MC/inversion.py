@@ -7,7 +7,7 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../tools"))
 import sir
-import model as m
+import model_atm as m
 import definitions as d
 import matplotlib.pyplot as plt
 from change_config_path import change_config_path
@@ -79,7 +79,7 @@ def inversion(conf, num):
 				plt.rcParams["text.usetex"] = "False"
 				plt.rcParams["font.family"] = 'sans-serif'
 				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-				
+
 	# Check if path exists
 	if not exists(conf['path']):
 		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")

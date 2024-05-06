@@ -80,7 +80,7 @@ pars_err = np.array([log_tau, T, Pe, v_micro, B, vlos/1e5, inc, azimuth, z, Pg, 
 # Additional savepath
 savepath = ''
 if '-save' in sys.argv:
-	savepath = path + "/" + sys.argv[sys.argv.index("-save")+1]
+	savepath = conf["path"] + "/" + sys.argv[sys.argv.index("-save")+1]
 	if not exists(savepath):
 		os.mkdir(savepath)
 

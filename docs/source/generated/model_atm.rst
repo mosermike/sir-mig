@@ -1,7 +1,7 @@
-﻿model
-=====
+﻿model\_atm
+==========
 
-.. automodule:: model
+.. automodule:: model_atm
 
    
    

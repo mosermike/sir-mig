@@ -44,34 +44,6 @@ class Profile:
 	data_cut : bool
 		Data was cut to the inversion range
 
-	Methods
-	-------
-	cut_to_map
-		Cuts the data to a map in x and y.
-	cut_to_wave
-		Cuts data up to a wavelength range.
-	read
-		Read a numpy file containing models and stores it into the class variables.
-	read_results
-		Reads the results from the inversion of SIR.
-	set_dim
-		Sets the dimension of the Arrays.
-	set_limit
-		Cuts the data to a specific log_tau value (used for plotting).
-	veil_correction
-		Corrects the spectral veil.
-	write_profile
-		Writes a profile file readable by SIR.
-	write_profile_mc
-		Writes a profile file readable by SIR for the MC simulation.
-	write
-		Writes the data to a file.
-
-	
-
-
-
-
 	"""
 	def __init__(self, nx=None, ny = None, nw=0):
 		"""

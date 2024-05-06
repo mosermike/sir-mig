@@ -1,5 +1,7 @@
 """
+
 Plots the result of the SIR inversion
+
 """
 
 import numpy as np 
@@ -12,14 +14,16 @@ sys.path.append(sys.path[0] + "/../tools")
 import sir
 import definitions as d
 from change_config_path import change_config_path
-import model as m
+import model_atm as m
 import profile_stk as p
 
 # TODO do the figure size as in gris_firtez
 
 def _help():
 	"""
+
 	Help Page
+
 	"""
 	print("result - Plots the result of the inversion")
 	print("Usage: python result.py [OPTION]")
@@ -107,6 +111,7 @@ def _check_range(wave_inv, wave):
 
 def result_1C(conf, wave, tau, waveV = -1):
 	"""
+
 	Plots the result of the inversion 1C
 
 	Parameters
@@ -127,6 +132,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	Other Parameters
 	----------------
 	Additional parameters given as an argument when the script is executed.
+
 	-data [str]
 		Rel. path to the spectral veil corrected data if standard labelling is not used, optional.
 	-stokes [str]
@@ -134,85 +140,102 @@ def result_1C(conf, wave, tau, waveV = -1):
 	-models [str]
 		Rel. path to the Models of the inversion if standard labelling is not used.
 	-errors
-			Rel. path to the Errors of the inversion if standard labelling is not used.
+		Rel. path to the Errors of the inversion if standard labelling is not used.
 	-chi
-			Rel. path to the chi2 file of the inversion if standard labelling is not used.
+		Rel. path to the chi2 file of the inversion if standard labelling is not used.
 	-save [str], optional
-			Additional save path. Default './'.
+		Additional save path. Default './'.
 	-add [str]
-			Additional text in filenames
+		Additional text in filenames
 	-label [str]
-			Add label text
+		Add label text
 	-title1 [str]
-			Title in Result Stokes plot
+		Title in Result Stokes plot
 	-title2 [str]
-			Title in Obs. Stokes plot
+		Title in Obs. Stokes plot
 	-title3 [str]
-			Title in Model 1 plot
+		Title in Model 1 plot
 	-xtitle [float]
-			Changing the x position of the title
+		Changing the x position of the title
 	-T
-			Plot temperature in K
+		Plot temperature in K
 	-Pe
-			Plot electron pressure in dyn/cm^2
+		Plot electron pressure in dyn/cm^2
 	-vmicro
-			Plot microturbulence in cm/s
+		Plot microturbulence in cm/s
 	-B
-			Plot magentic field strength in Gauss
+		Plot magentic field strength in Gauss
 	-vlos
-			Plot line of sight velocity in km/s
+		Plot line of sight velocity in km/s
 	-gamma
-			Plot inclination by subtracting in deg
+		Plot inclination by subtracting in deg
 	-phi
-			Plot azimuth by adding in deg
+		Plot azimuth by adding in deg
 	-z
-			Plot real height in km
+		Plot real height in km
 	-Pg
-			Plot gas pressure in dyn/cm^2
+		Plot gas pressure in dyn/cm^2
 	-rho
-			Plot density
+		Plot density
 	-vertical
-			Plot spectra vertically
+		Plot spectra vertically
 	-chi2
-			Plot chi2
+		Plot chi2
 	-plot_chi2
-			Plot chi2 in the 4 subplots plot
+		Plot chi2 in the 4 subplots plot
 	-waveQ [float]
-			Plot Stokes Q in another wavelength position in A
+		Plot Stokes Q in another wavelength position in A
 	-waveU [float]
-			Plot Stokes U in another wavelength position in A
+		Plot Stokes U in another wavelength position in A
 	-waveV [float]
-			Plot Stokes V in another wavelength position in A
+		Plot Stokes V in another wavelength position in A
 	-logT [float]
-			Plot Temperature at this log tau.
+		Plot Temperature at this log tau.
 	-logB [float]
-			Plot Magnetic Field at this log tau.
+		Plot Magnetic Field at this log tau.
 	-logV [float]
-			Plot LoS Velocity at this log tau.
+		Plot LoS Velocity at this log tau.
 	-logI [float]
-			Plot Inclination at this log tau.
+		Plot Inclination at this log tau.
 	-limitxy [float,float,float,float]
-			Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+		Limit in the x and y plot as a list xmin,xmax,ymin,xmax
 	-limitT [float,float]
-			Set the limit for the colorbar in the temperature.
+		Set the limit for the colorbar in the temperature.
 	-limitB [float,float]
-			Set the limit for the colorbar in the magnetic field.
+		Set the limit for the colorbar in the magnetic field.
 	-limitchi2 [float,float]
-			Set the limit for the colorbar in chi2.
+		Set the limit for the colorbar in chi2.
 	-limitI [float,float]
-			Set the limit for the colorbar in Stokes I.
+		Set the limit for the colorbar in Stokes I.
 	-arc
-			Print x and y axis in arcseconds
+		Print x and y axis in arcseconds
 	-flipx
-			Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+		Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+
 	"""
 
-		# Import library
+	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../../mml.mplstyle'):
-		plt.style.use(dirname + '/../../mml.mplstyle')
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if os.path.exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 
 	# Check if path exists
 	if not exists(conf['path']):
@@ -817,6 +840,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	Other Parameters
 	----------------
 	Additional parameters given as an argument when the script is executed.
+	
 	-data [str]
 		Rel. path to the spectral veil corrected data if standard labelling is not used, optional.
 	-stokes [str]
@@ -826,92 +850,108 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	-models2 [str]
 		Rel. path to the Models 2 of the inversion if standard labelling is not used.
 	-errors
-			Rel. path to the Errors of the inversion if standard labelling is not used.
+		Rel. path to the Errors of the inversion if standard labelling is not used.
 	-chi
-			Rel. path to the chi2 file of the inversion if standard labelling is not used.
+		Rel. path to the chi2 file of the inversion if standard labelling is not used.
 	-save [str], optional
-			Additional save path. Default './'.
+		Additional save path. Default './'.
 	-add [str]
-			Additional text in filenames
+		Additional text in filenames
 	-label [str]
-			Add label text
+		Add label text
 	-title1 [str]
-			Title in Result Stokes plot
+		Title in Result Stokes plot
 	-title2 [str]
-			Title in Obs. Stokes plot
+		Title in Obs. Stokes plot
 	-title3 [str]
-			Title in Model 1 plot
+		Title in Model 1 plot
 	-title4 [str]
-			Title in Model 2 plot with 4 plots
+		Title in Model 2 plot with 4 plots
 	-xtitle [float]
-			Changing the x position of the title
+		Changing the x position of the title
 	-T
-			Plot temperature in K
+		Plot temperature in K
 	-Pe
-			Plot electron pressure in dyn/cm^2
+		Plot electron pressure in dyn/cm^2
 	-vmicro
-			Plot microturbulence in cm/s
+		Plot microturbulence in cm/s
 	-B
-			Plot magentic field strength in Gauss
+		Plot magentic field strength in Gauss
 	-vlos
-			Plot line of sight velocity in km/s
+		Plot line of sight velocity in km/s
 	-gamma
-			Plot inclination by subtracting in deg
+		Plot inclination by subtracting in deg
 	-phi
-			Plot azimuth by adding in deg
+		Plot azimuth by adding in deg
 	-z
-			Plot real height in km
+		Plot real height in km
 	-Pg
-			Plot gas pressure in dyn/cm^2
+		Plot gas pressure in dyn/cm^2
 	-rho
-			Plot density
+		Plot density
 	-vertical
-			Plot spectra vertically
+		Plot spectra vertically
 	-chi2
-			Plot chi2
+		Plot chi2
 	-fill
-			Plot the filling factor
+		Plot the filling factor
 	-plot_chi2
-			Plot chi2 in the 4 subplots plot
+		Plot chi2 in the 4 subplots plot
 	-plot_fill
-			Plot filling factor in the 4 subplots plot
+		Plot filling factor in the 4 subplots plot
 	-waveQ [float]
-			Plot Stokes Q in another wavelength position in A
+		Plot Stokes Q in another wavelength position in A
 	-waveU [float]
-			Plot Stokes U in another wavelength position in A
+		Plot Stokes U in another wavelength position in A
 	-waveV [float]
-			Plot Stokes V in another wavelength position in A
+		Plot Stokes V in another wavelength position in A
 	-logT [float]
-			Plot Temperature at this log tau.
+		Plot Temperature at this log tau.
 	-logB [float]
-			Plot Magnetic Field at this log tau.
+		Plot Magnetic Field at this log tau.
 	-logV [float]
-			Plot LoS Velocity at this log tau.
+		Plot LoS Velocity at this log tau.
 	-logI [float]
-			Plot Inclination at this log tau.
+		Plot Inclination at this log tau.
 	-limitxy [float,float,float,float]
-			Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+		Limit in the x and y plot as a list xmin,xmax,ymin,xmax
 	-limitT [float,float]
-			Set the limit for the colorbar in the temperature.
+		Set the limit for the colorbar in the temperature.
 	-limitB [float,float]
-			Set the limit for the colorbar in the magnetic field.
+		Set the limit for the colorbar in the magnetic field.
 	-limitchi2 [float,float]
-			Set the limit for the colorbar in chi2.
+		Set the limit for the colorbar in chi2.
 	-limitI [float,float]
-			Set the limit for the colorbar in Stokes I.
+		Set the limit for the colorbar in Stokes I.
 	-arc
-			Print x and y axis in arcseconds
+		Print x and y axis in arcseconds
 	-flipx
-			Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+		Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
 
 	"""
 
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../../mml.mplstyle'):
-		plt.style.use(dirname + '/../../mml.mplstyle')
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if os.path.exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 	# Check if path exists
 	if not exists(conf['path']):
 		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")

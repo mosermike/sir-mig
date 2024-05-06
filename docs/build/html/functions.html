@@ -190,13 +190,6 @@
                       </a>
                     </li>
                 
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="api.html">
-                        API
-                      </a>
-                    </li>
-                
                 </ul>
             </li>
             
@@ -335,13 +328,6 @@ document.write(`
                       </a>
                     </li>
                 
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="api.html">
-                        API
-                      </a>
-                    </li>
-                
                 </ul>
             </li>
             
@@ -440,18 +426,16 @@ document.write(`
 <dd><p>Convert a list to a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>temp</strong><span class="classifier">list</span></dt><dd><p>List with the information which is converted into a string</p>
-</dd>
-<dt><strong>let</strong><span class="classifier">str</span></dt><dd><p>Letter which is added as a separation</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temp</strong> (<em>list</em>) – List with the information which is converted into a string</p></li>
+<li><p><strong>let</strong> (<em>str</em>) – Letter which is added as a separation</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">str</span></dt><dd><p>Information from the list</p>
+<dd class="field-even"><p><strong>out</strong> – Information from the list</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -462,17 +446,13 @@ document.write(`
 <dd><p>Print an option in a help page</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>text1</strong><span class="classifier">str</span></dt><dd><p>First text</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text1</strong> (<em>str</em>) – First text</p></li>
+<li><p><strong>text2</strong> (<em>str</em>) – Second text</p></li>
+</ul>
 </dd>
-<dt><strong>text2</strong><span class="classifier">str</span></dt><dd><p>Second text</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -483,18 +463,16 @@ document.write(`
 <dd><p>Reads the last chi value in a inv.chi file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Path of the chi file</p>
-</dd>
-<dt><strong>task</strong><span class="classifier">string, optional</span></dt><dd><p>Prints out in which folder the chi2 file does not exist. Default: ‘’</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Path of the chi file</p></li>
+<li><p><strong>task</strong> (<em>string</em><em>, </em><em>optional</em>) – Prints out in which folder the chi2 file does not exist. Default: ‘’</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Best chi2 value of the fit</p>
+<dd class="field-even"><p><strong>out</strong> – Best chi2 value of the fit</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -505,18 +483,16 @@ document.write(`
 <dd><p>Reads all the chi2 from the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Config parameters</p>
-</dd>
-<dt><strong>tasks</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the used folders</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>dict</em>) – Config parameters</p></li>
+<li><p><strong>tasks</strong> (<em>dict</em>) – Dictionary with the used folders</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">numpy array</span></dt><dd><p>Numpy array with all chi2 values</p>
+<dd class="field-even"><p><strong>out</strong> – Numpy array with all chi2 values</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -527,16 +503,13 @@ document.write(`
 <dd><p>Reads the grid file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>File to be read</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – File to be read</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>dict</strong><span class="classifier">dict</span></dt><dd><p>Dict. with ‘Line’, ‘min’, ‘step’ and ‘max’ in it</p>
+<dd class="field-even"><p><strong>dict</strong> – Dict. with ‘Line’, ‘min’, ‘step’ and ‘max’ in it</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -547,17 +520,14 @@ document.write(`
 <dd><p>Reads the line file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>File to be read</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – File to be read</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dict. with ‘Line’, ‘Ion’, ‘wavelength’, ‘factor’, ‘Exc_Pot’, log_gf’,
+<dd class="field-even"><p><strong>out</strong> – Dict. with ‘Line’, ‘Ion’, ‘wavelength’, ‘factor’, ‘Exc_Pot’, log_gf’,
 ‘Transition’, ‘alpha’ and ‘sigma’ in it</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -568,20 +538,17 @@ document.write(`
 <dd><p>Reads a config file for the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Path of the control file</p>
-</dd>
-<dt><strong>check</strong><span class="classifier">bool, optional</span></dt><dd><p>Check if file exists (Default: True)</p>
-</dd>
-<dt><strong>change_config</strong><span class="classifier">bool, optional</span></dt><dd><p>config file is read to be changed (=&gt; Do not try to load anything) (Default: False)</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Path of the control file</p></li>
+<li><p><strong>check</strong> (<em>bool</em><em>, </em><em>optional</em>) – Check if file exists (Default: True)</p></li>
+<li><p><strong>change_config</strong> (<em>bool</em><em>, </em><em>optional</em>) – config file is read to be changed (=&gt; Do not try to load anything) (Default: False)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dict containing all the information from the config file</p>
+<dd class="field-even"><p><strong>out</strong> – Dict containing all the information from the config file</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -592,16 +559,13 @@ document.write(`
 <dd><p>Reads a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Path of the control file</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – Path of the control file</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dict containing all the information from the control file</p>
+<dd class="field-even"><p><strong>out</strong> – Dict containing all the information from the control file</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -612,36 +576,23 @@ document.write(`
 <dd><p>Reads a model file and returns all parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>String containing the path of the file</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – String containing the path of the file</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Log tau</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Temperature in K</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Electron pressure in dyn/cm^2</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Microturbulence velocity in cm/s</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Magnetic field strength in Gauss</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Line-of-sight velocity in cm/s</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Inclination in deg</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Azimuth angle in deg</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Height in km</p>
-</dd>
-<dt><strong>otu</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Gas pressure in dyn/cm^2</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Density in g/cm^3</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Log tau</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Temperature in K</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Electron pressure in dyn/cm^2</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Microturbulence velocity in cm/s</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Magnetic field strength in Gauss</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Line-of-sight velocity in cm/s</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Inclination in deg</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Azimuth angle in deg</p></li>
+<li><p><strong>out</strong> (<em>numpy.array, optional</em>) – Height in km</p></li>
+<li><p><strong>otu</strong> (<em>numpy.array, optional</em>) – Gas pressure in dyn/cm^2</p></li>
+<li><p><strong>out</strong> (<em>numpy.array, optional</em>) – Density in g/cm^3</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -652,26 +603,20 @@ document.write(`
 <dd><p>Reads the first LINE data from a profile computed by SIR</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>String containing the path of the file</p>
-</dd>
-<dt><strong>num</strong><span class="classifier">int, optional</span></dt><dd><p>Number of the line which is loaded. Default: 0 (use first one from line)</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – String containing the path of the file</p></li>
+<li><p><strong>num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of the line which is loaded. Default: 0 (use first one from line)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Wavelengths in A</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes I</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes Q</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes U</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes V</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Wavelengths in A</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Stokes I</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Stokes Q</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Stokes U</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Stokes V</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -682,17 +627,13 @@ document.write(`
 <dd><p>Writes a config file with the information provided as a dictionary for the mode 1C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>File</strong><span class="classifier">string</span></dt><dd><p>Save path</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>File</strong> (<em>string</em>) – Save path</p></li>
+<li><p><strong>conf</strong> (<em>dict</em>) – Dictionary with all the informations</p></li>
+</ul>
 </dd>
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the informations</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -703,17 +644,13 @@ document.write(`
 <dd><p>Writes a config file with the information provided as a dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>File</strong><span class="classifier">string</span></dt><dd><p>Save path</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>File</strong> (<em>string</em>) – Save path</p></li>
+<li><p><strong>conf</strong> (<em>dict</em>) – Dictionary with all the informations</p></li>
+</ul>
 </dd>
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the informations</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -724,17 +661,13 @@ document.write(`
 <dd><p>Writes a config file with the information provided as a dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>File</strong><span class="classifier">string</span></dt><dd><p>Save path</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>File</strong> (<em>string</em>) – Save path</p></li>
+<li><p><strong>conf</strong> (<em>dict</em>) – Dictionary with all the informations</p></li>
+</ul>
 </dd>
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the informations</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -745,17 +678,13 @@ document.write(`
 <dd><p>Writes a config file with the information provided as a dictionary for the mode 1C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>File</strong><span class="classifier">string</span></dt><dd><p>Save path</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>File</strong> (<em>string</em>) – Save path</p></li>
+<li><p><strong>conf</strong> (<em>dict</em>) – Dictionary with all the informations</p></li>
+</ul>
 </dd>
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the informations</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -766,17 +695,13 @@ document.write(`
 <dd><p>Writes a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Save filename of the control file. Typically it is inv.trol</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Save filename of the control file. Typically it is inv.trol</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Dictionary with the information from the config file</p></li>
+</ul>
 </dd>
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -787,17 +712,13 @@ document.write(`
 <dd><p>Writes a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Save filename of the control file. Typically it is inv.trol</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Save filename of the control file. Typically it is inv.trol</p></li>
+<li><p><strong>conf</strong> (<em>dict</em>) – Dictionary with the information from the config file</p></li>
+</ul>
 </dd>
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -808,19 +729,14 @@ document.write(`
 <dd><p>Writes a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Save filename of the control file. Typically it is inv.trol</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Save filename of the control file. Typically it is inv.trol</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Dictionary with the information from the config file</p></li>
+<li><p><strong>Type</strong> (<em>string</em>) – which type of control file is created (‘syn’ for synthesis, ‘inv’ for inversion)</p></li>
+</ul>
 </dd>
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
-</dd>
-<dt><strong>Type</strong><span class="classifier">string</span></dt><dd><p>which type of control file is created (‘syn’ for synthesis, ‘inv’ for inversion)</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -831,17 +747,13 @@ document.write(`
 <dd><p>Writes the Grid file with data from the config file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary containing all the information from the config file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>dict</em>) – Dictionary containing all the information from the config file</p></li>
+<li><p><strong>filename</strong> (<em>string</em><em>, </em><em>optional</em>) – String containing the name of the Grid file. Default: Grid.grid</p></li>
+</ul>
 </dd>
-<dt><strong>filename</strong><span class="classifier">string, optional</span></dt><dd><p>String containing the name of the Grid file. Default: Grid.grid</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -852,17 +764,13 @@ document.write(`
 <dd><p>Writes the Grid file with data from the config file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary containing all the information from the config file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>dict</em>) – Dictionary containing all the information from the config file</p></li>
+<li><p><strong>filename</strong> (<em>string</em><em>, </em><em>optional</em>) – String containing the name of the Grid file. Default: Grid.grid</p></li>
+</ul>
 </dd>
-<dt><strong>filename</strong><span class="classifier">string, optional</span></dt><dd><p>String containing the name of the Grid file. Default: Grid.grid</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -874,39 +782,24 @@ document.write(`
 have one white space less</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Name of the saved file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Name of the saved file</p></li>
+<li><p><strong>Header</strong> (<em>string</em>) – Header of the model</p></li>
+<li><p><strong>log_tau</strong> (<em>numpy.array</em>) – Log tau</p></li>
+<li><p><strong>T</strong> (<em>numpy.array</em>) – Temperature in K</p></li>
+<li><p><strong>Pe</strong> (<em>numpy.array</em>) – Electron pressure in dyn/cm^2</p></li>
+<li><p><strong>v_micro</strong> (<em>numpy.array</em>) – Microturbulence velocity in cm/s</p></li>
+<li><p><strong>B</strong> (<em>numpy.array</em>) – Magnetic field strength in Gauss</p></li>
+<li><p><strong>vlos</strong> (<em>numpy.array</em>) – Line-of-sight velocity in cm/s</p></li>
+<li><p><strong>inc</strong> (<em>numpy.array</em>) – Inclination in deg</p></li>
+<li><p><strong>azimuth</strong> (<em>numpy.array</em>) – Azimuth angle in deg</p></li>
+<li><p><strong>z</strong> (<em>numpy.array</em><em>, </em><em>optional</em>) – Height in km</p></li>
+<li><p><strong>Pg</strong> (<em>numpy.array</em><em>, </em><em>optional</em>) – Gas pressure in dyn/cm^2</p></li>
+<li><p><strong>rho</strong> (<em>numpy.array</em><em>, </em><em>optional</em>) – Density in g/cm^3</p></li>
+</ul>
 </dd>
-<dt><strong>Header</strong><span class="classifier">string</span></dt><dd><p>Header of the model</p>
-</dd>
-<dt><strong>log_tau</strong><span class="classifier">numpy.array</span></dt><dd><p>Log tau</p>
-</dd>
-<dt><strong>T</strong><span class="classifier">numpy.array</span></dt><dd><p>Temperature in K</p>
-</dd>
-<dt><strong>Pe</strong><span class="classifier">numpy.array</span></dt><dd><p>Electron pressure in dyn/cm^2</p>
-</dd>
-<dt><strong>v_micro</strong><span class="classifier">numpy.array</span></dt><dd><p>Microturbulence velocity in cm/s</p>
-</dd>
-<dt><strong>B</strong><span class="classifier">numpy.array</span></dt><dd><p>Magnetic field strength in Gauss</p>
-</dd>
-<dt><strong>vlos</strong><span class="classifier">numpy.array</span></dt><dd><p>Line-of-sight velocity in cm/s</p>
-</dd>
-<dt><strong>inc</strong><span class="classifier">numpy.array</span></dt><dd><p>Inclination in deg</p>
-</dd>
-<dt><strong>azimuth</strong><span class="classifier">numpy.array</span></dt><dd><p>Azimuth angle in deg</p>
-</dd>
-<dt><strong>z</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Height in km</p>
-</dd>
-<dt><strong>Pg</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Gas pressure in dyn/cm^2</p>
-</dd>
-<dt><strong>rho</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Density in g/cm^3</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -917,21 +810,15 @@ have one white space less</p>
 <dd><p>Write a profile for a specific model number to a file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Name of the saved file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Name of the saved file</p></li>
+<li><p><strong>profiles</strong> (<em>list</em>) – List containing all the profiles</p></li>
+<li><p><strong>atoms</strong> (<em>list</em>) – List containing the number of the line from the Line file</p></li>
+<li><p><strong>pos</strong> (<em>int</em>) – Position which model is saved</p></li>
+</ul>
 </dd>
-<dt><strong>profiles</strong><span class="classifier">list</span></dt><dd><p>List containing all the profiles</p>
-</dd>
-<dt><strong>atoms</strong><span class="classifier">list</span></dt><dd><p>List containing the number of the line from the Line file</p>
-</dd>
-<dt><strong>pos</strong><span class="classifier">int</span></dt><dd><p>Position which model is saved</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -946,14 +833,10 @@ have one white space less</p>
 <dd><p>Creates a config file for the Monte-Carlo simulation by asking questions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>None</strong></dt><dd></dd>
-</dl>
+<dd class="field-odd"><p><strong>None</strong></p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -964,14 +847,10 @@ have one white space less</p>
 <dd><p>Creates a config file for the 1 Component Inversion by asking questions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>None</strong></dt><dd></dd>
-</dl>
+<dd class="field-odd"><p><strong>None</strong></p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -982,14 +861,10 @@ have one white space less</p>
 <dd><p>Creates a config file for the 2 Components Inversion by asking questions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>None</strong></dt><dd></dd>
-</dl>
+<dd class="field-odd"><p><strong>None</strong></p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1004,25 +879,21 @@ have one white space less</p>
 <dd><p>Function which executes the programme</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>None</strong></dt><dd></dd>
-</dl>
+<dd class="field-odd"><p><strong>None</strong></p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
-<section id="model-py">
-<h2>model.py<a class="headerlink" href="#model-py" title="Link to this heading">#</a></h2>
+<section id="model-atm-py">
+<h2>model_atm.py<a class="headerlink" href="#model-atm-py" title="Link to this heading">#</a></h2>
 <p>Function to read a binary model file with all the physical parameter</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="model.read_model">
-<span class="sig-prename descclassname"><span class="pre">model.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model.read_model" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.read_model">
+<span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#model_atm.read_model" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -1036,16 +907,13 @@ have one white space less</p>
 that the inversion itself can be executed linearly to make use of all cores.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>arg</strong><span class="classifier">numpy array or int</span></dt><dd><p>1x4 array containing the limits in x and y of the data or number of 1D models</p>
-</dd>
-</dl>
+<dd class="field-odd"><p><strong>arg</strong> (<em>numpy array</em><em> or </em><em>int</em>) – 1x4 array containing the limits in x and y of the data or number of 1D models</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the names of the task folders, x and y position</p>
+<dd class="field-even"><p><strong>out</strong> – Dictionary with all the names of the task folders, x and y position</p>
 </dd>
-</dl>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1056,15 +924,10 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 <dd><p>Initial print outs and preparation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>mode</strong><span class="classifier">string</span></dt><dd><p>Mode which is used</p>
+<dd class="field-odd"><p><strong>mode</strong> (<em>string</em>) – Mode which is used</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1075,20 +938,17 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 <dd><p>Adds zeros so that the returning strings have 4 letters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>x</strong><span class="classifier">float</span></dt><dd><p>x position</p>
-</dd>
-<dt><strong>y</strong><span class="classifier">float</span></dt><dd><p>y position</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x position</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y position</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">str</span></dt><dd><p>x as a string of 4 letters</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">str</span></dt><dd><p>y as a string of 4 letters</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>str</em>) – x as a string of 4 letters</p></li>
+<li><p><strong>out</strong> (<em>str</em>) – y as a string of 4 letters</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1103,28 +963,21 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 <dd><p>Reads a profile from a SIR .per file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>profile</strong><span class="classifier">str</span></dt><dd><p>String with the profile name</p>
-</dd>
-<dt><strong>grid</strong><span class="classifier">str</span></dt><dd><p>Grid file name</p>
-</dd>
-<dt><strong>line_file</strong><span class="classifier">str</span></dt><dd><p>Filename of the line file</p>
-</dd>
-</dl>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>profile</strong> (<em>str</em>) – String with the profile name</p></li>
+<li><p><strong>grid</strong> (<em>str</em>) – Grid file name</p></li>
+<li><p><strong>line_file</strong> (<em>str</em>) – Filename of the line file</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with the wavelengths</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with Stokes I</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with Stokes Q</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with Stokes U</p>
-</dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with Stokes V</p>
-</dd>
-</dl>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Array with the wavelengths</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Array with Stokes I</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Array with Stokes Q</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Array with Stokes U</p></li>
+<li><p><strong>out</strong> (<em>numpy.array</em>) – Array with Stokes V</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1135,17 +988,13 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 <dd><p>Writes the spectral point spread function with the value from the spectral veil correction</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary containing all the information of the config file</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>dict</em>) – Dictionary containing all the information of the config file</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – Filename under which the file is saved</p></li>
+</ul>
 </dd>
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Filename under which the file is saved</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1160,15 +1009,10 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 <dd><p>Reads a profile and returns a class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>file</strong><span class="classifier">str</span></dt><dd><p>String with the filename</p>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – String with the filename</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>class Profile</dt><dd></dd>
-</dl>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>class Profile</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1256,8 +1100,8 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-py">model.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-atm-py">model_atm.py</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misc-py">misc.py</a><ul class="nav section-nav flex-column">

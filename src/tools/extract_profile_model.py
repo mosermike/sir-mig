@@ -4,11 +4,11 @@ Extracts the profile file and the mdoel file from a data cube
 import numpy as np
 import sys, os, shutil
 sys.path.append(sys.path[0]+"/..")
-import obs, sir, definitions as d
+import sir
+import definitions as d
 from os.path import exists
 import profile_stk as p
-import model_1C as m
-import model_2C as m2
+import model_atm as m
 
 def help():
 	"""
@@ -69,27 +69,26 @@ def extract_profile_model_1C(conf, x, y):
 	if y < Map[2] or y > Map[3]:
 		print("[ERROR] y is not in the range (%i,%i)!" % (Map[2],Map[3]))
 		sys.exit(1)
-	# Load data
-	obs1 = p.Profile(os.path.join(path, conf['cube_inv']),os.path.join(path, conf['waves']))
-	obs1.cut_to_wave(sir.angstrom_to_pixel(obs1.wave, conf["range_wave"])) # Cut the values to data used in the inversion
 
-	inv = p.Profile(os.path.join(path, conf['inv_out']) + d.end_stokes,os.path.join(path, conf['inv_out'])+d.end_wave)
-	if(inv.nw == obs1.nw):
-		inv.cut_to_wave(sir.angstrom_to_pixel(inv.wave, conf["range_wave"])) # Cut the values to data used in the inversion
+	# Load data
+	obs1 = p.Profile(os.path.join(path, conf['cube_inv']))
+	obs1.cut_to_wave(conf["range_wave"]) # Cut the values to data used in the inversion
+
+	inv = p.Profile(os.path.join(path, conf['inv_out']) + d.end_stokes)
 	mod = m.Model(filename=os.path.join(path,conf['inv_out'] + d.end_models))
-	guess = m.Model(filename=os.path.join(path,d.best_guess.replace(".mod",".npy")))
-	err = m.Error(filename=os.path.join(path,conf['inv_out'] + d.end_errors))
+	guess = m.Model(filename=os.path.join(path,d.best_guess.replace(".mod",".bin")))
+	err = m.Model(filename=os.path.join(path,conf['inv_out'] + d.end_errors))
 
 	# Change to the reduced Map
 	x = x - Map[0]
 	y = y - Map[2]
 	
 	# Save data in formats for SIR
-	obs1.write(savepath + "profile" + add + ".per", x + Map[0], y + Map[2], d.Grid)
-	inv.write(savepath + "profile_result" + add + ".per", x, y, d.Grid)
-	mod.write(savepath + "model_result" + add + ".mod", d.header, x, y)
-	guess.write(savepath + conf["model"].replace(".mod","") + add + ".mod", d.header, x, y)
-	err.write(savepath + "model_result" + add + ".err", d.header, x, y)
+	obs1.write_profile(savepath + "profile" + add + ".per", x + Map[0], y + Map[2], d.Grid)
+	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, d.Grid)
+	mod.write_model(savepath + "model_result" + add + ".mod", x, y)
+	guess.write_model(savepath + conf["model"].replace(".mod","") + add + ".mod", x, y)
+	err.write_model(savepath + "model_result" + add + ".err", x, y)
 	
 	# Copy stuff for the inversion
 	if savepath != '':
@@ -105,15 +104,15 @@ def extract_profile_model_MC(conf, num):
 	Extract the profiles and the models from a specific pixel position.
 	It saves and copies all the necessary files to rerun the inversion.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary containing all the information from the config
 	num : int
 		Model number
 
-	Return
-	------
+	Returns
+	-------
 	None
 
 	"""
@@ -136,30 +135,25 @@ def extract_profile_model_MC(conf, num):
 		add = sys.argv[sys.argv.index("-add")+1]
 
 	# Load data
-	# Write the data from the cube into a profile file for SIR
-	atoms = [i.split(',') for i in conf['atoms']]
-	noise_profiles = []
-	syn_profiles = []
-	inv_profiles = []
-	noise = p.Profile_MC(os.path.join(path,conf['noise_out']))
-	syn = p.Profile_MC(os.path.join(path,conf['syn_out']))
-	inv = p.Profile_MC(os.path.join(path,f"{conf['inv_out']}{d.end_stokes}"))
+	noise = p.Profile(os.path.join(path,conf['noise_out']))
+	syn = p.Profile(os.path.join(path,conf['syn_out']))
+	inv = p.Profile(os.path.join(path,f"{conf['inv_out']}{d.end_stokes}"))
 
-	noise.write(os.path.join(savepath,'noise.per' + add), num-1)
-	syn.write(os.path.join(savepath,'syn.per' + add), num-1)
-	inv.write(os.path.join(savepath,'inv.per' + add), num-1)
+	noise.write_profile_mc(os.path.join(savepath,'noise.per' + add), num-1)
+	syn.write_profile_mc(os.path.join(savepath,'syn.per' + add), num-1)
+	inv.write_profile_mc(os.path.join(savepath,'inv.per' + add), num-1)
 	
 
 	# Now with the class model/error
 	mod = m.Model(os.path.join(path,conf['inv_out'] + d.inv_models))
-	gue = m.Model(os.path.join(path,d.best_guess.replace('.mod','.npy')))
+	gue = m.Model(os.path.join(path,d.best_guess.replace('.mod','.bin')))
 	syn = m.Model(os.path.join(path,conf['model_out']))
-	err = m.Error(os.path.join(path, os.path.join(path,conf['inv_out'] + d.inv_errors)))
+	err = m.Model(os.path.join(path, os.path.join(path,conf['inv_out'] + d.inv_errors)))
 	
-	syn.write(os.path.join(savepath,'syn.mod' + add), d.header,num-1)
-	mod.write(os.path.join(savepath,'res.mod' + add), d.header,num-1)
-	gue.write(os.path.join(savepath,'guess.mod' + add), d.header,num-1)
-	err.write(os.path.join(savepath,'res.err' + add), d.header,num-1)
+	syn.write_model(os.path.join(savepath,'syn.mod' + add), num-1,0)
+	mod.write_model(os.path.join(savepath,'res.mod' + add), num-1,0)
+	gue.write_model(os.path.join(savepath,'guess.mod' + add),num-1,0)
+	err.write_model(os.path.join(savepath,'res.err' + add), num-1,0)
 
 	#sir.write_model_npy(os.path.join(savepath,'syn.mod' + add), d.header,syn[num-1,:,:]) # Old
 
@@ -203,62 +197,36 @@ def extract_profile_model_2C(conf, x, y):
 	if '-add' in sys.argv:
 		add = sys.argv[sys.argv.index("-add")+1]
 
-	# Load wavelenghts and map of (x,y) used in the inversion
 	Map = conf['map']
-	waves = np.load(os.path.join(path, conf['waves']))
 	
 	# Load data
-	obs1 = obs.load_data(conf, filename=conf['cube_inv'])	
-	inv = np.load(os.path.join(path,conf['inv_out'] + d.end_stokes))
-	guess1 = np.load(os.path.join(path,d.best_guess1.replace(".mod",".npy")))
-	guess2 = np.load(os.path.join(path,d.best_guess2.replace(".mod",".npy")))
-	mod1 = np.load(os.path.join(path,conf['inv_out'] + d.end_models1))
-	mod2 = np.load(os.path.join(path,conf['inv_out'] + d.end_models2))
-	err1 = np.load(os.path.join(path,conf['inv_out'] + d.end_errors1))
-	err2 = np.load(os.path.join(path,conf['inv_out'] + d.end_errors2))
+	obs1 = p.read_profile(conf, filename=conf['cube_inv'])	
+	inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
+	guess1 = m.read_model(os.path.join(path,d.best_guess1.replace(".mod",".bin")))
+	guess2 = m.read_model(os.path.join(path,d.best_guess2.replace(".mod",".bin")))
+	mod1 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models1))
+	mod2 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models2))
+	err1 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors1))
+	err2 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors2))
 	
 
 	# Cut observation
-	obs1 = obs1[Map[0]:Map[1]+1,Map[2]:Map[3]+1, :, :]
+	obs1.cut_to_map(Map)
+	obs1.cut_to_wave(conf["range_wave"]) # Cut the values to data used in the inversion
 
 	# Change to the reduced Map
 	x = x - Map[0]
 	y = y - Map[2]
 	
 	# Save data in formats for SIR
-	obs.write_profile(savepath + "profile" + add + ".per", obs1, conf, x, y)
-	obs.write_profile(savepath + "profile_result" + add + ".per", inv, conf, x, y)
-	sir.write_model(savepath + "guess1" + add + ".mod", d.header,
-						 guess1[x,y,0],guess1[x,y,1],guess1[x,y,2],guess1[x,y,3],
-						 guess1[x,y,4],guess1[x,y,5],guess1[x,y,6],guess1[x,y,7],
-						 guess1[x,y,8],guess1[x,y,9],guess1[x,y,10]
-						)
-	sir.write_model(savepath + "guess2" + add + ".mod", d.header,
-						 guess2[x,y,0],guess2[x,y,1],guess2[x,y,2],guess2[x,y,3],
-						 guess2[x,y,4],guess2[x,y,5],guess2[x,y,6],guess2[x,y,7],
-						 guess2[x,y,8],guess2[x,y,9],guess2[x,y,10]
-						)
-	sir.write_model(savepath + "model_result1" + add + ".mod", d.header,
-						 mod1[x,y,0],mod1[x,y,1],mod1[x,y,2],mod1[x,y,3],
-						 mod1[x,y,4],mod1[x,y,5],mod1[x,y,6],mod1[x,y,7],
-						 mod1[x,y,8],mod1[x,y,9],mod1[x,y,10]
-						)
-	sir.write_model(savepath + "model_result2" + add + ".mod", d.header,
-						 mod2[x,y,0],mod2[x,y,1],mod2[x,y,2],mod2[x,y,3],
-						 mod2[x,y,4],mod2[x,y,5],mod2[x,y,6],mod2[x,y,7],
-						 mod2[x,y,8],mod2[x,y,9],mod2[x,y,10]
-						)
-	sir.write_model(savepath + "model_result1" + add + ".err", d.header,
-						 err1[x,y,0],err1[x,y,1],err1[x,y,2],err1[x,y,3],
-						 err1[x,y,4],err1[x,y,5],err1[x,y,6],err1[x,y,7],
-						 err1[x,y,8],err1[x,y,9],err1[x,y,10]
-						)
-
-	sir.write_model(savepath + "model_result2" + add + ".err", d.header,
-						 err2[x,y,0],err2[x,y,1],err2[x,y,2],err2[x,y,3],
-						 err2[x,y,4],err2[x,y,5],err2[x,y,6],err2[x,y,7],
-						 err2[x,y,8],err2[x,y,9],err2[x,y,10]
-						)
+	obs1.write_profile(savepath + "profile" + add + ".per", x, y,d.Grid)
+	inv.write_profile(savepath + "profile_result" + add + ".per", x, y)
+	guess1.write_model(savepath + "guess1" + add + ".mod",x,y)
+	guess2.write_model(savepath + "guess2" + add + ".mod",x,y)
+	mod1.write_model(savepath + "model_result1" + add + ".mod", x,y)
+	mod2.write_model(savepath + "model_result2" + add + ".mod", x,y)
+	err1.write_model(savepath + "model_result1" + add + ".err", x,y)
+	err2.write_model(savepath + "model_result2" + add + ".err", x,y)
 
 	# Copy stuff for the inversion
 	if savepath != '':

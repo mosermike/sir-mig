@@ -44,10 +44,15 @@ class Model:
 	stray_light : numpy.array
 		Stray Light Factor in Percent
 
+	Returns
+	-------
+	None
+
 
 	"""
 	def __init__(self, nx = 0, ny = 0, nval = 0):
 		"""
+
 		Initialisation of the class with the models.
 		
 		Parameters
@@ -86,8 +91,10 @@ class Model:
 
 	def correct_phi(self):
 		"""
+
 		SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation
 		those values should be corrected so that I have values from 0 to 360 degrees.
+
 
 		Parameters
 		----------

@@ -27,9 +27,6 @@ Convolve the FTS data with a Gaussian and a constant value for the spectral veil
 It computes the best fit parameter sigma and nu. Afterwards, it corrects the fits data.
 It writes the results into single files and into a corrected data cube.
 
-
-
-
 """
 
 import numpy as np
@@ -494,7 +491,7 @@ def vac_to_air(wavelength, method = "Ciddor1996"):
 	-------
 	out : float
 		Corresponding wavelength in air in Angstrom
-		
+
 	"""
 	if method == "Ciddor1996":
 		sigma2 = (1e4 / wavelength)**2 # squared wavenumber in mum^-1

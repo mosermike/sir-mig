@@ -7,7 +7,8 @@ Options are 'T', 'Pe', 'vmicro', 'B', 'vlos', 'gamma', 'phi', 'z', 'Pg', 'rho'
 import numpy as np 
 import sys 
 import sir
-
+import definitions as d
+import model_atm as m
 
 def help():
 	print("create_random_guess - Creates random guesses")
@@ -61,8 +62,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 	------
 	Class Model with the random Model
 	"""
-	import definitions as d
-	import model as m
+	
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################
@@ -261,7 +261,6 @@ def create_guesses_1c(conf, output = "./", number = 0):
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################
-	import definitions as d
 	lim_B = __split_to_float(conf["lim_B"])
 	lim_vlos = __split_to_float(conf[f"lim_vlos"])
 	lim_gamma = __split_to_float(conf[f"lim_gamma"])
@@ -293,7 +292,6 @@ def create_guesses_2c(conf, output = "./", number = 0):
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################
-	import definitions as d
 
 	for j in [1,2]:
 		model = conf[f"model{j}"]		# Base Model

@@ -11,7 +11,7 @@ sys.path.append(sys.path[0] + "../..")
 sys.path.append(sys.path[0] + "../../tools")
 import sir as sir
 import definitions as d
-from model import *  # Model class
+from model_atm import *  # Model class
 import matplotlib.pyplot as plt
 from os.path import exists
 import os
@@ -99,8 +99,9 @@ def analysis_multiple(confs, labels):
 	Other Parameters
 	----------------
 	There are optional options which change the plots. Additional parameters given as an argument when the script is executed.
+
 	-save [str], optional
-		Additional save path. Default './'.
+		Additional save path. Default './'
 	-add [str]
 		Additional text in filenames
 	-T

@@ -6,7 +6,7 @@ API
 
    create_config
    sir
-   model
+   model_atm
    profile_stk
    preprocess
    visualizer

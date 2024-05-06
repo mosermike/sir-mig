@@ -5,7 +5,7 @@ Plots the result of the SIR synthesis
 import numpy as np 
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), "../..")) 
-import sir, model as m
+import sir, model_atm as m
 import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists
