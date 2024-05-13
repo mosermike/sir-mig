@@ -524,7 +524,7 @@ def write_config_1c(File, conf):
 		f.write(f"line : {conf['line']} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
 		f.write(f"guess : {conf['guess']} # Use a bin file as initial guesses, blank use base model\n")
-		f.write(f"psf : {conf['psf']} # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used\n")
+		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
 
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
@@ -625,7 +625,7 @@ def write_config_2c(File, conf):
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
 		f.write(f"guess1 : {conf['guess1']} # Use a bin file as initial guesses, blank use base model 1\n")
 		f.write(f"guess2 : {conf['guess2']} # Use a bin file as initial guesses, blank use base model 2\n")
-		f.write(f"psf : {conf['psf']} # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used\n")
+		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
 
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
@@ -786,6 +786,38 @@ def write_config(File, conf):
 		write_config_2c(File, conf)
 	else:
 		print("[write_config] Mode is not defined and config file cannot be written.")
+
+######################################################################
+
+def write_gauss_psf(sigma, filename):
+	"""
+	Writes the spectral point spread function with the given sigma. This function is used when the field psf in the config
+	contains 'gauss 1.0' with sigma = 1.0 mA in this example.
+
+	Parameters
+	----------
+	sigma : float
+		Sigma of the Gauss function in mA
+	filename : str
+		Output file name
+
+	Returns
+	-------
+	None
+
+	"""
+	Delta_ll = 20 # mA
+
+	## Wavelength range to be printed in mA
+	ll = np.arange(-(Delta_ll*1e3*31),(Delta_ll*1e3*32),Delta_ll*1e3)
+
+	# Compute Gaussian
+	g = np.exp(-(ll - 0)**2 / (2 * sigma**2))
+	g = g / (sigma * np.sqrt(2 * np.pi)) # Normalised so that int g = 1
+
+	f = open(filename, 'w')
+	for num1,num2 in zip(ll,g):
+		f.write(f" {num1:>9.4f}   {num2:>10.4E}\n")
 
 ######################################################################
 

@@ -28,7 +28,7 @@ line : Lines # Line file
 atoms : 3,4 # Atoms to be used in Grid file
 guess1 :  # Use a bin file as initial guesses, blank use base model 1
 guess2 :  # Use a bin file as initial guesses, blank use base model 2
-psf :  # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used
+psf :  # .dat file, 'gauss 1.0' or blank=not used
 # 
 # Control file
 # 
