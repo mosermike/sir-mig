@@ -43,6 +43,7 @@
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
     <link rel="prev" title="Simulation" href="simulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -189,6 +190,13 @@
                       </a>
                     </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
+                        API
+                      </a>
+                    </li>
+                
                 </ul>
             </li>
             
@@ -327,6 +335,13 @@ document.write(`
                       </a>
                     </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
+                        API
+                      </a>
+                    </li>
+                
                 </ul>
             </li>
             
@@ -416,10 +431,10 @@ document.write(`
   <section id="plotting">
 <h1>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h1>
 <p>This list provides information for plotting results.</p>
-<p id="module-analysis">Analyses the quality of the Monte Carlo Simulation by computing the standard deviations</p>
+<p id="module-plots.analysis">Analyses the quality of the Monte Carlo Simulation by computing the standard deviations</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="analysis.analysis">
-<span class="sig-prename descclassname"><span class="pre">analysis.</span></span><span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analysis.analysis" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="plots.analysis.analysis">
+<span class="sig-prename descclassname"><span class="pre">plots.analysis.</span></span><span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis.analysis" title="Link to this definition">#</a></dt>
 <dd><p>Analysis of a MC simulation by plotting the standard deviations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -446,10 +461,10 @@ document.write(`
 </dl>
 </dd></dl>
 
-<p id="module-analysis_compare_chi2">Compares two simulations by computing and plotting the chi2 value as well as computing the mean value.</p>
+<p id="module-plots.analysis_compare_chi2">Compares two simulations by computing and plotting the chi2 value as well as computing the mean value.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="analysis_compare_chi2.analysis_compare_chi2">
-<span class="sig-prename descclassname"><span class="pre">analysis_compare_chi2.</span></span><span class="sig-name descname"><span class="pre">analysis_compare_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analysis_compare_chi2.analysis_compare_chi2" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="plots.analysis_compare_chi2.analysis_compare_chi2">
+<span class="sig-prename descclassname"><span class="pre">plots.analysis_compare_chi2.</span></span><span class="sig-name descname"><span class="pre">analysis_compare_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_compare_chi2.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis_compare_chi2.analysis_compare_chi2" title="Link to this definition">#</a></dt>
 <dd><p>Compares the chi2 of two simulations for different physical parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -476,10 +491,10 @@ document.write(`
 </dl>
 </dd></dl>
 
-<p id="module-analysis_multiple">Analyses the quality of multiple Monte Carlo Simulations</p>
+<p id="module-plots.analysis_multiple">Analyses the quality of multiple Monte Carlo Simulations</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="analysis_multiple.analysis_multiple">
-<span class="sig-prename descclassname"><span class="pre">analysis_multiple.</span></span><span class="sig-name descname"><span class="pre">analysis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#analysis_multiple.analysis_multiple" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="plots.analysis_multiple.analysis_multiple">
+<span class="sig-prename descclassname"><span class="pre">plots.analysis_multiple.</span></span><span class="sig-name descname"><span class="pre">analysis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_multiple.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis_multiple.analysis_multiple" title="Link to this definition">#</a></dt>
 <dd><p>Analysis multiple simulations and puts it in one plot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -510,10 +525,10 @@ document.write(`
 <p>Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.</p>
 </dd></dl>
 
-<p id="module-Ic_test">Plots the result of the SIR inversion</p>
+<p id="module-plots.Ic_test">Plots the result of the SIR inversion</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="Ic_test.Ic_test">
-<span class="sig-prename descclassname"><span class="pre">Ic_test.</span></span><span class="sig-name descname"><span class="pre">Ic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Ic_test.Ic_test" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="plots.Ic_test.Ic_test">
+<span class="sig-prename descclassname"><span class="pre">plots.Ic_test.</span></span><span class="sig-name descname"><span class="pre">Ic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/Ic_test.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.Ic_test.Ic_test" title="Link to this definition">#</a></dt>
 <dd><p>Plots Ic fit vs I obs in a plot. It uses the first element in the wavelength range as continuum</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -536,10 +551,10 @@ document.write(`
 </dl>
 </dd></dl>
 
-<p id="module-result">Plots the result of the SIR inversion</p>
+<p id="module-plots.result">Plots the result of the SIR inversion</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="result.result_1C">
-<span class="sig-prename descclassname"><span class="pre">result.</span></span><span class="sig-name descname"><span class="pre">result_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waveV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#result.result_1C" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="plots.result.result_1C">
+<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waveV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.result.result_1C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the result of the inversion 1C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -605,8 +620,8 @@ document.write(`
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="result.result_2C">
-<span class="sig-prename descclassname"><span class="pre">result.</span></span><span class="sig-name descname"><span class="pre">result_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#result.result_2C" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="plots.result.result_2C">
+<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.result.result_2C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the result of the inversion for 2C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -676,9 +691,9 @@ document.write(`
 </dl>
 </dd></dl>
 
-<span class="target" id="module-visualizer"></span><dl class="py function">
-<dt class="sig sig-object py" id="visualizer.visualizer_1C">
-<span class="sig-prename descclassname"><span class="pre">visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#visualizer.visualizer_1C" title="Link to this definition">#</a></dt>
+<span class="target" id="module-plots.visualizer"></span><dl class="py function">
+<dt class="sig sig-object py" id="plots.visualizer.visualizer_1C">
+<span class="sig-prename descclassname"><span class="pre">plots.visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/visualizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.visualizer.visualizer_1C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -716,8 +731,8 @@ document.write(`
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="visualizer.visualizer_2C">
-<span class="sig-prename descclassname"><span class="pre">visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#visualizer.visualizer_2C" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="plots.visualizer.visualizer_2C">
+<span class="sig-prename descclassname"><span class="pre">plots.visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/visualizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.visualizer.visualizer_2C" title="Link to this definition">#</a></dt>
 <dd><p>Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -774,6 +789,15 @@ document.write(`
         <p class="prev-next-title">Simulation</p>
       </div>
     </a>
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -792,14 +816,14 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis.analysis"><code class="docutils literal notranslate"><span class="pre">analysis()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis_compare_chi2.analysis_compare_chi2"><code class="docutils literal notranslate"><span class="pre">analysis_compare_chi2()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis_multiple.analysis_multiple"><code class="docutils literal notranslate"><span class="pre">analysis_multiple()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Ic_test.Ic_test"><code class="docutils literal notranslate"><span class="pre">Ic_test()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result.result_1C"><code class="docutils literal notranslate"><span class="pre">result_1C()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#result.result_2C"><code class="docutils literal notranslate"><span class="pre">result_2C()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizer.visualizer_1C"><code class="docutils literal notranslate"><span class="pre">visualizer_1C()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizer.visualizer_2C"><code class="docutils literal notranslate"><span class="pre">visualizer_2C()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.analysis.analysis"><code class="docutils literal notranslate"><span class="pre">analysis()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.analysis_compare_chi2.analysis_compare_chi2"><code class="docutils literal notranslate"><span class="pre">analysis_compare_chi2()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.analysis_multiple.analysis_multiple"><code class="docutils literal notranslate"><span class="pre">analysis_multiple()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.Ic_test.Ic_test"><code class="docutils literal notranslate"><span class="pre">Ic_test()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.result.result_1C"><code class="docutils literal notranslate"><span class="pre">result_1C()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.result.result_2C"><code class="docutils literal notranslate"><span class="pre">result_2C()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.visualizer.visualizer_1C"><code class="docutils literal notranslate"><span class="pre">visualizer_1C()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.visualizer.visualizer_2C"><code class="docutils literal notranslate"><span class="pre">visualizer_2C()</span></code></a></li>
 </ul>
   </nav></div>
 

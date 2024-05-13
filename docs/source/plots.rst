@@ -3,16 +3,16 @@ Plotting
 
 This list provides information for plotting results.
 
-.. automodule:: analysis
+.. automodule:: plots.analysis
 	:members:
-.. automodule:: analysis_compare_chi2
+.. automodule:: plots.analysis_compare_chi2
 	:members:
-.. automodule:: analysis_multiple
+.. automodule:: plots.analysis_multiple
 	:members:
-.. automodule:: Ic_test
+.. automodule:: plots.Ic_test
 	:members:
-.. automodule:: result
+.. automodule:: plots.result
 	:members:
-.. automodule:: visualizer
+.. automodule:: plots.visualizer
 	:members:
 

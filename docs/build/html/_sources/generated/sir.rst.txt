@@ -30,6 +30,7 @@
       write_control_1c
       write_control_2c
       write_control_mc
+      write_gauss_psf
       write_grid
       write_grid_mc
       write_model

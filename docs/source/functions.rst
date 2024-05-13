@@ -8,27 +8,30 @@ sir.py
 
 Library for repeating functions such as reading the config, writing SIR files.
 
-.. autofunction:: sir.list_to_string
-.. autofunction:: sir.option
-.. autofunction:: sir.read_chi2
-.. autofunction:: sir.read_chi2s
-.. autofunction:: sir.read_grid
-.. autofunction:: sir.read_line
-.. autofunction:: sir.read_config
-.. autofunction:: sir.read_control
-.. autofunction:: sir.read_model
-.. autofunction:: sir.read_profile
-.. autofunction:: sir.write_config_1c
-.. autofunction:: sir.write_config_2c
-.. autofunction:: sir.write_config_mc
-.. autofunction:: sir.write_config
-.. autofunction:: sir.write_control_1c
-.. autofunction:: sir.write_control_2c
-.. autofunction:: sir.write_control_mc
-.. autofunction:: sir.write_grid
-.. autofunction:: sir.write_grid_mc
-.. autofunction:: sir.write_model
-.. autofunction:: sir.write_profile
+
+.. automodule:: sir
+  :members:
+#.. autofunction:: sir.list_to_string
+#.. autofunction:: sir.option
+#.. autofunction:: sir.read_chi2
+#.. autofunction:: sir.read_chi2s
+#.. autofunction:: sir.read_grid
+#.. autofunction:: sir.read_line
+#.. autofunction:: sir.read_config
+#.. autofunction:: sir.read_control
+#.. autofunction:: sir.read_model
+#.. autofunction:: sir.read_profile
+#.. autofunction:: sir.write_config_1c
+#.. autofunction:: sir.write_config_2c
+#.. autofunction:: sir.write_config_mc
+#.. autofunction:: sir.write_config
+#.. autofunction:: sir.write_control_1c
+#.. autofunction:: sir.write_control_2c
+#.. autofunction:: sir.write_control_mc
+#.. autofunction:: sir.write_grid
+#.. autofunction:: sir.write_grid_mc
+#.. autofunction:: sir.write_model
+#.. autofunction:: sir.write_profile
 
 
 create_config.py
@@ -74,7 +77,6 @@ Functions related to the observation
 
 
 .. autofunction:: obs.read_profile
-.. autofunction:: obs.write_psf
 
 
 profile_stk.py

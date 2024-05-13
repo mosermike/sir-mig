@@ -34,8 +34,17 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx_math_dollar',
     'sphinx.ext.napoleon',
-    'numpydoc'
+    'numpydoc',
+    'sphinx.ext.linkcode'
 ]
+
+def linkcode_resolve(domain, info):
+    if domain != 'py':
+        return None
+    if not info['module']:
+        return None
+    filename = info['module'].replace('.', '/')
+    return "https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/%s.py" % filename
 
 autosummary_generate = True
 
