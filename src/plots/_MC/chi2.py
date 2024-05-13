@@ -46,8 +46,8 @@ def chi2(confs, labels):
 	if d.plt_lib != "":
 		plt.style.use(d.plt_lib)
 	else:
-		if exists(dirname + '/mml.mplstyle'):
-			plt.style.use(dirname + '/mml.mplstyle')
+		if exists(dirname + '/../mml.mplstyle'):
+			plt.style.use(dirname + '/../mml.mplstyle')
 			# if dvipng is not installed, dont use latex
 			import shutil
 			if shutil.which('dvipng') is None:

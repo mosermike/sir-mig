@@ -1,0 +1,2735 @@
+'\" t
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "SIR-MIG" "1" "May 06, 2024" "" "SIR-MIG"
+.SH NAME
+sir-mig \- SIR-MIG 
+.sp
+\fBWelcome to SIR MIG’s documentation!\fP
+.INDENT 0.0
+.IP \(bu 2
+\fI\%Index\fP
+.IP \(bu 2
+\fI\%Module Index\fP
+.IP \(bu 2
+\fI\%Search Page\fP
+.UNINDENT
+.sp
+\fBSIR\-MIG\fP is an algorithm based on the inversion code SIR. It parallelises SIR and implements functionalities to use multiple random guesses.
+There are three different modes selectable:
+.INDENT 0.0
+.IP \(bu 2
+1C : 1 Component Inversion
+.IP \(bu 2
+2C : 2 Component Inversion
+.IP \(bu 2
+MC : Monte\-Carlo Simulation
+.UNINDENT
+.sp
+It is also possible to use it without random guesses.
+.sp
+Check out the \fI\%Usage\fP section for further information.
+.sp
+Check out the \fI\%Functions\fP section for a list of functions.
+.sp
+Check out the \fI\%Preprocessing\fP module for a description of functions which are used to preprocess data.
+.sp
+Check out the \fI\%Classes\fP section for a list of classes which are used to read and write the Stokes profiles and the models.
+.sp
+Check out the \fI\%Plotting\fP section for a list of functions to plot the results.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This project is under active development.
+.UNINDENT
+.UNINDENT
+.SH CONTENTS
+.SS Usage
+.SS Installation
+.sp
+To use SIR\-MIG, first install the necessary libraries as defined in the text file requirements.py. The code might also work for other versions as mentioned there but it is not tested.
+.sp
+The necessary files with the right version can be installed by executing any of the two following lines in the directory of SIR\-MIG:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.EX
+(.venv) $ pip install pipreqs
+(.venv) $ conda install \-\-yes \-\-file requirements.txt \-c conda\-forge
+.EE
+.UNINDENT
+.UNINDENT
+.SS Functions
+.sp
+This list provides information for each function in each file.
+.SS sir.py
+.sp
+Library for repeating functions such as reading the config, writing SIR files.
+.INDENT 0.0
+.TP
+.B sir.list_to_string(temp, let=\(aq,\(aq)
+Convert a list to a string
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtemp\fP (\fIlist\fP) – List with the information which is converted into a string
+.IP \(bu 2
+\fBlet\fP (\fIstr\fP) – Letter which is added as a separation
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Information from the list
+.TP
+.B Return type
+str
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.option(text1, text2)
+Print an option in a help page
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtext1\fP (\fIstr\fP) – First text
+.IP \(bu 2
+\fBtext2\fP (\fIstr\fP) – Second text
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_chi2(filename, task=\(aq\(aq)
+Reads the last chi value in a inv.chi file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Path of the chi file
+.IP \(bu 2
+\fBtask\fP (\fIstring\fP\fI, \fP\fIoptional\fP) – Prints out in which folder the chi2 file does not exist. Default: ‘’
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Best chi2 value of the fit
+.TP
+.B Return type
+float
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_chi2s(conf, tasks)
+Reads all the chi2 from the inversion
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Config parameters
+.IP \(bu 2
+\fBtasks\fP (\fIdict\fP) – Dictionary with the used folders
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Numpy array with all chi2 values
+.TP
+.B Return type
+numpy array
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_grid(filename)
+Reads the grid file
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfilename\fP (\fIstring\fP) – File to be read
+.TP
+.B Returns
+\fBdict\fP – Dict. with ‘Line’, ‘min’, ‘step’ and ‘max’ in it
+.TP
+.B Return type
+dict
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_line(filename)
+Reads the line file
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfilename\fP (\fIstring\fP) – File to be read
+.TP
+.B Returns
+\fBout\fP – Dict. with ‘Line’, ‘Ion’, ‘wavelength’, ‘factor’, ‘Exc_Pot’, log_gf’,
+‘Transition’, ‘alpha’ and ‘sigma’ in it
+.TP
+.B Return type
+dict
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_config(filename, check=True, change_config=False)
+Reads a config file for the inversion
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Path of the control file
+.IP \(bu 2
+\fBcheck\fP (\fIbool\fP\fI, \fP\fIoptional\fP) – Check if file exists (Default: True)
+.IP \(bu 2
+\fBchange_config\fP (\fIbool\fP\fI, \fP\fIoptional\fP) – config file is read to be changed (=> Do not try to load anything) (Default: False)
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Dict containing all the information from the config file
+.TP
+.B Return type
+dict
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_control(filename)
+Reads a control file in the scheme SIR expects it.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfilename\fP (\fIstring\fP) – Path of the control file
+.TP
+.B Returns
+\fBout\fP – Dict containing all the information from the control file
+.TP
+.B Return type
+dict
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_model(filename)
+Reads a model file and returns all parameters
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfilename\fP (\fIstring\fP) – String containing the path of the file
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Log tau
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Temperature in K
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Electron pressure in dyn/cm^2
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Microturbulence velocity in cm/s
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Magnetic field strength in Gauss
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Line\-of\-sight velocity in cm/s
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Inclination in deg
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Azimuth angle in deg
+.IP \(bu 2
+\fBout\fP (\fInumpy.array, optional\fP) – Height in km
+.IP \(bu 2
+\fBotu\fP (\fInumpy.array, optional\fP) – Gas pressure in dyn/cm^2
+.IP \(bu 2
+\fBout\fP (\fInumpy.array, optional\fP) – Density in g/cm^3
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.read_profile(filename, num=0)
+Reads the first LINE data from a profile computed by SIR
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – String containing the path of the file
+.IP \(bu 2
+\fBnum\fP (\fIint\fP\fI, \fP\fIoptional\fP) – Number of the line which is loaded. Default: 0 (use first one from line)
+.UNINDENT
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Wavelengths in A
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Stokes I
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Stokes Q
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Stokes U
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Stokes V
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_config_1c(File, conf)
+Writes a config file with the information provided as a dictionary for the mode 1C
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBFile\fP (\fIstring\fP) – Save path
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with all the informations
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_config_2c(File, conf)
+Writes a config file with the information provided as a dictionary
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBFile\fP (\fIstring\fP) – Save path
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with all the informations
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_config_mc(File, conf)
+Writes a config file with the information provided as a dictionary
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBFile\fP (\fIstring\fP) – Save path
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with all the informations
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_config(File, conf)
+Writes a config file with the information provided as a dictionary for the mode 1C
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBFile\fP (\fIstring\fP) – Save path
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with all the informations
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_control_1c(filename, conf)
+Writes a control file in the scheme SIR expects it.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Save filename of the control file. Typically it is inv.trol
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dictionary with the information from the config file
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_control_2c(filename, conf)
+Writes a control file in the scheme SIR expects it.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Save filename of the control file. Typically it is inv.trol
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with the information from the config file
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_control_mc(filename, conf, Type=\(aqinv\(aq)
+Writes a control file in the scheme SIR expects it.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Save filename of the control file. Typically it is inv.trol
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dictionary with the information from the config file
+.IP \(bu 2
+\fBType\fP (\fIstring\fP) – which type of control file is created (‘syn’ for synthesis, ‘inv’ for inversion)
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_grid(conf, waves, filename=\(aqGrid.grid\(aq)
+Writes the Grid file with data from the config file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dictionary containing all the information from the config file
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP\fI, \fP\fIoptional\fP) – String containing the name of the Grid file. Default: Grid.grid
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_grid_mc(conf, filename=\(aqGrid.grid\(aq)
+Writes the Grid file with data from the config file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dictionary containing all the information from the config file
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP\fI, \fP\fIoptional\fP) – String containing the name of the Grid file. Default: Grid.grid
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth, z=None, Pg=None, rho=None)
+Write a model with the given data in a specific format. Note that negative values
+have one white space less
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Name of the saved file
+.IP \(bu 2
+\fBHeader\fP (\fIstring\fP) – Header of the model
+.IP \(bu 2
+\fBlog_tau\fP (\fInumpy.array\fP) – Log tau
+.IP \(bu 2
+\fBT\fP (\fInumpy.array\fP) – Temperature in K
+.IP \(bu 2
+\fBPe\fP (\fInumpy.array\fP) – Electron pressure in dyn/cm^2
+.IP \(bu 2
+\fBv_micro\fP (\fInumpy.array\fP) – Microturbulence velocity in cm/s
+.IP \(bu 2
+\fBB\fP (\fInumpy.array\fP) – Magnetic field strength in Gauss
+.IP \(bu 2
+\fBvlos\fP (\fInumpy.array\fP) – Line\-of\-sight velocity in cm/s
+.IP \(bu 2
+\fBinc\fP (\fInumpy.array\fP) – Inclination in deg
+.IP \(bu 2
+\fBazimuth\fP (\fInumpy.array\fP) – Azimuth angle in deg
+.IP \(bu 2
+\fBz\fP (\fInumpy.array\fP\fI, \fP\fIoptional\fP) – Height in km
+.IP \(bu 2
+\fBPg\fP (\fInumpy.array\fP\fI, \fP\fIoptional\fP) – Gas pressure in dyn/cm^2
+.IP \(bu 2
+\fBrho\fP (\fInumpy.array\fP\fI, \fP\fIoptional\fP) – Density in g/cm^3
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B sir.write_profile(filename, profiles, pos)
+Write a profile for a specific model number to a file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Name of the saved file
+.IP \(bu 2
+\fBprofiles\fP (\fIlist\fP) – List containing all the profiles
+.IP \(bu 2
+\fBatoms\fP (\fIlist\fP) – List containing the number of the line from the Line file
+.IP \(bu 2
+\fBpos\fP (\fIint\fP) – Position which model is saved
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.SS create_config.py
+.sp
+Functions to create the config files for the different modes.
+.INDENT 0.0
+.TP
+.B create_config.config_MC()
+Creates a config file for the Monte\-Carlo simulation by asking questions.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBNone\fP
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B create_config.config_1C()
+Creates a config file for the 1 Component Inversion by asking questions.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBNone\fP
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B create_config.config_2C()
+Creates a config file for the 2 Components Inversion by asking questions.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBNone\fP
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.SS main.py
+.sp
+Main file to start the program
+.INDENT 0.0
+.TP
+.B main.main()
+Function which executes the programme
+.INDENT 7.0
+.TP
+.B Parameters
+\fBNone\fP
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.SS model_atm.py
+.sp
+Function to read a binary model file with all the physical parameter
+.INDENT 0.0
+.TP
+.B model_atm.read_model(filename)
+.UNINDENT
+.SS misc.py
+.sp
+Miscellaneous functions
+.INDENT 0.0
+.TP
+.B misc.create_task_folder_list(arg)
+Creates a list which folders should be created and executed. This is done so
+that the inversion itself can be executed linearly to make use of all cores.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBarg\fP (\fInumpy array\fP\fI or \fP\fIint\fP) – 1x4 array containing the limits in x and y of the data or number of 1D models
+.TP
+.B Returns
+\fBout\fP – Dictionary with all the names of the task folders, x and y position
+.TP
+.B Return type
+dict
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B misc.initial(mode)
+Initial print outs and preparation
+.INDENT 7.0
+.TP
+.B Parameters
+\fBmode\fP (\fIstring\fP) – Mode which is used
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B misc.x_y_add_zeros(x, y)
+Adds zeros so that the returning strings have 4 letters
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBx\fP (\fIfloat\fP) – x position
+.IP \(bu 2
+\fBy\fP (\fIfloat\fP) – y position
+.UNINDENT
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fIstr\fP) – x as a string of 4 letters
+.IP \(bu 2
+\fBout\fP (\fIstr\fP) – y as a string of 4 letters
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.SS obs.py
+.sp
+Functions related to the observation
+.INDENT 0.0
+.TP
+.B obs.read_profile(profile, grid, line_file)
+Reads a profile from a SIR .per file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBprofile\fP (\fIstr\fP) – String with the profile name
+.IP \(bu 2
+\fBgrid\fP (\fIstr\fP) – Grid file name
+.IP \(bu 2
+\fBline_file\fP (\fIstr\fP) – Filename of the line file
+.UNINDENT
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Array with the wavelengths
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Array with Stokes I
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Array with Stokes Q
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Array with Stokes U
+.IP \(bu 2
+\fBout\fP (\fInumpy.array\fP) – Array with Stokes V
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B obs.write_psf(conf, filename)
+Writes the spectral point spread function with the value from the spectral veil correction
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dictionary containing all the information of the config file
+.IP \(bu 2
+\fBfilename\fP (\fIstring\fP) – Filename under which the file is saved
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.SS profile_stk.py
+.sp
+Function to read a binary profile file with the four Stokes Parameter
+.INDENT 0.0
+.TP
+.B profile_stk.read_profile(file)
+Reads a profile and returns a class
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfile\fP (\fIstr\fP) – String with the filename
+.TP
+.B Return type
+class Profile
+.UNINDENT
+.UNINDENT
+.SS Classes
+.INDENT 0.0
+.TP
+.B class model_atm.Model(nx=0, ny=0, nval=0)
+Class containing the models of a simulation
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtau\fP (\fInumpy.array\fP) – Array with the log tau
+.IP \(bu 2
+\fBT\fP (\fInumpy.ndarray\fP) – Temperature in K
+.IP \(bu 2
+\fBPe\fP (\fInumpy.ndarray\fP) – Electron Pressure in dyn/cm^2
+.IP \(bu 2
+\fBvmicro\fP (\fInumpy.ndarray\fP) – Microturbulence Velocity in cm/s
+.IP \(bu 2
+\fBB\fP (\fInumpy.ndarray\fP) – Magnetic Field Strength in G
+.IP \(bu 2
+\fBvlos\fP (\fInumpy.ndarray\fP) – Line\-of\-Sight Velocity in km/s
+.IP \(bu 2
+\fBgamma\fP (\fInumpy.ndarray\fP) – Inclination in deg
+.IP \(bu 2
+\fBphi\fP (\fInumpy.ndarray\fP) – Azimuth in deg
+.IP \(bu 2
+\fBz\fP (\fInumpy.ndarray\fP) – z in km
+.IP \(bu 2
+\fBPg\fP (\fInumpy.ndarray\fP) – Gas pressure in dyn/cm^2
+.IP \(bu 2
+\fBrho\fP (\fInumpy.ndarray\fP) – Density in g/cm^3
+.IP \(bu 2
+\fBvmacro\fP (\fInumpy.array\fP) – Macroturbulence Velocity in km/s
+.IP \(bu 2
+\fBfill\fP (\fInumpy.array\fP) – Filling factor
+.IP \(bu 2
+\fBstray_light\fP (\fInumpy.array\fP) – Stray Light Factor in Percent
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.sp
+Methods
+.TS
+box center;
+l|l.
+T{
+\fI\%correct_phi\fP()
+T}	T{
+SIR can give you any value for the azimuth, e.g. \-250 deg, and therefore, to compute the standard deviation those values should be corrected so that I have values from 0 to 360 degrees.
+T}
+_
+T{
+\fI\%cut_to_map\fP(Map)
+T}	T{
+Cut the data to a map [xmin, xmax, ymin, ymax]
+T}
+_
+T{
+\fI\%get_attribute\fP(string)
+T}	T{
+Returns a specific physical parameter.
+T}
+_
+T{
+\fI\%interp\fP(new_tau)
+T}	T{
+Interpolate the model to a new log tau scale.
+T}
+_
+T{
+\fI\%read\fP(fname[, fmt_type])
+T}	T{
+Reads a binary model file.
+T}
+_
+T{
+\fI\%read_mod\fP(fname[, fmt_type])
+T}	T{
+Reads a model file from SIR and assigns the value to the class.
+T}
+_
+T{
+\fI\%read_results\fP(task, filename, path, nx, ny)
+T}	T{
+Reads all the errors from the inversion
+T}
+_
+T{
+\fI\%set_dim\fP(nx, ny, nval)
+T}	T{
+Sets the dimensions if no data is loaded yet
+T}
+_
+T{
+\fI\%set_limit\fP(lim)
+T}	T{
+Cuts the arrays to a specific log tau value (should only be used for plotting).
+T}
+_
+T{
+\fI\%write\fP(fname[, fmt_type])
+T}	T{
+Write data into a binary fortran file
+T}
+_
+T{
+\fI\%write_model\fP(filename, x, y)
+T}	T{
+Write a model with the given data in a specific format.
+T}
+.TE
+.INDENT 7.0
+.TP
+.B correct_phi()
+SIR can give you any value for the azimuth, e.g. \-250 deg, and therefore, to compute the standard deviation
+those values should be corrected so that I have values from 0 to 360 degrees.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBNone\fP
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B cut_to_map(Map)
+Cut the data to a map [xmin, xmax, ymin, ymax]
+.INDENT 7.0
+.TP
+.B Parameters
+\fBMap\fP (\fIlist\fP) – List with the ranges in pixel in x and y direction
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B get_attribute(string)
+Returns a specific physical parameter. This can be used if ones only wants a specific
+parameter depending on a string/input.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBstring\fP (\fIstr\fP) – Determines which physical parameter is returned
+Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, fill
+.TP
+.B Returns
+\fBout\fP – The wished physical parameter
+.TP
+.B Return type
+float
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B interp(new_tau)
+Interpolate the model to a new log tau scale.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBnew_tau\fP (\fInumpy array\fP) – New log tau scale
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B read(fname, fmt_type=<class \(aqnumpy.float64\(aq>)
+Reads a binary model file.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfname\fP (\fIstr\fP) – Filename
+.IP \(bu 2
+\fBfmt_type\fP (\fItype\fP\fI, \fP\fIoptional\fP) – Type used to laod data. Default: np.float64
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B read_mod(fname, fmt_type=<class \(aqnumpy.float64\(aq>)
+Reads a model file from SIR and assigns the value to the class.
+This class will then create the class with nx = ny = 1.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfname\fP (\fIstr\fP) – Name of the .mod file
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B read_results(task, filename, path, nx, ny)
+Reads all the errors from the inversion
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtask\fP (\fIdict\fP) – Dictionary with all the task folders, x and y positions
+.IP \(bu 2
+\fBfilename\fP (\fIstr\fP) – Filename of the file in each task folder
+.IP \(bu 2
+\fBpath\fP (\fIstr\fP) – Path where all the files are
+.IP \(bu 2
+\fBnx\fP (\fIint\fP) – how many results are read in x
+.IP \(bu 2
+\fBny\fP (\fIint\fP) – how many results are read in y
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B set_dim(nx, ny, nval)
+Sets the dimensions if no data is loaded yet
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBnx\fP (\fIint\fP) – Number of Models in x
+.IP \(bu 2
+\fBny\fP (\fIint\fP) – Number of Models in y
+.IP \(bu 2
+\fBnval\fP (\fIint\fP) – Number of values per physical parameter
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B set_limit(lim)
+Cuts the arrays to a specific log tau value (should only be used for plotting).
+.INDENT 7.0
+.TP
+.B Parameters
+\fBlim\fP (\fIint\fP) – log tau value to which the values are cut
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B write(fname, fmt_type=<class \(aqnumpy.float64\(aq>)
+Write data into a binary fortran file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfname\fP (\fIstr\fP) – File name
+.IP \(bu 2
+\fBfmt_type\fP (\fItype\fP) – type which is used to save it => numpy.float64 used
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B write_model(filename, x, y)
+Write a model with the given data in a specific format.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstr\fP) – Name of the saved file
+.IP \(bu 2
+\fBx\fP (\fIint\fP) – Integer determining which model
+.IP \(bu 2
+\fBy\fP (\fIint\fP) – Integer determining which model
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class profile_stk.Profile(nx=None, ny=None, nw=0)
+Class containing the models of a simulation
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBwave\fP (\fInump.array\fP) – Wavelength
+.IP \(bu 2
+\fBindx\fP (\fInumpy array\fP) – Index or line numbers in mode ‘MC’
+.IP \(bu 2
+\fBstki\fP (\fImxn numpy.array\fP) – Stokes Parameter I
+.IP \(bu 2
+\fBstkq\fP (\fImxn numpy.array\fP) – Stokes Parameter Q
+.IP \(bu 2
+\fBstku\fP (\fImxn numpy.array\fP) – Stokes Parameter U
+.IP \(bu 2
+\fBstkv\fP (\fImxn numpy.array\fP) – Stokes Parameter V
+.IP \(bu 2
+\fBnx\fP (\fIint\fP) – Dimension in x
+.IP \(bu 2
+\fBny\fP (\fIint\fP) – Dimension in y
+.IP \(bu 2
+\fBns\fP (\fIint\fP) – Number of Stokes Parameter
+.IP \(bu 2
+\fBnw\fP (\fIint\fP) – Dimension in wavelength
+.IP \(bu 2
+\fBload\fP (\fIbool\fP) – Data was loaded
+.IP \(bu 2
+\fBdata_cut\fP (\fIbool\fP) – Data was cut to the inversion range
+.UNINDENT
+.UNINDENT
+.sp
+Methods
+.TS
+box center;
+l|l.
+T{
+\fI\%cut_to_map\fP(Map)
+T}	T{
+Cut the data to a map [xmin, xmax, ymin, ymax]
+T}
+_
+T{
+\fI\%cut_to_wave\fP(range_wave)
+T}	T{
+Cut the data to the range in wavelengths
+T}
+_
+T{
+\fI\%read\fP(fname[, fmt_type])
+T}	T{
+Reads a binary profile file
+T}
+_
+T{
+\fI\%read_results\fP(task, filename, path, nx, ny)
+T}	T{
+Reads all the errors from the inversion
+T}
+_
+T{
+\fI\%read_results_MC\fP(path, tasks, filename)
+T}	T{
+Reads all the profiles for the simulation where indx is the line number
+T}
+_
+T{
+\fI\%set_dim\fP(nx, ny, nw)
+T}	T{
+Sets the dimensions if no data is loaded yet
+T}
+_
+T{
+\fI\%veil_correction\fP(nu[, Ic])
+T}	T{
+Correct the spectrum for the spectral veil by simly inverting the convoluted equation.
+T}
+_
+T{
+\fI\%write\fP(fname[, fmt_type])
+T}	T{
+Write data into a binary fortran file
+T}
+_
+T{
+\fI\%write_profile\fP(filename, x, y, Grid)
+T}	T{
+Writes data to profiles as described in the config file Note to call cut_to_wave, otherwise it writes the wrong profiles!
+T}
+_
+T{
+\fI\%write_profile_mc\fP(filename, x)
+T}	T{
+Writes data to SIR profiles as described in the config file
+T}
+.TE
+.INDENT 7.0
+.TP
+.B cut_to_map(Map)
+Cut the data to a map [xmin, xmax, ymin, ymax]
+.INDENT 7.0
+.TP
+.B Parameters
+\fBMap\fP (\fIlist\fP) – List with the ranges in pixel in x and y direction
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B cut_to_wave(range_wave)
+Cut the data to the range in wavelengths
+.INDENT 7.0
+.TP
+.B Parameters
+\fBrange_wave\fP (\fImultidimensional list\fP) – List with the ranges from the config file
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B read(fname, fmt_type=<class \(aqnumpy.float32\(aq>)
+Reads a binary profile file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfname\fP (\fIstr\fP) – Name of the binary file
+.IP \(bu 2
+\fBfmt_type\fP (\fItype\fP\fI, \fP\fIoptional\fP) – Type of the binary file. Default: np.float32
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B read_results(task, filename, path, nx, ny)
+Reads all the errors from the inversion
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtask\fP (\fIdict\fP) – Dictionary with all the task folders, x and y positions
+.IP \(bu 2
+\fBfilename\fP (\fIstr\fP) – Filename of the file in each task folder
+.IP \(bu 2
+\fBpath\fP (\fIstr\fP) – Path where all the files are
+.IP \(bu 2
+\fBnx\fP (\fIint\fP) – how many results are read in x
+.IP \(bu 2
+\fBny\fP (\fIint\fP) – how many results are read in y
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B read_results_MC(path, tasks, filename)
+Reads all the profiles for the simulation where indx is the line number
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Config information
+.IP \(bu 2
+\fBtasks\fP (\fIdict\fP) – Dictionary with the folder names
+.IP \(bu 2
+\fBType\fP (\fIstring\fP\fI, \fP\fIoptional\fP) – Indicating if synthesis or inversion. Default: ‘syn’
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B set_dim(nx, ny, nw)
+Sets the dimensions if no data is loaded yet
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBnx\fP (\fIint\fP) – Number of Models in x
+.IP \(bu 2
+\fBny\fP (\fIint\fP) – Number of Models in y
+.IP \(bu 2
+\fBnw\fP (\fIint\fP) – Number of wavelength points
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B veil_correction(nu, Ic=1.0)
+Correct the spectrum for the spectral veil by simly inverting
+the convoluted equation.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBnu\fP (\fIfloat\fP) – Optimized fraction of spectral veil
+.IP \(bu 2
+\fBIc\fP (\fIfloat\fP\fI, \fP\fIoptional\fP) – Continuum intensity of the FTS. Default is “1.0”.
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B write(fname, fmt_type=<class \(aqnumpy.float32\(aq>)
+Write data into a binary fortran file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfname\fP (\fIstr\fP) – File name
+.IP \(bu 2
+\fBfmt_type\fP (\fItype\fP\fI, \fP\fIoptional\fP) – type which is used to save it => numpy.float32 used. Default: np.float32
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B write_profile(filename, x, y, Grid)
+Writes data to profiles as described in the config file
+Note to call cut_to_wave, otherwise it writes the wrong profiles!
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstr\fP) – String containing the output path of the profile
+.IP \(bu 2
+\fBx\fP (\fIint\fP) – Position in x
+.IP \(bu 2
+\fBy\fP (\fIint\fP) – Position in y
+.IP \(bu 2
+\fBGrid\fP (\fIstr\fP) – Grid file
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B write_profile_mc(filename, x)
+Writes data to SIR profiles as described in the config file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBfilename\fP (\fIstr\fP) – String containing the output path of the profile
+.IP \(bu 2
+\fBx\fP (\fIint\fP) – Position in x
+.IP \(bu 2
+\fBy\fP (\fIint\fP) – Position in y
+.IP \(bu 2
+\fBGrid\fP (\fIstr\fP) – Grid file
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SS Inversion
+.sp
+Perform inversion of many profiles with simple parallelization using mpi4py.
+.INDENT 0.0
+.TP
+.B inversion.execute_inversion_1c(conf, task_folder, rank)
+Executes inversion and creates if needed random guesses. Make sure that
+when this function is entered, the os is in the right directory! This
+function can be used for the mode ‘MC’ and ‘1C’.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dictionary containing the configuration of the simulation
+.IP \(bu 2
+\fBtask_folder\fP (\fIdict\fP) – Dictionary with the folders and x and y positions
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Process Number
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Best chi2 value of the inversion(s)
+.TP
+.B Return type
+float
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B inversion.execute_inversion_2c(conf, task_folder, rank)
+Executes inversion and creates if needed random guesses. Make sure that
+when this function is entered, the os is in the right directory! This is
+used for the mode ‘2C’.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIDictionary\fP) – Dictionary containing the configuration of the simulation
+.IP \(bu 2
+\fBtask_folder\fP (\fIdict\fP) – Dictionary with the folders and x and y positions
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Process Number
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Best chi2 value of the inversion(s)
+.TP
+.B Return type
+float
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B inversion.inversion_1c(conf, comm, rank, size, MPI)
+Performs the inversion of all the models for the 1 component inversion.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dictionary with all information from the config file
+.IP \(bu 2
+\fBcomm\fP (\fIIntercomm\fP) – MPI communicator
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Number of actual process
+.IP \(bu 2
+\fBsize\fP (\fIint\fP) – Number of available processes
+.IP \(bu 2
+\fBMPI\fP (\fIlibrary\fP) – MPI library imported as ‘from mpi4py import MPI’
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B inversion.inversion_2c(conf, comm, rank, size, MPI)
+Performs the inversion of all the models for the 2 component inversion.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with all information from the config file
+.IP \(bu 2
+\fBcomm\fP (\fIIntercomm\fP) – MPI communicator
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Number of actual process
+.IP \(bu 2
+\fBsize\fP (\fIint\fP) – Number of available processes
+.IP \(bu 2
+\fBMPI\fP (\fIlibrary\fP) – MPI library imported as ‘from mpi4py import MPI’
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B inversion.inversion_mc(conf, comm, rank, size, MPI)
+Performs the inversion of all the models for the MC simulation.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with all information from the config file
+.IP \(bu 2
+\fBcomm\fP (\fIIntercomm\fP) – MPI communicator
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Number of actual process
+.IP \(bu 2
+\fBsize\fP (\fIint\fP) – Number of available processes
+.IP \(bu 2
+\fBMPI\fP (\fIlibrary\fP) – MPI library imported as ‘from mpi4py import MPI’
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B inversion.scatter_data(conf, comm, rank, size)
+Scatters the data equally into all the processes.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIDict\fP) – Config information
+.IP \(bu 2
+\fBcomm\fP (\fIIntercomm\fP) – MPI communicator
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Number of actual process
+.IP \(bu 2
+\fBsize\fP (\fIint\fP) – Number of available processes
+.UNINDENT
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fIProfile\fP) – Stokes Profiles used in each process
+.IP \(bu 2
+\fBout\fP (\fIdict\fP) – Dictionary with the folders, x and y positions for each process
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B inversion.scatter_data_mc(conf, comm, rank, size)
+Scatters the data equally into all the ranks for the MC simulation.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIDict\fP) – Config information
+.IP \(bu 2
+\fBcomm\fP (\fIIntercomm\fP) – MPI communicator
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Number of actual process
+.IP \(bu 2
+\fBsize\fP (\fIint\fP) – Number of available processes
+.UNINDENT
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fIProfile\fP) – Stokes Profiles for each process
+.IP \(bu 2
+\fBout\fP (\fIDict\fP) – Dictionary with all the folders, x and y position for each process
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.SS Preprocessing
+.sp
+These module provides functions to preprocess data such as merging, normalisation and correction for a spectral veil for groundbased telescopes.
+.SS Merging Data
+.sp
+Merging data downloaded from SDC to a data cube or Hinode data. It puts the 3D arrays into a 4D array to be easier
+accessible. In total, four different measurements can be put into 4 data cubes at the same time. For more measurements
+in the same folder, the script must be adapted.
+.SS Normalise Data
+.sp
+Normalises a data cube by computing the average intensity from a quiet sun region
+.SS Spectral veil correction
+.INDENT 0.0
+.TP
+.B Convolve the FTS data with a Gaussian and a constant value for the spectral veil using
+.sp
+.ce
+I = (1 \- \enu) [I_{FTS} * g(\elambda, \esigma)] + \enu I_c.
+.ce 0
+
+.UNINDENT
+.sp
+It computes the best fit parameter sigma and nu. Afterwards, it corrects the fits data.
+It writes the results into single files and into a corrected data cube.
+.INDENT 0.0
+.TP
+.B preprocess.argmin(x)
+Find the argument of the minimum in an multi\-dimensional
+array. It seems to be faster than any numpy\-built\-in
+function as shown in \X'tty: link https://stackoverflow.com/questions/30180241/numpy-get-the-column-and-row-index-of-the-minimum-value-of-a-2d-array'\fI\%https://stackoverflow.com/questions/30180241/numpy\-get\-the\-column\-and\-row\-index\-of\-the\-minimum\-value\-of\-a\-2d\-array\fP\X'tty: link'\&.
+.INDENT 7.0
+.TP
+.B Parameters
+\fBx\fP (\fImxn numpy array\fP) – Numpy array with the dataq
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fIint\fP) – First index
+.IP \(bu 2
+\fBout\fP (\fIint\fP) – Second index
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.chi2(y_fit, y_obs)
+Computes the merit\-function \echi^2\&. The used equation is 
+.sp
+.ce
+\echi^2 = \esum_i y_{\etext{fit}} \- y_{\etext{obs}}.
+.ce 0
+
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBy_obs\fP (\fInumpy array\fP) – Array with the observed values
+.IP \(bu 2
+\fBy_fit\fP (\fInumpy array\fP) – Array with computed values, e.g. from a fit
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – \echi^2\-value
+.TP
+.B Return type
+float
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.convective_blueshift(ll, I)
+Determines the shifted \elambda_0 due to convective blueshift.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBll\fP (\fIarray\fP) – Wavelengths in a given range
+.IP \(bu 2
+\fBI\fP (\fInumpy.ndarray\fP) – Stokes I in the given range
+.UNINDENT
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fIint\fP) – Index of the mean shifted spectral core
+.IP \(bu 2
+\fBout\fP (\fIfloat\fP) – Wavelength of the mean shifted spectral core
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.correct_spectral_veil(conf)
+.INDENT 7.0
+.TP
+.B Correct the spectral veil in the data. This function calls the following functions:
+.INDENT 7.0
+.IP \(bu 2
+argmin()
+.IP \(bu 2
+chi2()
+.IP \(bu 2
+gaussian()
+.IP \(bu 2
+convective_blueshift()
+.IP \(bu 2
+optimise_chi()
+.IP \(bu 2
+vac_to_air()
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B Parameters
+\fBconfig\fP (\fIdict\fP) – Dictionary with all the information from the config file
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.gaussian(x, mean=0, sigma=1, norm=True)
+Computes the value of a Gaussian at position x.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBx\fP (\fIfloat\fP) – Wavelength
+.IP \(bu 2
+\fBmean\fP (\fIfloat\fP) – Mean of the Gaussian
+.IP \(bu 2
+\fBsigma\fP (\fIfloat\fP) – Width of the Gaussian
+.IP \(bu 2
+\fBnorm\fP (\fIbool\fP\fI, \fP\fIoptional\fP) – Normalise by \efrac{1}{\esqrt(2\epi\esigma^2]}\&. Default is True
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Value in the Gaussian function at position x
+.TP
+.B Return type
+float
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.merge(conf, dir, ending)
+Merges data to a cube
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dictionary with the information from the config file
+.IP \(bu 2
+\fBdir\fP (\fIstr\fP) – Directory of the fits
+.IP \(bu 2
+\fBending\fP (\fIstr\fP) – Ending of the dataset (for GRIS data)
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.normalise(conf)
+Normalise the data cube by the given quiet sun range
+.INDENT 7.0
+.TP
+.B Parameters
+\fBconf\fP (\fIdict\fP) – Dictionary with the information from the config file
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.optimise_chi(nu, sigma, I, I_obs)
+Optimises two parameters by computing the chi2 merit function and finding
+the minima of the two parameters. The steps are the following
+.INDENT 7.0
+.INDENT 3.5
+.INDENT 0.0
+.IP 1. 3
+Compute the chi2 values
+.IP 2. 3
+Compute the discrete minima in each parameter
+.IP 3. 3
+Perform two polynomial fits to find the optimal minimum
+.IP 4. 3
+Compute the uncertainty of the fit
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBnu\fP (\fIarray\fP) – Array containing the nus which were used
+.IP \(bu 2
+\fBsigma\fP (\fIarray\fP) – Array containing the sigmas which were used
+.IP \(bu 2
+\fBI\fP (\fIndarray\fP) – Multidimensional array with the following format: I[nu, sigma, wavelength]. This are the fitted/computed data to be compared to the observed one
+.IP \(bu 2
+\fBI_obs\fP (\fIarray\fP) – Array containing the observed intensity
+.UNINDENT
+.TP
+.B Returns
+.INDENT 7.0
+.IP \(bu 2
+\fBout\fP (\fIfloat\fP) – Optimised sigma
+.IP \(bu 2
+\fBout\fP (\fIfloat\fP) – Uncertainty of the optimised sigma
+.IP \(bu 2
+\fBout\fP (\fIfloat\fP) – Optimised nu
+.IP \(bu 2
+\fBout\fP (\fIfloat\fP) – Uncertainty of the optimised nu
+.IP \(bu 2
+\fBout\fP (\fIndarray\fP) – Array containing all the chi2 for all possible combinations of nu and sigma
+.UNINDENT
+
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B preprocess.vac_to_air(wavelength, method=\(aqCiddor1996\(aq)
+Computes the wavelength from vacuum to air by using (Ciddor, 1996) eq. 1.
+.sp
+Note that this equation is only valid for wavelengths between 2300 A and 16900 A and
+it should be better in the infrared than Edlen.
+.sp
+\fBNote that the CO2 concentration is here assumed to be 450 ppm but it is most likely not constant in general.\fP
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBwavelength\fP (\fIfloat\fP) – Wavelength in Angstrom to be converted
+.IP \(bu 2
+\fBmethod\fP (\fIstr\fP\fI, \fP\fIoptional\fP) – Determines which method is used. Only the method “Ciddor1996” is implemented so far. Default: “Ciddor1996”
+.UNINDENT
+.TP
+.B Returns
+\fBout\fP – Corresponding wavelength in air in Angstrom
+.TP
+.B Return type
+float
+.UNINDENT
+.UNINDENT
+.SS Simulation
+.sp
+This module provides function to create Stokes Profiles by starting with the models. A typical procedure is the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP 1. 3
+Create Models with 2 or 3 Nodes
+.IP 2. 3
+Perform Synthesis of the Models
+.IP 3. 3
+Add Noise to the synthesised Stokes Profiles
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B simulation.add_noise(conf: dict, verbose: bool = True) -> None
+Adds noise to the Stokes Profiles
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Information from the config file
+.IP \(bu 2
+\fBverbose\fP (\fIbool\fP\fI, \fP\fIoptional\fP) – Print out status. Default: True
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B simulation.create_models(conf: dict) -> None
+Creates random models depending on the configuration
+.INDENT 7.0
+.TP
+.B Parameters
+\fBconfig\fP (\fIdict\fP) – Dictionary with the info from the config file
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B simulation.synthesis(conf, comm, rank, size, MPI)
+Performs the synthesis of all the models.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dcitionary with config information
+.IP \(bu 2
+\fBrank\fP (\fIint\fP) – Number of this process
+.IP \(bu 2
+\fBcomm\fP (\fIIntracomm\fP) – Communicator from MPI
+.IP \(bu 2
+\fBsize\fP (\fIint\fP) – Number of processes
+.IP \(bu 2
+\fBMPI\fP (\fIlibrary\fP) – Library MPI
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.SS Plotting
+.sp
+This list provides information for plotting results.
+.sp
+Analyses the quality of the Monte Carlo Simulation by computing the standard deviations
+.INDENT 0.0
+.TP
+.B analysis.analysis(conf)
+Analysis of a MC simulation by plotting the standard deviations
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Configurations
+.IP \(bu 2
+\fB\-save\fP (\fIstr\fP\fI, \fP\fIoptional\fP) – Additional save path. Default ‘./’.
+.IP \(bu 2
+\fB\-add\fP (\fIstr\fP\fI, \fP\fIoptional\fP) – Additional text in filenames.
+.IP \(bu 2
+\fB\-T\fP – Compare temperature in K
+.IP \(bu 2
+\fB\-B\fP – Compare magentic field strength in Gauss
+.IP \(bu 2
+\fB\-vlos\fP – Compare line of sight velocity in cm/s
+.IP \(bu 2
+\fB\-inc\fP – Compare inclination by subtracting in deg
+.IP \(bu 2
+\fB\-azi\fP – Compare azimuth by adding in deg
+.IP \(bu 2
+\fB\-title\fP (\fI[\fP\fIstr\fP\fI]\fP) – Title of the 4 figures plot
+.IP \(bu 2
+\fB\-xtitle\fP (\fI[\fP\fIfloat\fP\fI]\fP) – x position of title in Stokes plot
+.IP \(bu 2
+\fB\-max\fP – Plot the maximum differences
+.IP \(bu 2
+\fB\-vertical\fP – Plot the last plot vertical
+.IP \(bu 2
+\fB\-v\fP – Print out tables with values at different log taus.
+.IP \(bu 2
+\fBexecuted.\fP (\fIThere are optional options which change the plots. Additional parameters given as an argument when the script is\fP)
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.sp
+Compares two simulations by computing and plotting the chi2 value as well as computing the mean value.
+.INDENT 0.0
+.TP
+.B analysis_compare_chi2.analysis_compare_chi2(conf1, conf2)
+Compares the chi2 of two simulations for different physical parameters.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf1\fP (\fIdict\fP) – Configuration for simulation 1
+.IP \(bu 2
+\fBconf2\fP (\fIdict\fP) – Configuration for simulation 2
+.IP \(bu 2
+\fBexecuted.\fP (\fIAdditional parameters given as an argument when the script is\fP)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP (\fI\-add2\fP) – Additional save path. Default: ‘./’
+.IP \(bu 2
+\fBoptional\fP – Additional save path. Default: ‘./’
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in filenames
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Add label text
+.IP \(bu 2
+\fB\-T\fP – Plot temperature in K
+.IP \(bu 2
+\fB\-B\fP – Plot magentic field strength in Gauss
+.IP \(bu 2
+\fB\-vlos\fP – Plot line of sight velocity in cm/s
+.IP \(bu 2
+\fB\-inc\fP – Plot inclination by subtracting in deg
+.IP \(bu 2
+\fB\-azi\fP – Plot azimuth by adding in deg
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in label for model 1
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in label for model 2
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.sp
+Analyses the quality of multiple Monte Carlo Simulations
+.INDENT 0.0
+.TP
+.B analysis_multiple.analysis_multiple(confs, labels)
+Analysis multiple simulations and puts it in one plot
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfs\fP (\fIlist\fP) – List of dictionaries with the configs
+.IP \(bu 2
+\fBlabels\fP (\fIlist\fP) – List of strings with the labels for each plot
+.IP \(bu 2
+\fBexecuted.\fP (\fIThere are optional options which change the plots. Additional parameters given as an argument when the script is\fP)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP (\fI\-title\fP) – Additional save path. Default ‘./’
+.IP \(bu 2
+\fBoptional\fP – Additional save path. Default ‘./’
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in filenames
+.IP \(bu 2
+\fB\-T\fP – Compare temperature in K
+.IP \(bu 2
+\fB\-B\fP – Compare magentic field strength in Gauss
+.IP \(bu 2
+\fB\-vlos\fP – Compare line of sight velocity in km/s
+.IP \(bu 2
+\fB\-inc\fP – Compare inclination by subtracting in deg
+.IP \(bu 2
+\fB\-azi\fP – Compare azimuth by adding in deg
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title of the 4 figures plot
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP (\fI\-xtitle\fP) – x position of title in Stokes plot
+.IP \(bu 2
+\fB\-limitT\fP – Set y limits in T as ‘ymin,ymax’
+.IP \(bu 2
+\fB\-vertical\fP – Plot the last plot vertical
+.IP \(bu 2
+\fB\-v\fP – print out tables with values at different log taus.
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.sp
+Notes
+.sp
+Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.
+.UNINDENT
+.sp
+Plots the result of the SIR inversion
+.INDENT 0.0
+.TP
+.B Ic_test.Ic_test(conf, num)
+Plots Ic fit vs I obs in a plot. It uses the first element in the wavelength range as continuum
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dict. with all the information from the config
+.IP \(bu 2
+\fBnum\fP (\fIint\fP) – determines which range is used (1 = 1st line in grid, etc.)
+.IP \(bu 2
+\fBexecuted.\fP (\fIAdditional parameters given as an argument when the script is\fP)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP (\fI\-title\fP) – Rel. path to the spectral veil corrected data if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Stokes result if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional save path. Default ‘./’.
+.IP \(bu 2
+\fBoptional\fP – Additional save path. Default ‘./’.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in filenames.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in plot.
+.IP \(bu 2
+\fB[\fP\fBint\fP\fB]\fP (\fI\-num\fP) – Determines which range is used (1 = 1st line in grid, etc.) if not the first one is wanted.
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.sp
+Plots the result of the SIR inversion
+.INDENT 0.0
+.TP
+.B result.result_1C(conf, wave, tau, waveV=\-1)
+Plots the result of the inversion 1C
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – Dict. with all the information from the config
+.IP \(bu 2
+\fBwave\fP (\fIfloat\fP) – Wavelength in A where the Stokes vector is plottet
+.IP \(bu 2
+\fBtau\fP (\fIfloat\fP) – log tau value where the model is plotted
+.IP \(bu 2
+\fBwaveV\fP (\fIfloat\fP\fI, \fP\fIoptional\fP) – Wavelength for Stokes V in A (\-1 not used), Default: \-1
+.IP \(bu 2
+\fBexecuted.\fP (\fIAdditional parameters given as an argument when the script is\fP)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP (\fI\-title3\fP) – Rel. path to the spectral veil corrected data if standard labelling is not used, optional.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Stokes result if standard labelling is not used, optional.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Models of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB\-errors\fP – Rel. path to the Errors of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB\-chi\fP – Rel. path to the chi2 file of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional save path. Default ‘./’.
+.IP \(bu 2
+\fBoptional\fP – Additional save path. Default ‘./’.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in filenames
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Add label text
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Result Stokes plot
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Obs. Stokes plot
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Model 1 plot
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP (\fI\-logI\fP) – Changing the x position of the title
+.IP \(bu 2
+\fB\-T\fP – Plot temperature in K
+.IP \(bu 2
+\fB\-Pe\fP – Plot electron pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-vmicro\fP – Plot microturbulence in cm/s
+.IP \(bu 2
+\fB\-B\fP – Plot magentic field strength in Gauss
+.IP \(bu 2
+\fB\-vlos\fP – Plot line of sight velocity in km/s
+.IP \(bu 2
+\fB\-gamma\fP – Plot inclination by subtracting in deg
+.IP \(bu 2
+\fB\-phi\fP – Plot azimuth by adding in deg
+.IP \(bu 2
+\fB\-z\fP – Plot real height in km
+.IP \(bu 2
+\fB\-Pg\fP – Plot gas pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-rho\fP – Plot density
+.IP \(bu 2
+\fB\-vertical\fP – Plot spectra vertically
+.IP \(bu 2
+\fB\-chi2\fP – Plot chi2
+.IP \(bu 2
+\fB\-plot_chi2\fP – Plot chi2 in the 4 subplots plot
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Stokes Q in another wavelength position in A
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Stokes U in another wavelength position in A
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Stokes V in another wavelength position in A
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Temperature at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Magnetic Field at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot LoS Velocity at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Inclination at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP (\fI\-limitI\fP) – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fBfloat\fP – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fBfloat\fP – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in the temperature.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in the temperature.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in the magnetic field.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in the magnetic field.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in chi2.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in chi2.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in Stokes I.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in Stokes I.
+.IP \(bu 2
+\fB\-arc\fP – Print x and y axis in arcseconds
+.IP \(bu 2
+\fB\-flipx\fP – Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B result.result_2C(conf, wave, tau, Type=\(aq_1\(aq, plot_stokes=True)
+Plots the result of the inversion for 2C
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – Dict. with all the information from the config
+.IP \(bu 2
+\fBwave\fP (\fIfloat\fP) – Wavelength in A where the Stokes vector is plottet
+.IP \(bu 2
+\fBtau\fP (\fIfloat\fP) – log tau value where the model is plotted
+.IP \(bu 2
+\fBType\fP (\fIstring\fP\fI, \fP\fIoptional\fP) – prefix for determining which model is used. Default: ‘_1’
+.IP \(bu 2
+\fBplot_stokes\fP (\fIbool\fP\fI, \fP\fIoptional\fP) – Plot the stokes vector. Default: True
+.IP \(bu 2
+\fBexecuted.\fP (\fIAdditional parameters given as an argument when the script is\fP)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP (\fI\-title4\fP) – Rel. path to the spectral veil corrected data if standard labelling is not used, optional.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Stokes result if standard labelling is not used, optional.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Models 1 of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Models 2 of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB\-errors\fP – Rel. path to the Errors of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB\-chi\fP – Rel. path to the chi2 file of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional save path. Default ‘./’.
+.IP \(bu 2
+\fBoptional\fP – Additional save path. Default ‘./’.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in filenames
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Add label text
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Result Stokes plot
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Obs. Stokes plot
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Model 1 plot
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Model 2 plot with 4 plots
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP (\fI\-logI\fP) – Changing the x position of the title
+.IP \(bu 2
+\fB\-T\fP – Plot temperature in K
+.IP \(bu 2
+\fB\-Pe\fP – Plot electron pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-vmicro\fP – Plot microturbulence in cm/s
+.IP \(bu 2
+\fB\-B\fP – Plot magentic field strength in Gauss
+.IP \(bu 2
+\fB\-vlos\fP – Plot line of sight velocity in km/s
+.IP \(bu 2
+\fB\-gamma\fP – Plot inclination by subtracting in deg
+.IP \(bu 2
+\fB\-phi\fP – Plot azimuth by adding in deg
+.IP \(bu 2
+\fB\-z\fP – Plot real height in km
+.IP \(bu 2
+\fB\-Pg\fP – Plot gas pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-rho\fP – Plot density
+.IP \(bu 2
+\fB\-vertical\fP – Plot spectra vertically
+.IP \(bu 2
+\fB\-chi2\fP – Plot chi2
+.IP \(bu 2
+\fB\-fill\fP – Plot the filling factor
+.IP \(bu 2
+\fB\-plot_chi2\fP – Plot chi2 in the 4 subplots plot
+.IP \(bu 2
+\fB\-plot_fill\fP – Plot filling factor in the 4 subplots plot
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Stokes Q in another wavelength position in A
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Stokes U in another wavelength position in A
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Stokes V in another wavelength position in A
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Temperature at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Magnetic Field at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot LoS Velocity at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP\fB]\fP – Plot Inclination at this log tau.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP (\fI\-limitI\fP) – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fBfloat\fP – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fBfloat\fP – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Limit in the x and y plot as a list xmin,xmax,ymin,xmax
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in the temperature.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in the temperature.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in the magnetic field.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in the magnetic field.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in chi2.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in chi2.
+.IP \(bu 2
+\fB[\fP\fBfloat\fP – Set the limit for the colorbar in Stokes I.
+.IP \(bu 2
+\fBfloat\fP\fB]\fP – Set the limit for the colorbar in Stokes I.
+.IP \(bu 2
+\fB\-arc\fP – Print x and y axis in arcseconds
+.IP \(bu 2
+\fB\-flipx\fP – Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B visualizer.visualizer_1C(conf, wave)
+Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconfig\fP (\fIdict\fP) – All the information from the config file
+.IP \(bu 2
+\fBwave\fP (\fIfloat\fP) – Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map
+.IP \(bu 2
+\fBexecuted.\fP (\fIAdditional parameters given as an argument when the script is\fP)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP (\fI\-title\fP) – Rel. path to the spectral veil corrected data if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – “Rel. path to the Stokes result if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Models of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the chi2 file of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional save path. Default: ‘./’
+.IP \(bu 2
+\fBoptional\fP – Additional save path. Default: ‘./’
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in filenames
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Add label text
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Stokes plot
+.IP \(bu 2
+\fB\-T\fP – Plot temperature in K
+.IP \(bu 2
+\fB\-Pe\fP – Plot electron pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-vmicro\fP – Plot microturbulence in cm/s
+.IP \(bu 2
+\fB\-B\fP – Plot magentic field strength in Gauss
+.IP \(bu 2
+\fB\-vlos\fP – Plot line of sight velocity in km/s
+.IP \(bu 2
+\fB\-inc\fP – Plot inclination in deg
+.IP \(bu 2
+\fB\-azi\fP – Plot azimuth in deg
+.IP \(bu 2
+\fB\-z\fP – Plot real height in km
+.IP \(bu 2
+\fB\-Pg\fP – Plot gas pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-rho\fP – Plot density
+.IP \(bu 2
+\fB\-vertical\fP – Plot spectra vertically
+.IP \(bu 2
+\fB\-chi2\fP – Plot chi2
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B visualizer.visualizer_2C(conf, wave)
+Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBconf\fP (\fIdict\fP) – All the information from the config file
+.IP \(bu 2
+\fBwave\fP (\fIfloat\fP) – Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map
+.IP \(bu 2
+\fBexecuted.\fP (\fIAdditional parameters given as an argument when the script is\fP)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP (\fI\-title\fP) – Rel. path to the spectral veil corrected data if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – “Rel. path to the Stokes result if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the Models of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Rel. path to the chi2 file of the inversion if standard labelling is not used.
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional save path (optional, default ‘./’)
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Additional text in filenames
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Add label text
+.IP \(bu 2
+\fB[\fP\fBstr\fP\fB]\fP – Title in Stokes plot
+.IP \(bu 2
+\fB\-T\fP – Plot temperature in K
+.IP \(bu 2
+\fB\-Pe\fP – Plot electron pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-vmicro\fP – Plot microturbulence in cm/s
+.IP \(bu 2
+\fB\-B\fP – Plot magentic field strength in Gauss
+.IP \(bu 2
+\fB\-vlos\fP – Plot line of sight velocity in km/s
+.IP \(bu 2
+\fB\-inc\fP – Plot inclination in deg
+.IP \(bu 2
+\fB\-azi\fP – Plot azimuth in deg
+.IP \(bu 2
+\fB\-z\fP – Plot real height in km
+.IP \(bu 2
+\fB\-Pg\fP – Plot gas pressure in dyn/cm^2
+.IP \(bu 2
+\fB\-rho\fP – Plot density
+.IP \(bu 2
+\fB\-vertical\fP – Plot spectra vertically
+.IP \(bu 2
+\fB\-chi2\fP – Plot chi2
+.UNINDENT
+.TP
+.B Return type
+None
+.UNINDENT
+.UNINDENT
+.SS API
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #module-create_config'\fI\%create_config\fP\X'tty: link'
+T}	T{
+Create a config file as expected for the inversion
+T}
+_
+T{
+\X'tty: link #module-sir'\fI\%sir\fP\X'tty: link'
+T}	T{
+sir
+T}
+_
+T{
+\X'tty: link #module-model_atm'\fI\%model_atm\fP\X'tty: link'
+T}	T{
+Model
+T}
+_
+T{
+\X'tty: link #module-profile_stk'\fI\%profile_stk\fP\X'tty: link'
+T}	T{
+Profile
+T}
+_
+T{
+\X'tty: link #module-preprocess'\fI\%preprocess\fP\X'tty: link'
+T}	T{
+Preprocessing
+T}
+_
+T{
+\X'tty: link #module-visualizer'\fI\%visualizer\fP\X'tty: link'
+T}	T{
+T}
+.TE
+.SS create_config
+.sp
+Create a config file as expected for the inversion
+.sp
+Functions
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #create_config.config_1C'\fI\%config_1C\fP\X'tty: link'()
+T}	T{
+Creates a config file for the 1 Component Inversion by asking questions.
+T}
+_
+T{
+\X'tty: link #create_config.config_2C'\fI\%config_2C\fP\X'tty: link'()
+T}	T{
+Creates a config file for the 2 Components Inversion by asking questions.
+T}
+_
+T{
+\X'tty: link #create_config.config_MC'\fI\%config_MC\fP\X'tty: link'()
+T}	T{
+Creates a config file for the Monte\-Carlo simulation by asking questions.
+T}
+_
+T{
+\fBhelp\fP()
+T}	T{
+T}
+.TE
+.SS sir
+.SS sir
+.sp
+Library for repeating functions for analyzing and/or plotting SIR data
+.sp
+Functions
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #sir.list_to_string'\fI\%list_to_string\fP\X'tty: link'(temp[, let])
+T}	T{
+Convert a list to a string
+T}
+_
+T{
+\X'tty: link #sir.option'\fI\%option\fP\X'tty: link'(text1, text2)
+T}	T{
+Print an option in a help page
+T}
+_
+T{
+\X'tty: link #sir.read_chi2'\fI\%read_chi2\fP\X'tty: link'(filename[, task])
+T}	T{
+Reads the last chi value in a inv.chi file
+T}
+_
+T{
+\X'tty: link #sir.read_chi2s'\fI\%read_chi2s\fP\X'tty: link'(conf, tasks)
+T}	T{
+Reads all the chi2 from the inversion
+T}
+_
+T{
+\X'tty: link #sir.read_config'\fI\%read_config\fP\X'tty: link'(filename[, check, change_config])
+T}	T{
+Reads a config file for the inversion
+T}
+_
+T{
+\X'tty: link #sir.read_control'\fI\%read_control\fP\X'tty: link'(filename)
+T}	T{
+Reads a control file in the scheme SIR expects it.
+T}
+_
+T{
+\X'tty: link #sir.read_grid'\fI\%read_grid\fP\X'tty: link'(filename)
+T}	T{
+Reads the grid file
+T}
+_
+T{
+\X'tty: link #sir.read_line'\fI\%read_line\fP\X'tty: link'(filename)
+T}	T{
+Reads the line file
+T}
+_
+T{
+\X'tty: link #sir.read_model'\fI\%read_model\fP\X'tty: link'(filename)
+T}	T{
+Reads a model file and returns all parameters
+T}
+_
+T{
+\X'tty: link #sir.read_profile'\fI\%read_profile\fP\X'tty: link'(filename[, num])
+T}	T{
+Reads the first LINE data from a profile computed by SIR
+T}
+_
+T{
+\X'tty: link #sir.write_config'\fI\%write_config\fP\X'tty: link'(File, conf)
+T}	T{
+Writes a config file with the information provided as a dictionary for the mode 1C
+T}
+_
+T{
+\X'tty: link #sir.write_config_1c'\fI\%write_config_1c\fP\X'tty: link'(File, conf)
+T}	T{
+Writes a config file with the information provided as a dictionary for the mode 1C
+T}
+_
+T{
+\X'tty: link #sir.write_config_2c'\fI\%write_config_2c\fP\X'tty: link'(File, conf)
+T}	T{
+Writes a config file with the information provided as a dictionary
+T}
+_
+T{
+\X'tty: link #sir.write_config_mc'\fI\%write_config_mc\fP\X'tty: link'(File, conf)
+T}	T{
+Writes a config file with the information provided as a dictionary
+T}
+_
+T{
+\X'tty: link #sir.write_control_1c'\fI\%write_control_1c\fP\X'tty: link'(filename, conf)
+T}	T{
+Writes a control file in the scheme SIR expects it.
+T}
+_
+T{
+\X'tty: link #sir.write_control_2c'\fI\%write_control_2c\fP\X'tty: link'(filename, conf)
+T}	T{
+Writes a control file in the scheme SIR expects it.
+T}
+_
+T{
+\X'tty: link #sir.write_control_mc'\fI\%write_control_mc\fP\X'tty: link'(filename, conf[, Type])
+T}	T{
+Writes a control file in the scheme SIR expects it.
+T}
+_
+T{
+\X'tty: link #sir.write_grid'\fI\%write_grid\fP\X'tty: link'(conf, waves[, filename])
+T}	T{
+Writes the Grid file with data from the config file
+T}
+_
+T{
+\X'tty: link #sir.write_grid_mc'\fI\%write_grid_mc\fP\X'tty: link'(conf[, filename])
+T}	T{
+Writes the Grid file with data from the config file
+T}
+_
+T{
+\X'tty: link #sir.write_model'\fI\%write_model\fP\X'tty: link'(filename, Header, log_tau, T, ...)
+T}	T{
+Write a model with the given data in a specific format.
+T}
+_
+T{
+\X'tty: link #sir.write_profile'\fI\%write_profile\fP\X'tty: link'(filename, profiles, pos)
+T}	T{
+Write a profile for a specific model number to a file
+T}
+.TE
+.SS model_atm
+.SS Model
+.sp
+Class Model with all the tools to read and write the models. The class contains all the information from the model.
+.sp
+Functions
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #model_atm.read_model'\fI\%read_model\fP\X'tty: link'(filename)
+T}	T{
+T}
+.TE
+.sp
+Classes
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #model_atm.Model'\fI\%Model\fP\X'tty: link'([nx, ny, nval])
+T}	T{
+Class containing the models of a simulation
+T}
+.TE
+.SS profile_stk
+.SS Profile
+.sp
+Class Profile with all the tools to read and write the Stokes Profiles.
+.sp
+Functions
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #profile_stk.read_profile'\fI\%read_profile\fP\X'tty: link'(file)
+T}	T{
+Reads a profile and returns a class
+T}
+.TE
+.sp
+Classes
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #profile_stk.Profile'\fI\%Profile\fP\X'tty: link'([nx, ny, nw])
+T}	T{
+Class containing the models of a simulation
+T}
+.TE
+.SS preprocess
+.SS Preprocessing
+.sp
+These module provides functions to preprocess data such as merging, normalisation and correction for a spectral veil for groundbased telescopes.
+.SS Merging Data
+.sp
+Merging data downloaded from SDC to a data cube or Hinode data. It puts the 3D arrays into a 4D array to be easier
+accessible. In total, four different measurements can be put into 4 data cubes at the same time. For more measurements
+in the same folder, the script must be adapted.
+.SS Normalise Data
+.sp
+Normalises a data cube by computing the average intensity from a quiet sun region
+.SS Spectral veil correction
+.INDENT 0.0
+.TP
+.B Convolve the FTS data with a Gaussian and a constant value for the spectral veil using
+.sp
+.ce
+I = (1 \- \enu) [I_{FTS} * g(\elambda, \esigma)] + \enu I_c.
+.ce 0
+
+.UNINDENT
+.sp
+It computes the best fit parameter sigma and nu. Afterwards, it corrects the fits data.
+It writes the results into single files and into a corrected data cube.
+.sp
+Functions
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #preprocess.argmin'\fI\%argmin\fP\X'tty: link'(x)
+T}	T{
+Find the argument of the minimum in an multi\-dimensional array.
+T}
+_
+T{
+\X'tty: link #preprocess.chi2'\fI\%chi2\fP\X'tty: link'(y_fit, y_obs)
+T}	T{
+Computes the merit\-function $chi^2$.
+T}
+_
+T{
+\X'tty: link #preprocess.convective_blueshift'\fI\%convective_blueshift\fP\X'tty: link'(ll, I)
+T}	T{
+Determines the shifted $lambda_0$ due to convective blueshift.
+T}
+_
+T{
+\X'tty: link #preprocess.correct_spectral_veil'\fI\%correct_spectral_veil\fP\X'tty: link'(conf)
+T}	T{
+Correct the spectral veil in the data. This function calls the following functions:
+T}
+_
+T{
+\X'tty: link #preprocess.gaussian'\fI\%gaussian\fP\X'tty: link'(x[, mean, sigma, norm])
+T}	T{
+Computes the value of a Gaussian at position x.
+T}
+_
+T{
+\X'tty: link #preprocess.merge'\fI\%merge\fP\X'tty: link'(conf, dir, ending)
+T}	T{
+Merges data to a cube
+T}
+_
+T{
+\X'tty: link #preprocess.normalise'\fI\%normalise\fP\X'tty: link'(conf)
+T}	T{
+Normalise the data cube by the given quiet sun range
+T}
+_
+T{
+\X'tty: link #preprocess.optimise_chi'\fI\%optimise_chi\fP\X'tty: link'(nu, sigma, I, I_obs)
+T}	T{
+Optimises two parameters by computing the chi2 merit function and finding the minima of the two parameters.
+T}
+_
+T{
+\X'tty: link #preprocess.vac_to_air'\fI\%vac_to_air\fP\X'tty: link'(wavelength[, method])
+T}	T{
+Computes the wavelength from vacuum to air by using (Ciddor, 1996) eq.
+T}
+.TE
+.SS visualizer
+.sp
+Functions
+.TS
+box center;
+l|l.
+T{
+\X'tty: link #visualizer.visualizer_1C'\fI\%visualizer_1C\fP\X'tty: link'(conf, wave)
+T}	T{
+Plots the Stokes vector with obs.
+T}
+_
+T{
+\X'tty: link #visualizer.visualizer_2C'\fI\%visualizer_2C\fP\X'tty: link'(conf, wave)
+T}	T{
+Plots the Stokes vector with obs.
+T}
+.TE
+.SH AUTHOR
+Mike Moser
+.SH COPYRIGHT
+2024, Mike
+.\" Generated by docutils manpage writer.
+.

@@ -324,6 +324,7 @@ class Model:
 				self.z = np.zeros(shape=self.T.shape)
 				self.Pg = np.zeros(shape=self.T.shape)
 				self.rho = np.zeros(shape=self.T.shape)
+				self.full = False
 
 			self.load = True
 

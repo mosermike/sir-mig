@@ -657,9 +657,10 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	if rank == 0:
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
-			if not exists(os.path.join(path, conf['psf'])):
-				import obs
-				obs.write_psf(conf, os.path.join(path, conf['psf']))
+			if "gauss" in conf['psf']:
+				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")))
+			else:
+				shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 	
 	# Create guess from npy file if wanted
 	if conf["guess"] != '':
@@ -741,7 +742,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 				
 		# Copy stuff for the inversion
 		if conf['psf'] != '':
-			sir_files = [d.inv_trol_file, model, "sir.x", line_file, d.Grid, abundance_file, conf['psf']]
+			sir_files = [d.inv_trol_file, model, "sir.x", line_file, d.Grid, abundance_file, d.psf]
 		else:
 			sir_files = [d.inv_trol_file, model, "sir.x", line_file, d.Grid, abundance_file]
 		for sir_file in sir_files:
@@ -1138,9 +1139,10 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	if rank == 0:
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
-			if not exists(os.path.join(path,conf['psf'])):
-				import obs
-				obs.write_psf(conf, os.path.join(path,conf['psf']))
+			if "gauss" in conf['psf']:
+				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")))
+			else:
+				shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 
 	# Create guess from npy file if wanted
 	if conf["guess1"] != '':
@@ -1261,7 +1263,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		
 		# Copy stuff for the inversion
 		if conf['psf'] != '':
-			sir_files = [d.inv_trol_file, model1, model2, "sir.x", line_file, d.Grid, abundance_file, conf['psf']]
+			sir_files = [d.inv_trol_file, model1, model2, "sir.x", line_file, d.Grid, abundance_file, d.psf]
 		else:
 			sir_files = [d.inv_trol_file, model1, model2, "sir.x", line_file, d.Grid, abundance_file]
 		for sir_file in sir_files:

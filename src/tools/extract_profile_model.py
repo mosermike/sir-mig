@@ -71,13 +71,13 @@ def extract_profile_model_1C(conf, x, y):
 		sys.exit(1)
 
 	# Load data
-	obs1 = p.Profile(os.path.join(path, conf['cube_inv']))
+	obs1 = p.read_profile(os.path.join(path, conf['cube_inv']))
 	obs1.cut_to_wave(conf["range_wave"]) # Cut the values to data used in the inversion
 
-	inv = p.Profile(os.path.join(path, conf['inv_out']) + d.end_stokes)
-	mod = m.Model(filename=os.path.join(path,conf['inv_out'] + d.end_models))
-	guess = m.Model(filename=os.path.join(path,d.best_guess.replace(".mod",".bin")))
-	err = m.Model(filename=os.path.join(path,conf['inv_out'] + d.end_errors))
+	inv = p.read_profile(os.path.join(path, conf['inv_out']) + d.end_stokes)
+	mod = m.read_model(filename=os.path.join(path,conf['inv_out'] + d.end_models))
+	guess = m.read_model(filename=os.path.join(path,d.best_guess.replace(".mod",".bin")))
+	err = m.read_model(filename=os.path.join(path,conf['inv_out'] + d.end_errors))
 
 	# Change to the reduced Map
 	x = x - Map[0]
@@ -87,7 +87,7 @@ def extract_profile_model_1C(conf, x, y):
 	obs1.write_profile(savepath + "profile" + add + ".per", x + Map[0], y + Map[2], d.Grid)
 	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, d.Grid)
 	mod.write_model(savepath + "model_result" + add + ".mod", x, y)
-	guess.write_model(savepath + conf["model"].replace(".mod","") + add + ".mod", x, y)
+	guess.write_model(savepath + d.guess.replace(".mod","") + add + ".mod", x, y)
 	err.write_model(savepath + "model_result" + add + ".err", x, y)
 	
 	# Copy stuff for the inversion

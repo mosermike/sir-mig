@@ -557,8 +557,8 @@ def correct_spectral_veil(conf):
 	if d.plt_lib != "":
 		plt.style.use(d.plt_lib)
 	else:
-		if exists(dirname + '/mml.mplstyle'):
-			plt.style.use(dirname + '/mml.mplstyle')
+		if exists(dirname + '/plots/mml.mplstyle'):
+			plt.style.use(dirname + '/plots/mml.mplstyle')
 			# if dvipng is not installed, dont use latex
 			if which('dvipng') is None:
 				plt.rcParams["text.usetex"] = "False"

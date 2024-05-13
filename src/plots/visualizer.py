@@ -461,7 +461,7 @@ def visualizer_1C(conf, wave):
 	Other Parameters
 	----------------
 	Additional parameters given as an argument when the script is executed.
-	
+
 	-data [str]
 		Rel. path to the spectral veil corrected data if standard labelling is not used.
 	-stokes [str]

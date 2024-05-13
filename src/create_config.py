@@ -263,7 +263,7 @@ def config_1C():
 	else:
 		random_pars = ''
 	guess		= input ("Take npy file as initial guess? Write name of the file, if used: ")
-	psf			 = input ("Filename of psf (.dat file, if it does not exist => Compute from spectral veil corr., blank = not used): ")
+	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used): ")
 
 	weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
 	nodes_temp	= input ("Nodes in temperature  (as list)        : ")
@@ -343,7 +343,7 @@ def config_1C():
 		f.write(f"line : {line} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")
 		f.write(f"guess : {guess} # Use a npy file as initial guesses, blank use base model\n")
-		f.write(f"psf : {psf} # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used\n")
+		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
 		f.write(f"# \n")
@@ -422,7 +422,7 @@ def config_2C():
 		fill = ''
 	guess1		= input ("Take bin file as initial guess for model 1? Write name of the file, if used: ")
 	guess2		= input ("Take bin file as initial guess for model 2? Write name of the file, if used: ")
-	psf			= input ("Filename of psf (.dat file, if it does not exist => Compute from spectral veil corr., blank = not used): ")
+	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used: ")
 	fill		= input ("Filling factor for the two models? Seperated by a ',': ")
 
 	weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
@@ -525,7 +525,7 @@ def config_2C():
 		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")
 		f.write(f"guess1 : {guess1} # Use a npy file as initial guesses, blank use base model 1\n")
 		f.write(f"guess2 : {guess2} # Use a npy file as initial guesses, blank use base model 2\n")
-		f.write(f"psf : {psf} # .dat file (if it does not exist, computed from spectral veil parameter), blank=not used\n")
+		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
 		f.write(f"# \n")
