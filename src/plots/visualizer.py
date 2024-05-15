@@ -244,7 +244,7 @@ def _move_figure(position, width = 10, height = 10, Monitor = "1"):
 		elif position == "bottom":
 			mgr.window.setGeometry(int(px[0]/2-aw/2),int(py), aw,ah)
 		elif position == "left":
-			mgr.window.setGeometry(0, 0, int(px[1]/2),py)
+			mgr.window.setGeometry(int(px[0]), 0, int(px[1]/2),py)
 		elif position == "right":
 			mgr.window.setGeometry(int(px[0]), int(py/2+ah/2), aw,ah)
 		elif position == "right1":
