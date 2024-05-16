@@ -43,7 +43,8 @@ def config_MC():
 	num	= input("Number of models: ")
 	cycles = input("Cycles: ")
 	model = input("Base model: ")
-	model_nodes	= input("Create Models with 2 or 3 nodes: ")
+	model_nodes	= input("Create Models with 1, 2 or 3 nodes: ")
+	
 	model_out = input("Name of the npy file with the models [models_real.npy]: ")
 	model_pars = input("Randomize these parameters for creating models [B,T,vlos,gamma]: ")
 	syn_out	= input("Synthesis output [synthesis_profiles.npy]: ")
@@ -95,6 +96,8 @@ def config_MC():
 	lim_gamma = input("Limits for randomising the inclination in deg            [0,180]: ")
 	lim_phi = input("Limits for randomising the azimuth in deg                [0,180]: ")
 
+	if model_nodes == 1:
+		print("With 1 node, the part after ';' can be ignored as it is not used in this setting.")
 	# For 3 Nodes
 	create_B = input("Limits for the magnetic field in G for creating models              [500,4000;0,1000]: ")
 	create_vlos = input("Limits for the line-of-sight vel. in cm/s for creating models        [-3e5,3e5;-3e5,3e5]: ")
@@ -169,7 +172,7 @@ def config_MC():
 		f.write(f"#\n")
 		f.write(f"# Creating Models and Synthesis\n")
 		f.write(f"#\n")
-		f.write(f"model_nodes : {model_nodes} # Create models with 2 or 3 nodes\n")
+		f.write(f"model_nodes : {model_nodes} # Create models with 1, 2 or 3 nodes\n")
 		f.write(f"model_out : {model_out} # Output file of the created models as npy\n")
 		f.write(f"syn_out : {syn_out} # Output of the synthesis profiles and models\n")
 		f.write(f"noise_out : {noise_out} # Output of the noise profiles as npy\n")

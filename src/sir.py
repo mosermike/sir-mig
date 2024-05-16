@@ -716,7 +716,7 @@ def write_config_mc(File, conf):
 		f.write(f"#\n")
 		f.write(f"# Creating Models and Synthesis\n")
 		f.write(f"#\n")
-		f.write(f"model_nodes : {conf['model_nodes']} # Create models with 2 or 3 nodes\n")
+		f.write(f"model_nodes : {conf['model_nodes']} # Create models with 1, 2 or 3 nodes\n")
 		f.write(f"model_out : {conf['model_out']} # Output file of the created models\n")
 		f.write(f"syn_out : {conf['syn_out']} # Output of the synthesis profiles and models\n")
 		f.write(f"noise_out : {conf['noise_out']} # Output of the noise profiles\n")
