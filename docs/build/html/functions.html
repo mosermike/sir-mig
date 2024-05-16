@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="./" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Functions &#8212; SIR-MIG  documentation</title>
   
@@ -28,19 +29,21 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'functions';</script>
-    <link rel="icon" href="_static/SIR-MIG.ico"/>
+    <link rel="shortcut icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Classes" href="classes.html" />
@@ -429,18 +432,17 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="functions">
-<h1>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h1>
+<h1>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h1>
 <p>This list provides information for each function in each file.</p>
 <section id="sir-py">
-<h2>sir.py<a class="headerlink" href="#sir-py" title="Link to this heading">#</a></h2>
+<h2>sir.py<a class="headerlink" href="#sir-py" title="Permalink to this heading">#</a></h2>
 <p>Library for repeating functions such as reading the config, writing SIR files.</p>
-<section id="sir">
-<span id="module-sir"></span><h3>sir<a class="headerlink" href="#sir" title="Link to this heading">#</a></h3>
+<span class="target" id="module-sir"></span><section id="sir">
+<h3>sir<a class="headerlink" href="#sir" title="Permalink to this heading">#</a></h3>
 <p>Library for repeating functions for analyzing and/or plotting SIR data</p>
-</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.list_to_string">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">list_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">let</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.list_to_string" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">list_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">let</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.list_to_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert a list to a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -460,7 +462,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.option">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.option" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.option" title="Permalink to this definition">#</a></dt>
 <dd><p>Print an option in a help page</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -477,7 +479,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_chi2">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_chi2" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_chi2" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the last chi value in a inv.chi file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -497,7 +499,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_chi2s">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_chi2s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_chi2s" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_chi2s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_chi2s" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads all the chi2 from the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -517,7 +519,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_config">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_config" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a config file for the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -538,7 +540,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_control">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_control" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_control" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -555,7 +557,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_grid">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_grid" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the grid file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -572,7 +574,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_line">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_line" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_line" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the line file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -590,7 +592,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_model">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_model" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a model file and returns all parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -617,7 +619,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.read_profile">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_profile" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.read_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the first LINE data from a profile computed by SIR</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -641,7 +643,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_config">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a config file with the information provided as a dictionary for the mode 1C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -658,7 +660,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_config_1c">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config_1c" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config_1c" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a config file with the information provided as a dictionary for the mode 1C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -675,7 +677,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_config_2c">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config_2c" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config_2c" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a config file with the information provided as a dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -692,7 +694,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_config_mc">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config_mc" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_config_mc" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a config file with the information provided as a dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -709,7 +711,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_control_1c">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_control_1c" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_control_1c" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -726,7 +728,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_control_2c">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_control_2c" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_control_2c" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -743,7 +745,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_control_mc">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inv'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_control_mc" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inv'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_control_mc" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -761,7 +763,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_gauss_psf">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_gauss_psf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_gauss_psf" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_gauss_psf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_gauss_psf" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes the spectral point spread function with the given sigma. This function is used when the field psf in the config
 contains ‘gauss 1.0’ with sigma = 1.0 mA in this example.</p>
 <dl class="field-list simple">
@@ -779,7 +781,7 @@ contains ‘gauss 1.0’ with sigma = 1.0 mA in this example.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_grid">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Grid.grid'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_grid" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Grid.grid'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes the Grid file with data from the config file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -796,7 +798,7 @@ contains ‘gauss 1.0’ with sigma = 1.0 mA in this example.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_grid_mc">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_grid_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Grid.grid'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_grid_mc" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_grid_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Grid.grid'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_grid_mc" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes the Grid file with data from the config file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -813,7 +815,7 @@ contains ‘gauss 1.0’ with sigma = 1.0 mA in this example.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_model">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_micro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_model" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_micro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Write a model with the given data in a specific format. Note that negative values
 have one white space less</p>
 <dl class="field-list simple">
@@ -842,7 +844,7 @@ have one white space less</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sir.write_profile">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_profile" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sir.write_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Write a profile for a specific model number to a file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -859,6 +861,7 @@ have one white space less</p>
 </dl>
 </dd></dl>
 
+</section>
 <p>#.. autofunction:: sir.list_to_string
 #.. autofunction:: sir.option
 #.. autofunction:: sir.read_chi2
@@ -882,15 +885,15 @@ have one white space less</p>
 #.. autofunction:: sir.write_profile</p>
 </section>
 <section id="create-config-py">
-<h2>create_config.py<a class="headerlink" href="#create-config-py" title="Link to this heading">#</a></h2>
+<h2>create_config.py<a class="headerlink" href="#create-config-py" title="Permalink to this heading">#</a></h2>
 <p>Functions to create the config files for the different modes.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="create_config.config_MC">
-<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">config_MC</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_config.config_MC" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">config_MC</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_config.config_MC" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a config file for the Monte-Carlo simulation by asking questions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
+<dd class="field-odd"><p><strong>None</strong> – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -900,11 +903,11 @@ have one white space less</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="create_config.config_1C">
-<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">config_1C</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_config.config_1C" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">config_1C</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_config.config_1C" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a config file for the 1 Component Inversion by asking questions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
+<dd class="field-odd"><p><strong>None</strong> – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -914,11 +917,11 @@ have one white space less</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="create_config.config_2C">
-<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">config_2C</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_config.config_2C" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">config_2C</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_config.config_2C" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a config file for the 2 Components Inversion by asking questions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
+<dd class="field-odd"><p><strong>None</strong> – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -928,15 +931,15 @@ have one white space less</p>
 
 </section>
 <section id="main-py">
-<h2>main.py<a class="headerlink" href="#main-py" title="Link to this heading">#</a></h2>
+<h2>main.py<a class="headerlink" href="#main-py" title="Permalink to this heading">#</a></h2>
 <p>Main file to start the program</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="main.main">
-<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/main.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.main" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/main.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.main" title="Permalink to this definition">#</a></dt>
 <dd><p>Function which executes the programme</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
+<dd class="field-odd"><p><strong>None</strong> – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -946,20 +949,20 @@ have one white space less</p>
 
 </section>
 <section id="model-atm-py">
-<h2>model_atm.py<a class="headerlink" href="#model-atm-py" title="Link to this heading">#</a></h2>
+<h2>model_atm.py<a class="headerlink" href="#model-atm-py" title="Permalink to this heading">#</a></h2>
 <p>Function to read a binary model file with all the physical parameter</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="model_atm.read_model">
-<span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.read_model" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.read_model" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="misc-py">
-<h2>misc.py<a class="headerlink" href="#misc-py" title="Link to this heading">#</a></h2>
+<h2>misc.py<a class="headerlink" href="#misc-py" title="Permalink to this heading">#</a></h2>
 <p>Miscellaneous functions</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="misc.create_task_folder_list">
-<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">create_task_folder_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/misc.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#misc.create_task_folder_list" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">create_task_folder_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/misc.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#misc.create_task_folder_list" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a list which folders should be created and executed. This is done so
 that the inversion itself can be executed linearly to make use of all cores.</p>
 <dl class="field-list simple">
@@ -977,7 +980,7 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="misc.initial">
-<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/misc.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#misc.initial" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/misc.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#misc.initial" title="Permalink to this definition">#</a></dt>
 <dd><p>Initial print outs and preparation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -991,7 +994,7 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="misc.x_y_add_zeros">
-<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">x_y_add_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/misc.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#misc.x_y_add_zeros" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">misc.</span></span><span class="sig-name descname"><span class="pre">x_y_add_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/misc.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#misc.x_y_add_zeros" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds zeros so that the returning strings have 4 letters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1012,11 +1015,11 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 </section>
 <section id="obs-py">
-<h2>obs.py<a class="headerlink" href="#obs-py" title="Link to this heading">#</a></h2>
+<h2>obs.py<a class="headerlink" href="#obs-py" title="Permalink to this heading">#</a></h2>
 <p>Functions related to the observation</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="obs.read_profile">
-<span class="sig-prename descclassname"><span class="pre">obs.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/obs.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obs.read_profile" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">obs.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/obs.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#obs.read_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a profile from a SIR .per file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1041,11 +1044,11 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 </section>
 <section id="profile-stk-py">
-<h2>profile_stk.py<a class="headerlink" href="#profile-stk-py" title="Link to this heading">#</a></h2>
+<h2>profile_stk.py<a class="headerlink" href="#profile-stk-py" title="Permalink to this heading">#</a></h2>
 <p>Function to read a binary profile file with the four Stokes Parameter</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="profile_stk.read_profile">
-<span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.read_profile" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.read_profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a profile and returns a class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1108,58 +1111,14 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sir-py">sir.py</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir">sir</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.list_to_string"><code class="docutils literal notranslate"><span class="pre">list_to_string()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.option"><code class="docutils literal notranslate"><span class="pre">option()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_chi2"><code class="docutils literal notranslate"><span class="pre">read_chi2()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_chi2s"><code class="docutils literal notranslate"><span class="pre">read_chi2s()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_config"><code class="docutils literal notranslate"><span class="pre">read_config()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_control"><code class="docutils literal notranslate"><span class="pre">read_control()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_grid"><code class="docutils literal notranslate"><span class="pre">read_grid()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_line"><code class="docutils literal notranslate"><span class="pre">read_line()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_config"><code class="docutils literal notranslate"><span class="pre">write_config()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_config_1c"><code class="docutils literal notranslate"><span class="pre">write_config_1c()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_config_2c"><code class="docutils literal notranslate"><span class="pre">write_config_2c()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_config_mc"><code class="docutils literal notranslate"><span class="pre">write_config_mc()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_control_1c"><code class="docutils literal notranslate"><span class="pre">write_control_1c()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_control_2c"><code class="docutils literal notranslate"><span class="pre">write_control_2c()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_control_mc"><code class="docutils literal notranslate"><span class="pre">write_control_mc()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_gauss_psf"><code class="docutils literal notranslate"><span class="pre">write_gauss_psf()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_grid"><code class="docutils literal notranslate"><span class="pre">write_grid()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_grid_mc"><code class="docutils literal notranslate"><span class="pre">write_grid_mc()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_model"><code class="docutils literal notranslate"><span class="pre">write_model()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sir.write_profile"><code class="docutils literal notranslate"><span class="pre">write_profile()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-config-py">create_config.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_config.config_MC"><code class="docutils literal notranslate"><span class="pre">config_MC()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_config.config_1C"><code class="docutils literal notranslate"><span class="pre">config_1C()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_config.config_2C"><code class="docutils literal notranslate"><span class="pre">config_2C()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-py">main.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-atm-py">model_atm.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misc-py">misc.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc.create_task_folder_list"><code class="docutils literal notranslate"><span class="pre">create_task_folder_list()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc.initial"><code class="docutils literal notranslate"><span class="pre">initial()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#misc.x_y_add_zeros"><code class="docutils literal notranslate"><span class="pre">x_y_add_zeros()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obs-py">obs.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obs.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile-stk-py">profile_stk.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-config-py">create_config.py</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-py">main.py</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-atm-py">model_atm.py</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#misc-py">misc.py</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obs-py">obs.py</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile-stk-py">profile_stk.py</a></li>
 </ul>
   </nav></div>
 
@@ -1206,7 +1165,7 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     <br/>
   </p>
 </div>

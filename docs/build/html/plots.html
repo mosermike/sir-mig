@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="./" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Plotting &#8212; SIR-MIG  documentation</title>
   
@@ -28,19 +29,21 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'plots';</script>
-    <link rel="icon" href="_static/SIR-MIG.ico"/>
+    <link rel="shortcut icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API" href="api.html" />
@@ -429,12 +432,12 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="plotting">
-<h1>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">#</a></h1>
+<h1>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">#</a></h1>
 <p>This list provides information for plotting results.</p>
-<p id="module-plots.analysis">Analyses the quality of the Monte Carlo Simulation by computing the standard deviations</p>
+<span class="target" id="module-plots.analysis"></span><p>Analyses the quality of the Monte Carlo Simulation by computing the standard deviations</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="plots.analysis.analysis">
-<span class="sig-prename descclassname"><span class="pre">plots.analysis.</span></span><span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis.analysis" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.analysis.</span></span><span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis.analysis" title="Permalink to this definition">#</a></dt>
 <dd><p>Analysis of a MC simulation by plotting the standard deviations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -452,7 +455,7 @@ document.write(`
 <li><p><strong>-max</strong> – Plot the maximum differences</p></li>
 <li><p><strong>-vertical</strong> – Plot the last plot vertical</p></li>
 <li><p><strong>-v</strong> – Print out tables with values at different log taus.</p></li>
-<li><p><strong>executed.</strong> (<em>There are optional options which change the plots. Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>There are optional options which change the plots. Additional parameters given as an argument when the script is</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -461,17 +464,17 @@ document.write(`
 </dl>
 </dd></dl>
 
-<p id="module-plots.analysis_compare_chi2">Compares two simulations by computing and plotting the chi2 value as well as computing the mean value.</p>
+<span class="target" id="module-plots.analysis_compare_chi2"></span><p>Compares two simulations by computing and plotting the chi2 value as well as computing the mean value.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="plots.analysis_compare_chi2.analysis_compare_chi2">
-<span class="sig-prename descclassname"><span class="pre">plots.analysis_compare_chi2.</span></span><span class="sig-name descname"><span class="pre">analysis_compare_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_compare_chi2.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis_compare_chi2.analysis_compare_chi2" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.analysis_compare_chi2.</span></span><span class="sig-name descname"><span class="pre">analysis_compare_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_compare_chi2.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis_compare_chi2.analysis_compare_chi2" title="Permalink to this definition">#</a></dt>
 <dd><p>Compares the chi2 of two simulations for different physical parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>conf1</strong> (<em>dict</em>) – Configuration for simulation 1</p></li>
 <li><p><strong>conf2</strong> (<em>dict</em>) – Configuration for simulation 2</p></li>
-<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>) – </p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> (<em>-add2</em>) – Additional save path. Default: ‘./’</p></li>
 <li><p><strong>optional</strong> – Additional save path. Default: ‘./’</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Additional text in filenames</p></li>
@@ -491,17 +494,17 @@ document.write(`
 </dl>
 </dd></dl>
 
-<p id="module-plots.analysis_multiple">Analyses the quality of multiple Monte Carlo Simulations</p>
+<span class="target" id="module-plots.analysis_multiple"></span><p>Analyses the quality of multiple Monte Carlo Simulations</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="plots.analysis_multiple.analysis_multiple">
-<span class="sig-prename descclassname"><span class="pre">plots.analysis_multiple.</span></span><span class="sig-name descname"><span class="pre">analysis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_multiple.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis_multiple.analysis_multiple" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.analysis_multiple.</span></span><span class="sig-name descname"><span class="pre">analysis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_multiple.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.analysis_multiple.analysis_multiple" title="Permalink to this definition">#</a></dt>
 <dd><p>Analysis multiple simulations and puts it in one plot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>confs</strong> (<em>list</em>) – List of dictionaries with the configs</p></li>
 <li><p><strong>labels</strong> (<em>list</em>) – List of strings with the labels for each plot</p></li>
-<li><p><strong>executed.</strong> (<em>There are optional options which change the plots. Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>There are optional options which change the plots. Additional parameters given as an argument when the script is</em>) – </p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> (<em>-title</em>) – Additional save path. Default ‘./’</p></li>
 <li><p><strong>optional</strong> – Additional save path. Default ‘./’</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Additional text in filenames</p></li>
@@ -525,17 +528,17 @@ document.write(`
 <p>Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.</p>
 </dd></dl>
 
-<p id="module-plots.Ic_test">Plots the result of the SIR inversion</p>
+<span class="target" id="module-plots.Ic_test"></span><p>Plots the result of the SIR inversion</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="plots.Ic_test.Ic_test">
-<span class="sig-prename descclassname"><span class="pre">plots.Ic_test.</span></span><span class="sig-name descname"><span class="pre">Ic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/Ic_test.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.Ic_test.Ic_test" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.Ic_test.</span></span><span class="sig-name descname"><span class="pre">Ic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/Ic_test.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.Ic_test.Ic_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots Ic fit vs I obs in a plot. It uses the first element in the wavelength range as continuum</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> (<em>dict</em>) – Dict. with all the information from the config</p></li>
 <li><p><strong>num</strong> (<em>int</em>) – determines which range is used (1 = 1st line in grid, etc.)</p></li>
-<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>) – </p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> (<em>-title</em>) – Rel. path to the spectral veil corrected data if standard labelling is not used.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Rel. path to the Stokes result if standard labelling is not used.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Additional save path. Default ‘./’.</p></li>
@@ -551,10 +554,10 @@ document.write(`
 </dl>
 </dd></dl>
 
-<p id="module-plots.result">Plots the result of the SIR inversion</p>
+<span class="target" id="module-plots.result"></span><p>Plots the result of the SIR inversion</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="plots.result.result_1C">
-<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waveV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.result.result_1C" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waveV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.result.result_1C" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the result of the inversion 1C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -563,7 +566,7 @@ document.write(`
 <li><p><strong>wave</strong> (<em>float</em>) – Wavelength in A where the Stokes vector is plottet</p></li>
 <li><p><strong>tau</strong> (<em>float</em>) – log tau value where the model is plotted</p></li>
 <li><p><strong>waveV</strong> (<em>float</em><em>, </em><em>optional</em>) – Wavelength for Stokes V in A (-1 not used), Default: -1</p></li>
-<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>) – </p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> (<em>-title3</em>) – Rel. path to the spectral veil corrected data if standard labelling is not used, optional.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Rel. path to the Stokes result if standard labelling is not used, optional.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Rel. path to the Models of the inversion if standard labelling is not used.</p></li>
@@ -621,7 +624,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="plots.result.result_2C">
-<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.result.result_2C" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.result.result_2C" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the result of the inversion for 2C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -631,7 +634,7 @@ document.write(`
 <li><p><strong>tau</strong> (<em>float</em>) – log tau value where the model is plotted</p></li>
 <li><p><strong>Type</strong> (<em>string</em><em>, </em><em>optional</em>) – prefix for determining which model is used. Default: ‘_1’</p></li>
 <li><p><strong>plot_stokes</strong> (<em>bool</em><em>, </em><em>optional</em>) – Plot the stokes vector. Default: True</p></li>
-<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>) – </p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> (<em>-title4</em>) – Rel. path to the spectral veil corrected data if standard labelling is not used, optional.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Rel. path to the Stokes result if standard labelling is not used, optional.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Rel. path to the Models 1 of the inversion if standard labelling is not used.</p></li>
@@ -693,14 +696,14 @@ document.write(`
 
 <span class="target" id="module-plots.visualizer"></span><dl class="py function">
 <dt class="sig sig-object py" id="plots.visualizer.visualizer_1C">
-<span class="sig-prename descclassname"><span class="pre">plots.visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/visualizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.visualizer.visualizer_1C" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/visualizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.visualizer.visualizer_1C" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> (<em>dict</em>) – All the information from the config file</p></li>
 <li><p><strong>wave</strong> (<em>float</em>) – Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map</p></li>
-<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>) – </p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> (<em>-title</em>) – Rel. path to the spectral veil corrected data if standard labelling is not used.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – “Rel. path to the Stokes result if standard labelling is not used.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Rel. path to the Models of the inversion if standard labelling is not used.</p></li>
@@ -732,14 +735,14 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="plots.visualizer.visualizer_2C">
-<span class="sig-prename descclassname"><span class="pre">plots.visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/visualizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.visualizer.visualizer_2C" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.visualizer.</span></span><span class="sig-name descname"><span class="pre">visualizer_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/visualizer.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plots.visualizer.visualizer_2C" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the Stokes vector with obs. and fits and the model depending on which pixel is clicked on in the appearing figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>conf</strong> (<em>dict</em>) – All the information from the config file</p></li>
 <li><p><strong>wave</strong> (<em>float</em>) – Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map</p></li>
-<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>)</p></li>
+<li><p><strong>executed.</strong> (<em>Additional parameters given as an argument when the script is</em>) – </p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> (<em>-title</em>) – Rel. path to the spectral veil corrected data if standard labelling is not used.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – “Rel. path to the Stokes result if standard labelling is not used.</p></li>
 <li><p><strong>[</strong><strong>str</strong><strong>]</strong> – Rel. path to the Models of the inversion if standard labelling is not used.</p></li>
@@ -809,25 +812,6 @@ document.write(`
 
 
   <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.analysis.analysis"><code class="docutils literal notranslate"><span class="pre">analysis()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.analysis_compare_chi2.analysis_compare_chi2"><code class="docutils literal notranslate"><span class="pre">analysis_compare_chi2()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.analysis_multiple.analysis_multiple"><code class="docutils literal notranslate"><span class="pre">analysis_multiple()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.Ic_test.Ic_test"><code class="docutils literal notranslate"><span class="pre">Ic_test()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.result.result_1C"><code class="docutils literal notranslate"><span class="pre">result_1C()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.result.result_2C"><code class="docutils literal notranslate"><span class="pre">result_2C()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.visualizer.visualizer_1C"><code class="docutils literal notranslate"><span class="pre">visualizer_1C()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots.visualizer.visualizer_2C"><code class="docutils literal notranslate"><span class="pre">visualizer_2C()</span></code></a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
     <a href="_sources/plots.rst.txt">
@@ -870,7 +854,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
     <br/>
   </p>
 </div>
