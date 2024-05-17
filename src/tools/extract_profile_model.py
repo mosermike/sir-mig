@@ -135,9 +135,9 @@ def extract_profile_model_MC(conf, num):
 		add = sys.argv[sys.argv.index("-add")+1]
 
 	# Load data
-	noise = p.Profile(os.path.join(path,conf['noise_out']))
-	syn = p.Profile(os.path.join(path,conf["syn_out"]+ d.end_models))
-	inv = p.Profile(os.path.join(path,f"{conf['inv_out']}{d.end_stokes}"))
+	noise = p.read_profile(os.path.join(path,conf['noise_out']+ d.end_models))
+	syn = p.read_profile(os.path.join(path,conf["syn_out"]+ d.end_models))
+	inv = p.read_profile(os.path.join(path,f"{conf['inv_out']}{d.end_stokes}"))
 
 	noise.write_profile_mc(os.path.join(savepath,'noise.per' + add), num-1)
 	syn.write_profile_mc(os.path.join(savepath,'syn.per' + add), num-1)
@@ -145,10 +145,10 @@ def extract_profile_model_MC(conf, num):
 	
 
 	# Now with the class model/error
-	mod = m.Model(os.path.join(path,conf['inv_out'] + d.end_models))
-	gue = m.Model(os.path.join(path,d.best_guess_file))
-	syn = m.Model(os.path.join(path,conf["syn_out"]+ d.end_models))
-	err = m.Model(os.path.join(path, os.path.join(path,conf['inv_out'] + d.end_errors)))
+	mod = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models))
+	gue = m.read_model(os.path.join(path,d.best_guess_file))
+	syn = m.read_model(os.path.join(path,conf["syn_out"]+ d.end_models))
+	err = m.read_model(os.path.join(path, os.path.join(path,conf['inv_out'] + d.end_errors)))
 	
 	syn.write_model(os.path.join(savepath,'syn.mod' + add), num-1,0)
 	mod.write_model(os.path.join(savepath,'res.mod' + add), num-1,0)
