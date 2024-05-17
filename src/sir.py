@@ -138,11 +138,11 @@ def read_config(filename, check = True, change_config = False):
 				print(f"[read_config] {Dict['fts_file']} does not exist.")
 	
 	# If Path is relative, change to absolute
-	if Dict['path'][0:2] == "./":
-		if Dict['path'] == "./":
-			Dict['path'] = os.getcwd()
-		else:
-			Dict['path'] = os.getcwd() + Dict[2:]
+	#if Dict['path'][0:2] == "./":
+	#	if Dict['path'] == "./":
+	#		Dict['path'] = os.getcwd()
+	#	else:
+	#		Dict['path'] = os.getcwd() + Dict[2:]
 	
 	# Correction for old version
 	if "lim_azimuth" in Dict:

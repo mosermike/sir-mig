@@ -7,9 +7,8 @@ Analyses the quality of multiple Monte Carlo Simulations
 import numpy as np 
 import sys
 import os
-sys.path.append(sys.path[0] + "../")
-sys.path.append(sys.path[0] + "../tools")
-print(sys.path)
+sys.path.append(sys.path[0] + "/../")
+sys.path.append(sys.path[0] + "/../tools")
 import sir
 import definitions as d
 from model_atm import *  # Model class
@@ -242,7 +241,7 @@ def analysis_multiple(confs, labels):
 		syn.correct_phi()
 		fit.correct_phi()
 
-		log_tau = fit.tau[0,0]
+		log_tau = fit.tau
 
 		log_taus.append(log_tau)
 		syns.append(syn)
@@ -258,7 +257,7 @@ def analysis_multiple(confs, labels):
 	for i in range(len(fits)):
 		fits[i].set_limit(lim_max)
 		syns[i].set_limit(lim_max)
-	lim_max = fits[0].tau[0,0,-1]
+	lim_max = fits[0].tau[-1]
 	#####
 	# Plot the physical parameters separately as mentioned in the flags
 	#####
@@ -267,19 +266,19 @@ def analysis_multiple(confs, labels):
 		if inputs[i] in sys.argv:
 			stds = []
 			if len(labels) > 5:
-				fig, ax1 = plt.subplots(figsize=(12, 7))
+				fig, ax1 = plt.subplots(figsize=(9, 7), layout="compressed")
 			else:
-				fig, ax1 = plt.subplots(figsize=(8, 7))
+				fig, ax1 = plt.subplots(figsize=(8, 7), layout="compressed")
 
 			plt.title(titles[i])
 
 			for n in range(len(log_taus)):
 				# Standard deviation
 				std = np.sqrt(np.sum((_get_attribute(fits[n],att[i]) - _get_attribute(syns[n], att[i]))**2, axis=0)/(nums[n]-1))	 
-				ax1.plot(fits[n].tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+				ax1.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 				stds.append(std)
 			# Set limits
-			ax1.set_xlim(fits[0].tau[0,0][0], lim_max)
+			ax1.set_xlim(fits[0].tau[0], lim_max)
 
 			if inputs[i] == "-T":
 				ax1.set_ylim(limitT)
@@ -289,12 +288,12 @@ def analysis_multiple(confs, labels):
 			ax1.set_ylabel(r"$\sigma$" + labels_y[i])
 			
 			if len(labels) > 5:
-				ax1.legend(loc='center right', bbox_to_anchor=(1.4 + len(labels[0])/100, 0.5), frameon=False)
+				ax1.legend(loc='center right', bbox_to_anchor=(1.25+np.max([len(i) for i in labels])/85, 0.5), frameon=False)
 			else:
 				ax1.legend()
-			plt.tight_layout()
+			#plt.tight_layout()
 
-			plt.savefig(save + "analysis_multiple_" + inputs[i][1:] + add)
+			fig.savefig(save + "analysis_multiple_" + inputs[i][1:] + add)
 
 			if "-v" in sys.argv:
 				print("Parameter:", inputs[i][1:])
@@ -304,7 +303,7 @@ def analysis_multiple(confs, labels):
 				print()
 				print("-----------------------")
 				for i in [1, 0.5, 0.0, -0.5, -1, -1.5, -2]:
-					print("|  %1.2f |" % (fits[0].tau[0, np.abs(fits[0].tau - (i)).argmin()]), end="")
+					print("|  %1.2f |" % (fits[0].tau[np.abs(fits[0].tau - (i)).argmin()]), end="")
 					for j in range(len(fits)):
 						print("  %1.2f |" % (stds[j][np.abs(fits[j].tau[0] - (i)).argmin()]), end="")
 					print()
@@ -337,25 +336,25 @@ def analysis_multiple(confs, labels):
 	for n in range(len(log_taus)):	
 		std = np.sqrt(np.sum((fits[n].T[:,0,:] - syns[n].T[:,0,:])**2, axis=0)/(nums[n]-1))
 		stdTs.append(std)
-		ax1.plot(fits[n].tau[0,0], stdTs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax1.plot(fits[n].tau, stdTs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 		std = np.sqrt(np.sum((fits[n].B[:,0,:] - syns[n].B[:,0,:])**2, axis=0)/(nums[n]-1))
 		stdBs.append(std)
-		ax2.plot(fits[n].tau[0,0], stdBs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax2.plot(fits[n].tau, stdBs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 		std = np.sqrt(np.sum((fits[n].vlos[:,0,:] - syns[n].vlos[:,0,:])**2, axis=0)/(nums[n]-1))
-		ax3.plot(fits[n].tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax3.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 		std = np.sqrt(np.sum((fits[n].gamma[:,0,:] - syns[n].gamma[:,0,:])**2, axis=0)/(nums[n]-1))
-		ax4.plot(fits[n].tau[0,0], std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax4.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 
 	##############
 	# Set limits #
 	##############
-	ax1.set_xlim(fits[0].tau[0,0][0], lim_max)
-	ax2.set_xlim(fits[0].tau[0,0][0], lim_max)
-	ax3.set_xlim(fits[0].tau[0,0][0], lim_max)
-	ax4.set_xlim(fits[0].tau[0,0][0], lim_max)
+	ax1.set_xlim(fits[0].tau[0], lim_max)
+	ax2.set_xlim(fits[0].tau[0], lim_max)
+	ax3.set_xlim(fits[0].tau[0], lim_max)
+	ax4.set_xlim(fits[0].tau[0], lim_max)
 
 	if "-limitT" in sys.argv:
 		ax1.set_ylim(limitT)
@@ -402,6 +401,7 @@ def analysis_multiple(confs, labels):
 			xtitle = 0.55
 		else:
 			xtitle = 0.45
+		xtitle = 0.5
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle)	    
 
@@ -425,20 +425,20 @@ def analysis_multiple(confs, labels):
 		print()
 		print("--------------------------------------------------------------------------------------------")
 		for i in [1, 0.5, 0, -0.5, -1, -1.5, -2]:
-			print("|  %1.2f \t\t |" % (fits[0].tau[0, np.abs(fits[0].tau - i).argmin()]), end="")
+			print("|  %1.2f \t\t |" % (fits[0].tau[np.abs(fits[0].tau - i).argmin()]), end="")
 			for j in range(len(labels)):
 				for n in range(len(fits)):
 					if j == 0:
-						print("  %1.1f \t\t |" % (stdTs[n][np.abs(fits[n].tau[0] - i).argmin()]), end="")
+						print("  %1.1f \t\t |" % (stdTs[n][np.abs(fits[n].tau - i).argmin()]), end="")
 					else:
-						print("  %1.1f \t\t |" % (stdBs[n][np.abs(fits[n].tau[0] - i).argmin()]), end="")
+						print("  %1.1f \t\t |" % (stdBs[n][np.abs(fits[n].tau - i).argmin()]), end="")
 			print()
 
 		print()
 
 		for j in range(len(labels)):
 			temp1 = np.argmin(stdBs[j])
-			print(f"Minima {j+1} at {'%.2f' %fits[j].tau[0][temp1]} with {'%.3f' % stdBs[j][temp1]} G")
+			print(f"Minima {j+1} at {'%.2f' %fits[j].tau[temp1]} with {'%.3f' % stdBs[j][temp1]} G")
 
 	return
 ##################################################################
@@ -453,8 +453,15 @@ if __name__ == "__main__":
 	if "," in sys.argv[1]:
 		confs = sys.argv[1].replace(", ", ",").split(',')
 		confs = [sir.read_config(i, check=False) for i in confs]
+		temp = sys.argv[1].split(",")
+		for i in range(len(temp)):
+			# Correct for ./ paths
+			if confs[i]['path'] == "./":
+				confs[i]['path'] = temp[i][:temp[i].rfind('/')+1]
 	else:
 		confs  = [sir.read_config(sys.argv[1])]
+
+	
 	if confs[0]["mode"] == "MC":
 		#Labels
 		labels = []

@@ -6,8 +6,8 @@ Analyses the quality of the Monte Carlo Simulation by computing the standard dev
 
 import numpy as np 
 import sys, os
-sys.path.append(sys.path[0] + "/../..")
-sys.path.append(os.path.join(sys.path[0], "/../../tools"))
+sys.path.append(sys.path[0] + "/../")
+sys.path.append(sys.path[0] + "/../tools")
 import sir
 import definitions as d
 from model_atm import * # Class Model
