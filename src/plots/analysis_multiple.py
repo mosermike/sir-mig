@@ -7,9 +7,10 @@ Analyses the quality of multiple Monte Carlo Simulations
 import numpy as np 
 import sys
 import os
-sys.path.append(sys.path[0] + "../..")
-sys.path.append(sys.path[0] + "../../tools")
-import sir as sir
+sys.path.append(sys.path[0] + "../")
+sys.path.append(sys.path[0] + "../tools")
+print(sys.path)
+import sir
 import definitions as d
 from model_atm import *  # Model class
 import matplotlib.pyplot as plt
@@ -235,7 +236,7 @@ def analysis_multiple(confs, labels):
 		path = confs[n]["path"]
 		num = confs[n]['num']
 		fit = read_model(os.path.join(path, confs[n]["inv_out"]) + d.end_models)
-		syn = read_model(os.path.join(path, confs[n]["model_out"]))
+		syn = read_model(os.path.join(path, confs[n]["syn_out"]+ d.end_models))
 
 		# Correct phi range
 		syn.correct_phi()
@@ -266,9 +267,7 @@ def analysis_multiple(confs, labels):
 		if inputs[i] in sys.argv:
 			stds = []
 			if len(labels) > 5:
-				#fig, ax1 = plt.subplots(figsize=(10, 7))
 				fig, ax1 = plt.subplots(figsize=(12, 7))
-				#fig, ax1 = plt.subplots(figsize=(14, 4))
 			else:
 				fig, ax1 = plt.subplots(figsize=(8, 7))
 

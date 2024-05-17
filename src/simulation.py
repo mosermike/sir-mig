@@ -79,8 +79,8 @@ def add_noise(conf: dict, verbose: bool = True) -> None:
 	# READ ARGUMENTS #
 	##################
 	path = conf["path"]
-	Input = os.path.join(path, conf["syn_out"])			# Input synthesised model profiles/syn
-	Output = os.path.join(path, conf["noise_out"])		# Generic output profiles/noise
+	Input = os.path.join(path, conf["syn_out"] + d.end_stokes)			# Input synthesised model profiles/syn
+	Output = os.path.join(path, conf["noise_out"] + d.end_stokes)		# Generic output profiles/noise
 
 	noise_I = conf['noise_I']  # Noise in I
 	noise_Q = conf['noise_Q']  # Noise in Q
@@ -151,7 +151,7 @@ def create_models(conf: dict) -> None:
 	###############################
 	path = conf["path"]
 	Input = os.path.join(path, conf["model"])
-	Output = os.path.join(path, conf["model_out"])
+	Output = os.path.join(path, conf["model_out"] + d.end_models)
 	num = conf["num"]  # Number of random models
 	model_nodes = int(conf["model_nodes"])  # If cubic or linear is used
 
@@ -797,7 +797,7 @@ def synthesis(conf, comm, rank, size, MPI):
 	path = conf["path"]
 	abundance_file = conf['abundance'] # Abundance file	
 	
-	models = m.read_model(os.path.join(path, conf['model_out']))
+	models = m.read_model(os.path.join(path, conf['model_out'] + d.end_models))
 
 	####################################
 	#	CREATE GRID AND CONFIG FILE	#
@@ -862,7 +862,7 @@ def synthesis(conf, comm, rank, size, MPI):
 		stk = p.Profile(conf['num'],1,0)
 		stk.read_results_MC(path, tasks, d.profile)
 		
-		stk.write(f"{conf['syn_out']}")
+		stk.write(f"{os.path.join(conf['path'],conf['syn_out'] + d.end_models)}")
 		
 		for i in range(conf['num']):
 			shutil.rmtree(tasks['folders'][i])

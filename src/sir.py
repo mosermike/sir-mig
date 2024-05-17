@@ -524,7 +524,7 @@ def write_config_1c(File, conf):
 		f.write(f"line : {conf['line']} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
 		f.write(f"guess : {conf['guess']} # Use a bin file as initial guesses, blank use base model\n")
-		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
+		f.write(f"psf : {conf['psf']} # Spectral PSF .dat file, 'gauss 1.0' or blank=not used\n")
 
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
@@ -625,7 +625,7 @@ def write_config_2c(File, conf):
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
 		f.write(f"guess1 : {conf['guess1']} # Use a bin file as initial guesses, blank use base model 1\n")
 		f.write(f"guess2 : {conf['guess2']} # Use a bin file as initial guesses, blank use base model 2\n")
-		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
+		f.write(f"psf : {conf['psf']} # Spectral PSF .dat file, 'gauss 1.0' or blank=not used\n")
 
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
@@ -717,9 +717,8 @@ def write_config_mc(File, conf):
 		f.write(f"# Creating Models and Synthesis\n")
 		f.write(f"#\n")
 		f.write(f"model_nodes : {conf['model_nodes']} # Create models with 1, 2 or 3 nodes\n")
-		f.write(f"model_out : {conf['model_out']} # Output file of the created models\n")
-		f.write(f"syn_out : {conf['syn_out']} # Output of the synthesis profiles and models\n")
-		f.write(f"noise_out : {conf['noise_out']} # Output of the noise profiles\n")
+		f.write(f"syn_out : {conf['syn_out']} # Output prefix of the synthesis profiles and models\n")
+		f.write(f"noise_out : {conf['noise_out']} # Output prefix of the noise profiles\n")
 		f.write(f"noise_I : {conf['noise_I']} # Noise in I\n")		
 		f.write(f"noise_Q : {conf['noise_Q']} # Noise in Q\n")
 		f.write(f"noise_U : {conf['noise_U']} # Noise in U\n")
@@ -753,7 +752,7 @@ def write_config_mc(File, conf):
 		f.write(f"gas_pressure : {conf['gas_pressure']} # Gas Pressure Boundary condition\n")
 
 		f.write(f"# \n")
-		f.write(f"# Radomisation Settings\n")
+		f.write(f"# Randomisation Settings\n")
 		f.write(f"# \n")
 		f.write(f"lim_B : {conf['lim_B']} # Limits for the randomisation in B in G\n")
 		f.write(f"lim_vlos : {conf['lim_vlos']} # Limits for the randomisation in vlos in cm/s\n")

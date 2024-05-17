@@ -12,7 +12,6 @@ import definitions as d
 import matplotlib.pyplot as plt
 from change_config_path import change_config_path
 from os.path import exists
-import matplotlib
 import os
 
 
@@ -96,12 +95,12 @@ def inversion(conf, num):
 		Grid = sir.read_grid(os.path.join(conf['path'],d.Grid))
 		line = int(Grid['Line'][0][0])
 
-	syn = m.model(os.path.join(path, conf["model_out"]))		   				# Synthesis Models
-	phy = m.model(os.path.join(path, conf["inv_out"] + d.inv_models))		# Inversion Models
-	err = m.error(os.path.join(path, conf["inv_out"] + d.inv_errors))		# Inversion Models
+	syn = m.model(os.path.join(path, conf["syn_out"]+ d.end_models))		   				# Synthesis Models
+	phy = m.model(os.path.join(path, conf["inv_out"] + d.end_models))		# Inversion Models
+	err = m.error(os.path.join(path, conf["inv_out"] + d.end_errors))		# Inversion Models
 
-	obs = np.load(os.path.join(path, conf["noise_out"] + f".npy"))[num-1]		# Synthesis Profiles
-	fit = np.load(os.path.join(path, conf["inv_out"] + d.inv_stokes + ".npy"))[num-1]   # Inversion Profiles
+	obs = np.load(os.path.join(path, conf["noise_out"] + d.end_models))[num-1]		# Synthesis Profiles
+	fit = np.load(os.path.join(path, conf["inv_out"] + d.end_stokes))[num-1]   # Inversion Profiles
 
 	instrument = conf["instrument"]  # Instrument used for labels
 

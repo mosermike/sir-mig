@@ -45,10 +45,9 @@ def config_MC():
 	model = input("Base model: ")
 	model_nodes	= input("Create Models with 1, 2 or 3 nodes: ")
 	
-	model_out = input("Name of the npy file with the models [models_real.npy]: ")
 	model_pars = input("Randomize these parameters for creating models [B,T,vlos,gamma]: ")
-	syn_out	= input("Synthesis output [synthesis_profiles.npy]: ")
-	noise_out = input("Noise output         [noise_profiles.npy]: ")
+	syn_out	= input("Synthesis prefix [syn]: ")
+	noise_out = input("Noise Prefix [noise]: ")
 	instrument = input("Instrument (GRIS, Hinode or blank): ")
 	if instrument == "GRIS":
 		noise_I=0
@@ -65,7 +64,7 @@ def config_MC():
 		noise_Q = input("Noise in Q: ")
 		noise_U = input("Noise in U: ")
 		noise_B = input("Noise in V: ")
-	inv_out		= input("Inversion output      [inversion]: ")
+	inv_out		= input("Inversion output      [inv]: ")
 	atoms		= input("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	if instrument != 'Hinode':
 		range_wave = input("Ranges in the wavelengths (in relative mA) to be considered (as 'min1,step1,max1;min2,step2,max2;...', ;=newline):" )
@@ -125,14 +124,12 @@ def config_MC():
 		lim_gamma = '0,180'
 	if lim_phi == '':
 		lim_phi = '0,180'
-	if model_out == '':
-		model_out = 'models_real.npy'
 	if syn_out == '':
-		syn_out = 'synthesis_profiles.npy'
+		syn_out = 'syn'
 	if noise_out == '':
-		noise_out = 'noise_profiles.npy'
+		noise_out = 'noise'
 	if inv_out == '':
-		inv_out = 'inversion'
+		inv_out = 'inv'
 
 	if abundance == '':
 		abundance = 'THEVENIN'
@@ -173,9 +170,8 @@ def config_MC():
 		f.write(f"# Creating Models and Synthesis\n")
 		f.write(f"#\n")
 		f.write(f"model_nodes : {model_nodes} # Create models with 1, 2 or 3 nodes\n")
-		f.write(f"model_out : {model_out} # Output file of the created models as npy\n")
-		f.write(f"syn_out : {syn_out} # Output of the synthesis profiles and models\n")
-		f.write(f"noise_out : {noise_out} # Output of the noise profiles as npy\n")
+		f.write(f"syn_out : {syn_out} # Output prefix of the synthesis profiles and models\n")
+		f.write(f"noise_out : {noise_out} # Output prefix of the noise profiles as npy\n")
 		f.write(f"noise_I : {noise_I} # Noise in Q\n")	
 		f.write(f"noise_Q : {noise_Q} # Noise in Q\n")
 		f.write(f"noise_U : {noise_U} # Noise in U\n")
@@ -256,7 +252,7 @@ def config_1C():
 	quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
 	cycles		= input ("Cycles: ")
 	model		= input ("Base model: ")
-	inv_out		= input ("Inversion output as npy [inversion.npy]: ")
+	inv_out		= input ("Inversion Prefix [out]: ")
 	line			= input ("Line file                       [Lines]: ")
 	atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	range_wave		= input ("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file:" )
@@ -265,7 +261,7 @@ def config_1C():
 		random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
 	else:
 		random_pars = ''
-	guess		= input ("Take npy file as initial guess? Write name of the file, if used: ")
+	guess		= input ("Take bin file as initial guess? Write name of the file, if used: ")
 	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used): ")
 
 	weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
@@ -299,7 +295,7 @@ def config_1C():
 	if lim_azimuth == '':
 		lim_azimuth = '0,180'
 	if inv_out == '':
-		inv_out = 'inversion.npy'
+		inv_out = 'out'
 	if vmacro == '':
 		vmacro = "0.1000"
 	if line == '':
@@ -323,7 +319,7 @@ def config_1C():
 		f.write(f"# Stuff from the data\n")
 		f.write(f"# \n")
 		f.write(f"cube : {cube} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
-		f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (npy or fits)\n")
+		f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (bin)\n")
 		f.write(f"map : {Map} # Pixels to be considered as a list\n")
 		f.write(f"instrument : {instrument} # Instrument used (GRIS, Hinode or empty)\n")
 		f.write(f"shift_wave : {shift_wave} # Shift the wavelength grid when waves file is created in mA\n")
@@ -345,8 +341,8 @@ def config_1C():
 		f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {line} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")
-		f.write(f"guess : {guess} # Use a npy file as initial guesses, blank use base model\n")
-		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
+		f.write(f"guess : {guess} # Use a bin file as initial guesses, blank use base model\n")
+		f.write(f"psf : {psf} # Spectral PSF .dat file, 'gauss 1.0' or blank=not used\n")
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
 		f.write(f"# \n")
@@ -412,7 +408,7 @@ def config_2C():
 	cycles		= input ("Cycles: ")
 	model1		= input ("Base model 1: ")
 	model2		= input ("Base model 2: ")
-	inv_out		= input ("Inversion output prefix [inversion]: ")
+	inv_out		= input ("Inversion output prefix [out]: ")
 	line			= input ("Line file                       [Lines]: ")
 	atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	range_wave  = input("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file:")
@@ -478,7 +474,7 @@ def config_2C():
 		lim_azimuth2 = '0,180'
 
 	if inv_out == '':
-		inv_out = 'inversion'
+		inv_out = 'out'
 	if line == '':
 		line = 'Lines'
 	if abundance == '':
@@ -502,7 +498,7 @@ def config_2C():
 		f.write(f"# Stuff from the data\n")
 		f.write(f"# \n")
 		f.write(f"cube : {cube} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
-		f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (npy or fits)\n")
+		f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (bin)\n")
 		f.write(f"map : {Map} # Pixels to be considered as a list (0 means all pixels)\n")
 		f.write(f"instrument : {instrument} # Instrument used (GRIS, Hinode or empty)\n")
 		f.write(f"shift_wave : {shift_wave} # Shift the wavelength grid when waves file is created in mA\n")
@@ -526,9 +522,9 @@ def config_2C():
 		f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {line} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")
-		f.write(f"guess1 : {guess1} # Use a npy file as initial guesses, blank use base model 1\n")
-		f.write(f"guess2 : {guess2} # Use a npy file as initial guesses, blank use base model 2\n")
-		f.write(f"psf : {psf} # .dat file, 'gauss 1.0' or blank=not used\n")
+		f.write(f"guess1 : {guess1} # Use a bin file as initial guesses, blank use base model 1\n")
+		f.write(f"guess2 : {guess2} # Use a bin file as initial guesses, blank use base model 2\n")
+		f.write(f"psf : {psf} # Spectral PSF .dat file, 'gauss 1.0' or blank=not used\n")
 		f.write(f"# \n")
 		f.write(f"# Control file\n")
 		f.write(f"# \n")

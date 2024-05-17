@@ -76,7 +76,7 @@ def extract_profile_model_1C(conf, x, y):
 
 	inv = p.read_profile(os.path.join(path, conf['inv_out']) + d.end_stokes)
 	mod = m.read_model(filename=os.path.join(path,conf['inv_out'] + d.end_models))
-	guess = m.read_model(filename=os.path.join(path,d.best_guess.replace(".mod",".bin")))
+	guess = m.read_model(filename=os.path.join(path,d.best_guess_file))
 	err = m.read_model(filename=os.path.join(path,conf['inv_out'] + d.end_errors))
 
 	# Change to the reduced Map
@@ -136,7 +136,7 @@ def extract_profile_model_MC(conf, num):
 
 	# Load data
 	noise = p.Profile(os.path.join(path,conf['noise_out']))
-	syn = p.Profile(os.path.join(path,conf['syn_out']))
+	syn = p.Profile(os.path.join(path,conf["syn_out"]+ d.end_models))
 	inv = p.Profile(os.path.join(path,f"{conf['inv_out']}{d.end_stokes}"))
 
 	noise.write_profile_mc(os.path.join(savepath,'noise.per' + add), num-1)
@@ -145,10 +145,10 @@ def extract_profile_model_MC(conf, num):
 	
 
 	# Now with the class model/error
-	mod = m.Model(os.path.join(path,conf['inv_out'] + d.inv_models))
-	gue = m.Model(os.path.join(path,d.best_guess.replace('.mod','.bin')))
-	syn = m.Model(os.path.join(path,conf['model_out']))
-	err = m.Model(os.path.join(path, os.path.join(path,conf['inv_out'] + d.inv_errors)))
+	mod = m.Model(os.path.join(path,conf['inv_out'] + d.end_models))
+	gue = m.Model(os.path.join(path,d.best_guess_file))
+	syn = m.Model(os.path.join(path,conf["syn_out"]+ d.end_models))
+	err = m.Model(os.path.join(path, os.path.join(path,conf['inv_out'] + d.end_errors)))
 	
 	syn.write_model(os.path.join(savepath,'syn.mod' + add), num-1,0)
 	mod.write_model(os.path.join(savepath,'res.mod' + add), num-1,0)
@@ -202,8 +202,8 @@ def extract_profile_model_2C(conf, x, y):
 	# Load data
 	obs1 = p.read_profile(conf, filename=conf['cube_inv'])	
 	inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
-	guess1 = m.read_model(os.path.join(path,d.best_guess1.replace(".mod",".bin")))
-	guess2 = m.read_model(os.path.join(path,d.best_guess2.replace(".mod",".bin")))
+	guess1 = m.read_model(os.path.join(path,d.best_guess1_file))
+	guess2 = m.read_model(os.path.join(path,d.best_guess2_file))
 	mod1 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models1))
 	mod2 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models2))
 	err1 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors1))

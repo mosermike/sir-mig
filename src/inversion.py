@@ -165,9 +165,9 @@ def scatter_data_mc(conf, comm, rank, size):
 			if rank == 0:
 				print("-------> No noise flag used")
 				print("-------> Use synthesis profiles")
-			stk = p.read_profile(os.path.join(path,conf["syn_out"]))
+			stk = p.read_profile(os.path.join(path,conf["syn_out"] + d.end_models))
 		else:
-			stk = p.read_profile(os.path.join(path,conf["noise_out"]))
+			stk = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_models))
 
 		tasks = misc.create_task_folder_list(conf["num"])
 
@@ -855,7 +855,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
 		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
 		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
-		best_guesses.write(os.path.join(path,d.best_guess.replace(".mod",".bin")))
+		best_guesses.write(os.path.join(path,d.best_guess_file))
 		np.save(os.path.join(path,conf['chi2']),chi2)
 		
 		# Print needed time
@@ -913,9 +913,9 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	abundance_file = conf['abundance']  # Abundance file
 	
 
-	# Create guess from npy file if wanted
+	# Create guess from bin file if wanted
 	if conf["guess"] != '':
-		guess = np.load(os.path.join(path, conf["guess"]))
+		guess = m.read_model(os.path.join(path, conf["guess"]))
 		if rank == 0:
 			print(f"-------> File {conf['guess']} used as initial guess/base model")
 
@@ -1000,11 +1000,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		# Copy the data from the imported numpy array to the model in the task folder
 		if conf["guess"] != '':
 			# Write the new initial model from here:
-			sir.write_model(os.path.join(task_folder, model), d.header,
-							guess[i, 0], guess[i, 1], guess[i, 2], guess[i, 3],
-							guess[i, 4], guess[i, 5], guess[i, 6], guess[i, 7],
-							guess[i, 8], guess[i, 9], guess[i, 10]
-						)
+			guess.write_model(os.path.join(task_folder, model), i, 0)
 
 		###############################
 		# 	Perform inversion		#
@@ -1068,7 +1064,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		print("-------> Write Data ...")
 		models.write(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
 		errors.write(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
-		guess.write(f"{os.path.join(path,d.best_guess.replace('.mod','.bin'))}")
+		guess.write(f"{os.path.join(path,d.best_guess_file)}")
 
 		chi2 = sir.read_chi2s(conf, tasks)
 		np.save(f"{conf['chi2']}", chi2)
@@ -1147,12 +1143,6 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	# Create guess from npy file if wanted
 	if conf["guess1"] != '':
 			guess1 = m.read_model(os.path.join(path,conf["guess1"])) # Load data
-			# Read Header Infos from the base model, if exists
-			if exists(os.path.join(path,conf["model1"])):
-				header1 = np.loadtxt(os.path.join(path,conf["model1"]), max_rows=1)
-				header1 = f"    {header1[0]}    {header1[1]}    {header1[2]}"
-			else:
-				header1 = d.header_2c
 			if rank == 0:
 				print(f"-------> File {conf['guess1']} used as initial guess/base model 1")
 				# Check if the shapes match
@@ -1164,13 +1154,6 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	# Create guess from npy file if wanted
 	if conf["guess2"] != '':
 			guess2 = m.read_model(os.path.join(path,conf["guess2"])) # Load data
-			# Read Header Infos from the base model, if exists
-			if exists(os.path.join(path,conf["model2"])):
-				header2 = np.loadtxt(os.path.join(path,conf["model2"]), max_rows=1)
-				header2 = f"    {header2[0]}    {header2[1]}    {header2[2]}"
-			else:
-				header2 = d.header_2c
-		
 			if rank == 0:
 				print(f"-------> File {conf['guess2']} used as initial guess/base model 2")
 				# Check if the shapes match
@@ -1365,12 +1348,12 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		best_guesses2.read_results(tasks, d.best_guess2, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		
 		print("-------> Write Data ...")
-		models_inv1.write(conf['inv_out'] + d.end_models1)
-		models_inv2.write(conf['inv_out'] + d.end_models2)
-		errors_inv1.write(conf['inv_out'] + d.end_errors1)
-		errors_inv2.write(conf['inv_out'] + d.end_errors2)
-		best_guesses1.write(d.best_guess1.replace(".mod",".bin"))
-		best_guesses2.write(d.best_guess2.replace(".mod",".bin"))
+		models_inv1.write(os.path.join(path,conf['inv_out'] + d.end_models1))
+		models_inv2.write(os.path.join(path,conf['inv_out'] + d.end_models2))
+		errors_inv1.write(os.path.join(path,conf['inv_out'] + d.end_errors1))
+		errors_inv2.write(os.path.join(path,conf['inv_out'] + d.end_errors2))
+		best_guesses1.write(os.path.join(path, d.best_guess1_file))
+		best_guesses2.write(os.path.join(path,d.best_guess2_file))
 
 		# Collect data from task folders and delete the folder
 		for i in range(len(tasks['x'])):

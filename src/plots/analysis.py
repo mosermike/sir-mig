@@ -175,7 +175,7 @@ def analysis(conf):
 	#########################################################################
 	path = conf["path"]
 	data = read_model(os.path.join(path,conf["inv_out"]) + d.end_models) # Data from fit
-	syn  = read_model(os.path.join(path,conf["model_out"])) # Data
+	syn  = read_model(os.path.join(path,conf["syn_out"]+ d.end_models)) # Data
 
 	# Correct phi range
 	syn.correct_phi()

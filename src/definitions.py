@@ -25,6 +25,9 @@ end_errors2 = '_errors_2.bin'  # Ending inversion result error 2 for 2C KEEP
 veil_parameters = 'veil.npy'  # numpy file with sigma and nu from the spectral veil correction KEEP
 header_infos = 'infos.txt'  # Information about the observations from the Header # KEEP
 filling_factor = 'fill'		# Generic start of the npy files with the filling factors (end_modelsX is added)
+best_guess_file = 'best_guess.bin'  # Name of the best guess model (best model is saved under this name) KEEP
+best_guess1_file = 'best_guess1.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
+best_guess2_file = 'best_guess2.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
 
 #####################
 # Synthesis Stuff   #
@@ -36,15 +39,15 @@ syn_trol_file ='syn.trol' # inversion control file CLEAN
 #####################
 # Inversion stuff	#
 #####################
-Grid = 'Grid.grid'  # Grid file KEEP
+Grid = 'Grid.grid'  # Grid file
 profile_obs = 'profile.per'  # Name of the observed profile in the inversion
 inv_trol_file = 'inv.trol'  # inversion control file CLEAN
 guess = "guess.mod"  # Guess model as in control file for 1C and MC
 guess1 = 'guess1.mod'  # Guess Model 1 for control file and inversion for 2C
 guess2 = 'guess2.mod'  # Guess Model 2 for control file and inversion for 2C
-best_guess = 'best_guess.mod'  # Name of the best guess model (best model is saved under this name) KEEP
-best_guess1 = 'best_guess1.mod'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
-best_guess2 = 'best_guess2.mod'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
+best_guess = 'best_guess.mod'  # Name of the best guess model  (do not choose best.mod)
+best_guess1 = 'best_guess1.mod'  # Name of the best guess model for 2C (do not choose best1.mod)
+best_guess2 = 'best_guess2.mod'  # Name of the best guess model for 2C  (do not choose best2.mod)
 task_start = ".task_"	# Start of the task folders
 profile = 'profile.per' # Name of the observed profile in the synthesis/inversion
 model = 'model_'  # Generic name for creating guesses for Model 1 for 1C
