@@ -19,7 +19,6 @@ import create_random_guess as g
 from os.path import exists
 import datetime
 import definitions as d
-import misc
 
 """
 *****************************************************************************
@@ -54,7 +53,7 @@ def scatter_data(conf, comm, rank, size):
 	if rank == 0:
 		print("[Status] Load and scatter data ...")
 
-		tasks = misc.create_task_folder_list(conf["map"])
+		tasks = sir.create_task_folder_list(conf["map"])
 
 		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
 		stk.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
@@ -169,7 +168,7 @@ def scatter_data_mc(conf, comm, rank, size):
 		else:
 			stk = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_models))
 
-		tasks = misc.create_task_folder_list(conf["num"])
+		tasks = sir.create_task_folder_list(conf["num"])
 
 		# Create one data cube
 		stki = stk.stki
@@ -647,10 +646,10 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	# Write the control file with the information from the config file
 	if rank == 0:
 		print("-------> Write control and grid file")
-		sir.write_control_1c(os.path.join(conf['path'],d.inv_trol_file), conf)
+		sir.write_control(os.path.join(conf['path'],d.inv_trol_file), conf)
 		# Write Grid file based on the chosen wavelength ranges in the config file
 		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
-		sir.write_grid(conf, stk.wave, os.path.join(path,d.Grid))
+		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
 		del stk
 	
 	# Write psf function, if needed
@@ -714,7 +713,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	########################
 	performed_models = 0  # Counts how many models are performed
 	total_jobs = 1  # Total performed jobs across all processes
-	tasks = misc.create_task_folder_list(Map) # Structure tasks
+	tasks = sir.create_task_folder_list(Map) # Structure tasks
 	max_jobs = len(tasks['folders'])  # For comm.allreduce function
 
 	#########################
@@ -809,7 +808,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		print("[STATUS] Gathering results...")
 
 		# Redefine tasks as now all the tasks are read
-		tasks = misc.create_task_folder_list(Map) # Structure tasks
+		tasks = sir.create_task_folder_list(Map) # Structure tasks
 
 		# Create shapes of the arrays which are filled and saved later
 		stokes_inv = p.Profile(0,0,0)
@@ -924,7 +923,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	####################
 	if rank == 0:
 		# Write Grid file based on the chosen wavelength ranges in the config file
-		sir.write_grid_mc(conf, os.path.join(path, d.Grid))
+		sir.write_grid(conf, os.path.join(path, d.Grid))
 		# Write which parameters are randomised
 		if conf["random_guess"] > 0:
 			random_pars = conf["random_pars"]
@@ -1044,7 +1043,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		print("[STATUS] Gathering results...")
 		start = time.time()
 
-		tasks = misc.create_task_folder_list(conf["num"])
+		tasks = sir.create_task_folder_list(conf["num"])
 		
 		# Read the profiles and models
 		print("-------> Read Profiles ...")
@@ -1167,7 +1166,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	##########################
 	if rank == 0:
 		# Write Grid file based on the chosen wavelength ranges in the config file
-		sir.write_grid(conf, stk.wave, os.path.join(path,d.Grid))
+		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
 
 	# Print out randomisation setting
 	if rank == 0:
@@ -1221,7 +1220,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	chi2s_num = np.array([], dtype=str) # Save task number for print out above chi_lim
 	performed_models = 0 # Counts how many models are performed
 	total_jobs = 1 # Total performed jobs across all processes
-	tasks = misc.create_task_folder_list(Map)
+	tasks = sir.create_task_folder_list(Map)
 	max_jobs = len(tasks['folders']) # For comm.allreduce function
 
 	# Load and scatter data => Saving memory and time
@@ -1315,7 +1314,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		print("[STATUS] Gathering results...", end='', flush=False)
 
 		# Redefine tasks as now all the tasks are read
-		tasks = misc.create_task_folder_list(Map) # Structure tasks
+		tasks = sir.create_task_folder_list(Map) # Structure tasks
 
 		# Create shapes of the arrays which are filled and saved later
 		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")

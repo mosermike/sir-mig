@@ -52,8 +52,7 @@ def main():
 	# Read the config file from the input
 	conf = sir.read_config(sys.argv[1])
 	if rank == 0:
-		from misc import initial
-		initial(conf['mode'])
+		sir.initial(conf['mode'])
 
 	comm.barrier()
 

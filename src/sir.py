@@ -1,17 +1,92 @@
 """
-sir
-===
-
-Library for repeating functions for analyzing and/or plotting SIR data
-
+Miscellaneous Functions used throughout the code
 """
 import numpy as np 
 import sys
 import os
 from os.path import exists
 
+def create_task_folder_list(arg):
+	"""
+	Creates a list which folders should be created and executed. This is done so
+	that the inversion itself can be executed linearly to make use of all cores.
 
-######################################################################
+	Parameters
+	----------
+	arg : numpy array or int
+		1x4 array containing the limits in x and y of the data or number of 1D models
+
+	Returns
+	-------
+	out : dict
+		Dictionary with all the names of the task folders, x and y position
+	"""
+	import numpy as np
+	import definitions as d
+	# Create arrays
+	tasks = []
+	xs = []
+	ys = []
+	
+	if isinstance(arg,int):
+		y = 0
+		# Determine task folder names
+		for x in range(arg):
+			x_str, y_str = x_y_add_zeros(x,0)
+
+			tasks.append(d.task_start + x_str + "_" + y_str)
+			xs.append(x)
+			ys.append(y)
+		Dict = {
+				'folders' : tasks,
+				'x' : np.array(xs),
+				'y' : np.array(ys),
+		
+		}
+	else:
+		Map = arg
+		# Determine task folder names
+		for x in range(Map[0], Map[1]+1):
+			for y in range(Map[2], Map[3]+1):
+				x_str, y_str = x_y_add_zeros(x, y)
+
+				tasks.append(d.task_start + x_str + "_" + y_str)
+				xs.append(x)
+				ys.append(y)
+		Dict = {
+				'folders': tasks,
+				'x': np.array(xs),
+				'y': np.array(ys),
+		
+		}
+
+	return Dict
+
+
+def initial(mode):
+	"""
+	Initial print outs and preparation
+
+	Parameters
+	----------
+	mode : string
+		Mode which is used
+	
+	Returns
+	-------
+	None
+
+	"""
+	print()
+	print("╭───────────────────────────────────────────────────╮")
+	print("│ SIR - MIG                                         │")
+	print("│ Version 1.0                                       │")
+	print("│ Multiple Initial Guesses                          │")
+	print(f"│ Mode: {mode}                                          │")
+	print("│ Author: Mike Moser                                │")
+	print("╰───────────────────────────────────────────────────╯")	
+	print()
+
 
 def read_config(filename, check = True, change_config = False):
 	"""
@@ -154,7 +229,7 @@ def read_config(filename, check = True, change_config = False):
 
 	return Dict
 
-######################################################################
+
 def read_control(filename):
 	"""
 	Reads a control file in the scheme SIR expects it.
@@ -185,7 +260,6 @@ def read_control(filename):
 		Dict[i[0]] = i[1]
 	return Dict
 
-######################################################################
 def read_model(filename):
 	"""
 	Reads a model file and returns all parameters
@@ -246,8 +320,7 @@ def read_model(filename):
 	
 	return log_tau, T, Pe, v_micro, B, vlos, inc, azimuth, z, Pg, rho
 
-	
-######################################################################
+
 def read_profile(filename, num = 0):
 	"""
 	Reads the first LINE data from a profile computed by SIR
@@ -298,7 +371,7 @@ def read_profile(filename, num = 0):
 	else:
 		return np.array(line), np.array(ll/1000), np.array(I), np.array(Q), np.array(U), np.array(V)
 
-######################################################################
+
 def read_grid(filename):
 	"""
 	Reads the grid file
@@ -356,7 +429,7 @@ def read_grid(filename):
 	
 	return Dict
 
-######################################################################
+
 def read_line(filename):
 	"""
 	Reads the line file
@@ -429,7 +502,7 @@ def read_line(filename):
 	
 	return Dict
 
-######################################################################
+
 def list_to_string(temp, let = ','):
 	"""
 	Convert a list to a string
@@ -454,9 +527,8 @@ def list_to_string(temp, let = ','):
 				temp1 += let
 	return temp1
 
-################################################################################
 
-def write_config_1c(File, conf):
+def _write_config_1c(File, conf):
 	"""
 	Writes a config file with the information provided as a dictionary for the mode 1C
 
@@ -551,9 +623,7 @@ def write_config_1c(File, conf):
 		f.write(f"lim_gamma : {conf['lim_gamma']} # Limits for the randomisation in the inclination in deg\n")
 		f.write(f"lim_phi : {conf['lim_phi']} # Limits for the randomisation in the azimuth in deg")
 
-######################################################################
-
-def write_config_2c(File, conf):
+def _write_config_2c(File, conf):
 	"""
 	Writes a config file with the information provided as a dictionary
 
@@ -660,9 +730,7 @@ def write_config_2c(File, conf):
 		f.write(f"lim_gamma2 : {conf['lim_gamma2']} # Limits 2 for the randomisation in the inclination in deg\n")
 		f.write(f"lim_phi2 : {conf['lim_phi2']} # Limits 2 for the randomisation in the azimuth in deg")
 
-######################################################################
-
-def write_config_mc(File, conf):
+def _write_config_mc(File, conf):
 	"""
 	Writes a config file with the information provided as a dictionary
 
@@ -759,8 +827,6 @@ def write_config_mc(File, conf):
 		f.write(f"lim_gamma : {conf['lim_gamma']} # Limits for the randomisation in the inclination in deg\n")
 		f.write(f"lim_phi : {conf['lim_phi']} # Limits for the randomisation in the azimuth in deg")
 
-######################################################################
-
 def write_config(File, conf):
 	"""
 	Writes a config file with the information provided as a dictionary for the mode 1C
@@ -778,15 +844,13 @@ def write_config(File, conf):
 
 	"""
 	if conf["mode"] == "MC":
-		write_config_mc(File, conf)
+		_write_config_mc(File, conf)
 	elif conf["mode"] == "1C":
-		write_config_1c(File, conf)
+		_write_config_1c(File, conf)
 	elif conf["mode"] == "2C":
-		write_config_2c(File, conf)
+		_write_config_2c(File, conf)
 	else:
 		print("[write_config] Mode is not defined and config file cannot be written.")
-
-######################################################################
 
 def write_gauss_psf(sigma, filename):
 	"""
@@ -818,9 +882,8 @@ def write_gauss_psf(sigma, filename):
 	for num1,num2 in zip(ll,g):
 		f.write(f" {num1:>9.4f}   {num2:>10.4E}\n")
 
-######################################################################
 
-def write_grid(conf, waves, filename = 'Grid.grid'):
+def write_grid(conf, filename = 'Grid.grid', waves=None):
 	"""
 	Writes the Grid file with data from the config file
 
@@ -828,8 +891,37 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 	----------
 	config : dict
 		Dictionary containing all the information from the config file
-	filename : string, optional
-		String containing the name of the Grid file. Default: Grid.grid
+	filename : string,optional
+		String containing the name of the Grid file. Default: "Grid.grid
+	waves : numpy array,optional
+		Array with the wavelength needed for mode '1C' and '2C'. Default: None
+
+	Returns
+	-------
+	None
+
+	"""
+	if conf['mode'] == 'MC':
+		_write_grid_mc(conf, filename)
+	if conf['mode'] == '1C':
+		_write_grid(conf, filename, waves)
+	if conf['mode'] == '2C':
+		_write_grid(conf, filename, waves)
+	else:
+		print("[write_grid] Unknown Mode")
+
+def _write_grid(conf, filename, waves):
+	"""
+	Writes the Grid file with data from the config file
+
+	Parameters
+	----------
+	config : dict
+		Dictionary containing all the information from the config file
+	filename : string
+		String containing the name of the Grid file.
+	waves : numpy array
+		Array with the wavelength
 
 	Returns
 	-------
@@ -859,7 +951,7 @@ def write_grid(conf, waves, filename = 'Grid.grid'):
 			f.write(f"{atoms[i]}: {'%6.4f' % llambdas[0]},     {'%2.6f' % Line_step[i]},     {'%6.4f' % llambdas[-1]}\n")
 	
 
-def write_grid_mc(conf, filename = 'Grid.grid'):
+def _write_grid_mc(conf, filename):
 	"""
 	Writes the Grid file with data from the config file
 
@@ -891,8 +983,36 @@ def write_grid_mc(conf, filename = 'Grid.grid'):
 		for i in range(len(atoms)):
 			f.write(f"{atoms[i]}: {'%6.4f' % Line_min[i]},     {'%2.4f' % Line_step[i]},     {'%6.4f' % Line_max[i]}\n")
 
+def write_control(filename, conf, Type = 'inv'):
+	"""
+	Writes a control file in the scheme SIR expects it.
+	
+	Parameters
+	----------
+	filename : string
+		Save filename of the control file. Typically it is inv.trol
+	config : dict
+		Dictionary with the information from the config file
+	Type : string, optional
+		Mode for the sir ontrol file. Options are
+		- 'syn': Synthesis
+		- 'inv': Inversion (default)
 
-def write_control_1c(filename, conf):
+	Returns
+	-------
+	None
+
+	"""
+	if conf['mode'] == 'MC':
+		_write_config_mc(filename,conf,Type)
+	elif conf['mode'] == '1C':
+		_write_config_1c(filename,conf)
+	elif conf['mode'] == '2C':
+		_write_config_2c(filename,conf)
+	else:
+		print('[write_control] Unknown mode')
+
+def _write_control_1c(filename, conf):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
@@ -969,10 +1089,7 @@ def write_control_1c(filename, conf):
 
 	f.close()
 
-
-######################################################################
-
-def write_control_2c(filename, conf):
+def _write_control_2c(filename, conf):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
@@ -1056,9 +1173,8 @@ def write_control_2c(filename, conf):
 
 	f.close()
 
-######################################################################
 
-def write_control_mc(filename, conf, Type = 'inv'):
+def _write_control_mc(filename, conf, Type = 'inv'):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
@@ -1149,9 +1265,6 @@ def write_control_mc(filename, conf, Type = 'inv'):
 
 	f.close()
 
-
-
-######################################################################
 def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth, z = None, Pg = None, rho = None):
 	"""
 	Write a model with the given data in a specific format. Note that negative values
@@ -1202,8 +1315,6 @@ def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth
 		for n1,n2,n3,n4,n5,n6,n7,n8 in zip(log_tau, T, Pe, v_micro, B, vlos, inc, azimuth):
 			f.write(f" {n1:>7.4f} {n2:>7.1f} {n3:>12.5E} {n4:>10.3E} {n5:>11.4E} {n6:>11.4E} {n7:>11.4E} {n8:>11.4E}\n")
 
-######################################################################
-
 def option(text1, text2):
 	"""
 	Print an option in a help page
@@ -1222,9 +1333,6 @@ def option(text1, text2):
 	print(f"{text1}")
 	print(f"\t{text2}")
 	
-
-###############################################################################################################################################################
-
 def read_chi2s(conf, tasks):
 	"""
 	Reads all the chi2 from the inversion
@@ -1257,36 +1365,6 @@ def read_chi2s(conf, tasks):
 		chi2[i] = read_chi2(f"{os.path.join(path,tasks['folders'][i])}/{filename}")
 
 	return chi2
-
-######################################################################
-
-def write_profile(filename, profiles, pos):
-	"""
-	Write a profile for a specific model number to a file
-
-	Parameters
-	----------
-	filename : string
-		Name of the saved file
-	profiles : list
-		List containing all the profiles
-	atoms : list
-		List containing the number of the line from the Line file
-	pos : int
-		Position which model is saved
-
-	Returns
-	-------
-	None
-	"""
-
-	f = open(filename, 'w')
-	#for a in range(len(atoms)):
-	for m in range(profiles.shape[2]):
-			f.write(f" {int(profiles[pos,0,m]):>2} {profiles[pos,1,m]:>10.4f} {profiles[pos,2,m]:>14.7E} {profiles[pos,3,m]:>14.7E} {profiles[pos,4,m]:>14.7E} {profiles[pos,5,m]:>14.7E}\n")
-	f.close()
-
-######################################################################
 
 def option(text1, text2):
 	"""
@@ -1337,3 +1415,41 @@ def read_chi2(filename, task = ''):
 	# Load data
 	data = np.genfromtxt(filename)
 	return data[-1][1]
+
+def x_y_add_zeros(x, y):
+	"""
+	Adds zeros so that the returning strings have 4 letters
+
+	Parameters
+	----------
+	x : float
+		x position
+	y : float
+		y position
+
+	Returns
+	-------
+	out : str
+		x as a string of 4 letters
+	out : str
+		y as a string of 4 letters
+
+	"""
+	if x < 10:
+		x_str = "000" + str(x)
+	elif x < 100:
+		x_str = "00" + str(x)
+	elif x < 1000:
+		x_str = "0" + str(x)
+	else:
+		x_str = str(x)
+	if y < 10:
+		y_str = "000" + str(y)
+	elif y < 100:
+		y_str = "00" + str(y)
+	elif y < 1000:
+		y_str = "0" + str(y)
+	else:
+		y_str = str(y)
+
+	return x_str, y_str

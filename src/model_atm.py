@@ -43,7 +43,13 @@ class Model:
 		Filling factor
 	stray_light : numpy.array
 		Stray Light Factor in Percent
-
+	nx : int
+		Dimension in x
+	ny : int
+		Dimension in y
+	nval : int
+		Dimension along log_tau
+		
 	Returns
 	-------
 	None

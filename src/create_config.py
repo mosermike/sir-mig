@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Create a config file as expected for the inversion
+Function to create configuration files which can be executed directly from the terminal.
+The function asks questions which needs to be answered and creates then a config file.
 """
 
 import sys 
@@ -16,7 +17,7 @@ def help():
 	print()
 	sys.exit()
 
-def config_MC():
+def _config_MC():
 	"""
 	Creates a config file for the Monte-Carlo simulation by asking questions.
 
@@ -213,7 +214,7 @@ def config_MC():
 		f.write(f"lim_phi : {lim_phi} # Limits for the randomisation in the azimuth in deg")
 	
 
-def config_1C():
+def _config_1C():
 	"""
 	Creates a config file for the 1 Component Inversion by asking questions.
 
@@ -368,7 +369,7 @@ def config_1C():
 		f.write(f"lim_phi : {lim_azimuth} # Limits for the randomisation in the azimuth in deg")
 		
 
-def config_2C():
+def _config_2C():
 	"""
 	Creates a config file for the 2 Components Inversion by asking questions.
 
@@ -558,17 +559,24 @@ def config_2C():
 		f.write(f"lim_gamma2 : {lim_gamma2} # Limits 2 for the randomisation in the inclination in deg\n")
 		f.write(f"lim_azimuth2 : {lim_azimuth2} # Limits 2 for the randomisation in the azimuth in deg")
 
+def create_config():
+	"""
+	Creates a configuration file for the different modes
+	"""
+	mode = input ("Which mode do you want to use? [1C/2C/MC]: ")
+	if mode == "1C":
+		_config_1C()
+	elif mode == "2C":
+		_config_2C()
+	elif mode == "MC":
+		_config_MC()
+	else:
+		print("Mode unknown")
+
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
-	mode = input ("Which mode do you want to use? [1C/2C/MC]: ")
-	if mode == "1C":
-		config_1C()
-	elif mode == "2C":
-		config_2C()
-	elif mode == "MC":
-		config_MC()
-	else:
-		print("Mode unknown")
+
+	create_config()
 

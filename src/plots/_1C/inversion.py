@@ -2,6 +2,7 @@
 Plots the result of the SIR synthesis
 """
 
+print('NEEDS TO BE REVISED')
 import numpy as np 
 import sys, os
 sys.path.append(sys.path[0] + "/../..")

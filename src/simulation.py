@@ -27,7 +27,6 @@ import glob
 import profile_stk as p
 
 
-from misc import create_task_folder_list
 
 
 def __split_to_float(string, letter=","):
@@ -803,8 +802,8 @@ def synthesis(conf, comm, rank, size, MPI):
 	#	CREATE GRID AND CONFIG FILE	#
 	####################################
 	if rank == 0:
-		sir.write_control_mc(os.path.join(path,d.syn_trol_file), conf, Type="syn")
-		sir.write_grid_mc(conf,os.path.join(path,d.Grid))
+		sir.write_control(os.path.join(path,d.syn_trol_file), conf, Type="syn")
+		sir.write_grid(conf,os.path.join(path,d.Grid))
 			
 	if rank == 0:
 		# Check if there are old task folders and delete them => can result to errors
@@ -823,7 +822,7 @@ def synthesis(conf, comm, rank, size, MPI):
 	performed_models = 0 # Counts how many models are performed
 	finished_jobs = 0
 
-	tasks = create_task_folder_list(conf['num'])
+	tasks = sir.create_task_folder_list(conf['num'])
 
 	for i in range(rank, conf['num'], size):
 		# Create task folder
