@@ -48,6 +48,7 @@ Contents
 .. toctree::
   :maxdepth: 1
 
+  doc
   usage
   functions
   classes

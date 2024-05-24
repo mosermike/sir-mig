@@ -13,9 +13,7 @@
 
    .. autosummary::
    
-      config_1C
-      config_2C
-      config_MC
+      create_config
       help
    
    

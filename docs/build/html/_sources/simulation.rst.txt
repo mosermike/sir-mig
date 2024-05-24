@@ -1,3 +1,10 @@
+Simulation
+==========
+
+Notes about the temperature can be found here :doc:`temperature` 
+
+Notes about randomising parameters can be found here :doc:`Randomising Parameters <randomising>` 
+
 .. automodule:: simulation
 	:members:
 

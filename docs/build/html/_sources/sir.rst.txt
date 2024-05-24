@@ -1,0 +1,5 @@
+sir
+===
+
+.. automodule:: sir
+  :members:

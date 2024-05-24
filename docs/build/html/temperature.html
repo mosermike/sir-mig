@@ -1,0 +1,644 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Temperature &#8212; SIR-MIG  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'temperature';</script>
+    <link rel="icon" href="_static/SIR-MIG.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/SIR-MIG.svg" class="logo__image only-light" alt="SIR-MIG  documentation - Home"/>
+    <script>document.write(`<img src="_static/SIR-MIG.svg" class="logo__image only-dark" alt="SIR-MIG  documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc.html">
+                        Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="functions.html">
+                        Functions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="classes.html">
+                        Classes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="inversion.html">
+                        Inversion
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="preprocess.html">
+                        Preprocessing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="plots.html">
+                        Plotting
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
+                        API
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="doc.html">
+                        Documentation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="functions.html">
+                        Functions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="classes.html">
+                        Classes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="inversion.html">
+                        Inversion
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="preprocess.html">
+                        Preprocessing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="plots.html">
+                        Plotting
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="api.html">
+                        API
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Temperature</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="temperature">
+<h1>Temperature<a class="headerlink" href="#temperature" title="Link to this heading">#</a></h1>
+<section id="problems">
+<h2>Problems<a class="headerlink" href="#problems" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Emission Lines</p>
+<ul>
+<li><p>If the temperature rises in an area where the line is sensitive, the line shows an emission profile.</p></li>
+</ul>
+</li>
+<li><p>Low Continuum Intensity</p>
+<ul>
+<li><p>If the temperature is too low, the continuum intensity is too low and the effect of the magnetic field and velocities are not measurable =&gt; Is not observed on the sun</p></li>
+</ul>
+</li>
+<li><p>Unrealistic Stokes Profiles</p>
+<ul>
+<li><p>If the temperature curve is not “good”, the Stokes Profiles can look weird and an unexpected behaviour compared with the reality</p></li>
+</ul>
+</li>
+</ul>
+<p>E.g. this can happen:</p>
+<table class="table">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Stokes Profile 15648 Å</p></th>
+<th class="head"><p>Stokes Profile 15662 Å</p></th>
+<th class="head"><p>Model Temperature</p></th>
+<th class="head"><p>Model</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><a class="reference internal image-reference" href="_images/inversion_increasing_temp_stokes_15648.png"><img alt="Stokes Profile 15648 Å" src="_images/inversion_increasing_temp_stokes_15648.png" style="width: 250.0px; height: 187.0px;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/inversion_increasing_temp_stokes_15662.png"><img alt="Stokes Profile 15662 Å" src="_images/inversion_increasing_temp_stokes_15662.png" style="width: 250.0px; height: 185.5px;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/inversion_increasing_temp_t_result.png"><img alt="Model Temperature" src="_images/inversion_increasing_temp_t_result.png" style="width: 250.0px; height: 217.0px;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/inversion_increasing_temp_result.png"><img alt="Model" src="_images/inversion_increasing_temp_result.png" style="width: 250.0px; height: 185.5px;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="implemented-ideas">
+<h2>Implemented Ideas<a class="headerlink" href="#implemented-ideas" title="Link to this heading">#</a></h2>
+<p>It was challenging to find a correct way how to randomise the temperature. Why is that? The reason is the high influence of the temperature on the Stokes profiles and in the continuum. If the temperature is too low, Stokes I is so “dark” that the line cores only have a significance of 1% which is too close to the noise level. I tried several ways:</p>
+<ol class="arabic simple">
+<li><p>Creating the temperature by using splines between five points to get similar curves as known models.</p></li>
+</ol>
+<ul class="simple">
+<li><p>Problematic because the behaviour between the nodes is not specified and the spline function interpolates however it sees fit. This caused rises in the temperature leading to emission lines and the fits were quite odd.</p></li>
+<li><p>Overall, the huge impact of the temperature influenced all the results and also how precise they can be retrieved in the MC simulation.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>The 2nd attempt was to make sure that the temperature shape was decreasing at log tau &gt; -2.5. I did this by checking whether the function is monotonically decreasing or not in that area. If this is not the case, a new random temperature curve is created.</p></li>
+</ol>
+<ul class="simple">
+<li><p>This helped to eliminate the cases where the temperature curve led to emission lines instead of absorption lines.</p></li>
+<li><p>The problem with this is, firstly, that it requires more computing time since I need to redo the randomisation of the temperature.</p></li>
+<li><p>Another problem is to find enough nodes that the temperature curve looks similar to known models but also not to have too many nodes, otherwise the randomisation may be not so random after all.</p></li>
+<li><p>Another problem is, that I want to include the correlation between the temperature and the magnetic field to a specific degree. I did not want to restrict it too much, but the magnetic field strength should have an influence. The chosen approach to implement this correlation was not that trivial, as it highly depends on my maximum magnetic field strength. I did it in such a way that the temperature nodes are smaller the higher the magnetic field is. As I have changing maximum magnetic field strengths (depending on what I want to simulate) the temperature range for the nodes needed to be adapted depending on the maximum field strength. I implemented it the following way: I have 5 nodes and each node has a temperature range. The maximum value in the ranges depends on the magnetic field value at log tau 1 (the first value in the model). I simply factorised this value and subtracted it from the maximum reachable temperature number. These factorising numbers depend highly on the maximum magnetic field and need to be adapted depending on the magnetic field. This makes it not suitable but with a better implementation, this influence could have been neglected.</p></li>
+<li><p>I encountered problems that when I have a high magnetic field, the temperature curves were flat =&gt; The factorising numbers were too big but needed for lower magnetic fields (otherwise the magnetic field would play no role in smaller magnetic field strengths)</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><dl class="simple">
+<dt>I took two models: A model for a cool umbra (cool) and a quiet sun model (HSRA). I created a parameter space between these two temperature curves. I compute a random factor between 0 and 1. This value specifies the difference between the first and second model. 0 means that I use the cool model and 1 means I use the quiet sun model. The temperature value at each log tau value can be computed as</dt><dd><p><div class="math notranslate nohighlight">
+\[T(\tau) = f · (T_{\mathrm{HSRA}}(\tau) - T_{\mathrm{cool}}(\tau)) + T_{\mathrm{cool}}(\tau)\]</div>
+</p>
+</dd>
+</dl>
+</li>
+</ol>
+<ul class="simple">
+<li><p>Using this model gives me the following advantages:</p>
+<ul>
+<li><p>The temperature curve is random but realistic.</p></li>
+<li><p>The magnetic field strength has an impact as I can limit the range of the factor depending on the absolute value of the magnetic field strength.</p></li>
+<li><p>I can adapt easily the temperature curve to different models or the impact of the magnetic field on the temperature.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="final-solution">
+<h2>Final Solution<a class="headerlink" href="#final-solution" title="Link to this heading">#</a></h2>
+<p>I chose the third solution as it is the most robust and it always produces realistic Stokes Profiles.</p>
+<ul class="simple">
+<li><p>The parameter area for the 3rd method is the following:</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/parameter_space_temperature_limits.png"><img alt="Parameter Space Temperature Limits" src="_images/parameter_space_temperature_limits.png" style="width: 250.0px; height: 185.0px;" /></a>
+</section>
+<section id="randomisation">
+<h2>Randomisation<a class="headerlink" href="#randomisation" title="Link to this heading">#</a></h2>
+<p>To randomise the temperature, three randomisations are realised:</p>
+<ul class="simple">
+<li><p>Additive Random Parameter (the factor f)</p></li>
+<li><p>Multiplicative Random Parameter (Multiplication of the cool model by a factor)</p></li>
+<li><p>Rotating Random Parameter (Rotation around log tau -1)</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problems">Problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implemented-ideas">Implemented Ideas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-solution">Final Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#randomisation">Randomisation</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/temperature.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Mike.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
