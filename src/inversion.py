@@ -1230,6 +1230,30 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	stk, tasks = scatter_data(conf, comm)
 
 	if rank == 0:
+		print("Rank 0")
+		for i in tasks:
+			print(i)
+	comm.barrier()
+
+	if rank == 1:
+		print("Rank 1")
+		for i in tasks:
+			print(i)
+	comm.barrier()
+
+	if rank == 2:
+		print("Rank 2")
+		for i in tasks:
+			print(i)
+	comm.barrier()
+
+	if rank == 3:
+		print("Rank 3")
+		for i in tasks:
+			print(i)
+	comm.barrier()
+
+	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
 	start_time = time.time()
 	for i in range(0, len(tasks['folders'])):
