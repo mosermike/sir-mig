@@ -528,7 +528,7 @@ def list_to_string(temp, let = ','):
 	return temp1
 
 
-def _write_config_1c(File, conf):
+def _write_config_1c(File, conf, verbose = True):
 	"""
 	Writes a config file with the information provided as a dictionary for the mode 1C
 
@@ -538,14 +538,17 @@ def _write_config_1c(File, conf):
 		Save path
 	conf : dict
 		Dictionary with all the informations
+	verbose : bool,optional
+		Verbose output that config is written and possibility to abort
 
 	Returns
 	-------
 	None
 	"""
-	print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
-	import time
-	time.sleep(2)
+	if verbose:
+		print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
+		import time
+		time.sleep(2)
 	# Revert, range_wave, map and weights
 	range_wave = ''
 	temp = conf["range_wave"]
@@ -621,7 +624,7 @@ def _write_config_1c(File, conf):
 		f.write(f"lim_gamma : {conf['lim_gamma']} # Limits for the randomisation in the inclination in deg\n")
 		f.write(f"lim_phi : {conf['lim_phi']} # Limits for the randomisation in the azimuth in deg")
 
-def _write_config_2c(File, conf):
+def _write_config_2c(File, conf, verbose = True):
 	"""
 	Writes a config file with the information provided as a dictionary
 
@@ -631,15 +634,18 @@ def _write_config_2c(File, conf):
 		Save path
 	conf : dict
 		Dictionary with all the informations
+	verbose : bool,optional
+		Verbose output that config is written and possibility to abort
 
 	Returns
 	-------
 	None
 
 	"""
-	print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
-	import time
-	time.sleep(2)
+	if verbose:
+		print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
+		import time
+		time.sleep(2)
 	# Revert, range_wave, map and weights
 	range_wave = ''
 	temp = conf["range_wave"]
@@ -728,7 +734,7 @@ def _write_config_2c(File, conf):
 		f.write(f"lim_gamma2 : {conf['lim_gamma2']} # Limits 2 for the randomisation in the inclination in deg\n")
 		f.write(f"lim_phi2 : {conf['lim_phi2']} # Limits 2 for the randomisation in the azimuth in deg")
 
-def _write_config_mc(File, conf):
+def _write_config_mc(File, conf, verbose=True):
 	"""
 	Writes a config file with the information provided as a dictionary
 
@@ -738,15 +744,18 @@ def _write_config_mc(File, conf):
 		Save path
 	conf : dict
 		Dictionary with all the informations
+	verbose : bool,optional
+		Verbose output that config is written and possibility to abort
 
 	Returns
 	-------
 	None
 
 	"""
-	print("[write_config] Note that manually added comments will be overwritten! 1s left to abort ...")
-	import time
-	time.sleep(2)
+	if verbose:
+		print("[write_config] Note that manually added comments will be overwritten! 1s left to abort ...")
+		import time
+		time.sleep(2)
 	
 	# Revert, range_wave, map and weights
 	range_wave = ''
@@ -992,9 +1001,10 @@ def write_control(filename, conf, Type = 'inv'):
 	config : dict
 		Dictionary with the information from the config file
 	Type : string, optional
-		Mode for the sir ontrol file. Options are
+		Mode for the sir control file. Options are
 		- 'syn': Synthesis
 		- 'inv': Inversion (default)
+		Only used for mode 'MC'
 
 	Returns
 	-------
@@ -1002,11 +1012,11 @@ def write_control(filename, conf, Type = 'inv'):
 
 	"""
 	if conf['mode'] == 'MC':
-		_write_config_mc(filename,conf,Type)
+		_write_control_mc(filename,conf,Type)
 	elif conf['mode'] == '1C':
-		_write_config_1c(filename,conf)
+		_write_control_1c(filename,conf)
 	elif conf['mode'] == '2C':
-		_write_config_2c(filename,conf)
+		_write_control_2c(filename,conf)
 	else:
 		print('[write_control] Unknown mode')
 
