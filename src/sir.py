@@ -579,7 +579,7 @@ def _write_config_1c(File, conf):
 		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
 		f.write("#\n")
-		f.write("# Data Preprocessing when main.py is executed\n")
+		f.write("# Data Preprocessing\n")
 		f.write("#\n")
 		f.write(f"preprocess : {conf['preprocess']} # Preprocess data (1 = True, 0 = False)\n")
 		f.write(f"quiet_sun : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")
@@ -675,7 +675,7 @@ def _write_config_2c(File, conf):
 		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
 		f.write("#\n")
-		f.write("# Data Preprocessing when main.py is executed\n")
+		f.write("# Data Preprocessing\n")
 		f.write("#\n")
 		f.write(f"preprocess : {conf['preprocess']} # Preprocess data (1 = True, 0 = False)\n")
 		f.write(f"quiet_sun : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")

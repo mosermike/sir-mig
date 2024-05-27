@@ -151,68 +151,52 @@ def _config_MC():
 
 
 
-	with open(File, 'w') as f:
-		f.write("# This is the config file, generated with create_config.py\n")
-		f.write(f"mode : {mode} # Mode which code is executed\n")
-		f.write(f"path : {path} # Path location where all the data is stored and will be saved\n")
-		f.write(f"# \n")
-		f.write(f"# General Stuff\n")
-		f.write(f"# \n")
-		f.write(f"num : {num} # Number of Models\n")
-		f.write(f"instrument : {instrument} # Instrument used (GRIS, Hinode or empty)\n")
-		f.write(f"model : {model} # Base Model for guess\n")
-		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")	
-		f.write(f"range_wave : {range_wave} # Ranges of wavelengths in mA to be considered min1,step,max1;min2,step,max2;... First pair belongs to first line in Grid file, etc.\n")
-		f.write(f"random_guess : {random_guess} # Create random guesses, 0 = use model as guess\n")
-		f.write(f"random_pars : {random_pars} # Randomise these parameters for the guess\n")
-		f.write(f"model_pars : {model_pars} # Randomize these parameters as a list\n")
+	conf = {
+		"mode" : mode,
+		"path" : path,
+		"num" : num,
+		"instrument" : instrument,
+		"model" : model,
+		"atoms" : atoms,
+		"range_wave" : range_wave,
+		"random_guess" : random_guess,
+		"random_pars" : random_pars,
+		"model_pars" : model_pars,
+		"model_nodes" : model_nodes,
+		"syn_out" : syn_out,
+		"noise_out" : noise_out,
+		"noise_I" : noise_I,
+		"noise_Q" : noise_Q,
+		"noise_U" : noise_U,
+		"noise_V" : noise_V,
+		"create_B" : create_B,
+		"create_vlos" : create_vlos,
+		"create_gamma" : create_gamma,
+		"create_phi" : create_phi,
+		"create_points" : create_points,
+		"inv_out" : inv_out,
+		"chi2" : chi2,
+		"line" : line,
+		"guess" : guess,
+		"cycles" : cycles,
+		"weights" : weights,
+		"nodes_temp" : nodes_temp,
+		"nodes_magn" : nodes_magn,
+		"nodes_vlos" : nodes_vlos,
+		"nodes_gamma" : nodes_gamma,
+		"nodes_phi" : nodes_phi,
+		"vmacro" : vmacro,
+		"abundance" : abundance,
+		"gas_pressure" : gas_pressure,
+		"lim_B" : lim_B,
+		"lim_vlos" : lim_vlos,
+		"lim_gamma" : lim_gamma,
+		"lim_phi" : lim_phi,
+	}
 
-		f.write(f"#\n")
-		f.write(f"# Creating Models and Synthesis\n")
-		f.write(f"#\n")
-		f.write(f"model_nodes : {model_nodes} # Create models with 1, 2 or 3 nodes\n")
-		f.write(f"syn_out : {syn_out} # Output prefix of the synthesis profiles and models\n")
-		f.write(f"noise_out : {noise_out} # Output prefix of the noise profiles as npy\n")
-		f.write(f"noise_I : {noise_I} # Noise in Q\n")	
-		f.write(f"noise_Q : {noise_Q} # Noise in Q\n")
-		f.write(f"noise_U : {noise_U} # Noise in U\n")
-		f.write(f"noise_V : {noise_V} # Noise in V\n")
-		f.write(f"create_B : {create_B} # The limits for the first and last node in B\n")
-		f.write(f"create_vlos : {create_vlos} # The limits for the first and last node in vlos\n")
-		f.write(f"create_gamma : {create_gamma} # The limits for the first and last node in gamma\n")
-		f.write(f"create_phi : {create_phi} # The limits for the first and last node in phi\n")
-		f.write(f"create_points : {create_points} # At this log tau points the models are interpolated with splines (increasing), 2 or 3 values for 2 or 3 nodes\n")
+	sir.write_config(File,conf)
 
-		f.write(f"# \n")
-		f.write(f"# Inversion configuration\n")
-		f.write(f"# \n")
-		f.write(f"inv_out : {inv_out} # Prefix of the output of the inversion files\n")
-		f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")
-		f.write(f"line : {line} # Line file\n")
-		f.write(f"guess : {guess} # Use a npy file as initial guesses, blank use base model\n")
-
-		f.write(f"# \n")
-		f.write(f"# Control file\n")
-		f.write(f"# \n")
-		f.write(f"cycles : {cycles} # Number of cycles\n")
-		f.write(f"weights : {weights} # Weights in the control file\n")
-		f.write(f"nodes_temp : {nodes_temp} # Nodes in T\n")
-		f.write(f"nodes_magn : {nodes_magn} # Nodes in B\n")
-		f.write(f"nodes_vlos : {nodes_vlos} # Nodes in vlos\n")
-		f.write(f"nodes_gamma : {nodes_gamma} # Nodes in gamma\n")
-		f.write(f"nodes_phi : {nodes_phi} # Nodes in phi\n")
-		f.write(f"vmacro : {vmacro} # Macroturbulence velocity\n")
-		f.write(f"abundance : {abundance} # Abundance file\n")
-		f.write(f"gas_pressure : {gas_pressure} # Gas Pressure Boundary condition\n")
-
-		f.write(f"# \n")
-		f.write(f"# Radomisation Settings\n")
-		f.write(f"# \n")
-		f.write(f"lim_B : {lim_B} # Limits for the randomisation in B in G\n")
-		f.write(f"lim_vlos : {lim_vlos} # Limits for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma : {lim_gamma} # Limits for the randomisation in the inclination in deg\n")
-		f.write(f"lim_phi : {lim_phi} # Limits for the randomisation in the azimuth in deg")
-	
+	return
 
 def _config_1C():
 	"""
@@ -312,62 +296,44 @@ def _config_1C():
 	if gas_pressure == "-1":
 		gas_pressure = "3.944"
 
-	with open(File, 'w') as f:
-		f.write("# This is the config file, generated with create_config.py\n")
-		f.write(f"mode : {mode} # Mode which code is executed\n")
-		f.write(f"path : {path} # Path location where all the data is stored and will be saved\n")
-		f.write(f"# \n")
-		f.write(f"# Stuff from the data\n")
-		f.write(f"# \n")
-		f.write(f"cube : {cube} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
-		f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (bin)\n")
-		f.write(f"map : {Map} # Pixels to be considered as a list\n")
-		f.write(f"instrument : {instrument} # Instrument used (GRIS, Hinode or empty)\n")
-		f.write(f"shift_wave : {shift_wave} # Shift the wavelength grid when waves file is created in mA\n")
-
-		f.write("#\n")
-		f.write("# Data Preprocessing when main.py is executed\n")
-		f.write("# If the script is executed directly, it is not affected. Not that 'cube_inv' will be overwritten!\n")
-		f.write("#\n")
-		f.write(f"preprocess : {preprocess} # Preprocess data (1 = True, 0 = False)\n")
-		f.write(f"quiet_sun : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")
-		f.write(f"fts_file : {fts_file} # FTS file, blank = do not correct spectral veil\n")
-
-		f.write(f"# \n")
-		f.write(f"# Inversion configuration\n")
-		f.write(f"# \n")
-		f.write(f"model : {model} # Base Model for guess\n")
-		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
-		f.write(f"inv_out : {inv_out} # Prefix of the output of the inversion files\n")
-		f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")
-		f.write(f"line : {line} # Line file\n")
-		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")
-		f.write(f"guess : {guess} # Use a bin file as initial guesses, blank use base model\n")
-		f.write(f"psf : {psf} # Spectral PSF .dat file, 'gauss 1.0' or blank=not used\n")
-		f.write(f"# \n")
-		f.write(f"# Control file\n")
-		f.write(f"# \n")
-		f.write(f"cycles : {cycles} # Number of cycles\n")
-		f.write(f"weights : {weights} # Weights in the control file\n")
-		f.write(f"nodes_temp : {nodes_temp} # Nodes in T\n")
-		f.write(f"nodes_magn : {nodes_magn} # Nodes in B\n")
-		f.write(f"nodes_vlos : {nodes_vlos} # Nodes in vlos\n")
-		f.write(f"nodes_gamma : {nodes_gamma} # Nodes in gamma\n")
-		f.write(f"nodes_phi : {nodes_phi} # Nodes in phi\n")
-		f.write(f"vmacro : {vmacro} # Macroturbulence velocity\n")
-		f.write(f"mu_cos : {mu_cos} # mu = cos theta\n")
-		f.write(f"abundance : {abundance} # Abundance file\n")
-		f.write(f"gas_pressure : {gas_pressure} # Gas Pressure Boundary condition\n")
-		f.write(f"# \n")
-		f.write(f"# Radomisation Settings\n")
-		f.write(f"# \n")
-		f.write(f"random_guess : {random_guess} # Create random guesses, 0 = use model as guess\n")
-		f.write(f"random_pars : {random_pars} # Randomise these parameters in the file(s) below\n")
-		f.write(f"lim_B : {lim_B} # Limits for the randomisation in B in G\n")
-		f.write(f"lim_vlos : {lim_vlos} # Limits for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma : {lim_gamma} # Limits for the randomisation in the inclination in deg\n")
-		f.write(f"lim_phi : {lim_azimuth} # Limits for the randomisation in the azimuth in deg")
-		
+	conf = {
+		"mode" : mode,
+		"path" : path,
+		"cube" : cube,
+		"cube_inv" : cube_inv,
+		"map" : Map,
+		"instrument" : instrument,
+		"shift_wave" : shift_wave,
+		"preprocess" : preprocess,
+		"quiet_sun" : quiet_sun,
+		"fts_file" : fts_file,
+		"model" : model,
+		"range_wave" : range_wave,
+		"inv_out" : inv_out,
+		"chi2" : chi2,
+		"line" : line,
+		"atoms" : atoms,
+		"guess" : guess,
+		"psf" : psf,
+		"cycles" : cycles,
+		"weights" : weights,
+		"nodes_temp" : nodes_temp,
+		"nodes_magn" : nodes_magn,
+		"nodes_vlos" : nodes_vlos,
+		"nodes_gamma" : nodes_gamma,
+		"nodes_phi" : nodes_phi,
+		"vmacro" : vmacro,
+		"mu_cos" : mu_cos,
+		"abundance" : abundance,
+		"gas_pressure" : gas_pressure,
+		"random_guess" : random_guess,
+		"random_pars" : random_pars,
+		"lim_B" : lim_B,
+		"lim_vlos" : lim_vlos,
+		"lim_gamma" : lim_gamma,
+		"lim_phi" : lim_azimuth,
+	}
+	sir.write_config(File,conf)
 
 def _config_2C():
 	"""
@@ -491,73 +457,57 @@ def _config_2C():
 	if gas_pressure == "-1":
 		gas_pressure = "3.944e+3"
 
-	with open(File, 'w') as f:
-		f.write("# This is the config file, generated with create_config.py\n")
-		f.write(f"mode : {mode} # Mode which code is executed\n")
-		f.write(f"path : {path} # Path location where all the data is stored and will be saved\n")
-		f.write(f"# \n")
-		f.write(f"# Stuff from the data\n")
-		f.write(f"# \n")
-		f.write(f"cube : {cube} # Data cube name (npy or fits) used for preprocessing data if 'preprocess' is 1\n")
-		f.write(f"cube_inv : {cube_inv} # Data cube name for the inversion (bin)\n")
-		f.write(f"map : {Map} # Pixels to be considered as a list (0 means all pixels)\n")
-		f.write(f"instrument : {instrument} # Instrument used (GRIS, Hinode or empty)\n")
-		f.write(f"shift_wave : {shift_wave} # Shift the wavelength grid when waves file is created in mA\n")
+	conf = {
+		"mode" : mode,
+		"path" : path,
+		"cube" : cube,
+		"cube_inv" : cube_inv,
+		"map" : Map,
+		"instrument" : instrument,
+		"shift_wave" : shift_wave,
+		"preprocess" : preprocess,
+		"quiet_sun" : quiet_sun,
+		"fts_file" : fts_file,
+		"model1" : model1,
+		"model2" : model2,
+		"fill" : fill,
+		"range_wave" : range_wave,
+		"inv_out" : inv_out,
+		"chi2" : chi2,
+		"line" : line,
+		"atoms" : atoms,
+		"guess1" : guess1,
+		"guess2" : guess2,
+		"psf" : psf,
+		"cycles" : cycles,
+		"weights" : weights,
+		"nodes_temp1" : nodes_temp1,
+		"nodes_magn1" : nodes_magn1,
+		"nodes_vlos1" : nodes_vlos1,
+		"nodes_gamma1" : nodes_gamma1,
+		"nodes_phi1" : nodes_phi1,
+		"nodes_temp2" : nodes_temp2,
+		"nodes_magn2" : nodes_magn2,
+		"nodes_vlos2" : nodes_vlos2,
+		"nodes_gamma2" : nodes_gamma2,
+		"nodes_phi2" : nodes_phi2,
+		"vmacro" : vmacro,
+		"mu_cos" : mu_cos,
+		"abundance" : abundance,
+		"gas_pressure" : gas_pressure,
+		"random_guess" : random_guess,
+		"random_pars" : random_pars,
+		"lim_B1" : lim_B1,
+		"lim_vlos1" : lim_vlos1,
+		"lim_gamma1" : lim_gamma1,
+		"lim_azimuth1" : lim_azimuth1,
+		"lim_B2" : lim_B2,
+		"lim_vlos2" : lim_vlos2,
+		"lim_gamma2" : lim_gamma2,
+		"lim_azimuth2" : lim_azimuth2,
+	}
 
-		f.write("#\n")
-		f.write("# Data Preprocessing when main.py is executed\n")
-		f.write("# If the script is executed directly, it is not affected. Not that 'cube_inv' will be overwritten!\n")
-		f.write("#\n")
-		f.write(f"preprocess : {preprocess} # Preprocess data (1 = True, 0 = False)\n")
-		f.write(f"quiet_sun : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")
-		f.write(f"fts_file : {fts_file} # FTS file, blank = do not correct spectral veil\n")
-
-		f.write(f"# \n")
-		f.write(f"# Inversion configuration\n")
-		f.write(f"# \n")
-		f.write(f"model1 : {model1} # Base Model 1 for guess\n")
-		f.write(f"model2 : {model2} # Base Model 2 for guess\n")
-		f.write(f"fill : {fill} # Filling factors for both models separated by a ',' (if random_guess > 0)\n")
-		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
-		f.write(f"inv_out : {inv_out} # Prefix of the output of the inversion files\n")
-		f.write(f"chi2 : {chi2} # Output of the chi2 values (npy)\n")
-		f.write(f"line : {line} # Line file\n")
-		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")
-		f.write(f"guess1 : {guess1} # Use a bin file as initial guesses, blank use base model 1\n")
-		f.write(f"guess2 : {guess2} # Use a bin file as initial guesses, blank use base model 2\n")
-		f.write(f"psf : {psf} # Spectral PSF .dat file, 'gauss 1.0' or blank=not used\n")
-		f.write(f"# \n")
-		f.write(f"# Control file\n")
-		f.write(f"# \n")
-		f.write(f"cycles : {cycles} # Number of cycles\n")
-		f.write(f"weights : {weights} # Weights in the control file\n")
-		f.write(f"nodes_temp1 : {nodes_temp1} # Nodes in T\n")
-		f.write(f"nodes_magn1 : {nodes_magn1} # Nodes in B\n")
-		f.write(f"nodes_vlos1 : {nodes_vlos1} # Nodes in vlos\n")
-		f.write(f"nodes_gamma1 : {nodes_gamma1} # Nodes in gamma\n")
-		f.write(f"nodes_phi1 : {nodes_phi1} # Nodes in phi\n")
-		f.write(f"nodes_temp2 : {nodes_temp2} # Nodes in T\n")
-		f.write(f"nodes_magn2 : {nodes_magn2} # Nodes in B\n")
-		f.write(f"nodes_vlos2 : {nodes_vlos2} # Nodes in vlos\n")
-		f.write(f"nodes_gamma2 : {nodes_gamma2} # Nodes in gamma\n")
-		f.write(f"nodes_phi2 : {nodes_phi2} # Nodes in phi\n")
-		f.write(f"vmacro : {vmacro} # Macroturbulence velocity\n")
-		f.write(f"mu_cos : {mu_cos} # mu = cos theta\n")
-		f.write(f"abundance : {abundance} # Abundance file\n")
-		f.write(f"gas_pressure : {gas_pressure} # Gas Pressure Boundary condition\n")
-		f.write(f"# \n")
-		f.write(f"# Radomisation Settings\n")
-		f.write(f"# \n")
-		f.write(f"random_guess : {random_guess} # Create random guesses, 0 = use model as guess\n")
-		f.write(f"random_pars : {random_pars} # Randomise these parameters in the file(s) below\n")
-		f.write(f"lim_B1 : {lim_B1} # Limits 1 for the randomisation in B in G\n")
-		f.write(f"lim_vlos1 : {lim_vlos1} # Limits 1 for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma1 : {lim_gamma1} # Limits 1 for the randomisation in the inclination in deg\n")
-		f.write(f"lim_azimuth1 : {lim_azimuth1} # Limits 1 for the randomisation in the azimuth in deg\n")
-		f.write(f"lim_B2 : {lim_B2} # Limits 2 for the randomisation in B in G\n")
-		f.write(f"lim_vlos2 : {lim_vlos2} # Limits 2 for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma2 : {lim_gamma2} # Limits 2 for the randomisation in the inclination in deg\n")
-		f.write(f"lim_azimuth2 : {lim_azimuth2} # Limits 2 for the randomisation in the azimuth in deg")
+	sir.write_config(File, conf)
 
 def create_config():
 	"""

@@ -530,11 +530,14 @@ def correct_spectral_veil(conf):
 			if len(conf['quiet_sun']) < 2 and exists(os.path.join(conf["path"], conf["cube"])):
 				print("[STATUS] Copying the non-preprocessed data cube to the file used for the inversion.")
 				shutil.copy(os.path.join(conf['path'],conf['cube']), os.path.join(conf['path'],conf['cube_inv'])) 
+				print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
 			elif exists(os.path.join(conf["path"], conf["cube"]) + d.end_norm):
 				print("[STATUS] Copying the created normalised data cube to the file used for the inversion.")
 				shutil.copy(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm, os.path.join(conf['path'],conf['cube_inv'])) 
+				print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
 			else:
 				print(f"[ERROR] File {conf['cube_inv']} is not created. Are there data in the selected path?")
+
 		return
 	
 	print("[STATUS] Correct spectral veil ...")
@@ -545,7 +548,7 @@ def correct_spectral_veil(conf):
 			temp = input("Do you want to overwrite it and continue? [y/n] ")
 		if temp == 'n':
 			print("Abort (Consider changing the config file)")
-			sys.exit(1)
+			return
 
 	##########################
 	#	Plot settings		#
@@ -764,3 +767,5 @@ def correct_spectral_veil(conf):
 
 	print("-------> Saving data (this might take a while) ...")
 	stokes.write(os.path.join(conf['path'],conf['cube_inv']))
+
+	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
