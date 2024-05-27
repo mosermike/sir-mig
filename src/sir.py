@@ -1037,7 +1037,6 @@ def _write_control_1c(filename, conf):
 
 	"""
 	import definitions as d
-	psf			= conf['psf']		# Use psf by spectral veil
 	cycles		= conf['cycles']		# Number of cycles
 	weights		= conf['weights']		# Weights in the control file
 	nodes_temp	= conf['nodes_temp']	# Nodes in T
@@ -1054,7 +1053,7 @@ def _write_control_1c(filename, conf):
 		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
 		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
 		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
-		f.write('PSF file                      :' + psf + '        ! (none=no convolution with PSF)\n')
+		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
 		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
 		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
 		f.write('Abundances file               :'    + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
@@ -1115,7 +1114,6 @@ def _write_control_2c(filename, conf):
 	import definitions as d
 	model1		= d.guess1			# Base Model 1
 	model2		= d.guess2			# Base Model 2
-	psf			= conf['psf']			# Use psf by spectral veil
 	cycles		= conf['cycles']		# Number of cycles
 	weights		= conf['weights']		# Weights in the control file
 	nodes_temp1	= conf['nodes_temp1']	# Nodes in T
@@ -1138,7 +1136,7 @@ def _write_control_2c(filename, conf):
 		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
 		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
 		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
-		f.write('PSF file                      :' + psf + '        ! (none=no convolution with PSF)\n')
+		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
 		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
 		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
 		f.write('Abundances file               :' + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')

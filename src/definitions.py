@@ -56,7 +56,7 @@ model2 = 'model2_'  # Generic name for creating guesses for Model 2 for 2C
 profile_obs = profile  # Name of the observed profile in the inversion
 header_2C = "   0.10000000      0.50000	   0.00000" # Header used for writing a model 2C
 fill_2C = 0.5 # Filling factor for the first model when mode 2C is used
-psf = "psf.dat" # PSF file for the inversion
+psf = ".psf.dat" # PSF file for the inversion
 #############################
 # Spectral Veil Correction	#
 #############################
