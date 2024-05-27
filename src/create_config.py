@@ -237,17 +237,17 @@ def _config_1C():
 		path = sys.argv[sys.argv.index("-path")+1]
 	else:
 		path		= input ("Path, where the files are: ")
-	cube			= input ("Location of the Data cube for preprocessing (format is nx,ny,ns,nwave) as a npy file (can be left empty if no preprocessing): ")
+	cube			= input ("Location of the Data cube for preprocessing (format is nx,ny,ns,nwave) as a .bin file (can be left empty if no preprocessing): ")
 	cube_inv		= input ("Location of the Data cube used for the inversion (format is nx,ny,ns,nwave) in the path as a bin file: ")
 	preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
-	Map			= input ("Map in pixels (format xmin,xmax,ymin,ymax): ")
+	Map			= input ("Map in pixels to be used for the inversion (format xmin,xmax,ymin,ymax): ")
 
 	instrument	= input ("Instrument          (GRIS, Hinode or blank): ")
 	# Ask for spectral veil for Gris:
 	if instrument == 'Hinode':
 		fts_file = ''
 	else:
-		fts_file	= input ("Absolute fts file (if not blank => correct spectral veil): ")
+		fts_file	= input ("Absolute path to fts file (if not blank => correct spectral veil): ")
 	shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
 
 	quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
