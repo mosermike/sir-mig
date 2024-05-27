@@ -268,8 +268,8 @@ def execute_inversion_1c(conf, task_folder, rank):
 	----------
 	config : dict
 		Dictionary containing the configuration of the simulation
-	task_folder : dict
-		Dictionary with the folders and x and y positions
+	task_folder : str
+		String of the directory where this code should executed
 	rank : int
 		Process Number
 	
@@ -279,6 +279,9 @@ def execute_inversion_1c(conf, task_folder, rank):
 		Best chi2 value of the inversion(s)
 	
 	"""
+	# Change the directory
+	old_dir = os.path.abspath(os.getcwd())
+	os.chdir(task_folder)
 
 	# Define parameters for simplicity reasons
 	shutil.copy(conf['model'], d.model_inv)
@@ -424,6 +427,8 @@ def execute_inversion_1c(conf, task_folder, rank):
 			os.remove(f"{guess1}_{j+1}.err")
 			os.remove(f"{guess1}_{j+1}.per")
 
+	# Change the directory
+	os.chdir(old_dir)
 	return
 
 
@@ -437,8 +442,8 @@ def execute_inversion_2c(conf, task_folder, rank):
 	----------
 	conf : Dictionary
 		Dictionary containing the configuration of the simulation
-	task_folder : dict
-		Dictionary with the folders and x and y positions
+	task_folder : str
+		Task folder where the code is going
 	rank : int
 		Process Number
 
@@ -447,6 +452,9 @@ def execute_inversion_2c(conf, task_folder, rank):
 	out : float
 		Best chi2 value of the inversion(s)
 	"""
+	old_pw = os.path.abspath(os.getcwd())
+	os.chdir(task_folder)
+
 	# Define parameters for simplicity reasons
 	model1 = conf['model1']
 	model2 = conf['model2']
@@ -598,6 +606,9 @@ def execute_inversion_2c(conf, task_folder, rank):
 			os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.mod")
 			os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.err")
 			os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.per")
+
+	# Change to old path
+	os.chdir(old_pw)
 
 	return chi2_best
 
@@ -767,9 +778,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		# Perform inversion #
 		#####################
 		# Create random guesses and select best value and perform inversion
-		os.chdir(task_folder)
 		execute_inversion_1c(conf, task_folder, rank)
-		
 		#########################################
 		# Check chi2 and print out informations #
 		#########################################
@@ -1013,8 +1022,6 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		# 	Perform inversion		#
 		###############################
 		# Create random guesses and select best value and perform inversion
-		os.chdir(task_folder)
-		
 		execute_inversion_1c(conf, task_folder, rank)
 		
 		performed_models += 1
@@ -1029,8 +1036,6 @@ def inversion_mc(conf, comm, rank, size, MPI):
 			remaining_time = elapsed_time * max_jobs/total_jobs - elapsed_time
 			remaining_time = str(datetime.timedelta(seconds=remaining_time)).split(".")[0]  # Convert time into clock format
 			print(f"\rFinished Jobs: [{total_jobs}/{max_jobs}], Remaining time {remaining_time}", end='', flush=False)
-
-		os.chdir("../")  # In case a relative path is used in the config
 
 	comm.barrier()
 		
@@ -1281,7 +1286,6 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		# 	Perform inversion		#
 		###############################
 		# Create random guesses and select best value and perform inversion
-		os.chdir(task_folder)
 		chi2_best = execute_inversion_2c(conf, task_folder, rank)
 		
 		##############################################
