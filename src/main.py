@@ -27,7 +27,7 @@ def help():
 	sir.option("--no-create","Do not create models [Only in mode MC]")
 	sir.option("--no-syn","Do not perform the synthesis [Only in mode MC]")
 	sir.option("--no-noise","Do not add noise [Only in mode MC]")
-	sir.option("--no-inv","Do not perform the inversion [Only in mode MC]")
+	sir.option("--no-inv","Do not perform the inversion")
 	sir.option("--only-inv","Only perform inversion [Only in mode MC]")
 	sys.exit()
 
@@ -99,15 +99,17 @@ def main():
 		#####################
 		# PERFORM INVERSION #
 		#####################
-		import inversion
-		inversion.inversion_1c(conf, comm, rank, size, MPI)
+		if not "--no-inv" in sys.argv:
+			import inversion
+			inversion.inversion_1c(conf, comm, rank, size, MPI)
 
 	elif conf['mode'] == '2C':
 		#####################
 		# PERFORM INVERSION #
 		#####################
-		import inversion
-		inversion.inversion_2c(conf, comm, rank, size, MPI)
+		if not "--no-inv" in sys.argv:
+			import inversion
+			inversion.inversion_2c(conf, comm, rank, size, MPI)
 
 	elif conf['mode'] == 'MC':
 		import simulation  # Creating Models
