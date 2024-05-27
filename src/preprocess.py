@@ -271,7 +271,7 @@ def normalise(conf):
 		y2	  = conf['quiet_sun'][3]+1	# Upper limit for region in y
 		
 		# Compute continuum intensity in quiet sun region
-		Ic  = np.mean(stokes.stki[x1:x2,y1:y2,0,ll1:ll2])  # Average continuum intensity in quiet sun
+		Ic  = np.mean(stokes.stki[x1:x2,y1:y2,ll1:ll2])  # Average continuum intensity in quiet sun
 
 		# Divide through the mean
 		stokes.stki /= Ic
