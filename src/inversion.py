@@ -657,7 +657,8 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
 			if "gauss" in conf['psf']:
-				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")))
+				print(r"-------> Create Gaussian spectral PSF with σ = " + conf['psf'].replace("gauss ","") + " mÅ")
+				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")), os.path.join(path,d.psf))
 			else:
 				shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 	
@@ -1135,9 +1136,11 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
 			if "gauss" in conf['psf']:
-				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")))
+				print(r"-------> Create Gaussian spectral PSF with σ = " + conf['psf'].replace("gauss ","") + " mÅ")
+				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")), os.path.join(path,d.psf))
 			else:
-				shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
+				if(conf['psf'] != d.psf):
+					shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 
 	# Create guess from npy file if wanted
 	if conf["guess1"] != '':
