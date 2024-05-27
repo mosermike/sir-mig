@@ -581,14 +581,13 @@ def correct_spectral_veil(conf):
 	#						    INITIALIZATION							 #
 	######################################################################################
 	# Load data
-	if stokes == '':
-		if len(conf['quiet_sun']) > 1:
-			print("-------> Load normalised data ...")
-			stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin","")+d.end_norm))
+	if len(conf['quiet_sun']) > 1:
+		print("-------> Load normalised data ...")
+		stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin","")+d.end_norm))
 			
-		else:
-			print("-------> Load merged data ...")
-			stokes = p.read_profile(os.path.join(conf["path"],conf["cube"]))
+	else:
+		print("-------> Load merged data ...")
+		stokes = p.read_profile(os.path.join(conf["path"],conf["cube"]))
 			
 			
 	filename_fts  = conf['fts_file']
