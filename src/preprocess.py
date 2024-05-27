@@ -746,7 +746,7 @@ def correct_spectral_veil(conf):
 				 + '\n' +
 				 r"$\hat{\chi}^2 =$ " + "%.3f"
 					% (chi_min), fontsize=12)
-	plt.savefig(os.path.join(path,"veil_parameter_space"))
+	plt.savefig(os.path.join(path,savepath + "veil_parameter_space"))
 
 
 	######################################################################################
@@ -766,7 +766,7 @@ def correct_spectral_veil(conf):
 
 	ax.legend(fontsize=15)
 
-	plt.savefig(os.path.join(path, "veil_intensity"))
+	plt.savefig(os.path.join(path, savepath + "veil_intensity"))
 
 	######################################################################################
 	#					START OF THE ACTUAL CORRECTION					    #

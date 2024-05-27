@@ -908,11 +908,11 @@ def write_grid(conf, filename = 'Grid.grid', waves=None):
 	None
 
 	"""
-	if conf['mode'] == 'MC':
+	if conf['mode'] == "MC":
 		_write_grid_mc(conf, filename)
-	if conf['mode'] == '1C':
+	elif conf['mode'] == "1C":
 		_write_grid(conf, filename, waves)
-	if conf['mode'] == '2C':
+	elif conf['mode'] == "2C":
 		_write_grid(conf, filename, waves)
 	else:
 		print(f"[write_grid] Unknown Mode '{conf['mode']}'")
