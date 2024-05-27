@@ -329,7 +329,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 
 					sys.exit()
 			# Read the chi2 file
-			chi = sir.read_chi2(chi_file)
+			chi = sir.read_chi2(chi_file, task_folder)
 
 			# Inversion did not work => Put to a significantly high value to not affect the choice
 			# of the best inversion if another converged
@@ -368,7 +368,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 				os.system(f"echo {d.inv_trol_file} | ./sir.x >> inv.log 2>&1")
 
 				# Read chi2 value
-				chi2_best = sir.read_chi2(chi_file)
+				chi2_best = sir.read_chi2(chi_file, task_folder)
 	
 				# +1 iteration
 				it += 1
@@ -575,7 +575,7 @@ def execute_inversion_2c(conf, task_folder, rank):
 		shutil.copy(model1,d.guess1)
 		shutil.copy(model2,d.guess2)
 		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
-		chi2_best = sir.read_chi2(chi_file)
+		chi2_best = sir.read_chi2(chi_file, task_folder)
 		shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.mod", f"best1.mod")
 		shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.err", f"best1.err")
 		shutil.move(f"{d.guess2.replace('.mod','')}_{cycles}.mod", f"best2.mod")
@@ -839,7 +839,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			y = tasks['y'][i]
 			
 			# Read chi2 file
-			chi2[x-Map[0], y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi")
+			chi2[x-Map[0], y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
 
 			# Remove folder
 			shutil.rmtree(folder)
@@ -1365,7 +1365,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			y = tasks['y'][i]
 			
 			# Read chi2 file
-			chi2[x-Map[0],y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi")
+			chi2[x-Map[0],y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
 
 			# Remove folder
 			shutil.rmtree(folder)

@@ -523,6 +523,13 @@ def correct_spectral_veil(conf):
 
 	"""
 	
+	# Additional savepath
+	savepath = ''
+	if '-save' in sys.argv:
+		savepath = path + "/" + sys.argv[sys.argv.index("-save")+1]
+		if not exists(savepath[:savepath.rfind('/')]):
+			os.mkdir(savepath[:savepath.rfind('/')])
+
 	# Do not do anything
 	if conf['fts_file'] == '':
 		print("-------> No spectral veil correction")
@@ -550,6 +557,10 @@ def correct_spectral_veil(conf):
 			print("Abort (Consider changing the config file)")
 			return
 
+	if(conf["instrument"] != "GRIS"):
+		print("| Note that the script was only tested for GRIS data in the infrared range.")
+		print("| Take a look at the plotted plots and if they do not look good, consider changing the ranges or the borders")
+
 	##########################
 	#	Plot settings		#
 	########################## 
@@ -576,9 +587,9 @@ def correct_spectral_veil(conf):
 	######################################################################################
 	#						    DEFINE VARIABLES						    #
 	######################################################################################
-	b = 1.5 # For the used range in the spectrum
-	sigma = np.arange(10,150,1) * 1e-3
-	nu    = np.arange(0,31,1) * 1e-2
+	b = 1.5 # For the used range in the plotted spectrum in A
+	sigma = np.arange(d.sigma_range[0],d.sigma_range[1]) * 1e-3 # from mA to A
+	nu    = np.arange(d.nu_range[0],d.nu_range[1],1) * 1e-2 # from percent to 1
 
 	######################################################################################
 	#						    INITIALIZATION							 #
@@ -637,7 +648,7 @@ def correct_spectral_veil(conf):
 
 	# Correct convective blueshift / Shift in GRIS data
 	ll1_lit = np.argmin(abs(ll_gris-ll_lit))		 # Find position at ll_lit defined in definitions.py
-	border = 40								 # Find minima around this value
+	border = 40								         # Find minima around this value of the literature value, if this peak is not prominent, than put a smaller number
 	ll1, l0 = convective_blueshift(ll_gris[ll1_lit-border:ll1_lit+border], stokes.stki[x1:x2,y1:y2,ll1_lit-border:ll1_lit+border]) # Determine the minima position and value of the shifted GRIS spectrum
 	ll_gris += ll_lit-l0 # Shift the wavelength
 
@@ -754,6 +765,7 @@ def correct_spectral_veil(conf):
 	ax.set_xlim(-b,b)
 
 	ax.legend(fontsize=15)
+
 	plt.savefig(os.path.join(path, "veil_intensity"))
 
 	######################################################################################

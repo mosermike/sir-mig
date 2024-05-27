@@ -57,6 +57,7 @@ profile_obs = profile  # Name of the observed profile in the inversion
 header_2C = "   0.10000000      0.50000	   0.00000" # Header used for writing a model 2C
 fill_2C = 0.5 # Filling factor for the first model when mode 2C is used
 psf = ".psf.dat" # PSF file for the inversion
+
 #############################
 # Spectral Veil Correction	#
 #############################
@@ -65,6 +66,9 @@ psf = ".psf.dat" # PSF file for the inversion
 ll_lit = {
 			"GRIS": 15648.514  # From A new Multiplet table for Fe I
 		}
+
+sigma_range = (10,150) # in mA
+nu_range    = (0,31) # in %
 
 
 #####################
