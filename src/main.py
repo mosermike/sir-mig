@@ -85,11 +85,11 @@ def main():
 			# CORRECT SPECTRAL VEIL #
 			#########################
 			if conf['fts_file'] != '':
-				preprocess.correction_spectral_veil.correct_spectral_veil(conf)
+				preprocess.correct_spectral_veil(conf)
 			elif not exists(os.path.join(conf['path'],conf['cube_inv'])) and len(conf['quiet_sun']) > 1:
 				import shutil
 				import definitions as d
-				shutil.copy(os.path.join(conf['path'],conf['cube']) + d.end_norm, os.path.join(conf['path'],conf['cube_inv']))
+				shutil.copy(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm, os.path.join(conf['path'],conf['cube_inv']))
 			else:
 				print("[main] No preprocessing steps are actually performed. Is 'preprocess=1' really needed in the config file?")
 

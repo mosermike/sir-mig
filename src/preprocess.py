@@ -282,10 +282,7 @@ def normalise(conf):
 		print("-------> Skipping normalisation")
 
 	print("-------> Saving data (this might take a while) ...")
-	if ".bin" in conf['cube']:
-		stokes.write(os.path.join(conf['path'],conf['cube']).replace(".bin",d.end_norm))
-	else:
-		stokes.write(os.path.join(conf['path'],conf['cube']) + d.end_norm)
+	stokes.write(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm)
 
 #################################
 #	SPECTRAL VEIL CORRECTION	#
@@ -535,7 +532,7 @@ def correct_spectral_veil(conf):
 				shutil.copy(os.path.join(conf['path'],conf['cube']), os.path.join(conf['path'],conf['cube_inv'])) 
 			elif exists(os.path.join(conf["path"], conf["cube"]) + d.end_norm):
 				print("[STATUS] Copying the created normalised data cube to the file used for the inversion.")
-				shutil.copy(os.path.join(conf['path'],conf['cube']) + d.end_norm, os.path.join(conf['path'],conf['cube_inv'])) 
+				shutil.copy(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm, os.path.join(conf['path'],conf['cube_inv'])) 
 			else:
 				print(f"[ERROR] File {conf['cube_inv']} is not created. Are there data in the selected path?")
 		return
@@ -587,10 +584,8 @@ def correct_spectral_veil(conf):
 	if stokes == '':
 		if len(conf['quiet_sun']) > 1:
 			print("-------> Load normalised data ...")
-			if ".bin" in conf["cube"]:
-				stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin",d.end_norm)))
-			else:
-				stokes = p.read_profile(os.path.join(conf["path"],conf["cube"] + d.end_norm))
+			stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin","")+d.end_norm))
+			
 		else:
 			print("-------> Load merged data ...")
 			stokes = p.read_profile(os.path.join(conf["path"],conf["cube"]))
