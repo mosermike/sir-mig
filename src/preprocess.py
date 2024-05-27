@@ -526,7 +526,7 @@ def correct_spectral_veil(conf):
 	# Additional savepath
 	savepath = ''
 	if '-save' in sys.argv:
-		savepath = path + "/" + sys.argv[sys.argv.index("-save")+1]
+		savepath = os.path.join(conf["path"],sys.argv[sys.argv.index("-save")+1])
 		if not exists(savepath[:savepath.rfind('/')]):
 			os.mkdir(savepath[:savepath.rfind('/')])
 
