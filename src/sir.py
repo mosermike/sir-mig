@@ -562,7 +562,6 @@ def _write_config_1c(File, conf):
 	weights = list_to_string(conf["weights"])
 	quiet_sun = list_to_string(conf["quiet_sun"])
 	random_pars = list_to_string(conf["random_pars"])
-	Step = list_to_string(conf["step_wave"])
 
 	with open(File, 'w') as f:
 		f.write("# This is the config file, generated with create_config.py\n")
@@ -590,7 +589,6 @@ def _write_config_1c(File, conf):
 		f.write(f"# \n")
 		f.write(f"model : {conf['model']} # Base Model for guess\n")
 		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
-		f.write(f"step_wave : {Step} # Step between wavelength points in mA as Step1,Step2,... for each line in Grid file\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
 		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
 		f.write(f"line : {conf['line']} # Line file\n")
