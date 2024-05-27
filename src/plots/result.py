@@ -525,8 +525,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 			 gridspec_kw=dict(hspace=0), figsize=figsize)
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
-		if (I2.shape[1] - I2.shape[0]) > 100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0],figsize[1]/4],
+		if (I2.shape[1] - I2.shape[0]) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 										layout="compressed",
 									)
 		else:
@@ -609,8 +609,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 			 gridspec_kw=dict(hspace=0), figsize=figsize)
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
-		if (I2.shape[1] - I2.shape[0]) > 100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0],figsize[1]/4],
+		if (I2.shape[1] - I2.shape[0]) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 										layout="compressed",
 									)
 		else:
@@ -741,8 +741,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 			 gridspec_kw=dict(hspace=0), figsize=figsize)
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
-		if (I2.shape[1] - I2.shape[0]) > 100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0],figsize[1]/4],
+		if (I2.shape[1] - I2.shape[0]) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 										layout="compressed",
 									)
 		else:
@@ -1248,10 +1248,10 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				gridspec_kw=dict(hspace=0), figsize=figsize)
 			fig.subplots_adjust(hspace=0, wspace=0)
 		else:
-			if (I2.shape[1] - I2.shape[0]) > 100:
-				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0],figsize[1]/4],
-											layout="compressed",
-										)
+			if (I2.shape[1] - I2.shape[0]) >= -100:
+				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
+										layout="compressed",
+									)
 			else:
 				fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 											layout="compressed",
@@ -1331,10 +1331,10 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				gridspec_kw=dict(hspace=0), figsize=figsize)
 			fig.subplots_adjust(hspace=0, wspace=0)
 		else:
-			if (I2.shape[1] - I2.shape[0]) > 100:
-				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0],figsize[1]/4],
-											layout="compressed",
-										)
+			if (I2.shape[1] - I2.shape[0]) >= -100:
+				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
+										layout="compressed",
+									)
 			else:
 				fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 											layout="compressed",
@@ -1471,8 +1471,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				gridspec_kw=dict(hspace=0), figsize=figsize)
 			fig.subplots_adjust(hspace=0, wspace=0)
 	else:
-		if (I2.shape[1] - I2.shape[0]) > 100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0],figsize[1]/4],
+		if (I2.shape[1] - I2.shape[0]) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 										layout="compressed",
 									)
 		else:
