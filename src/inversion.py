@@ -56,7 +56,12 @@ def scatter_data(conf, comm, rank, size):
 		tasks = sir.create_task_folder_list(conf["map"])
 
 		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
+		
+		# Cut data to the wavelength range and to the map
 		stk.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
+		stk.cut_to_map(conf["map"]) # Cut to the map
+
+
 		# Create one data cube
 		stki = stk.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
 		stkq = stk.stkq.reshape(-1, stk.nw) # Flatten Stokes Q corresponding to the tasks list
@@ -66,6 +71,7 @@ def scatter_data(conf, comm, rank, size):
 
 		del stk # Free Memory
 
+		
 		# Compute the contribution
 		stki_size = stki.shape[0]
 		chunk_size = stki_size // size
@@ -79,7 +85,7 @@ def scatter_data(conf, comm, rank, size):
 		tasks_chunks = [tasks['folders'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
 		x_chunks = [tasks['x'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
 		y_chunks = [tasks['y'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-
+				
 		# If there is a remainder, distribute the remaining data to the last process
 		if remainder:
 			stki_chunks[-1] = stki[-remainder-chunk_size:]
@@ -726,6 +732,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
+
 	start_time = time.time()
 	for i in range(0, len(tasks['folders'])):
 		####################################
@@ -773,11 +780,11 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		#		chi2s_num = np.append(chi2s_num, f"{x}_{y}")
 
 		performed_models += 1
-	
+		
 		# Do not do allreduce for the last step as the code does not move on from here
 		if total_jobs < (max_jobs - max_jobs % size):
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
-
+		
 		# Print the total number of finished jobs on the root process
 		if rank == 0:
 			elapsed_time = time.time() - start_time
@@ -1229,29 +1236,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	# Load and scatter data => Saving memory and time
 	stk, tasks = scatter_data(conf, comm)
 
-	if rank == 0:
-		print("Rank 0")
-		for i in tasks:
-			print(i)
-	comm.barrier()
-
-	if rank == 1:
-		print("Rank 1")
-		for i in tasks:
-			print(i)
-	comm.barrier()
-
-	if rank == 2:
-		print("Rank 2")
-		for i in tasks:
-			print(i)
-	comm.barrier()
-
-	if rank == 3:
-		print("Rank 3")
-		for i in tasks:
-			print(i)
-	comm.barrier()
+	
 
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
