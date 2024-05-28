@@ -645,13 +645,13 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	-------
 	None
 	"""
+	start = time.time()
 	####################################
 	# READ PARAMETERS FROM CONFIG FILE #
 	####################################
 	# Define parameters for easier understanding
 	path = conf["path"]
 	model = conf["model"]
-	model1 = model.replace('.mod','') # For simplicity reasons defined
 	
 	#output =  os.path.join(path,conf["inv_out"]) # Output file
 	cycles = conf['cycles'] # How many cycles
@@ -745,11 +745,9 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	# Track local progress
 	performed_models = 0  # Counts how many models are performed
 
-	
-
 	# Root process initializes the progress bar
 	if rank == 0:
-		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
 	comm.barrier()
 
 	for i in range(0, len(tasks['folders'])):
@@ -790,27 +788,22 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		# Update performed_models
 		performed_models += 1
 
-		# Root process updates the progress bar
-		total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
-
+		# Do not do allreduce for the last step as the code does not move on from here
+		if total_jobs < (max_jobs - max_jobs % size):
+			# Root process updates the progress bar
+			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
+		
 		# Update progres bar
 		if rank == 0:
 			pbar.n = total_jobs
 			pbar.refresh()
-			print("",end="",flush=True)
-		# Do not do allreduce for the last step as the code does not move on from here
-		#if total_jobs < (max_jobs - max_jobs % size):
-		#total_jobs = comm.allreduce(performed_models, op=MPI.SUM, root = 0)
-		
-		# Print the total number of finished jobs on the root process
-		#if rank == 0:
-		#	elapsed_time = time.time() - start_time
-		#	remaining_time = elapsed_time * max_jobs/total_jobs - elapsed_time
-		#	remaining_time = str(datetime.timedelta(seconds=remaining_time)).split(".")[0]  # Convert time into clock format
-		#	print(f"\rFinished Jobs: [{total_jobs}/{max_jobs}], Remaining time {remaining_time}", end='')
-		#print(task_folder, " done by rank ", rank)
+			#print("",end="",flush=True)
 
-	if(rank == 0):
+	comm.barrier()
+		
+	if rank == 0:
+		pbar.n = max_jobs
+		pbar.refresh()
 		pbar.close()
 
 	wave = np.copy(stk.wave)
@@ -818,22 +811,11 @@ def inversion_1c(conf, comm, rank, size, MPI):
 
 	comm.barrier()
 		
-	####################################
-	# Print out time and finished jobs #
-	####################################
-	if rank == 0:
-		remaining_time = str(datetime.timedelta(seconds=0)).split(".")[0]
-		print(f"\rFinished Jobs: [{max_jobs}/{max_jobs}], Remaining time {remaining_time}            ", end='', flush=False)
-		total_time = time.time() - start_time  # Total time
-		total_time = str(datetime.timedelta(seconds=total_time)).split(".")[0]  # Remove ms
-		print(f"\n-------> Finished {max_jobs} Jobs in {total_time}.")
-
 	##################################################
 	# Read all the results and put it into npy files #
 	##################################################
 	os.chdir(path)
 	if rank == 0:
-		start = time.time()
 		print("[STATUS] Gathering results...")
 
 		# Redefine tasks as now all the tasks are read
@@ -927,6 +909,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	None
 
 	"""
+	start = time.time()
 	####################################
 	# READ PARAMETERS FROM CONFIG FILE #
 	####################################
@@ -1009,7 +992,11 @@ def inversion_mc(conf, comm, rank, size, MPI):
 
 	stk, tasks = scatter_data_mc(conf, comm, rank, size)
 
-	start_time = time.time()
+	# Root process initializes the progress bar
+	if rank == 0:
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
+	comm.barrier()
+
 	for i in range(0,len(tasks['num'])):
 		####################################
 		# Create the folder and copy stuff #
@@ -1041,25 +1028,21 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	
 		# Do not do allreduce for the last step as the code does not move on from here
 		if total_jobs < (max_jobs - max_jobs % size):
+			# Root process updates the progress bar
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
-
-		# Print the total number of finished jobs on the root process
+		
+		# Update progres bar
 		if rank == 0:
-			elapsed_time = time.time() - start_time
-			remaining_time = elapsed_time * max_jobs/total_jobs - elapsed_time
-			remaining_time = str(datetime.timedelta(seconds=remaining_time)).split(".")[0]  # Convert time into clock format
-			print(f"\rFinished Jobs: [{total_jobs}/{max_jobs}], Remaining time {remaining_time}", end='', flush=False)
+			pbar.n = total_jobs
+			pbar.refresh()
+			#print("",end="",flush=True)
 
 	comm.barrier()
 		
-	####################################
-	# Print out time and finished jobs #
-	####################################
 	if rank == 0:
-		remaining_time = str(datetime.timedelta(seconds=0)).split(".")[0]
-		total_time = time.time() - start_time  # Total time
-		total_time = str(datetime.timedelta(seconds=total_time)).split(".")[0]  # Remove ms
-		print(f"\r-------> Finished {max_jobs} Jobs in {total_time}.                          ")
+		pbar.n = max_jobs
+		pbar.refresh()
+		pbar.close()
 
 	##################################################
 	# Read all the results and put it into npy files #
@@ -1067,7 +1050,6 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	os.chdir(path)
 	if rank == 0:
 		print("[STATUS] Gathering results...")
-		start = time.time()
 
 		tasks = sir.create_task_folder_list(conf["num"])
 		
@@ -1136,6 +1118,8 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	None
 
 	"""
+	start = time.time()
+
 	###################################################
 	#		READ PARAMETERS FROM CONFIG FILE		#	
 	###################################################
@@ -1257,11 +1241,14 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	# Load and scatter data => Saving memory and time
 	stk, tasks = scatter_data(conf, comm)
 
-	
+	# Root process initializes the progress bar
+	if rank == 0:
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
+	comm.barrier()
 
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
-	start_time = time.time()
+
 	for i in range(0, len(tasks['folders'])):
 		#########################################
 		#	Create the folder and copy stuff	#
@@ -1316,33 +1303,29 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	
 		# Do not do allreduce for the last step as the code does not move on from here
 		if total_jobs < (max_jobs - max_jobs % size):
+			# Root process updates the progress bar
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
-
-		# Print the total number of finished jobs on the root process
+		
+		# Update progres bar
 		if rank == 0:
-			elapsed_time = time.time() - start_time
-			remaining_time = elapsed_time * max_jobs/total_jobs - elapsed_time
-			remaining_time = str(datetime.timedelta(seconds=remaining_time)).split(".")[0]  # Convert time into clock format
-			print(f"\rFinished Jobs: [{total_jobs}/{max_jobs}], Remaining time {remaining_time}", end='', flush=False)
+			pbar.n = total_jobs
+			pbar.refresh()
+			#print("",end="",flush=True)
 
 	comm.barrier()
 		
-	#########################################
-	#	Print out time and finished jobs	#
-	#########################################
 	if rank == 0:
-		remaining_time = str(datetime.timedelta(seconds=0)).split(".")[0]
-		print(f"\rFinished Jobs: [{max_jobs}/{max_jobs}], Remaining time {remaining_time}            ", end='', flush=False)
-		total_time = time.time() - start_time	# Total time
-		total_time = str(datetime.timedelta(seconds=total_time)).split(".")[0] # Remove ms
-		print(f"\n[NOTE] Finished {max_jobs} Jobs in {total_time}.")
+		pbar.n = max_jobs
+		pbar.refresh()
+		pbar.close()
+		
 
 	########################################################
 	#	Read all the results and put it into npy files	#
 	########################################################
 	os.chdir(path)
 	if rank == 0:
-		start = time.time()
+		
 		print("[STATUS] Gathering results...", end='', flush=False)
 
 		# Redefine tasks as now all the tasks are read
@@ -1410,7 +1393,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		# Print needed time
 		end = time.time()
 		Time = str(datetime.timedelta(seconds=end-start)).split(".")[0]
-		print(f" Finished in {Time}")
+		print(f"-------> Finished in {Time}")
 
 	comm.barrier()
 
