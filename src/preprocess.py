@@ -215,8 +215,8 @@ def merge(conf, dir, ending):
 			f.write(f"NAXIS4={header['NAXIS4']}\n")
 			f.write(f"POINT_ID={header['POINT_ID']}\n")
 			f.write(f"POINT_ID={header['POINT_ID']}\n")
-			f.write(f"DSUN_OBS={header['DSUN_OBS']}")
-			f.write(f"SHIFT={conf['shift_wave']}\n")
+			f.write(f"DSUN_OBS={header['DSUN_OBS']}\n")
+			f.write(f"SHIFT={conf['shift_wave']}")
 		elif conf['instrument'] == 'Hinode':
 			f.write(f"CRVAL1={header['CRVAL1']}\n")
 			f.write(f"CDELT1={header['CDELT1']}\n")
