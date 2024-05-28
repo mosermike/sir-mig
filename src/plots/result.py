@@ -314,16 +314,16 @@ def result_1C(conf, wave, tau, waveV = -1):
 		waveQ = _check_range(stokes_inv.wave, waveQ)
 	else:
 		waveQ = wave
-	waveQ_ind1 = np.argmin(abs(waves-waveQ))
-	waveQ_ind2 = np.argmin(abs(waves_inv-waveQ))
+	waveQ_ind1 = np.argmin(abs(stokes.wave-waveQ))
+	waveQ_ind2 = np.argmin(abs(stokes_inv.wave-waveQ))
 
 	if "-waveU" in sys.argv:
 		waveU = float(sys.argv[sys.argv.index("-waveU")+1])
 		waveU = _check_range(stokes_inv.wave, waveU)
 	else:
 		waveU = wave
-	waveU_ind1 = np.argmin(abs(waves-waveU))
-	waveU_ind2 = np.argmin(abs(waves_inv-waveU))
+	waveU_ind1 = np.argmin(abs(stokes.wave-waveU))
+	waveU_ind2 = np.argmin(abs(stokes_inv.wave-waveU))
 
 
 	# Cut data in x and y position	
