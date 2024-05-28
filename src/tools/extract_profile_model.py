@@ -93,7 +93,10 @@ def extract_profile_model_1C(conf, x, y):
 	# Copy stuff for the inversion
 	if savepath != '':
 		if conf['psf'] != '':
-			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'], conf['psf']]
+			if "gauss" in conf['psf']:
+				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
+			else:
+				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
 		else:
 			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance']]
 		for sir_file in sir_files:
@@ -231,7 +234,10 @@ def extract_profile_model_2C(conf, x, y):
 	# Copy stuff for the inversion
 	if savepath != '':
 		if conf['psf'] != '':
-			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'], conf['psf']]
+			if "gauss" in conf['psf']:
+				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
+			else:
+				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
 		else:
 			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance']]
 		for sir_file in sir_files:
