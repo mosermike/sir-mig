@@ -530,12 +530,12 @@ def result_1C(conf, wave, tau, waveV = -1):
 										layout="compressed",
 									)
 			import matplotlib as mpl
-			f = 1.2
+			f = 1.8
 			mpl.rcParams["xtick.labelsize"] = 18*f
 			mpl.rcParams["ytick.labelsize"] = 18*f
 			mpl.rcParams["legend.fontsize"] = 16*f
 			mpl.rcParams["legend.title_fontsize"] = 16*f
-			mpl.rcParams["axes.titlesize"] = 23*f
+			mpl.rcParams["axes.titlesize"] = 20*f
 			mpl.rcParams["axes.labelsize"] = 20*f
 			mpl.rcParams["figure.titlesize"] = 24*f
 		else:
@@ -686,8 +686,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
 		if title1 != '':
 			fig.suptitle(title1, y=1.02, x=xtitle1)
-		else:
-			fig.suptitle(r"Inversion Results", y=1.02, x=xtitle1)
+		#else:
+		#	fig.suptitle(r"Inversion Results", y=1.02, x=xtitle1)
 
 	plt.savefig(savepath + "stokes" + add)
 
@@ -789,13 +789,13 @@ def result_1C(conf, wave, tau, waveV = -1):
 	#	Set title and legend	#
 	###############################
 	if "-vertical" not in sys.argv:
-		ax1.set_title(titles[1] + r" @ $\log\tau = $ " + str(logT), fontsize=16)
-		ax2.set_title(titles[4] + r" @ $\log\tau = $ " + str(logB), fontsize=16)
-		ax3.set_title(titles[5] + r" @ $\log\tau = $ " + str(logV), fontsize=16)
+		ax1.set_title(titles[1] + r" @ $\log\tau = $ " + str(logT))
+		ax2.set_title(titles[4] + r" @ $\log\tau = $ " + str(logB))
+		ax3.set_title(titles[5] + r" @ $\log\tau = $ " + str(logV))
 		if "-plot_chi2" in sys.argv:
-			ax4.set_title(titles[11], fontsize=16)
+			ax4.set_title(titles[11])
 		else:
-			ax4.set_title(titles[6] + r" @ $\log\tau = $ " + str(logI), fontsize=16)
+			ax4.set_title(titles[6] + r" @ $\log\tau = $ " + str(logI))
 
 	############
 	# Colorbar #
