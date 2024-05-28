@@ -490,7 +490,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 			delta_x = float(infos['XSCALE'])
 			x_pos = float(infos['XCEN'])
 			y_pos = float(infos['YCEN'])
-			y_max = y_pos + ((stokes.shape[1]-1) - infos['CRPIX2']) * delta_y # Used for flipx
+			y_max = y_pos + ((I2.shape[1]-1) - infos['CRPIX2']) * delta_y # Used for flipx
 
 			Map_plot = [
 				(Map[0]-1) * delta_x + x_pos,
