@@ -184,9 +184,9 @@ def merge(conf, dir, ending):
 	pro = p.Profile(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
 	pro.wave = llambda
 	pro.stki = data[:,:,0,:]
-	pro.stkq = data[:,:,0,:]
-	pro.stku = data[:,:,0,:]
-	pro.stkv = data[:,:,0,:]
+	pro.stkq = data[:,:,1,:]
+	pro.stku = data[:,:,2,:]
+	pro.stkv = data[:,:,3,:]
 
 	print("-------> Saving data (this might take a while) ...")
 	pro.load = True # No warning of no loaded data
