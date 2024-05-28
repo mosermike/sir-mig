@@ -535,7 +535,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 			mpl.rcParams["ytick.labelsize"] = 18*f
 			mpl.rcParams["legend.fontsize"] = 16*f
 			mpl.rcParams["legend.title_fontsize"] = 16*f
-			mpl.rcParams["axes.titlesize"] = 20*f
+			mpl.rcParams["axes.titlesize"] = 18*f
 			mpl.rcParams["axes.labelsize"] = 20*f
 			mpl.rcParams["figure.titlesize"] = 24*f
 		else:
@@ -821,8 +821,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
 		if title3 != '':
 			fig.suptitle(title3, y=1.02, x=xtitle1)
-		else:
-			fig.suptitle(r"Result Models", y=1.02, x=xtitle1)
+		#else:
+		#	fig.suptitle(r"Result Models", y=1.02, x=xtitle1)
 
 	plt.savefig(savepath + "inversion" + add)
 
