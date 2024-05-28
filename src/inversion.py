@@ -53,58 +53,66 @@ def scatter_data(conf, comm, rank, size):
 	path = conf["path"]
 	
 	if rank == 0:
-		print("[Status] Load and scatter data ...")
+			
+			tasks = sir.create_task_folder_list(conf["map"])
+			stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
+			
+			# Cut data to the wavelength range and to the map
+			stk.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
+			stk.cut_to_map(conf["map"]) # Cut to the map
 
-		tasks = sir.create_task_folder_list(conf["map"])
-		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
-		
-		# Cut data to the wavelength range and to the map
-		stk.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
-		stk.cut_to_map(conf["map"]) # Cut to the map
+			
+			# Create one data cube
+			stki = stk.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
+			stkq = stk.stkq.reshape(-1, stk.nw) # Flatten Stokes Q corresponding to the tasks list
+			stku = stk.stku.reshape(-1, stk.nw) # Flatten Stokes U corresponding to the tasks list
+			stkv = stk.stkv.reshape(-1, stk.nw) # Flatten Stokes V corresponding to the tasks list		
+			waves = stk.wave
 
+			print(stk.stki.shape)
 
-		# Create one data cube
-		stki = stk.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
-		stkq = stk.stkq.reshape(-1, stk.nw) # Flatten Stokes Q corresponding to the tasks list
-		stku = stk.stku.reshape(-1, stk.nw) # Flatten Stokes U corresponding to the tasks list
-		stkv = stk.stkv.reshape(-1, stk.nw) # Flatten Stokes V corresponding to the tasks list		
-		waves = stk.wave
+			del stk # Free Memory
+			
+			# Compute the contribution
+			stki_size = stki.shape[0]
+			chunk_size = stki_size // size
+			remainder = stki_size % size # Remainder if number of ranks is not a divisor(?) of the data size
+			
+			# Divide data into chunks
+			stki_chunks = [stki[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
+			stkq_chunks = [stkq[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
+			stku_chunks = [stku[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
+			stkv_chunks = [stkv[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
+			tasks_chunks = [tasks['folders'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
+			x_chunks = [tasks['x'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
+			y_chunks = [tasks['y'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
 
-		del stk # Free Memory
-
-		
-		# Compute the contribution
-		stki_size = stki.shape[0]
-		chunk_size = stki_size // size
-		remainder = stki_size % size # Remainder if number of ranks is not a divisor(?) of the data size
-		
-		# Divide data into chunks
-		stki_chunks = [stki[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-		stkq_chunks = [stkq[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-		stku_chunks = [stku[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-		stkv_chunks = [stkv[i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-		tasks_chunks = [tasks['folders'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-		x_chunks = [tasks['x'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-		y_chunks = [tasks['y'][i*chunk_size:(i+1)*chunk_size] for i in range(size)]
-				
-		# If there is a remainder, distribute the remaining data to the last process
-		if remainder:
-			stki_chunks[-1] = stki[-remainder-chunk_size:]
-			stkq_chunks[-1] = stkq[-remainder-chunk_size:]
-			stku_chunks[-1] = stku[-remainder-chunk_size:]
-			stkv_chunks[-1] = stkv[-remainder-chunk_size:]
-			tasks_chunks[-1] = tasks['folders'][-remainder-chunk_size:]
-			x_chunks[-1] = tasks['x'][-remainder-chunk_size:]
-			y_chunks[-1] = tasks['y'][-remainder-chunk_size:]
+			# If there is a remainder, distribute the remaining data equally
+			if remainder:
+				i = 0
+				while(i < remainder):
+					for j in range(size):
+						stki_chunks[j] = np.vstack([stki_chunks[j],stki[-remainder+i]])
+						stkq_chunks[j] = np.vstack([stkq_chunks[j],stkq[-remainder+i]])
+						stku_chunks[j] = np.vstack([stku_chunks[j],stku[-remainder+i]])
+						stkv_chunks[j] = np.vstack([stkv_chunks[j],stkv[-remainder+i]])
+									
+						tasks_chunks[j].append(tasks['folders'][-remainder+i])
+						x_chunks[j] = np.append(x_chunks[j],tasks['x'][-remainder+i])
+						y_chunks[j] = np.append(y_chunks[j],tasks['y'][-remainder+i])
+						
+						i += 1
+						if(i >= remainder):
+							break
 	else:
-		stki_chunks = None
-		stkq_chunks = None
-		stku_chunks = None
-		stkv_chunks = None
-		x_chunks = None
-		y_chunks = None
-		tasks_chunks = None
-		waves = None
+			stki_chunks = None
+			stkq_chunks = None
+			stku_chunks = None
+			stkv_chunks = None
+			x_chunks = None
+			y_chunks = None
+			tasks_chunks = None
+			waves = None
 
 	# Scatter data chunks and task structure to all processes
 	stki_chunk = comm.scatter(stki_chunks, root=0)
@@ -202,12 +210,21 @@ def scatter_data_mc(conf, comm, rank, size):
 
 		# If there is a remainder, distribute the remaining data to the last process
 		if remainder:
-			stki_chunks[-1] = stki[-remainder-chunk_size:]
-			stkq_chunks[-1] = stkq[-remainder-chunk_size:]
-			stku_chunks[-1] = stku[-remainder-chunk_size:]
-			stkv_chunks[-1] = stkv[-remainder-chunk_size:]
-			tasks_chunks[-1] = tasks['folders'][-remainder-chunk_size:]
-			num_chunks[-1] = tasks['x'][-remainder-chunk_size:]
+			i = 0
+			while(i < remainder):
+				for j in range(size):
+					stki_chunks[j] = np.vstack([stki_chunks[j],stki[-remainder+i]])
+					stkq_chunks[j] = np.vstack([stkq_chunks[j],stkq[-remainder+i]])
+					stku_chunks[j] = np.vstack([stku_chunks[j],stku[-remainder+i]])
+					stkv_chunks[j] = np.vstack([stkv_chunks[j],stkv[-remainder+i]])
+									
+					tasks_chunks[j].append(tasks['folders'][-remainder+i])
+					num_chunks[j] = np.append(num_chunks[j],tasks['x'][-remainder+i])
+						
+					i += 1
+					if(i >= remainder):
+						break
+					
 	else:
 		stki_chunks = None
 		stkq_chunks = None
