@@ -46,7 +46,7 @@ if conf['mode'] == "1C":
 	os.system(f"rm -rv {os.path.join(path,d.header_infos)}")
 
 	if conf['psf'] != '':
-		os.system(f"rm -rv {os.path.join(path,conf['psf'])}")
+		os.system(f"rm -rv {os.path.join(path,d.psf)}")
 
 elif conf['mode'] == '2C':
 	os.system(f"rm -rv {os.path.join(path,conf['cube'].replace('.bin','')+d.end_norm + '.bin')}")
@@ -64,7 +64,7 @@ elif conf['mode'] == '2C':
 	os.system(f"rm -rv {os.path.join(path,d.header_infos)}")
 
 	if conf['psf'] != '':
-		os.system(f"rm -rv {os.path.join(path,conf['psf'])}")
+		os.system(f"rm -rv {os.path.join(path,d.psf)}")
 
 elif conf['mode'] == "MC":
 	if conf["guess"] != '':

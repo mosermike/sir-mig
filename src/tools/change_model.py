@@ -67,11 +67,11 @@ if "-vlos" in sys.argv:
 	print("[NOTE] vlos is changed")
 
 if "-gamma" in sys.argv:
-	inc_n	= float(sys.argv[sys.argv.index("-inc")+1])
+	inc_n	= float(sys.argv[sys.argv.index("-gamma")+1])
 	print("[NOTE] inc is changed")
 
 if "-phi" in sys.argv:
-	azi_n = float(sys.argv[sys.argv.index("-azi")+1])
+	azi_n = float(sys.argv[sys.argv.index("-phi")+1])
 	print("[NOTE] azi is changed")
 
 if "-z" in sys.argv:

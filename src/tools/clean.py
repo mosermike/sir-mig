@@ -30,7 +30,7 @@ if conf['mode'] == "1C":
 	os.system(f"rm -rv {os.path.join(path,d.best_guess_file)}")
 	os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
 	if conf['psf'] != '':
-		os.system(f"rm -rv {os.path.join(path,conf['psf'])}")
+		os.system(f"rm -rv {os.path.join(path,d.psf)}")
 
 elif conf['mode'] == '2C':
 	os.system(f"rm -rv {inv_out+d.end_stokes}")
@@ -42,7 +42,7 @@ elif conf['mode'] == '2C':
 	os.system(f"rm -rv {os.path.join(path,d.best_guess2_file)}")
 	os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
 	if conf['psf'] != '':
-		os.system(f"rm -rv {os.path.join(path,conf['psf'])}")
+		os.system(f"rm -rv {os.path.join(path,d.psf)}")
 
 elif conf['mode'] == 'MC':
 	inv_out = os.path.join(path,conf["inv_out"])

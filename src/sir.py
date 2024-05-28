@@ -879,7 +879,7 @@ def write_gauss_psf(sigma, filename):
 	Delta_ll = 20 # mA
 
 	## Wavelength range to be printed in mA
-	ll = np.arange(-(Delta_ll*1e3*31),(Delta_ll*1e3*32),Delta_ll*1e3)
+	ll = np.arange(-(Delta_ll*31),(Delta_ll*32),Delta_ll)
 
 	# Compute Gaussian
 	g = np.exp(-(ll - 0)**2 / (2 * sigma**2))
