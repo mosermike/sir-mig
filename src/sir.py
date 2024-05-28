@@ -949,7 +949,7 @@ def _write_grid(conf, filename, waves):
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
 		Line_max  = np.append(Line_max,Line_min[i] + Line_step[i]/1e3*(range_wave[i,2]-1))
-	
+
 	# Define wavelength grid to be saved
 	with open(filename, 'w') as f:
 		for i in range(len(atoms)):

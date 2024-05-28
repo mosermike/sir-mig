@@ -19,6 +19,7 @@ import create_random_guess as g
 from os.path import exists
 import datetime
 import definitions as d
+from tqdm import tqdm
 
 """
 *****************************************************************************
@@ -28,7 +29,7 @@ import definitions as d
 """
 def scatter_data(conf, comm, rank, size):
 	"""
-	Scatters the data equally into all the processes.
+	Loads and scatters the data equally into all the processes.
 
 	Parameters
 	----------
@@ -40,6 +41,7 @@ def scatter_data(conf, comm, rank, size):
 		Number of actual process
 	size : int
 		Number of available processes
+
 
 	Returns
 	-------
@@ -54,7 +56,6 @@ def scatter_data(conf, comm, rank, size):
 		print("[Status] Load and scatter data ...")
 
 		tasks = sir.create_task_folder_list(conf["map"])
-
 		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
 		
 		# Cut data to the wavelength range and to the map
@@ -659,15 +660,6 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	# Read inversion stuff
 	Map = conf['map']
 	abundance_file = conf['abundance']  # Abundance file
-
-	# Write the control file with the information from the config file
-	if rank == 0:
-		print("-------> Write control and grid file")
-		sir.write_control(os.path.join(conf['path'],d.inv_trol_file), conf)
-		# Write Grid file based on the chosen wavelength ranges in the config file
-		stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
-		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
-		del stk
 	
 	# Write psf function, if needed
 	if rank == 0:
@@ -729,7 +721,6 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	########################
 	# START INVERSION PART #
 	########################
-	performed_models = 0  # Counts how many models are performed
 	total_jobs = 1  # Total performed jobs across all processes
 	tasks = sir.create_task_folder_list(Map) # Structure tasks
 	max_jobs = len(tasks['folders'])  # For comm.allreduce function
@@ -741,10 +732,26 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	stk, tasks = scatter_data(conf, comm, rank, size)
 	comm.barrier()
 
+	# Write the control file with the information from the config file
+	if rank == 0:
+		print("-------> Write control and grid file")
+		sir.write_control(os.path.join(conf['path'],d.inv_trol_file), conf)
+		# Write Grid file based on the chosen wavelength ranges in the config file
+		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
+
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
 
-	start_time = time.time()
+	# Track local progress
+	performed_models = 0  # Counts how many models are performed
+
+	
+
+	# Root process initializes the progress bar
+	if rank == 0:
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
+	comm.barrier()
+
 	for i in range(0, len(tasks['folders'])):
 		####################################
 		# Create the folder and copy stuff #
@@ -779,27 +786,32 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		#####################
 		# Create random guesses and select best value and perform inversion
 		execute_inversion_1c(conf, task_folder, rank)
-		#########################################
-		# Check chi2 and print out informations #
-		#########################################
-		# If chi2 is not small, print out model number and do not delete the files
-		#if d.chi2_verbose:
-		#	if chi2_best > d.chi2_lim or chi2_best < 1e-2:
-		#		chi2s = np.append(chi2s, chi2_best)
-		#		chi2s_num = np.append(chi2s_num, f"{x}_{y}")
-
-		performed_models += 1
 		
+		# Update performed_models
+		performed_models += 1
+
+		# Root process updates the progress bar
+		total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
+
+		# Update progres bar
+		if rank == 0:
+			pbar.n = total_jobs
+			pbar.refresh()
+			print("",end="",flush=True)
 		# Do not do allreduce for the last step as the code does not move on from here
-		if total_jobs < (max_jobs - max_jobs % size):
-			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
+		#if total_jobs < (max_jobs - max_jobs % size):
+		#total_jobs = comm.allreduce(performed_models, op=MPI.SUM, root = 0)
 		
 		# Print the total number of finished jobs on the root process
-		if rank == 0:
-			elapsed_time = time.time() - start_time
-			remaining_time = elapsed_time * max_jobs/total_jobs - elapsed_time
-			remaining_time = str(datetime.timedelta(seconds=remaining_time)).split(".")[0]  # Convert time into clock format
-			print(f"\rFinished Jobs: [{total_jobs}/{max_jobs}], Remaining time {remaining_time}", end='', flush=False)
+		#if rank == 0:
+		#	elapsed_time = time.time() - start_time
+		#	remaining_time = elapsed_time * max_jobs/total_jobs - elapsed_time
+		#	remaining_time = str(datetime.timedelta(seconds=remaining_time)).split(".")[0]  # Convert time into clock format
+		#	print(f"\rFinished Jobs: [{total_jobs}/{max_jobs}], Remaining time {remaining_time}", end='')
+		#print(task_folder, " done by rank ", rank)
+
+	if(rank == 0):
+		pbar.close()
 
 	wave = np.copy(stk.wave)
 	del stk # Free Memory
@@ -925,6 +937,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	
 	# Write the control file with the information from the config file
 	if rank == 0:
+		print(f"-------> Write control file")
 		sir.write_control_mc(os.path.join(conf['path'], d.inv_trol_file), conf)
 	abundance_file = conf['abundance']  # Abundance file
 	
@@ -1138,7 +1151,9 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	
 	# Write the control file with the information from the config file
 	if rank == 0:
+		print(f"-------> Write control file")
 		sir.write_control_2c(os.path.join(conf['path'],d.inv_trol_file), conf)
+
 	abundance_file = conf['abundance'] # Abundance file	
 	end='.per' # ending of the file for the profile
 
@@ -1176,6 +1191,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 				if guess2.nx < Map[1]-Map[0]+1 or guess2.ny < Map[3]-Map[2]+1:
 					print(f"[ERROR]  The shapes ({guess2.nx},{guess2.ny}) of the initial guess/base model 2 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
 					return
+
 	##########################
 	#	CREATE GRID FILE	#
 	##########################

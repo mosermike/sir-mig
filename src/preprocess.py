@@ -620,7 +620,7 @@ def correct_spectral_veil(conf):
 
 
 	# GRIS
-	ll_gris = stokes.wave
+	ll_gris = np.copy(stokes.wave)
 
 	######################################################################################
 	#						   SHIFT OF SPECTRUM						    #

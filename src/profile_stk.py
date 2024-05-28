@@ -601,32 +601,25 @@ class Profile:
 		Line_step = grid['step']
 		Line_max  = grid['max']
 		
-		add = np.copy(Line_step) # in case the Line_step does not need to be added
-		
 		# Create the first column => number of the line
 		num = np.empty(0)
 		checks = []
 		for i in range(len(Line)):
-			num = np.append(num,np.ones(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))*int(Line[i][0]))
-			checks.append(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))
+			num = np.append(num,np.ones(int((Line_max[i]-Line_min[i])/Line_step[i]+1.5))*int(Line[i][0])) # +1.5 due to rounding and precision
+			checks.append(int((Line_max[i]-Line_min[i])/Line_step[i]+1.5))
 
 		# Check if the data has the same format as the cut data (in case because if precision it is one value more)
 		if np.sum(checks) != self.wave.shape[0]:
-			add = np.zeros(add.shape)
-			num = np.empty(0)
-			checks = []
-			for i in range(len(Line)):
-				num = np.append(num,np.ones(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))*int(Line[i][0]))
-				checks.append(int(np.ceil((Line_max[i]-Line_min[i]+add[i])/Line_step[i])))
-		
+			print(f"[write_profile] Number of wavelengths do not fit ({np.sum(checks)} vs. {self.wave.shape[0]})")
 		
 		# Create the second column => wavelength grid
 		ll = np.empty(0)
 		
 		for i in range(len(Line)):
-			if np.arange(Line_min[i],Line_max[i]+add[i],Line_step[i]).shape[0] != checks[i]:
-				print(f"[WARN] The profiles might we wrong written {np.arange(Line_min[i],Line_max[i]+add[i],Line_step[i]).shape[0]} vs {checks[i]}")
-			ll = np.append(ll,np.arange(Line_min[i],Line_max[i]+add[i],Line_step[i]))
+			ll = np.append(ll,np.arange(Line_min[i],Line_max[i]+0.1,Line_step[i])) # +0.1 due to precision
+		
+		if np.sum(checks) != ll.shape[0]:
+			print(f"[WARN] The profiles might we wrong written {np.sum(checks)} vs {ll.shape[0]}")
 
 		# Create arrays of the Stokes vector in the given wavelength range
 		# Cut data as needed
