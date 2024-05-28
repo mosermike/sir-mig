@@ -69,7 +69,6 @@ def scatter_data(conf, comm, rank, size):
 			stkv = stk.stkv.reshape(-1, stk.nw) # Flatten Stokes V corresponding to the tasks list		
 			waves = stk.wave
 
-			print(stk.stki.shape)
 
 			del stk # Free Memory
 			
@@ -224,7 +223,7 @@ def scatter_data_mc(conf, comm, rank, size):
 					i += 1
 					if(i >= remainder):
 						break
-					
+
 	else:
 		stki_chunks = None
 		stkq_chunks = None
