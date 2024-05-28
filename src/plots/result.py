@@ -300,7 +300,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 
 	# Check whether the wavelength is in range
-	wave, wave_ind = _check_range(stokes_inv.wave, wave)
+	wave = _check_range(stokes_inv.wave, wave)
 	
 	if "-waveV" in sys.argv:
 		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
