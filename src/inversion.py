@@ -747,7 +747,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 
 	# Root process initializes the progress bar
 	if rank == 0:
-		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
 	comm.barrier()
 
 	for i in range(0, len(tasks['folders'])):
@@ -797,7 +797,6 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		if rank == 0:
 			pbar.n = total_jobs
 			pbar.refresh()
-			#print("",end="",flush=True)
 
 	comm.barrier()
 		
@@ -994,7 +993,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 
 	# Root process initializes the progress bar
 	if rank == 0:
-		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
 	comm.barrier()
 
 	for i in range(0,len(tasks['num'])):
@@ -1035,7 +1034,6 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		if rank == 0:
 			pbar.n = total_jobs
 			pbar.refresh()
-			#print("",end="",flush=True)
 
 	comm.barrier()
 		
@@ -1243,7 +1241,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 
 	# Root process initializes the progress bar
 	if rank == 0:
-		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
 	comm.barrier()
 
 	if rank == 0:
@@ -1310,7 +1308,6 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		if rank == 0:
 			pbar.n = total_jobs
 			pbar.refresh()
-			#print("",end="",flush=True)
 
 	comm.barrier()
 		
