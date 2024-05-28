@@ -529,6 +529,15 @@ def result_1C(conf, wave, tau, waveV = -1):
 			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 										layout="compressed",
 									)
+			import matplotlib as mpl
+			f = 1.2
+			mpl.rcParams["xtick.labelsize"] = 18*f
+			mpl.rcParams["ytick.labelsize"] = 18*f
+			mpl.rcParams["legend.fontsize"] = 16*f
+			mpl.rcParams["legend.title_fontsize"] = 16*f
+			mpl.rcParams["axes.titlesize"] = 23*f
+			mpl.rcParams["axes.labelsize"] = 20*f
+			mpl.rcParams["figure.titlesize"] = 24*f
 		else:
 			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 										layout="compressed",
@@ -613,15 +622,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 										layout="compressed",
 									)
-			import matplotlib as mpl
-			f = 1.2
-			mpl.rcParams["xtick.labelsize"] = 18*f
-			mpl.rcParams["ytick.labelsize"] = 18*f
-			mpl.rcParams["legend.fontsize"] = 16*f
-			mpl.rcParams["legend.title_fontsize"] = 16*f
-			mpl.rcParams["axes.titlesize"] = 23*f
-			mpl.rcParams["axes.labelsize"] = 20*f
-			mpl.rcParams["figure.titlesize"] = 24*f
 		else:
 			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 										layout="compressed",
