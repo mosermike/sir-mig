@@ -478,7 +478,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 		infos = dict(np.loadtxt(os.path.join(path, d.header_infos), delimiter='=', dtype=str))
 		if conf['instrument'] == 'GRIS':
 			# y position starts at the end but I start with the pixels lower left
-			y_pos = float(infos['CRVAL2']) + (stokes.shape[1]-1) * float(infos['CDELT2'])
+			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
 			y_max = float(infos['CRVAL2']) # Used if flipx is used
 			Map_plot = [float(infos['CRVAL1']) - float(infos['CDELT1']) * (Map[0]-1),
 						float(infos['CRVAL1']) - float(infos['CDELT1']) * (Map[1]-1),
