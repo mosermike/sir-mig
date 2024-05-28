@@ -559,9 +559,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c $')
 	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c $')
 	if waveQ != wave:
-		ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" $\AA$")
+		ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
 	if waveU != wave:
-		ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" $\AA$")
+		ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")
 	if waveV != -1:
 		ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")	
 
@@ -644,11 +644,11 @@ def result_1C(conf, wave, tau, waveV = -1):
 	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c $')
 	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c $')
 	if waveQ != wave:
-		ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" $\AA$")
+		ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
 	if waveU != wave:
-		ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" $\AA$")		
+		ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")		
 	if waveV != -1:
-		ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" $\AA$")		
+		ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")		
 
 
 	############
@@ -800,16 +800,16 @@ def result_1C(conf, wave, tau, waveV = -1):
 	############
 	# Colorbar #
 	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-	cbar1.set_label(label = labels[1], loc = 'center')
+	cbar1.set_label(label = labels[1], loc = 'center', labelpad=20)
 	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-	cbar2.set_label(label = labels[4], loc = 'center')
+	cbar2.set_label(label = labels[4], loc = 'center', labelpad=20)
 	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-	cbar3.set_label(label = labels[5], loc = 'center')
+	cbar3.set_label(label = labels[5], loc = 'center', labelpad=20)
 	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
 	if "-plot_chi2" in sys.argv:
-		cbar4.set_label(label = labels[11], loc = 'center')	
+		cbar4.set_label(label = labels[11], loc = 'center', labelpad=20)	
 	else:
-		cbar4.set_label(label = labels[6], loc = 'center')
+		cbar4.set_label(label = labels[6], loc = 'center', labelpad=20)
 	############
 	# Set title position depending on the chosen plot and consider the flags hinode and gris
 	if title3 != "-1":
