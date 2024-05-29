@@ -76,7 +76,7 @@ def merge(conf, dir, ending):
 	for File in sorted(os.listdir(dir)):
 		if File.endswith(".fits"):
 			if ("_" + ending + "_0" in File and conf['instrument'] == 'GRIS') or (conf['instrument'] != 'GRIS'):
-				filenames.append(dir + File)
+				filenames.append(os.path.join(dir,File))
 
 	####################
 	# Create data cube #
