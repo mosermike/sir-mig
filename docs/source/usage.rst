@@ -30,6 +30,8 @@ Then, create a config file by executing
 
 where several questions will be asked to create a config file which defines what the code will do. Copy or create all necessary files for the sir inversion (sir.x, abundance file, lines file, model file)
 
+A description for the different options in the configuration files can be found :doc:`here <config>`
+
 Afterwards, perform the main program by executing
 .. code-block:: console
 

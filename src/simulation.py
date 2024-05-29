@@ -209,7 +209,7 @@ def create_models(conf: dict) -> None:
 	create_vlos = np.array([__split_to_float(i, letter=",") for i in conf['create_vlos'].split(';')])
 	create_gamma = np.array([__split_to_float(i, letter=",") for i in conf['create_gamma'].split(';')])
 	create_phi = np.array([__split_to_float(i, letter=",") for i in conf['create_phi'].split(';')])
-	create_points = __split_to_float(conf['create_points'])
+	create_points = np.flip(__split_to_float(conf['create_points']))
 
 	model = m.Model(int(num), 1, len(log_tau0))
 	for i in range(num):
@@ -223,8 +223,6 @@ def create_models(conf: dict) -> None:
 	#################
 	if model_nodes == 1:
 		print("-------> Create models with 1 node")
-		if len(create_points) != 2:
-			print("[create_models] The parameter 'create_points' in the config does not have exactly two elements!")
 		# Perform 'num' times
 		B_0 = np.zeros(num)
 		inc_0 = np.zeros(num)
@@ -318,7 +316,7 @@ def create_models(conf: dict) -> None:
 		#######################
 		if bB:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated magnetic fields @ $\log \tau = $" + str(d.create_points2[0]),
+			plt.title(r"Histogram of randomly generated magnetic fields",
 						fontsize=20)
 			ax.hist(B_0, bins=20)
 			ax.set_xlabel("B [G]")
@@ -329,7 +327,7 @@ def create_models(conf: dict) -> None:
 		if bvlos:
 			fig, ax = plt.subplots()
 			plt.title(
-				r"Histogram of randomly generated line of sight velocities @ $\log \tau = $" + str(d.create_points2[0]),
+				r"Histogram of randomly generated line of sight velocities",
 				fontsize=20)
 			ax.hist(vlos_0 / 1e5, bins=20)
 			ax.set_xlabel(r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}} \right]$")
@@ -339,7 +337,7 @@ def create_models(conf: dict) -> None:
 
 		if binc:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated inclinations @ $\log \tau = $" + str(d.create_points2[0]),
+			plt.title(r"Histogram of randomly generated inclination",
 					fontsize=20)
 			ax.hist(inc_0, bins=20)
 			ax.set_xlabel(r"$\gamma$ [deg]")
@@ -349,7 +347,7 @@ def create_models(conf: dict) -> None:
 
 		if bazi:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated azimuths @ $\log \tau = $" + str(d.create_points2[0]),
+			plt.title(r"Histogram of randomly generated azimuths",
 					fontsize=20)
 			ax.hist(azi_0, bins=20)
 			ax.set_xlabel(r"$\phi$ [deg]")
