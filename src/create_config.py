@@ -49,7 +49,7 @@ def _config_MC():
 	model_pars = input("Randomize these parameters for creating models [B,T,vlos,gamma]: ")
 	syn_out	= input("Synthesis prefix [syn]: ")
 	noise_out = input("Noise Prefix [noise]: ")
-	instrument = input("Instrument (GRIS, Hinode or blank): ")
+	instrument = input("Instrument (GRIS, Hinode or blank) for predefined noise levels: ")
 	if instrument == "GRIS":
 		noise_I=0
 		noise_Q=76.80e-5 # Computed by using many different quiet sun observations from GRIS
@@ -64,7 +64,7 @@ def _config_MC():
 		noise_I = input("Noise in I: ")
 		noise_Q = input("Noise in Q: ")
 		noise_U = input("Noise in U: ")
-		noise_B = input("Noise in V: ")
+		noise_V = input("Noise in V: ")
 	inv_out		= input("Inversion output      [inv]: ")
 	atoms		= input("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	if instrument != 'Hinode':
@@ -91,7 +91,7 @@ def _config_MC():
 	gas_pressure = input("Gas Pressure Boundary condition  [-1 => 3.944e+3]: ")
 
 
-	lim_B = input("Limits for randomising the magn. field in G             [0,5000]: ")
+	lim_B = input("Limits for randomising the magn. field in G             [0,4000]: ")
 	lim_vlos = input("Limits for randomising the line-of-sight vel. in cm/s [-3e5,3e5]: ")
 	lim_gamma = input("Limits for randomising the inclination in deg            [0,180]: ")
 	lim_phi = input("Limits for randomising the azimuth in deg                [0,180]: ")
@@ -118,7 +118,7 @@ def _config_MC():
 
 	# Fill with standard values
 	if lim_B == '':
-		lim_B = '0,5000'
+		lim_B = '0,4000'
 	if lim_vlos == '':
 		lim_vlos = '-3e5,3e5'
 	if lim_gamma == '':
@@ -155,7 +155,6 @@ def _config_MC():
 		"mode" : mode,
 		"path" : path,
 		"num" : num,
-		"instrument" : instrument,
 		"model" : model,
 		"atoms" : atoms,
 		"range_wave" : range_wave,

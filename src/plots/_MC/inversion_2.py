@@ -103,15 +103,6 @@ def inversion_2(conf1, num1, conf2, num2):
 	fit2 = np.load(os.path.join(path2,conf2["inv_out"] + d.end_stokes))[num2]	# Inversion Profiles 2
 
 	
-	instrument1 = conf1["instrument"] # Instrument used for labels
-	instrument2 = conf1["instrument"] # Instrument used for labels
-
-	if instrument1 != instrument2:
-		print("[WARN] Script should only be used for the same instrument!")
-		sys.exit()
-	else:
-		instrument = instrument1
-
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1[1],obs1[2],obs1[3],obs1[4],obs1[5]
 	ll2, I2, Q2, U2, V2 = obs2[1],obs2[2],obs2[3],obs2[4],obs2[5]
@@ -170,30 +161,21 @@ def inversion_2(conf1, num1, conf2, num2):
 	ll_fit += ll0
 
 	label_x = 0
-	# Change to  6300 as relative lambda0
-	if instrument == "Hinode" or instrument == "GRIS":
-		ll1 -= d.ll_relative[instrument]
-		ll2 -= d.ll_relative[instrument]
-		ll1_fit -= d.ll_relative[instrument]
-		ll2_fit -= d.ll_relative[instrument]
-		label_x = str(d.ll_relative[instrument])
-	
+
+	temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
+	if temp != '0':
+		ll1 -= float(temp)
+		ll2 -= float(temp)
+		ll1_fit -= float(temp)
+		ll2_fit -= float(temp)
+		label_x = temp
 	else:
-		# Ask for the point to which it should be rel.
-		temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
-		if temp != '0':
-			ll1 -= float(temp)
-			ll2 -= float(temp)
-			ll1_fit -= float(temp)
-			ll2_fit -= float(temp)
-			label_x = temp
-		else:
-			# Keep the same wavelengths as in the Grid file
-			label_x = str(ll0)
-			ll1 -= ll0
-			ll2 -= ll0
-			ll1_fit -= ll0
-			ll2_fit -= ll0
+		# Keep the same wavelengths as in the Grid file
+		label_x = str(ll0)
+		ll1 -= ll0
+		ll2 -= ll0
+		ll1_fit -= ll0
+		ll2_fit -= ll0
 
 
 	########################
@@ -263,10 +245,6 @@ def inversion_2(conf1, num1, conf2, num2):
 			xtitle1 = 0.41
 		else:
 			xtitle1 = 0.5
-		if instrument == "GRIS":
-			fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle1)
-		elif instrument == "Hinode":
-			fig.suptitle("Visible Lines", y=0.98, x=xtitle1)
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle1)
 		elif title is not None:
@@ -461,10 +439,6 @@ def inversion_2(conf1, num1, conf2, num2):
 			xtitle2 = 0.51
 		else:
 			xtitle2 = 0.55
-		if instrument == "GRIS":
-			fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle2)
-		elif instrument == "Hinode":
-			fig.suptitle("Visible Lines", y=0.98, x=xtitle2)
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle2)
 

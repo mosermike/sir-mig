@@ -212,20 +212,6 @@ def read_config(filename, check = True, change_config = False):
 			if not exists(os.path.join(Dict['path'],Dict['fts_file'])) and Dict['preprocess'] == "1":
 				print(f"[read_config] {Dict['fts_file']} does not exist.")
 	
-	# If Path is relative, change to absolute
-	#if Dict['path'][0:2] == "./":
-	#	if Dict['path'] == "./":
-	#		Dict['path'] = os.getcwd()
-	#	else:
-	#		Dict['path'] = os.getcwd() + Dict[2:]
-	
-	# Correction for old version
-	if "lim_azimuth" in Dict:
-		Dict["lim_phi"] = Dict["lim_azimuth"]
-	if "lim_azimuth1" in Dict:
-		Dict["lim_phi1"] = Dict["lim_azimuth1"]
-	if "lim_azimuth2" in Dict:
-		Dict["lim_phi2"] = Dict["lim_azimuth2"]
 
 	return Dict
 
@@ -578,14 +564,14 @@ def _write_config_1c(File, conf, verbose = True):
 		f.write(f"cube_inv : {conf['cube_inv']} # Data cube name used for the inversion (bin)\n")
 		f.write(f"map : {Map} # Pixels to be considered as a list\n")
 		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
-		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
 		f.write("#\n")
 		f.write("# Data Preprocessing\n")
 		f.write("#\n")
 		f.write(f"preprocess : {conf['preprocess']} # Preprocess data (1 = True, 0 = False)\n")
 		f.write(f"quiet_sun : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")
-		f.write(f"fts_file : {conf['fts_file']} # Absolute fts file, blank = do not correct spectral veil\n")
+		f.write(f"fts_file : {conf['fts_file']} # Absolute path to fts file, blank = do not correct spectral veil\n")
+		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
 		f.write(f"# \n")
 		f.write(f"# Inversion configuration\n")
@@ -672,19 +658,18 @@ def _write_config_2c(File, conf, verbose = True):
 		f.write(f"# \n")
 		f.write(f"# Stuff from the data\n")
 		f.write(f"# \n")
-		f.write(f"cube : {conf['cube']} # Data cube name (bin) used for preprocessing data if 'preprocess' is 1\n")
 		f.write(f"cube_inv : {conf['cube_inv']} # Data cube name used for the inversion (bin)\n")
 		f.write(f"map : {Map} # Pixels to be considered as a list (0 means all pixels)\n")
-		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
-		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
 		f.write("#\n")
 		f.write("# Data Preprocessing\n")
 		f.write("#\n")
 		f.write(f"preprocess : {conf['preprocess']} # Preprocess data (1 = True, 0 = False)\n")
+		f.write(f"cube : {conf['cube']} # Data cube name (bin) used for preprocessing data\n")
+		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
 		f.write(f"quiet_sun : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")
-		f.write(f"fts_file : {conf['fts_file']} # Absolute fts file, blank = do not correct spectral veil\n")
-
+		f.write(f"fts_file : {conf['fts_file']} # Absolute path to fts file, blank = do not correct spectral veil\n")
+		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
 
 		f.write(f"# \n")
 		f.write(f"# Inversion configuration\n")
@@ -774,24 +759,22 @@ def _write_config_mc(File, conf, verbose=True):
 	
 	with open(File, 'w') as f:
 		f.write(f"# Config file\n")
-		f.write(f"mode : {conf['mode']} # Determines which code is executed\n")
-		f.write(f"path : {conf['path']} # Path location where all the data is stored and will be saved\n")
 		f.write(f"# \n")
 		f.write(f"# General Stuff\n")
 		f.write(f"# \n")
+		f.write(f"mode : {conf['mode']} # Determines which code is executed\n")
+		f.write(f"path : {conf['path']} # Path location where all the data is stored and will be saved\n")
 		f.write(f"num : {conf['num']} # Number of Models\n")
-		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
 		f.write(f"model : {conf['model']} # Base Model for guess\n")
 		f.write(f"atoms : {atoms} # Atoms to be used in Grid file\n")	
 		f.write(f"range_wave : {range_wave} # Ranges of wavelengths in mA to be considered min1,step1,max1;min2,step2,max2;... First pair belongs to first line in Grid file, etc.\n")
-		f.write(f"random_guess : {conf['random_guess']} # Create random guesses, 0 = use model as guess\n")
-		f.write(f"random_pars : {random_pars} # Randomise these parameters for the guess\n")
-		f.write(f"model_pars : {conf['model_pars']} # Randomise these parameters while creating models as a list\n")
+		
 		
 		f.write(f"#\n")
 		f.write(f"# Creating Models and Synthesis\n")
 		f.write(f"#\n")
 		f.write(f"model_nodes : {conf['model_nodes']} # Create models with 1, 2 or 3 nodes\n")
+		f.write(f"model_pars : {conf['model_pars']} # Randomise these parameters while creating models as a list\n")
 		f.write(f"syn_out : {conf['syn_out']} # Output prefix of the synthesis profiles and models\n")
 		f.write(f"noise_out : {conf['noise_out']} # Output prefix of the noise profiles\n")
 		f.write(f"noise_I : {conf['noise_I']} # Noise in I\n")		
@@ -829,6 +812,8 @@ def _write_config_mc(File, conf, verbose=True):
 		f.write(f"# \n")
 		f.write(f"# Randomisation Settings\n")
 		f.write(f"# \n")
+		f.write(f"random_guess : {conf['random_guess']} # Create random guesses, 0 = use model as guess\n")
+		f.write(f"random_pars : {random_pars} # Randomise these parameters for the guess\n")
 		f.write(f"lim_B : {conf['lim_B']} # Limits for the randomisation in B in G\n")
 		f.write(f"lim_vlos : {conf['lim_vlos']} # Limits for the randomisation in vlos in cm/s\n")
 		f.write(f"lim_gamma : {conf['lim_gamma']} # Limits for the randomisation in the inclination in deg\n")

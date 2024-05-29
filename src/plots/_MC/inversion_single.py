@@ -75,9 +75,7 @@ if '-num' in sys.argv:
 	num = int(sys.argv[sys.argv.index("-num")+1])
 if '-line' in sys.argv:
 	line = sys.argv[sys.argv.index("-line")+1]
-instrument =''
-if '-instrument' in sys.argv:
-	instrument = sys.argv[sys.argv.index("-instrument")+1]
+
 
 # Observation from synthesis	
 ll, I, Q, U, V = sir.read_profile(obs, num)
@@ -145,12 +143,16 @@ if '-num' in sys.argv:
 	ll0 = Line['wavelength']
 	ll0 = ll0[np.where(Lines == num)[0][0]]
 
-elif instrument == "Hinode":
-	ll -= -6301.5012+6300.0000
-	ll_fit -= -6301.5012+6300.0000
-elif instrument == "GRIS":
-	ll -= -15648.514+15600.0000
-	ll_fit -= -15648.514+15600.0000
+temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
+if temp != '0':
+	ll -= float(temp)
+	ll_fit -= float(temp)
+	label_x = temp
+else:
+	# Keep the same wavelengths as in the Grid file
+	label_x = str(ll0)
+	ll -= ll0
+	ll_fit -= ll0
 
 ########################
 #  Plot I, Q, U and V  #
@@ -209,21 +211,9 @@ if '-num' in sys.argv:
 	ax4.set_xlabel(r'$\Delta \lambda - $' + str(ll0) + r' $[\AA]$', loc='center')
 	title1 = "Fe I " + str(ll0)
 
-# Use the four 1.5 lines
-elif instrument == "GRIS":
-	if "-vertical" not in sys.argv:
-		ax3.set_xlabel(r'$\Delta \lambda - 15600$ $[\AA]$', loc='center')
-	ax4.set_xlabel(r'$\Delta \lambda - 15600$ $[\AA]$', loc='center')
-
-# Use the hinode lines
-elif instrument == "Hinode":
-	if "-vertical" not in sys.argv:
-		ax3.set_xlabel(r'$\Delta \lambda - 6300$ $[\AA]$', loc='center')
-	ax4.set_xlabel(r'$\Delta \lambda - 6300$ $[\AA]$', loc='center')
-else:
-	if "-vertical" not in sys.argv:
-		ax3.set_xlabel(r'$\Delta \lambda$ $[\AA]$', loc='center')
-	ax4.set_xlabel(r'$\Delta \lambda$ $[\AA]$', loc='center')
+if "-vertical" not in sys.argv:
+	ax3.set_xlabel(r'$\Delta \lambda$ $[\AA]$', loc='center')
+ax4.set_xlabel(r'$\Delta \lambda$ $[\AA]$', loc='center')
 
 ##################################################################
 # Set title											#
@@ -235,10 +225,6 @@ if title != "-1":
 		xtitle1 = 0.51
 	else:
 		xtitle1 = 0.55
-	if instrument == "GRIS":
-		fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle1)
-	elif instrument == "Hinode":
-		fig.suptitle("Visible Lines", y=0.98, x=xtitle1)
 	if title != '':
 		fig.suptitle(title, y=0.98, x=xtitle1)
 	elif title1 is not None:
@@ -410,10 +396,6 @@ if title != "-1":
 		xtitle2 = 0.51
 	else:
 		xtitle2 = 0.55
-	if instrument == "GRIS":
-		fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle2)
-	elif instrument == "Hinode":
-		fig.suptitle("Visible Lines", y=0.98, x=xtitle2)
 	if title != '':
 		fig.suptitle(title, y=0.98, x=xtitle2)
 

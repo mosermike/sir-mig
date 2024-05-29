@@ -185,12 +185,7 @@ def plot_response(conf,filename, modelname):
 	#  Plot I, Q, U and V  at wave for obs		#
 	##############################################
 	# Change to relative wavelength to make the axis better readable
-	if conf['instrument'] == 'GRIS':
-		rel = 15600
-	elif conf['instrument'] == 'Hinode':
-		rel = 6300
-	else:
-		rel = input('Instrument unknown or not set. Put a wavelength to print in rel. wavelengths (0 = in absolute): ')
+	rel = input('Instrument unknown or not set. Put a wavelength to print in rel. wavelengths (0 = in absolute): ')
 
 	range_wave = range_wave - float(rel)
 

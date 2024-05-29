@@ -102,8 +102,6 @@ def inversion(conf, num):
 	obs = np.load(os.path.join(path, conf["noise_out"] + d.end_models))[num-1]		# Synthesis Profiles
 	fit = np.load(os.path.join(path, conf["inv_out"] + d.end_stokes))[num-1]   # Inversion Profiles
 
-	instrument = conf["instrument"]  # Instrument used for labels
-
 	# Observation from synthesis
 	ll, I, Q, U, V = obs[1], obs[2], obs[3], obs[4], obs[5]
 	
@@ -145,29 +143,18 @@ def inversion(conf, num):
 	ll_fit += ll0
 
 	label_x = 0
-	# Change to  6300 as relative lambda0
-	if instrument == "Hinode":
-		ll -= 6300.0000
-		ll_fit -= 6300.0000
-		label_x = '6300'
-	# Change to 15600 as relative lambda0
-	elif instrument == "GRIS":
-		ll -= 15600.0000
-		ll_fit -= 15600.0000
-		label_x = '15600'
-
+	# Ask for the point to which it should be rel.
+	temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
+	if temp != '0':
+		ll -= float(temp)
+		ll_fit -= float(temp)
+		label_x = temp
 	else:
-		# Ask for the point to which it should be rel.
-		temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
-		if temp != '0':
-			ll -= float(temp)
-			ll_fit -= float(temp)
-			label_x = temp
-		else:
-			# Keep the same wavelengths as in the Grid file
-			label_x = str(ll0)
-			ll -= ll0
-			ll_fit -= ll0
+		# Keep the same wavelengths as in the Grid file
+		label_x = str(ll0)
+		ll -= ll0
+		ll_fit -= ll0
+	
 	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]  # Get colors used in the actual cycle
 	########################
 	#  Plot I, Q, U and V  #
@@ -229,10 +216,6 @@ def inversion(conf, num):
 			xtitle1 = 0.41
 		else:
 			xtitle1 = 0.5
-		if instrument == "GRIS":
-			fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle1)
-		elif instrument == "Hinode":
-			fig.suptitle("Visible Lines", y=0.98, x=xtitle1)
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle1)
 		elif title is not None:
@@ -421,10 +404,6 @@ def inversion(conf, num):
 			xtitle2 = 0.51
 		else:
 			xtitle2 = 0.55
-		if instrument == "GRIS":
-			fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle2)
-		elif instrument == "Hinode":
-			fig.suptitle("Visible Lines", y=0.98, x=xtitle2)
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle2)
 
