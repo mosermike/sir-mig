@@ -1,15 +1,14 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Inversion &#8212; SIR-MIG  documentation</title>
+    <title>5. Inversion &#8212; SIR-MIG  documentation</title>
   
   
   
@@ -29,25 +28,23 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'inversion';</script>
-    <link rel="shortcut icon" href="_static/SIR-MIG.ico"/>
+    <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Preprocessing" href="preprocess.html" />
-    <link rel="prev" title="Classes" href="classes.html" />
+    <link rel="next" title="6. Plotting" href="plots.html" />
+    <link rel="prev" title="4. Simulation" href="simulation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -147,69 +144,19 @@
                     </li>
                 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="usage.html">
-                        Usage
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="functions.html">
-                        Functions
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="classes.html">
-                        Classes
-                      </a>
-                    </li>
-                
-
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Inversion
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="preprocess.html">
-                        Preprocessing
+                      <a class="nav-link nav-internal" href="code.html">
+                        Code
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
-                        Simulation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="plots.html">
-                        Plotting
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="api.html">
+                      <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
                     </li>
                 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -299,69 +246,19 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="usage.html">
-                        Usage
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="functions.html">
-                        Functions
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="classes.html">
-                        Classes
-                      </a>
-                    </li>
-                
-
                     <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
-                        Inversion
-                      </a>
-                    </li>
-                
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
-                    More
-                </button>
-                <ul id="pst-nav-more-links-2" class="dropdown-menu">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="preprocess.html">
-                        Preprocessing
+                      <a class="nav-link nav-internal" href="code.html">
+                        Code
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
-                        Simulation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="plots.html">
-                        Plotting
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="api.html">
+                      <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
                     </li>
                 
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
         
@@ -392,7 +289,36 @@ document.write(`
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="functions.html">1. Functions</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="sir.html">1.5.1. sir</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">2. Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">3. Preprocessing</a></li>
+
+
+
+
+
+
+
+
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="simulation.html">4. Simulation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Inversion</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="plots.html">6. Plotting</a></li>
+</ul>
+</div>
 </nav></div>
     </div>
   
@@ -428,7 +354,10 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Inversion</li>
+    
+    <li class="breadcrumb-item"><a href="code.html" class="nav-link">Code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span...</li>
   </ul>
 </nav>
 </div>
@@ -445,12 +374,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <span class="target" id="module-inversion"></span><section id="inversion">
-<h1>Inversion<a class="headerlink" href="#inversion" title="Permalink to this heading">#</a></h1>
+  <section id="inversion">
+<span id="module-inversion"></span><h1><span class="section-number">5. </span>Inversion<a class="headerlink" href="#inversion" title="Link to this heading">#</a></h1>
 <p>Perform inversion of many profiles with simple parallelization using mpi4py.</p>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.execute_inversion_1c">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.execute_inversion_1c" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.execute_inversion_1c" title="Link to this definition">#</a></dt>
 <dd><p>Executes inversion and creates if needed random guesses. Make sure that
 when this function is entered, the os is in the right directory! This
 function can be used for the mode ‘MC’ and ‘1C’.</p>
@@ -458,7 +388,7 @@ function can be used for the mode ‘MC’ and ‘1C’.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> (<em>dict</em>) – Dictionary containing the configuration of the simulation</p></li>
-<li><p><strong>task_folder</strong> (<em>dict</em>) – Dictionary with the folders and x and y positions</p></li>
+<li><p><strong>task_folder</strong> (<em>str</em>) – String of the directory where this code should executed</p></li>
 <li><p><strong>rank</strong> (<em>int</em>) – Process Number</p></li>
 </ul>
 </dd>
@@ -473,7 +403,7 @@ function can be used for the mode ‘MC’ and ‘1C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.execute_inversion_2c">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.execute_inversion_2c" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">execute_inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.execute_inversion_2c" title="Link to this definition">#</a></dt>
 <dd><p>Executes inversion and creates if needed random guesses. Make sure that
 when this function is entered, the os is in the right directory! This is
 used for the mode ‘2C’.</p>
@@ -481,7 +411,7 @@ used for the mode ‘2C’.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>conf</strong> (<em>Dictionary</em>) – Dictionary containing the configuration of the simulation</p></li>
-<li><p><strong>task_folder</strong> (<em>dict</em>) – Dictionary with the folders and x and y positions</p></li>
+<li><p><strong>task_folder</strong> (<em>str</em>) – Task folder where the code is going</p></li>
 <li><p><strong>rank</strong> (<em>int</em>) – Process Number</p></li>
 </ul>
 </dd>
@@ -496,7 +426,7 @@ used for the mode ‘2C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.inversion_1c">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.inversion_1c" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.inversion_1c" title="Link to this definition">#</a></dt>
 <dd><p>Performs the inversion of all the models for the 1 component inversion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -516,7 +446,7 @@ used for the mode ‘2C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.inversion_2c">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.inversion_2c" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_2c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.inversion_2c" title="Link to this definition">#</a></dt>
 <dd><p>Performs the inversion of all the models for the 2 component inversion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -536,7 +466,7 @@ used for the mode ‘2C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.inversion_mc">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.inversion_mc" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">inversion_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.inversion_mc" title="Link to this definition">#</a></dt>
 <dd><p>Performs the inversion of all the models for the MC simulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -556,8 +486,8 @@ used for the mode ‘2C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.scatter_data">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Scatters the data equally into all the processes.</p>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data" title="Link to this definition">#</a></dt>
+<dd><p>Loads and scatters the data equally into all the processes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -579,7 +509,7 @@ used for the mode ‘2C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.scatter_data_mc">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data_mc" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data_mc" title="Link to this definition">#</a></dt>
 <dd><p>Scatters the data equally into all the ranks for the MC simulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -600,7 +530,6 @@ used for the mode ‘2C’.</p>
 </dl>
 </dd></dl>
 
-</section>
 
 
                 </article>
@@ -613,20 +542,20 @@ used for the mode ‘2C’.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="classes.html"
+       href="simulation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Classes</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Simulation</p>
       </div>
     </a>
     <a class="right-next"
-       href="preprocess.html"
+       href="plots.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Preprocessing</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Plotting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -639,6 +568,26 @@ used for the mode ‘2C’.</p>
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">5. Inversion</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.execute_inversion_1c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_1c()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.execute_inversion_2c"><code class="docutils literal notranslate"><span class="pre">execute_inversion_2c()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.inversion_1c"><code class="docutils literal notranslate"><span class="pre">inversion_1c()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.inversion_2c"><code class="docutils literal notranslate"><span class="pre">inversion_2c()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.inversion_mc"><code class="docutils literal notranslate"><span class="pre">inversion_mc()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.scatter_data"><code class="docutils literal notranslate"><span class="pre">scatter_data()</span></code></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inversion.scatter_data_mc"><code class="docutils literal notranslate"><span class="pre">scatter_data_mc()</span></code></a></li>
+</ul>
+
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 
@@ -683,7 +632,7 @@ used for the mode ‘2C’.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

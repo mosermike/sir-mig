@@ -28,7 +28,11 @@ There are three different modes selectable:
 
 It is also possible to use it without random guesses.
 
-Check out the :doc:`usage` section for further information.
+Check out the :doc:`doc` section for further infromations.
+
+Check out the :doc:`code` section for further infromations about the code.
+
+Check out the :doc:`usage` section for further information how to use and install the program.
 
 Check out the :doc:`functions` section for a list of functions.
 
@@ -49,12 +53,6 @@ Contents
   :maxdepth: 1
 
   doc
-  usage
-  functions
-  classes
-  inversion
-  preprocess
-  simulation
-  plots
+  code
   api
    

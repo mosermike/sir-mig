@@ -5,6 +5,10 @@
 Documentation
 =============
  
+Configuration
+-------------
+
+The code is always executed with a configuration file which is different for each mode. The options can be read here :doc:`here<config>`
 
 Monte-Carlo Simulation
 ----------------------
@@ -40,7 +44,9 @@ Inversion
 Contents
 --------
 .. toctree::
-  :maxdepth: 1
+  :maxdepth: 0
 
+  usage
+  config
   randomising
   temperature
