@@ -72,6 +72,7 @@ def _help():
 	sir.option("-limitxy:","Limit in the x and y plot as a list xmin,xmax,ymin,xmax")
 	sir.option("-limitT:","Set the limit for the colorbar in the temperature.")
 	sir.option("-limitB:","Set the limit for the colorbar in the magnetic field.")
+	sir.option("-limitv:","Set the limit for the colorbar in the velocity.")
 	sir.option("-limitchi2:","Set the limit for the colorbar in chi2.")
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
 	sir.option("-arc:","Print x and y axis in arcseconds")
@@ -711,6 +712,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	if "-limitB" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
 		limits[4] = [int(i) for i in temp ]
+	if "-limitv" in sys.argv:
+		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
+		limits[5] = [int(i) for i in temp ]
 	if "-limitchi2" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
 		limits[11] = [int(i) for i in temp ]
@@ -1431,6 +1435,11 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	if "-limitB" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
 		limits[4] = [int(i) for i in temp ]
+
+	if "-limitv" in sys.argv:
+		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
+		limits[5] = [int(i) for i in temp ]
+
 	if "-limitchi2" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
 		limits[11] = [int(i) for i in temp ]
