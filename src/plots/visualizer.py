@@ -1163,7 +1163,7 @@ def visualizer_data(data, wave):
 
 	im = ax.imshow(stokes.stki[:,:,wave_ind].transpose(), #cmap = 'gist_gray',
 				origin=d.origin)
-	plt.connect('button_press_event', lambda event: _on_click_1C(event, stokes))
+	plt.connect('button_press_event', lambda event: _on_click_data(event, stokes))
 	plt.show()
 
 
