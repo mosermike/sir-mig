@@ -176,10 +176,10 @@ def merge(conf, dir, ending):
 		values = input("Number of spectral points: ")
 		llambda = np.linspace(float(mins), float(maxs), int(values))
 
-	if conf['shift_wave'] != '0':
+	if conf['shift_wave'] != '0' or conf['shift_wave'] != "":
 		print(f"Wavelength Grid shifted by {conf['shift_wave']} mA.")
-	llambda = llambda + float(conf['shift_wave']) * 1e-3
-
+		llambda = llambda + float(conf['shift_wave']) * 1e-3
+	
 	print("-------> Assign data ...")
 	pro = p.Profile(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
 	pro.wave = llambda
@@ -254,7 +254,7 @@ def normalise(conf):
 			print("Is the data already normalised? Abort")
 			return
 
-		ll = stokes.wave
+		ll = np.copy(stokes.wave)
 
 		if conf['instrument'] in d.ll_lit_norm:
 			ll1      = np.argmin(abs(ll-d.ll_lit_norm[conf['instrument']][0]))	 # Find lower limit of wavelength for continuum

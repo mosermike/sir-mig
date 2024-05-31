@@ -33,6 +33,7 @@ def _help():
 	sir.option("[1. Pos.]","Config")
 	sir.option("[2. Pos.]","Wavelength at which stuff is plotted in A or log tau value if a phys. model is plotted as the map")
 	print()
+	sir.option("-dat","Only inspect observations. Then the first argument is the path to the data cube.")
 	sir.option("-data","Rel. path to the spectral veil corrected data if standard labelling is not used, optional.")	
 	sir.option("-stokes","Rel. path to the Stokes result if standard labelling is not used, optional.")
 	sir.option("-models","Rel. path to the Models of the inversion if standard labelling is not used.")
@@ -382,10 +383,10 @@ def _on_click_1C(event, obs, fit, Models, Map):
 			ax3.set_xlim(np.min(ll2), np.max(ll2))
 			ax4.set_xlim(np.min(ll2), np.max(ll2))
 		
-		ax1.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
-		ax2.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
-		ax3.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
-		ax4.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
+		ax1.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax2.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax3.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax4.set_xlabel(r'$\lambda$ [\AA]', loc='center')
 		ax1.set_ylabel(r'$I/I_c$')
 		ax2.set_ylabel(r'$Q/I_c$')
 		ax3.set_ylabel(r'$U/I_c$')
@@ -746,10 +747,10 @@ def _on_click_2C(event, obs, fit, Models1, Models2, Map):
 		
 		ax1.legend(fontsize=12)
 
-		ax1.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
-		ax2.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
-		ax3.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
-		ax4.set_xlabel(r'$\Delta \lambda$ [\AA]', loc='center')
+		ax1.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax2.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax3.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax4.set_xlabel(r'$\lambda$ [\AA]', loc='center')
 		ax1.set_ylabel(r'$I/I_c$')
 		ax2.set_ylabel(r'$Q/I_c$')
 		ax3.set_ylabel(r'$U/I_c$')
@@ -1002,17 +1003,186 @@ def visualizer_2C(conf, wave):
 
 		plt.show()
 
+
+
+def _on_click_data(event, obs):
+	"""
+	Opens a figure with the I, Q, U and V in the chosen pixel in the picture.
+	The chose pixel is determined by clicking on a figure
+
+	Parameter
+	---------
+	event : unknown
+ 		Event containing the data of the chosen pixel
+	obs : profile_stk
+ 		Observations as a profile_stk class
+
+	"""
+	plt.ion() # No Error from QApplication
+	if event.button is MouseButton.LEFT:
+		xlims = False
+		global fig1
+		global ax1
+		global ax2
+		global ax3
+		global ax4
+		
+		if (event.xdata == None):
+			return
+		elif (event.ydata == None):
+			return
+		
+		# Read and print the position on the Map	
+		x = int(event.xdata + 0.5)
+		y = int(event.ydata + 0.5)
+		print('[STATUS] Plot data at (%i,%i)' % (x,y))
+
+
+		# Set xlimits as before and also the size
+		if 'fig1' in globals():
+			xlims = True
+			xlim1 = ax1.get_xlim()
+			xlim2 = ax2.get_xlim()
+			xlim3 = ax3.get_xlim()
+			xlim4 = ax4.get_xlim()
+			ax1.cla()
+			ax2.cla()
+			ax3.cla()
+			ax4.cla()
+
+		# Set figure size as before
+		if not xlims:
+			fig1, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2)
+			plt.get_current_fig_manager().set_window_title('Stokes_' + str(rand))
+			# In this position, the width and height are ignored which were set on the windows!
+			size1 = fig1.get_size_inches()
+			if px2 == -1:
+				_move_figure("right1")
+			else:
+				_move_figure("right1", Monitor="2")
+
+		ll1 = obs.wave
+		
+		ax1.plot(ll1, obs.stki[x,y,:], '-', label='Observation')
+		
+		ax2.plot(ll1, obs.stkq[x,y,:], '-')
+		
+		ax3.plot(ll1, obs.stku[x,y,:], '-')
+		
+		ax4.plot(ll1, obs.stkv[x,y,:], '-')
+		
+
+		if xlims:
+			ax1.set_xlim(xlim1)
+			ax2.set_xlim(xlim2)
+			ax3.set_xlim(xlim3)
+			ax4.set_xlim(xlim4)
+		else:
+			ax1.set_xlim(np.min(ll1), np.max(ll1))
+			ax2.set_xlim(np.min(ll1), np.max(ll1))
+			ax3.set_xlim(np.min(ll1), np.max(ll1))
+			ax4.set_xlim(np.min(ll1), np.max(ll1))
+		
+		ax1.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax2.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax3.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax4.set_xlabel(r'$\lambda$ [\AA]', loc='center')
+		ax1.set_ylabel(r'$I/I_c$')
+		ax2.set_ylabel(r'$Q/I_c$')
+		ax3.set_ylabel(r'$U/I_c$')
+		ax4.set_ylabel(r'$V/I_c$')
+
+		fig1.suptitle(f"Pixel ({x},{y})")
+		ax1.legend(fontsize=12)
+		fig1.tight_layout()
+		
+		
+		plt.show()
+
+def visualizer_data(data, wave):
+	"""
+	Plots the Observations
+
+	Parameters
+	----------
+	data : str
+		Name of the data cube
+	wave : float
+		Wavelength in A where the Stokes Map is plotted / Or tau when model is plotted in the map
+
+	Returns
+	-------
+	None
+	
+	"""
+	# Import library
+	dirname = os.path.split(os.path.abspath(__file__))[0]
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if os.path.exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+
+	#############################################################
+	#			READ INPUT AND LOAD DATA					#
+	#############################################################
+	stokes = p.read_profile(data)
+	
+
+	print("Opening visualizer ...")
+	global px, py, px2, py2
+	px, py, px2, py2 = _get_display_size()
+	
+	global fig
+
+	# Random number between 0 and 99 so that plotted figures can be linked to each other if many are plotted
+	global rand
+	rand = int(np.random.uniform(0,100))
+
+	# Check whether the wavelength is in range
+	wave, wave_ind = _check_range(stokes.wave, wave)
+	fig, ax = plt.subplots()
+	plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
+	size = fig.get_size_inches()
+	_move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+
+	im = ax.imshow(stokes.stki[:,:,wave_ind].transpose(), #cmap = 'gist_gray',
+				origin=d.origin)
+	plt.connect('button_press_event', lambda event: _on_click_1C(event, stokes))
+	plt.show()
+
+
 # Used if executed directly
 if __name__ == "__main__":
 	signal.signal(signal.SIGINT,_signal_handling) 
 	if "-h" in sys.argv:
 		_help()
-	conf = sir.read_config(sys.argv[1])
-	if conf["mode"] == "1C":
-		visualizer_1C(conf, float(sys.argv[2]))
-	elif conf["mode"] == "2C":
-		visualizer_2C(conf, float(sys.argv[2]))
-	elif conf["mode"] == "MC":
-		print("[visualizer] Not defined for mode 'MC'")
+
+	if "-dat" in sys.argv:
+		visualizer_data(sys.argv[1],float(sys.argv[2]))
 	else:
-		print("[visualizer] Unknown mode")
+		conf = sir.read_config(sys.argv[1])
+
+		if conf["mode"] == "1C":
+			visualizer_1C(conf, float(sys.argv[2]))
+		elif conf["mode"] == "2C":
+			visualizer_2C(conf, float(sys.argv[2]))
+		elif conf["mode"] == "MC":
+			print("[visualizer] Not defined for mode 'MC'")
+		else:
+			print("[visualizer] Unknown mode")
