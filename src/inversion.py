@@ -52,7 +52,7 @@ def scatter_data(conf, comm, rank, size):
 	path = conf["path"]
 	
 	if rank == 0:
-			
+			print("[STATUS] Load and scatter data ...")
 			tasks = sir.create_task_folder_list(conf["map"])
 			stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
 			

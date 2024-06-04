@@ -515,6 +515,12 @@ def result_1C(conf, wave, tau, waveV = -1):
 	else:
 		origin = d.origin
 
+	if "-flipy" in sys.argv:
+		print("[NOTE]  Plots are flipped/mirrored along y")
+		
+		np.swap(Map_plot[0],Map_plot[1])
+		#Map_plot[2], Map_plot[3] = Map_plot[3], Map_plot[2]
+
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
 	else:
