@@ -72,6 +72,9 @@ def merge(conf, dir, ending):
 	# Files in the folders from different measurements
 	filenames = []
 
+	if conf['instrument'] == 'GRIS':
+		print(f"-------> Use files containing _{ending}_0 in the file name")
+
 	# Add all fits files in a list
 	for File in sorted(os.listdir(dir)):
 		if File.endswith(".fits"):
@@ -216,7 +219,8 @@ def merge(conf, dir, ending):
 			f.write(f"POINT_ID={header['POINT_ID']}\n")
 			f.write(f"POINT_ID={header['POINT_ID']}\n")
 			f.write(f"DSUN_OBS={header['DSUN_OBS']}\n")
-			f.write(f"SHIFT={conf['shift_wave']}")
+			f.write(f"SHIFT={conf['shift_wave']}\n")
+			f.write(f"END={ending}") # Ending of the used files
 		elif conf['instrument'] == 'Hinode':
 			f.write(f"CRVAL1={header['CRVAL1']}\n")
 			f.write(f"CDELT1={header['CDELT1']}\n")

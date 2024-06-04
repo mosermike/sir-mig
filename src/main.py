@@ -22,7 +22,7 @@ def help():
 	print()
 	sir.option("1:","Config file")
 	sir.option("-dir:","Merge data with the files in this directory (if not set, data is not merged) [Only in mode 1C and 2C]")
-	sir.option("-ending:","Ending for GRIS data (001,002,...) [Only in mode 1C and 2C]")
+	sir.option("-end:","Ending for GRIS data (001,002,...) [Only in mode 1C and 2C]")
 	sir.option("-save:","Additional savepath for plots from spectral veil correction, ending with / [Only in mode 1C and 2C]")
 	sir.option("--no-create","Do not create models [Only in mode MC]")
 	sir.option("--no-syn","Do not perform the synthesis [Only in mode MC]")
@@ -73,8 +73,8 @@ def main():
 				if "-dir" in sys.argv and conf['preprocess'] == "1":
 					print("[STATUS] Merge the data")
 					Dir = sys.argv[sys.argv.index("-dir")+1]
-					if "-ending" in sys.argv:
-						ends = sys.argv[sys.argv.index("-ending")+1]
+					if "-end" in sys.argv:
+						ends = sys.argv[sys.argv.index("-end")+1]
 					elif conf['instrument'] == 'GRIS':
 						ends = "001"
 					else:
