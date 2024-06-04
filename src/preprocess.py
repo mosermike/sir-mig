@@ -718,7 +718,7 @@ def correct_spectral_veil(conf):
 	print("σ_min = (%.2f ± %.2f) mÅ" % (sigma_min/1e-3, usigma_min / 1e-3))
 
 	# Save the parameters for later use
-	np.save(os.path.join(conf['path'],d.veil_parameters), [nu_min, sigma_min]) # sigma in Angstrom
+	np.save(os.path.join(conf['path'],d.veil_parameters), [[nu_min, unu_min],[sigma_min,usigma_min]]) # sigma in Angstrom
 
 	# Compute the convolved values with the best fit
 	I_conv_best = (1-nu_min)*convolve_fft(i_conv, gaussian(ll_conv, sigma = sigma_min), fill_value = Ic) + nu_min*Ic
