@@ -217,10 +217,10 @@ class Profile:
 			List with the ranges in pixel in x and y direction
 
 		"""
-		if((Map[1]-Map[0]+1) >= self.stki.shape[0]):
+		if((Map[1]-Map[0]+1) > self.stki.shape[0]):
 			print(f"[cut_to_map] The selected map region is too big! ({Map[1]-Map[0]+1} vs. {self.stki.shape[0]})")
 			return self
-		if((Map[3]-Map[2]+1) >= self.stki.shape[1]):
+		if((Map[3]-Map[2]+1) > self.stki.shape[1]):
 			print(f"[cut_to_map] The selected map region is too big! ({Map[3]-Map[2]+1} vs. {self.stki.shape[1]})")
 			return self
 		
