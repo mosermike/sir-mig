@@ -746,7 +746,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	# Load and scatter data => Saving memory and time
 	stk, tasks = scatter_data(conf, comm, rank, size)
 	comm.barrier()
-	print(len(tasks['folders']))
+	
 	# Write the control file with the information from the config file
 	if rank == 0:
 		print("-------> Write control and grid file")
@@ -808,10 +808,10 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			# Root process updates the progress bar
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
 		
-			# Update progres bar
-			if rank == 0:
-				pbar.n = total_jobs
-				pbar.refresh()
+		# Update progres bar
+		if rank == 0:
+			pbar.n = total_jobs
+			pbar.refresh()
 	
 	comm.barrier()
 		
