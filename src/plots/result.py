@@ -77,6 +77,7 @@ def _help():
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
 	sir.option("-arc:","Print x and y axis in arcseconds")
 	sir.option("-flipx:","Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun")
+	sir.option("-swapx:","Swap the x axis")
 
 	sys.exit()
 
@@ -515,11 +516,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	else:
 		origin = d.origin
 
-	if "-flipy" in sys.argv:
-		print("[NOTE]  Plots are flipped/mirrored along y")
-		
-		np.swap(Map_plot[0],Map_plot[1])
-		#Map_plot[2], Map_plot[3] = Map_plot[3], Map_plot[2]
+	if "-swapx" in sys.argv:
+		print("[NOTE]  Axis on x swaped")
+		Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
 
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
@@ -1226,6 +1225,11 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		Map_plot[2], Map_plot[3] = Map_plot[3], Map_plot[2]
 	else:
 		origin = d.origin
+
+	if "-swapx" in sys.argv:
+		print("[NOTE]  Axis on x swaped")
+		Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
+		
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
 	else:
