@@ -600,7 +600,7 @@ def visualizer_1C(conf, wave):
 					r"Line-of-Sight Velocity $\mathrm{v}_{\mathrm{los}}$",
 				r"Inclination $\gamma$", r"Azimuth $\phi$", r"Height $z$", r"Gas Pressure $\log P_g$", r"Density $\rho$", r"$\chi^2$", r"Line-of-Sight Magnetic Field $B \cdot \cos \gamma$"]
 		cmap = [None,None,None,None,None,'seismic','jet','hsv',None,None,None,'gist_gray', None]
-		limits = [[None,None],[np.min(models_inv[:,:,1,ind]),np.max(models_inv[:,:,1,ind])],[None,None],[None,None],[None,None],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[None,None],[-2000,2000]]
+		limits = [[None,None],[np.min(models_inv.T[:,:,ind]),np.max(models_inv.T[:,:,ind])],[None,None],[None,None],[None,None],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[None,None],[-2000,2000]]
 		i = 0
 		imgscale = 7
 		frac = (Map[3]+1-Map[2])/(Map[1]+1-Map[0])
@@ -619,7 +619,7 @@ def visualizer_1C(conf, wave):
 					ax.set_title(titles[i])
 					im = ax.imshow((models_inv.B*np.cos(models_inv.gamma/180*np.pi)).transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)					
 				else:
-					im = ax.imshow(models_inv.get_attribute(inputs[i][2:])[:,:,ind].transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)
+					im = ax.imshow(models_inv.get_attribute(inputs[i][1:])[:,:,ind].transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)
 				
 				# Set labels
 				ax.set_xlabel(r"x [Pixels]")

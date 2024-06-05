@@ -736,7 +736,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 				im = ax.imshow(chi2_inv.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			else:
-				im = ax.imshow(models_inv.get_attribute(inputs[i][2:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
+				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 
 			# Set labels
@@ -1076,9 +1076,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		limit_xy = np.array([int(i) for i in sys.argv[sys.argv.index("-limitxy")+1].split(",")], dtype=int)
 
 		# Cut data to the new range:
-		stokes_inv = stokes_inv[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
-		models_inv = models_inv[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
-		errors_inv = errors_inv[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
+		stokes_inv = stokes_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
+		models_inv = models_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
+		errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 
 		# Save the new limits as the new Map
 		Map = limit_xy
@@ -1477,7 +1477,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				im = ax.imshow(models_inv.fill.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			else:
-				im = ax.imshow(models_inv.get_attribute(inputs[i][2:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
+				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 				
 
