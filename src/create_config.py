@@ -86,7 +86,7 @@ def _config_MC():
 	nodes_phi = input("Nodes in azimuth/phi (as list)         : ")
 	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
 	abundance = input("Abundance file               [THEVENIN]: ")
-	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
+	chi2 = input("Compute chi2 and save it under this file [chi2.bin]: ")
 	line = input("Lines file                      [Lines]: ")
 	gas_pressure = input("Gas Pressure Boundary condition  [-1 => 3.944e+3]: ")
 
@@ -137,7 +137,7 @@ def _config_MC():
 	if vmacro == '':
 		vmacro = '0.1000'
 	if chi2 == '':
-		chi2 = 'out_chi2.bin'
+		chi2 = 'chi2.bin'
 	if line == '':
 		line = 'Lines'
 	if weights == '':

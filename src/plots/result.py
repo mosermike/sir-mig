@@ -16,6 +16,7 @@ import definitions as d
 from change_config_path import change_config_path
 import model_atm as m
 import profile_stk as p
+import chi2_stk as c
 
 # TODO do the figure size as in gris_firtez
 
@@ -109,6 +110,137 @@ def _check_range(wave_inv, wave):
 		return wave
 
 	return wave
+
+
+def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title4 =""):
+	"""
+	Plots the models
+
+	Parameters
+	----------
+	figsize : Array
+		Array with figure size
+	frac : float
+		Fraction between y and x
+	models_inv : class
+		Instance of class model from firtez_dz
+	zs : array
+		Array containing the indexes in z
+	Map_plot : array
+		Ticks of x and y
+	units : string
+		Unit in arcsec or Pixel
+	savepath : string
+		savepath for the files
+	add : string
+		Additional text in the saved files
+	origin : string
+		Orientation of the plots
+	title4 : string (not implemented)
+		Title for the 4 plots
+	
+	"""
+	
+	#######################
+	#  Plot I, Q, U and V #
+	#######################
+	if "-vertical" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
+			 gridspec_kw=dict(hspace=0), figsize=figsize)
+		fig.subplots_adjust(hspace=0, wspace=0)
+	else:
+		if (chi2.stki.shape[1] - chi2.stki.shape[0]) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
+										layout="compressed",
+									)
+		else:
+			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
+										layout="compressed",
+									)
+		#fig.subplots_adjust(hspace=0.0)
+		
+	vmaxs = [None, None, None, None, None]
+	cmap = 'Greys'
+	ext_cbar = 'neither'
+	if "-limitchi2" in sys.argv:
+		vmaxs = [ float(i) for i in sys.argv[sys.argv.index("-limitchi2")+1].split(',')]
+		import matplotlib as mpl
+		cmap = mpl.colormaps[cmap]
+		cmap.set_extremes(over='yellow')
+		ext_cbar='max'
+
+	############################
+	# Plot the Stokes profiles #
+	############################
+	im1 = ax1.imshow(chi2.stki.transpose(), origin=origin, cmap = cmap, extent=Map_plot, vmax = vmaxs[1])
+	im2 = ax2.imshow(chi2.stkq.transpose(), origin=origin, cmap = cmap, extent=Map_plot, vmax = vmaxs[2])
+	im3 = ax3.imshow(chi2.stku.transpose(), origin=origin, cmap = cmap, extent=Map_plot, vmax = vmaxs[3])
+	im4 = ax4.imshow(chi2.stkv.transpose(), origin=origin, cmap = cmap, extent=Map_plot, vmax = vmaxs[4])
+
+	#####################
+	#	Set labels	#
+	#####################
+	ax1.set_title(r"$\chi^2$ for Stokes $I$")
+	ax2.set_title(r"$\chi^2$ for Stokes $Q$")
+	ax3.set_title(r"$\chi^2$ for Stokes $U$")
+	ax4.set_title(r"$\chi^2$ for Stokes $V$")
+
+
+	############
+	# Colorbar #
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
+	############
+
+	#####################
+	#	Set labels	#
+	#####################
+	if "-vertical" not in sys.argv:
+		ax1.set_xlabel(f"x [{units}]")
+		ax2.set_xlabel(f"x [{units}]")
+		ax3.set_xlabel(f"x [{units}]")
+		ax2.set_ylabel(f"y [{units}]")
+		ax4.set_ylabel(f"y [{units}]")
+	ax4.set_xlabel(f"x [{units}]")
+	ax1.set_ylabel(f"y [{units}]")
+	ax3.set_ylabel(f"y [{units}]")
+
+	##################################################################
+	# Set title											#
+	# The position is relative to the chosen plot (vertical or not)  #
+	##################################################################
+	if title4 != "-1": # -1 => Print no title
+		if "-vertical" in sys.argv:
+			xtitle1 = 0.41
+		else:
+			xtitle1 = 0.5
+		if title4 != '':
+			fig.suptitle(title4, y=1.02, x=xtitle1)
+
+
+	plt.savefig(savepath + "chi2_stokes" + add)
+
+	# Plot
+	fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
+	#fig.subplots_adjust(hspace=0.0)
+	ax.set_title(r"$\chi^2_{tot}$")
+	im = ax.imshow(chi2.tot.transpose(), cmap=cmap, origin = origin,vmax = vmaxs[0],# vmin = limits[i][0], vmax = limits[i][1],
+						extent=Map_plot)
+	# Set labels
+	ax.set_xlabel(f"x [{units}]")
+	ax.set_ylabel(f"y [{units}]")
+	############
+	# Colorbar #
+	cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	cbar.set_label(label = r"$\chi^2$", loc = 'center')
+	############
+	plt.savefig(savepath + "chi2_total" + add)
 
 
 def result_1C(conf, wave, tau, waveV = -1):
@@ -274,11 +406,11 @@ def result_1C(conf, wave, tau, waveV = -1):
 		filename = sys.argv[sys.argv.index("-errors")+1]
 		errors_inv = m.read_model(filename)
 	
-	if "-chi" not in sys.argv:
-		chi2_inv = np.load(os.path.join(path,conf['chi2']))
+	if "-chi" not in sys.argv and ("chi2" in sys.argv or "plot_chi2" in sys.argv):
+		chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
 	else:
 		filename = sys.argv[sys.argv.index("-chi")+1]
-		chi2_inv = np.load(filename)
+		chi2 = c.read_chi2(filename)
 
 	if "-logT" not in sys.argv:
 		logT = tau
@@ -692,12 +824,12 @@ def result_1C(conf, wave, tau, waveV = -1):
 	###################################################
 
 	# Define labels and get from arguments which parameter should be plot
-	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-chi2", "-Bz"]
-	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$",r"$\chi^2$", r"$B \cdot \cos \gamma$ [G]"]
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"$\chi^2$", r"Line-of-Sight Magnetic Field"]
-	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,'gist_gray', None]
+	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz"]
+	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B \cdot \cos \gamma$ [G]"]
+	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$" r"Line-of-Sight Magnetic Field"]
+	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,None]
 	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
-		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[0,50],[-2000,2000]]
+		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000]]
 	i = 0
 
 	if "-limitT" in sys.argv:
@@ -714,6 +846,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
 		limits[11] = [int(i) for i in temp ]
 	
+	if "-chi2" in sys.argv:
+		plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin)
 	for i in range(len(inputs)):
 		if inputs[i] in sys.argv:
 			# Plot
@@ -721,9 +855,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 			ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]))
 			if inputs[i] == "-Bz":
 				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
-							extent=Map_plot)
-			elif inputs[i] == '-chi2':
-				im = ax.imshow(chi2_inv.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			else:
 				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
@@ -765,7 +896,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
 	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
 	if "-plot_chi2" in sys.argv:
-		im4 = ax4.imshow(chi2_inv.transpose(), cmap=cmap[11], origin = origin, vmin = limits[11][0], vmax = limits[11][1],extent=Map_plot)
+		im4 = ax4.imshow(chi2.tot.transpose(), cmap='gist_gray', origin = origin,extent=Map_plot)
 	else:
 		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
 
@@ -1035,11 +1166,11 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-models2")+1].replace(".mod",".err")
 			errors_inv = m.read_model(filename)
 
-	if "-chi" not in sys.argv:
-		chi2_inv = np.load(os.path.join(path,conf['chi2']))
+	if "-chi" not in sys.argv and ("chi2" in sys.argv or "plot_chi2" in sys.argv):
+		chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
 	else:
 		filename = sys.argv[sys.argv.index("-chi")+1]
-		chi2_inv = np.load(filename)
+		chi2 = c.read_chi2(filename)
 
 	if "-logT" not in sys.argv:
 		logT = tau
@@ -1420,11 +1551,11 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	###################################################
 
 	# Define labels and get from arguments which parameter should be plot
-	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-chi2", "-Bz", "-fill"]
-	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$",r"$\chi^2$", r"$B \cdot \cos \gamma$ [G]", r"$\alpha$"]
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"$\chi^2$", r"Line-of-Sight Magnetic Field", r"Filling Factor"]
-	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,'gist_gray', None, None]
-	limits = [[None,None],[np.min(models_inv[:,:,1]),np.max(models_inv[:,:,1])],[None,None],[None,None],[0,4000],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[0,50],[-2000,2000], [0,1]]
+	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz", "-fill"]
+	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B \cdot \cos \gamma$ [G]", r"$\alpha$"]
+	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Line-of-Sight Magnetic Field", r"Filling Factor"]
+	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None, None, None]
+	limits = [[None,None],[np.min(models_inv[:,:,1]),np.max(models_inv[:,:,1])],[None,None],[None,None],[0,4000],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000], [0,1]]
 	i = 0
 
 	if "-limitT" in sys.argv:
@@ -1438,19 +1569,16 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	if "-limitv" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
 		limits[5] = [int(i) for i in temp ]
-
-	if "-limitchi2" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
-		limits[11] = [int(i) for i in temp ]
+	
+	if "-chi2" in sys.argv:
+		plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin)
 	
 	for i in range(len(inputs)):
 		if inputs[i] in sys.argv:
 			# Plot
 			fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
 				
-			if inputs[i] == "-chi2":
-				ax.set_title(titles[i]  + add_label)
-			elif inputs[i] == "-fill":
+			if inputs[i] == "-fill":
 				ax.set_title(titles[i] + f" for Model {Type[1]}" + add_label)			
 
 			else:
@@ -1458,9 +1586,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			
 			if inputs[i] == "-Bz":
 				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
-							extent=Map_plot)
-			elif inputs[i] == '-chi2':
-				im = ax.imshow(chi2_inv.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			elif inputs[i] == '-fill':
 				im = ax.imshow(models_inv.fill.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
@@ -1503,9 +1628,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
 	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
 	if "-plot_chi2" in sys.argv:
-		im4 = ax4.imshow(chi2_inv.transpose(), cmap=cmap[11], origin = origin, vmin = limits[11][0], vmax = limits[11][1],extent=Map_plot)
+		im4 = ax4.imshow(chi2.tot.transpose(), cmap=cmap[11], origin = origin, extent=Map_plot)
 	elif "-plot_fill" in sys.argv:
-		im4 = ax4.imshow(models_inv.fill.transpose(), cmap=cmap[13], origin = origin, vmin = limits[13][0], vmax = limits[13][1],extent=Map_plot)
+		im4 = ax4.imshow(models_inv.fill.transpose(),'gist_gray', origin = origin, vmin = limits[13][0], vmax = limits[13][1],extent=Map_plot)
 	else:
 		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
 
