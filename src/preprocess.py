@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
 from os.path import exists
 from astropy.convolution import convolve_fft
 from shutil import which
-import tqdm.tqdm as tqdm
+from tqdm import tqdm
 import definitions as d
 import profile_stk as p
 
@@ -182,7 +182,7 @@ def merge(conf, dir, ending):
 		llambda = llambda + float(conf['shift_wave']) * 1e-3
 	
 	print("-------> Assign data ...")
-	pro = p.Profile(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
+	pro = p.profile_stk(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
 	pro.wave = llambda
 	pro.stki = data[:,:,0,:]
 	pro.stkq = data[:,:,1,:]

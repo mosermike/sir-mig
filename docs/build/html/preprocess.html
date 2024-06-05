@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>3. Preprocessing &#8212; SIR-MIG  documentation</title>
+    <title>Preprocessing &#8212; SIR-MIG  documentation</title>
   
   
   
@@ -44,8 +44,6 @@
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Simulation" href="simulation.html" />
-    <link rel="prev" title="2. Classes" href="classes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -139,15 +137,29 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="doc.html">
-                        Documentation
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="code.html">
-                        Code
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="config.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="randomising.html">
+                        Randomising Parameters
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="temperature.html">
+                        Temperature
                       </a>
                     </li>
                 
@@ -227,7 +239,9 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -241,15 +255,29 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="doc.html">
-                        Documentation
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="code.html">
-                        Code
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="config.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="randomising.html">
+                        Randomising Parameters
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="temperature.html">
+                        Temperature
                       </a>
                     </li>
                 
@@ -285,44 +313,6 @@ document.write(`
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="functions.html">1. Functions</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="sir.html">1.5.1. sir</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="classes.html">2. Classes</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Preprocessing</a></li>
-
-
-
-
-
-
-
-
-
-<li class="toctree-l1 has-children"><a class="reference internal" href="simulation.html">4. Simulation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="inversion.html">5. Inversion</a></li>
-
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="plots.html">6. Plotting</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -355,10 +345,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="code.html" class="nav-link">Code</a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page"><span...</li>
+    <li class="breadcrumb-item active" aria-current="page">Preprocessing</li>
   </ul>
 </nav>
 </div>
@@ -376,20 +363,20 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="preprocessing">
-<span id="module-preprocess"></span><h1><span class="section-number">3. </span>Preprocessing<a class="headerlink" href="#preprocessing" title="Link to this heading">#</a></h1>
+<span id="module-preprocess"></span><h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Link to this heading">#</a></h1>
 <p>These module provides functions to preprocess data such as merging, normalisation and correction for a spectral veil for groundbased telescopes.</p>
 <section id="merging-data">
-<h2><span class="section-number">3.1. </span>Merging Data<a class="headerlink" href="#merging-data" title="Link to this heading">#</a></h2>
+<h2>Merging Data<a class="headerlink" href="#merging-data" title="Link to this heading">#</a></h2>
 <p>Merging data downloaded from SDC to a data cube or Hinode data. It puts the 3D arrays into a 4D array to be easier
 accessible. In total, four different measurements can be put into 4 data cubes at the same time. For more measurements
 in the same folder, the script must be adapted.</p>
 </section>
 <section id="normalise-data">
-<h2><span class="section-number">3.2. </span>Normalise Data<a class="headerlink" href="#normalise-data" title="Link to this heading">#</a></h2>
+<h2>Normalise Data<a class="headerlink" href="#normalise-data" title="Link to this heading">#</a></h2>
 <p>Normalises a data cube by computing the average intensity from a quiet sun region</p>
 </section>
 <section id="spectral-veil-correction">
-<h2><span class="section-number">3.3. </span>Spectral veil correction<a class="headerlink" href="#spectral-veil-correction" title="Link to this heading">#</a></h2>
+<h2>Spectral veil correction<a class="headerlink" href="#spectral-veil-correction" title="Link to this heading">#</a></h2>
 <dl class="simple">
 <dt>Convolve the FTS data with a Gaussian and a constant value for the spectral veil using</dt><dd><p><div class="math notranslate nohighlight">
 \[I = (1 - \nu) [I_{FTS} * g(\lambda, \sigma)] + \nu I_c.\]</div>
@@ -607,24 +594,6 @@ it should be better in the infrared than Edlen.</p>
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="classes.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Classes</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="simulation.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">4. </span>Simulation</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -643,10 +612,10 @@ it should be better in the infrared than Edlen.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">3. Preprocessing</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-data">3.1. Merging Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalise-data">3.2. Normalise Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-veil-correction">3.3. Spectral veil correction</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Preprocessing</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-data">Merging Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normalise-data">Normalise Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-veil-correction">Spectral veil correction</a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.argmin"><code class="docutils literal notranslate"><span class="pre">argmin()</span></code></a></li>

@@ -86,7 +86,7 @@ def _config_MC():
 	nodes_phi = input("Nodes in azimuth/phi (as list)         : ")
 	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
 	abundance = input("Abundance file               [THEVENIN]: ")
-	chi2 = input("File for chi2 map            [chi2.npy]: ")
+	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
 	line = input("Lines file                      [Lines]: ")
 	gas_pressure = input("Gas Pressure Boundary condition  [-1 => 3.944e+3]: ")
 
@@ -137,7 +137,7 @@ def _config_MC():
 	if vmacro == '':
 		vmacro = '0.1000'
 	if chi2 == '':
-		chi2 = 'chi2.npy'
+		chi2 = 'out_chi2.bin'
 	if line == '':
 		line = 'Lines'
 	if weights == '':
@@ -257,7 +257,7 @@ def _config_1C():
 	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
 	mu_cos		= input ("mu = cos theta                         : ")
 	abundance		= input ("Abundance file               [THEVENIN]: ")
-	chi2			= input ("File for chi2 map            [chi2.npy]: ")
+	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
 	gas_pressure   = input ("Gas Pressure Boundary condition  [-1 => 3944]: ")
 
 	lim_B		= input ("Limits for randomising the magn. field in G             [0,5000]: ")
@@ -287,7 +287,7 @@ def _config_1C():
 	if abundance == '':
 		abundance = 'THEVENIN'
 	if chi2 == '':
-		chi2 = 'chi2.npy'
+		chi2 = 'out_chi2.bin'
 	if weights == '':
 		weights = '1,1,1,1'
 	if random_pars == '':
@@ -404,7 +404,7 @@ def _config_2C():
 	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
 	mu_cos		= input ("mu = cos theta                         : ")
 	abundance		= input ("Abundance file               [THEVENIN]: ")
-	chi2			= input ("File for chi2 map            [chi2.npy]: ")
+	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
 	gas_pressure   = input ("Gas Pressure Boundary condition  [-1 => 3.944e+3]: ")
 
 	lim_B1		= input ("Limits 1 for randomising the magn. field in G             [0,5000]: ")
@@ -446,7 +446,7 @@ def _config_2C():
 	if abundance == '':
 		abundance = 'THEVENIN'
 	if chi2 == '':
-		chi2 = 'chi2.npy'
+		chi2 = 'out_chi2.bin'
 	if weights == '':
 		weights = '1,1,1,1'
 	if vmacro == '':

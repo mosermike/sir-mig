@@ -43,7 +43,6 @@
     <link rel="icon" href="../_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="preprocess" href="preprocess.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -137,20 +136,34 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../doc.html">
-                        Documentation
+                      <a class="nav-link nav-internal" href="../usage.html">
+                        Usage
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../code.html">
-                        Code
+                      <a class="nav-link nav-internal" href="../config.html">
+                        Configuration
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../randomising.html">
+                        Randomising Parameters
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../temperature.html">
+                        Temperature
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../api.html">
                         API
                       </a>
@@ -225,7 +238,9 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -239,20 +254,34 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../doc.html">
-                        Documentation
+                      <a class="nav-link nav-internal" href="../usage.html">
+                        Usage
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../code.html">
-                        Code
+                      <a class="nav-link nav-internal" href="../config.html">
+                        Configuration
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../randomising.html">
+                        Randomising Parameters
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../temperature.html">
+                        Temperature
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link nav-internal" href="../api.html">
                         API
                       </a>
@@ -282,23 +311,6 @@ document.write(`
       </div>
     
   </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="create_config.html">create_config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sir.html">sir</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model_atm.html">model_atm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="profile_stk.html">profile_stk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="preprocess.html">preprocess</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">visualizer</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -332,9 +344,6 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page">visualizer</li>
   </ul>
 </nav>
@@ -363,6 +372,9 @@ document.write(`
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualizer_2C</span></code>(conf, wave)</p></td>
 <td><p>Plots the Stokes vector with obs.</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualizer_data</span></code>(data, wave)</p></td>
+<td><p>Plots the Observations</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -377,15 +389,6 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="preprocess.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">preprocess</p>
-      </div>
-    </a>
 </div>
                 </footer>
               

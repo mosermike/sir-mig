@@ -23,7 +23,7 @@
 
    .. autosummary::
    
-      Profile
+      profile_stk
    
    
 

@@ -206,8 +206,12 @@ def read_config(filename, check = True, change_config = False):
 	if check:
 		if not exists(Dict['path']):
 			print(f"[read_config] {Dict['path']} does not exist.")
-		if not exists(os.path.join(Dict['path'],Dict['model'])):
+		if (Dict["mode"] == "1C" or Dict["mode"] == "MC") and not exists(os.path.join(Dict['path'],Dict['model'])):
 			print(f"[read_config] {Dict['model']} does not exist.")
+		if Dict["mode"] == "2C" and not exists(os.path.join(Dict['path'],Dict['model1'])):
+			print(f"[read_config] {Dict['model1']} does not exist.")
+		if Dict["mode"] == "2C" and not exists(os.path.join(Dict['path'],Dict['model2'])):
+			print(f"[read_config] {Dict['model2']} does not exist.")
 		if Dict['mode'] == "1C" or Dict['mode'] == "2C":
 			if not exists(os.path.join(Dict['path'],Dict['fts_file'])) and Dict['preprocess'] == "1":
 				print(f"[read_config] {Dict['fts_file']} does not exist.")
@@ -579,7 +583,7 @@ def _write_config_1c(File, conf, verbose = True):
 		f.write(f"model : {conf['model']} # Base Model for guess\n")
 		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
-		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
+		f.write(f"chi2 : {conf['chi2']} # Compute chi2 and save it under this name\n")
 		f.write(f"line : {conf['line']} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
 		f.write(f"guess : {conf['guess']} # Use a bin file as initial guesses, blank use base model\n")
@@ -648,7 +652,6 @@ def _write_config_2c(File, conf, verbose = True):
 	weights = list_to_string(conf["weights"])
 	quiet_sun = list_to_string(conf["quiet_sun"])
 	random_pars = list_to_string(conf["random_pars"])
-	Step = list_to_string(conf["step_wave"])
 
 	with open(File, 'w') as f:
 		f.write("# This is the config file, generated with create_config.py\n")
@@ -679,7 +682,7 @@ def _write_config_2c(File, conf, verbose = True):
 		f.write(f"range_wave : {range_wave} # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.\n")
 		f.write(f"fill : {conf['fill']} # Filling factors for both models separated by a ',' (if random_guess > 0)\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of output of the inversion files\n")
-		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
+		f.write(f"chi2 : {conf['chi2']} # Compute chi2 and save it under this name\n")
 		f.write(f"line : {conf['line']} # Line file\n")
 		f.write(f"atoms : {atoms} # Atoms used, ; defines a new line\n")
 		f.write(f"guess1 : {conf['guess1']} # Use a bin file as initial guesses, blank use base model 1\n")
@@ -775,7 +778,7 @@ def _write_config_mc(File, conf, verbose=True):
 		f.write(f"syn_out : {conf['syn_out']} # Output prefix of the synthesis profiles and models\n")
 		f.write(f"noise_out : {conf['noise_out']} # Output prefix of the noise profiles\n")
 		f.write(f"inv_out : {conf['inv_out']} # Prefix of the output of the inversion files\n")
-		f.write(f"chi2 : {conf['chi2']} # Output of the chi2 values (npy)\n")
+		f.write(f"chi2 : {conf['chi2']} # Compute chi2 and save it under this name\n")
 
 		f.write(f"#\n")
 		f.write(f"# Creating Models and Synthesis\n")

@@ -635,10 +635,10 @@ def result_1C(conf, wave, tau, waveV = -1):
 	############################
 	# Plot the Stokes profiles #
 	############################
-	im1 = ax1.imshow(I2[:,:,wave_ind2]  .transpose(), origin=origin, vmin = limits_stokes2[0][0], vmax = limits_stokes2[0][1], extent=Map_plot)
-	im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes2[1][0], vmax = limits_stokes2[1][1], cmap = 'PuOr', extent=Map_plot)
-	im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes2[2][0], vmax = limits_stokes2[2][1], cmap = 'PuOr', extent=Map_plot)
-	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes2[3][0], vmax = limits_stokes2[3][1], cmap = 'PuOr', extent=Map_plot)
+	im1 = ax1.imshow(I2[:,:,wave_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
+	im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
+	im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
+	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
 	#####################
 	#	Set labels	#
@@ -1361,10 +1361,10 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		############################
 		# Plot the Stokes profiles #
 		############################
-		im1 = ax1.imshow(I2[:,:,wave_ind2 ]  .transpose(), origin=origin, vmin = limits_stokes2[0][0], vmax = limits_stokes2[0][1], extent=Map_plot)
-		im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes2[1][0], vmax = limits_stokes2[1][1], cmap = 'PuOr', extent=Map_plot)
-		im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes2[2][0], vmax = limits_stokes2[2][1], cmap = 'PuOr', extent=Map_plot)
-		im4 = ax4.imshow(V2[:,:,waveV_ind2]  .transpose(), origin=origin, vmin = limits_stokes2[3][0], vmax = limits_stokes2[3][1], cmap = 'PuOr', extent=Map_plot)
+		im1 = ax1.imshow(I2[:,:,wave_ind2 ]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
+		im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
+		im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
+		im4 = ax4.imshow(V2[:,:,waveV_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
 		#####################
 		#	Set labels	#

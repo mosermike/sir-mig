@@ -150,7 +150,7 @@ def create_models(conf: dict) -> None:
 	###############################
 	path = conf["path"]
 	Input = os.path.join(path, conf["model"])
-	Output = os.path.join(path, conf["model_out"] + d.end_models)
+	Output = os.path.join(path, conf["syn_out"] + d.end_models)
 	num = conf["num"]  # Number of random models
 	model_nodes = int(conf["model_nodes"])  # If cubic or linear is used
 
@@ -211,7 +211,7 @@ def create_models(conf: dict) -> None:
 	create_phi = np.array([__split_to_float(i, letter=",") for i in conf['create_phi'].split(';')])
 	create_points = np.flip(__split_to_float(conf['create_points']))
 
-	model = m.Model(int(num), 1, len(log_tau0))
+	model = m.model_atm(int(num), 1, len(log_tau0))
 	for i in range(num):
 		model.vmacro[i,0] = float(conf["vmacro"])
 		model.fill[i,0] = header[1]
@@ -794,7 +794,7 @@ def synthesis(conf, comm, rank, size, MPI):
 	path = conf["path"]
 	abundance_file = conf['abundance'] # Abundance file	
 	
-	models = m.read_model(os.path.join(path, conf['model_out'] + d.end_models))
+	models = m.read_model(os.path.join(path, conf['syn_out'] + d.end_models))
 
 	####################################
 	#	CREATE GRID AND CONFIG FILE	#
@@ -856,10 +856,10 @@ def synthesis(conf, comm, rank, size, MPI):
 		atoms = [i.split(",") for i in conf['atoms']]
 
 		# Read the profiles
-		stk = p.Profile(conf['num'],1,0)
+		stk = p.profile_stk(conf['num'],1,0)
 		stk.read_results_MC(path, tasks, d.profile)
 		
-		stk.write(f"{os.path.join(conf['path'],conf['syn_out'] + d.end_models)}")
+		stk.write(f"{os.path.join(conf['path'],conf['syn_out'] + d.end_stokes)}")
 		
 		for i in range(conf['num']):
 			shutil.rmtree(tasks['folders'][i])

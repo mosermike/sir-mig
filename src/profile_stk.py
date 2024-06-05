@@ -13,9 +13,9 @@ import sys
 from scipy.io import FortranFile
 
 
-class Profile:
+class profile_stk:
 	"""
-	Class containing the models of a simulation
+	Class containing the Stokes Profiles
 
 	Parameters
 	----------
@@ -23,13 +23,13 @@ class Profile:
 		Wavelength
 	indx : numpy array
 		Index or line numbers in mode 'MC'
-	stki : mxn numpy.array
+	stki : numpy.ndarray
 		Stokes Parameter I
-	stkq : mxn numpy.array
+	stkq : numpy.ndarray
 		Stokes Parameter Q
-	stku : mxn numpy.array
+	stku : numpy.ndarray
 		Stokes Parameter U
-	stkv : mxn numpy.array
+	stkv : numpy.ndarray
 		Stokes Parameter V
 	nx : int
 		Dimension in x
@@ -684,7 +684,7 @@ def read_profile(file):
 	class Profile
 
 	"""
-	pro = Profile(0,0,0)
+	pro = profile_stk(0,0,0)
 	pro.read(file)
 
 	return pro

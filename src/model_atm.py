@@ -2,16 +2,16 @@
 Model
 =====
 
-Class Model with all the tools to read and write the models. The class contains all the information from the model.
+Class model_atm with all the tools to read and write the models. The class contains all the information from the model.
 
 """
 import numpy as np 
 import os
 from scipy.io import FortranFile
 
-class Model:
+class model_atm:
 	"""
-	Class containing the models of a simulation
+	Class containing the models
 
 	Parameters
 	----------
@@ -677,7 +677,7 @@ class Model:
 		return self
 
 def read_model(filename):
-	mod = Model(0,0,0)
+	mod = model_atm(0,0,0)
 	if ".mod" in filename:
 		mod.read_mod(filename)
 	else:

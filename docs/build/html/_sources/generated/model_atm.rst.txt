@@ -23,7 +23,7 @@
 
    .. autosummary::
    
-      Model
+      model_atm
    
    
 

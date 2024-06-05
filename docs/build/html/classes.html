@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>2. Classes &#8212; SIR-MIG  documentation</title>
+    <title>Classes &#8212; SIR-MIG  documentation</title>
   
   
   
@@ -44,8 +44,6 @@
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3. Preprocessing" href="preprocess.html" />
-    <link rel="prev" title="1.5.1. sir" href="sir.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -139,15 +137,29 @@
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="doc.html">
-                        Documentation
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="code.html">
-                        Code
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="config.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="randomising.html">
+                        Randomising Parameters
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="temperature.html">
+                        Temperature
                       </a>
                     </li>
                 
@@ -227,7 +239,9 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
   
@@ -241,15 +255,29 @@ document.write(`
   <ul class="bd-navbar-elements navbar-nav">
     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="doc.html">
-                        Documentation
+                      <a class="nav-link nav-internal" href="usage.html">
+                        Usage
                       </a>
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="code.html">
-                        Code
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="config.html">
+                        Configuration
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="randomising.html">
+                        Randomising Parameters
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="temperature.html">
+                        Temperature
                       </a>
                     </li>
                 
@@ -285,44 +313,6 @@ document.write(`
     
   </div>
   
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-<nav class="bd-docs-nav bd-links"
-     aria-label="Section Navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="functions.html">1. Functions</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="sir.html">1.5.1. sir</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="preprocess.html">3. Preprocessing</a></li>
-
-
-
-
-
-
-
-
-
-<li class="toctree-l1 has-children"><a class="reference internal" href="simulation.html">4. Simulation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="inversion.html">5. Inversion</a></li>
-
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="plots.html">6. Plotting</a></li>
-</ul>
-</div>
-</nav></div>
-    </div>
-  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
@@ -355,10 +345,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="code.html" class="nav-link">Code</a></li>
-    
-    <li class="breadcrumb-item active" aria-current="page"><span...</li>
+    <li class="breadcrumb-item active" aria-current="page">Classes</li>
   </ul>
 </nav>
 </div>
@@ -376,11 +363,91 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="classes">
-<h1><span class="section-number">2. </span>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h1>
+<h1>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="model_atm.Model">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model" title="Link to this definition">#</a></dt>
-<dd><p>Class containing the models of a simulation</p>
+<dt class="sig sig-object py" id="chi2_stk.chi2_stk">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chi2_stk.</span></span><span class="sig-name descname"><span class="pre">chi2_stk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk" title="Link to this definition">#</a></dt>
+<dd><p>Class containing the <span class="math notranslate nohighlight">\(\chi^2\)</span>-values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total</strong> (<em>float</em>) – Total chi2 of the full map</p></li>
+<li><p><strong>Itot</strong> (<em>float</em>) – Total chi2 for Stokes I</p></li>
+<li><p><strong>Qtot</strong> (<em>float</em>) – Total chi2 for Stokes Q</p></li>
+<li><p><strong>Utot</strong> (<em>float</em>) – Total chi2 for Stokes U</p></li>
+<li><p><strong>Vtot</strong> (<em>float</em>) – Total chi2 for Stokes V</p></li>
+<li><p><strong>stki</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter I</p></li>
+<li><p><strong>stkq</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter Q</p></li>
+<li><p><strong>stku</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter U</p></li>
+<li><p><strong>stkv</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter V</p></li>
+<li><p><strong>nx</strong> (<em>int</em>) – Dimension in x</p></li>
+<li><p><strong>ny</strong> (<em>int</em>) – Dimension in y</p></li>
+<li><p><strong>ns</strong> (<em>int</em>) – Number of Stokes Parameter</p></li>
+<li><p><strong>noise</strong> (<em>float</em>) – Noise level of the Stokes Parameter</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#chi2_stk.chi2_stk.compute" title="chi2_stk.chi2_stk.compute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code></a>(obs, syn, weights, num_of_nodes)</p></td>
+<td><p>Compute the $chi^2$ of all pixels in all Stokes Parameter and also the total $chi^2$ The computation is based on (Borrero et al, 2021) with the equation $$chi^2 = frac{1}{Lambda - F} sum_i^Lambda (I^{obs}_i - I^{syn}_i)^2 cdot omega^2$$ with $omega = frac{w}{sigma}$ with the used weight $w$ and the noise $sigma$.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#chi2_stk.chi2_stk.read" title="chi2_stk.chi2_stk.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
+<td><p>Read a binary fortran file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#chi2_stk.chi2_stk.write" title="chi2_stk.chi2_stk.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
+<td><p>Write the data to a binary file</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="chi2_stk.chi2_stk.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">syn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_nodes</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk.compute" title="Link to this definition">#</a></dt>
+<dd><p>Compute the <span class="math notranslate nohighlight">\(\chi^2\)</span> of all pixels in all Stokes Parameter and also the total <span class="math notranslate nohighlight">\(\chi^2\)</span>
+The computation is based on (Borrero et al, 2021) with the equation
+<div class="math notranslate nohighlight">
+\[\chi^2 = \frac{1}{\Lambda - F} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2\]</div>
+
+with <span class="math notranslate nohighlight">\(\omega = \frac{w}{\sigma}\)</span> with the used weight <span class="math notranslate nohighlight">\(w\)</span> and the noise <span class="math notranslate nohighlight">\(\sigma\)</span>. In case, there are
+more spectra considered, <span class="math notranslate nohighlight">\(\Lambda\)</span> may be multiplied with the number of pixels and number of used Stokes Parameter.
+Obviously, also more summations must be considered.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chi2_stk.chi2_stk.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk.read" title="Link to this definition">#</a></dt>
+<dd><p>Read a binary fortran file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<em>str</em>) – Name of the binary file</p></li>
+<li><p><strong>fmt_type</strong> (<em>type</em>) – Type of the fortran file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chi2_stk.chi2_stk.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk.write" title="Link to this definition">#</a></dt>
+<dd><p>Write the data to a binary file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<em>str</em>) – File name</p></li>
+<li><p><strong>fmt_type</strong> (<em>type</em>) – Type of the fortran file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="model_atm.model_atm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">model_atm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm" title="Link to this definition">#</a></dt>
+<dd><p>Class containing the models</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -410,44 +477,44 @@ document.write(`
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.Model.correct_phi" title="model_atm.Model.correct_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correct_phi</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.correct_phi" title="model_atm.model_atm.correct_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correct_phi</span></code></a>()</p></td>
 <td><p>SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation those values should be corrected so that I have values from 0 to 360 degrees.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.Model.cut_to_map" title="model_atm.Model.cut_to_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_map</span></code></a>(Map)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.cut_to_map" title="model_atm.model_atm.cut_to_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_map</span></code></a>(Map)</p></td>
 <td><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.Model.get_attribute" title="model_atm.Model.get_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attribute</span></code></a>(string)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.get_attribute" title="model_atm.model_atm.get_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attribute</span></code></a>(string)</p></td>
 <td><p>Returns a specific physical parameter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.Model.interp" title="model_atm.Model.interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interp</span></code></a>(new_tau)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.interp" title="model_atm.model_atm.interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interp</span></code></a>(new_tau)</p></td>
 <td><p>Interpolate the model to a new log tau scale.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.Model.read" title="model_atm.Model.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.read" title="model_atm.model_atm.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Reads a binary model file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.Model.read_mod" title="model_atm.Model.read_mod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_mod</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.read_mod" title="model_atm.model_atm.read_mod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_mod</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Reads a model file from SIR and assigns the value to the class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.Model.read_results" title="model_atm.Model.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.read_results" title="model_atm.model_atm.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
 <td><p>Reads all the errors from the inversion</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.Model.set_dim" title="model_atm.Model.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nval)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.set_dim" title="model_atm.model_atm.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nval)</p></td>
 <td><p>Sets the dimensions if no data is loaded yet</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.Model.set_limit" title="model_atm.Model.set_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_limit</span></code></a>(lim)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.set_limit" title="model_atm.model_atm.set_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_limit</span></code></a>(lim)</p></td>
 <td><p>Cuts the arrays to a specific log tau value (should only be used for plotting).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.Model.write" title="model_atm.Model.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.write" title="model_atm.model_atm.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Write data into a binary fortran file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.Model.write_model" title="model_atm.Model.write_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_model</span></code></a>(filename, x, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.write_model" title="model_atm.model_atm.write_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_model</span></code></a>(filename, x, y)</p></td>
 <td><p>Write a model with the given data in a specific format.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.correct_phi">
-<span class="sig-name descname"><span class="pre">correct_phi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.correct_phi" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.correct_phi">
+<span class="sig-name descname"><span class="pre">correct_phi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.correct_phi" title="Link to this definition">#</a></dt>
 <dd><p>SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation
 those values should be corrected so that I have values from 0 to 360 degrees.</p>
 <dl class="field-list simple">
@@ -461,8 +528,8 @@ those values should be corrected so that I have values from 0 to 360 degrees.</p
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.cut_to_map">
-<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.cut_to_map" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.cut_to_map">
+<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.cut_to_map" title="Link to this definition">#</a></dt>
 <dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -475,8 +542,8 @@ those values should be corrected so that I have values from 0 to 360 degrees.</p
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.get_attribute">
-<span class="sig-name descname"><span class="pre">get_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.get_attribute" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.get_attribute">
+<span class="sig-name descname"><span class="pre">get_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.get_attribute" title="Link to this definition">#</a></dt>
 <dd><p>Returns a specific physical parameter. This can be used if ones only wants a specific
 parameter depending on a string/input.</p>
 <dl class="field-list simple">
@@ -494,8 +561,8 @@ Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.interp">
-<span class="sig-name descname"><span class="pre">interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_tau</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.interp" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.interp">
+<span class="sig-name descname"><span class="pre">interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_tau</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.interp" title="Link to this definition">#</a></dt>
 <dd><p>Interpolate the model to a new log tau scale.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -508,8 +575,8 @@ Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.read" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.read" title="Link to this definition">#</a></dt>
 <dd><p>Reads a binary model file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -525,8 +592,8 @@ Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.read_mod">
-<span class="sig-name descname"><span class="pre">read_mod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.read_mod" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.read_mod">
+<span class="sig-name descname"><span class="pre">read_mod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.read_mod" title="Link to this definition">#</a></dt>
 <dd><p>Reads a model file from SIR and assigns the value to the class.
 This class will then create the class with nx = ny = 1.</p>
 <dl class="field-list simple">
@@ -540,8 +607,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.read_results">
-<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.read_results" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.read_results">
+<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.read_results" title="Link to this definition">#</a></dt>
 <dd><p>Reads all the errors from the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -560,8 +627,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.set_dim">
-<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.set_dim" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.set_dim">
+<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.set_dim" title="Link to this definition">#</a></dt>
 <dd><p>Sets the dimensions if no data is loaded yet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -578,8 +645,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.set_limit">
-<span class="sig-name descname"><span class="pre">set_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lim</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.set_limit" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.set_limit">
+<span class="sig-name descname"><span class="pre">set_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lim</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.set_limit" title="Link to this definition">#</a></dt>
 <dd><p>Cuts the arrays to a specific log tau value (should only be used for plotting).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -592,8 +659,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.write" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float64'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.write" title="Link to this definition">#</a></dt>
 <dd><p>Write data into a binary fortran file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -609,8 +676,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="model_atm.Model.write_model">
-<span class="sig-name descname"><span class="pre">write_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.Model.write_model" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="model_atm.model_atm.write_model">
+<span class="sig-name descname"><span class="pre">write_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.write_model" title="Link to this definition">#</a></dt>
 <dd><p>Write a model with the given data in a specific format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -629,18 +696,18 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="profile_stk.Profile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">Profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile" title="Link to this definition">#</a></dt>
-<dd><p>Class containing the models of a simulation</p>
+<dt class="sig sig-object py" id="profile_stk.profile_stk">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">profile_stk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk" title="Link to this definition">#</a></dt>
+<dd><p>Class containing the Stokes Profiles</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wave</strong> (<em>nump.array</em>) – Wavelength</p></li>
 <li><p><strong>indx</strong> (<em>numpy array</em>) – Index or line numbers in mode ‘MC’</p></li>
-<li><p><strong>stki</strong> (<em>mxn numpy.array</em>) – Stokes Parameter I</p></li>
-<li><p><strong>stkq</strong> (<em>mxn numpy.array</em>) – Stokes Parameter Q</p></li>
-<li><p><strong>stku</strong> (<em>mxn numpy.array</em>) – Stokes Parameter U</p></li>
-<li><p><strong>stkv</strong> (<em>mxn numpy.array</em>) – Stokes Parameter V</p></li>
+<li><p><strong>stki</strong> (<em>numpy.ndarray</em>) – Stokes Parameter I</p></li>
+<li><p><strong>stkq</strong> (<em>numpy.ndarray</em>) – Stokes Parameter Q</p></li>
+<li><p><strong>stku</strong> (<em>numpy.ndarray</em>) – Stokes Parameter U</p></li>
+<li><p><strong>stkv</strong> (<em>numpy.ndarray</em>) – Stokes Parameter V</p></li>
 <li><p><strong>nx</strong> (<em>int</em>) – Dimension in x</p></li>
 <li><p><strong>ny</strong> (<em>int</em>) – Dimension in y</p></li>
 <li><p><strong>ns</strong> (<em>int</em>) – Number of Stokes Parameter</p></li>
@@ -653,41 +720,41 @@ This class will then create the class with nx = ny = 1.</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.cut_to_map" title="profile_stk.Profile.cut_to_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_map</span></code></a>(Map)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.cut_to_map" title="profile_stk.profile_stk.cut_to_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_map</span></code></a>(Map)</p></td>
 <td><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.cut_to_wave" title="profile_stk.Profile.cut_to_wave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_wave</span></code></a>(range_wave)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.cut_to_wave" title="profile_stk.profile_stk.cut_to_wave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_wave</span></code></a>(range_wave)</p></td>
 <td><p>Cut the data to the range in wavelengths</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.read" title="profile_stk.Profile.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read" title="profile_stk.profile_stk.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Reads a binary profile file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.read_results" title="profile_stk.Profile.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results" title="profile_stk.profile_stk.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
 <td><p>Reads all the errors from the inversion</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.read_results_MC" title="profile_stk.Profile.read_results_MC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results_MC</span></code></a>(path, tasks, filename)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results_MC" title="profile_stk.profile_stk.read_results_MC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results_MC</span></code></a>(path, tasks, filename)</p></td>
 <td><p>Reads all the profiles for the simulation where indx is the line number</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.set_dim" title="profile_stk.Profile.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nw)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.set_dim" title="profile_stk.profile_stk.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nw)</p></td>
 <td><p>Sets the dimensions if no data is loaded yet</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.veil_correction" title="profile_stk.Profile.veil_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">veil_correction</span></code></a>(nu[, Ic])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.veil_correction" title="profile_stk.profile_stk.veil_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">veil_correction</span></code></a>(nu[, Ic])</p></td>
 <td><p>Correct the spectrum for the spectral veil by simly inverting the convoluted equation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.write" title="profile_stk.Profile.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write" title="profile_stk.profile_stk.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Write data into a binary fortran file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.Profile.write_profile" title="profile_stk.Profile.write_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile</span></code></a>(filename, x, y, Grid)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile" title="profile_stk.profile_stk.write_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile</span></code></a>(filename, x, y, Grid)</p></td>
 <td><p>Writes data to profiles as described in the config file Note to call cut_to_wave, otherwise it writes the wrong profiles!</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.Profile.write_profile_mc" title="profile_stk.Profile.write_profile_mc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile_mc</span></code></a>(filename, x)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile_mc" title="profile_stk.profile_stk.write_profile_mc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile_mc</span></code></a>(filename, x)</p></td>
 <td><p>Writes data to SIR profiles as described in the config file</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.cut_to_map">
-<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.cut_to_map" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.cut_to_map">
+<span class="sig-name descname"><span class="pre">cut_to_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Map</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.cut_to_map" title="Link to this definition">#</a></dt>
 <dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -697,8 +764,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.cut_to_wave">
-<span class="sig-name descname"><span class="pre">cut_to_wave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">range_wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.cut_to_wave" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.cut_to_wave">
+<span class="sig-name descname"><span class="pre">cut_to_wave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">range_wave</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.cut_to_wave" title="Link to this definition">#</a></dt>
 <dd><p>Cut the data to the range in wavelengths</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -708,8 +775,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.read" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.read" title="Link to this definition">#</a></dt>
 <dd><p>Reads a binary profile file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -725,8 +792,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.read_results">
-<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.read_results" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.read_results">
+<span class="sig-name descname"><span class="pre">read_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.read_results" title="Link to this definition">#</a></dt>
 <dd><p>Reads all the errors from the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -745,8 +812,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.read_results_MC">
-<span class="sig-name descname"><span class="pre">read_results_MC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.read_results_MC" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.read_results_MC">
+<span class="sig-name descname"><span class="pre">read_results_MC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tasks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.read_results_MC" title="Link to this definition">#</a></dt>
 <dd><p>Reads all the profiles for the simulation where indx is the line number</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -763,8 +830,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.set_dim">
-<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.set_dim" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.set_dim">
+<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.set_dim" title="Link to this definition">#</a></dt>
 <dd><p>Sets the dimensions if no data is loaded yet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -781,8 +848,8 @@ This class will then create the class with nx = ny = 1.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.veil_correction">
-<span class="sig-name descname"><span class="pre">veil_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.veil_correction" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.veil_correction">
+<span class="sig-name descname"><span class="pre">veil_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.veil_correction" title="Link to this definition">#</a></dt>
 <dd><p>Correct the spectrum for the spectral veil by simly inverting
 the convoluted equation.</p>
 <dl class="field-list simple">
@@ -799,8 +866,8 @@ the convoluted equation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.write" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.write" title="Link to this definition">#</a></dt>
 <dd><p>Write data into a binary fortran file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -816,8 +883,8 @@ the convoluted equation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.write_profile">
-<span class="sig-name descname"><span class="pre">write_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Grid</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.write_profile" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.write_profile">
+<span class="sig-name descname"><span class="pre">write_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Grid</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.write_profile" title="Link to this definition">#</a></dt>
 <dd><p>Writes data to profiles as described in the config file
 Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <dl class="field-list simple">
@@ -836,8 +903,8 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="profile_stk.Profile.write_profile_mc">
-<span class="sig-name descname"><span class="pre">write_profile_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.Profile.write_profile_mc" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="profile_stk.profile_stk.write_profile_mc">
+<span class="sig-name descname"><span class="pre">write_profile_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.write_profile_mc" title="Link to this definition">#</a></dt>
 <dd><p>Writes data to SIR profiles as described in the config file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -868,24 +935,6 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="sir.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">1.5.1. </span>sir</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="preprocess.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Preprocessing</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -904,31 +953,37 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.correct_phi"><code class="docutils literal notranslate"><span class="pre">Model.correct_phi()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Model.cut_to_map()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.get_attribute"><code class="docutils literal notranslate"><span class="pre">Model.get_attribute()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.interp"><code class="docutils literal notranslate"><span class="pre">Model.interp()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.read"><code class="docutils literal notranslate"><span class="pre">Model.read()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.read_mod"><code class="docutils literal notranslate"><span class="pre">Model.read_mod()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.read_results"><code class="docutils literal notranslate"><span class="pre">Model.read_results()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.set_dim"><code class="docutils literal notranslate"><span class="pre">Model.set_dim()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.set_limit"><code class="docutils literal notranslate"><span class="pre">Model.set_limit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.write"><code class="docutils literal notranslate"><span class="pre">Model.write()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.Model.write_model"><code class="docutils literal notranslate"><span class="pre">Model.write_model()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi2_stk.chi2_stk"><code class="docutils literal notranslate"><span class="pre">chi2_stk</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chi2_stk.chi2_stk.compute"><code class="docutils literal notranslate"><span class="pre">chi2_stk.compute()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chi2_stk.chi2_stk.read"><code class="docutils literal notranslate"><span class="pre">chi2_stk.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#chi2_stk.chi2_stk.write"><code class="docutils literal notranslate"><span class="pre">chi2_stk.write()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile"><code class="docutils literal notranslate"><span class="pre">Profile</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.cut_to_map"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_map()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.cut_to_wave"><code class="docutils literal notranslate"><span class="pre">Profile.cut_to_wave()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read"><code class="docutils literal notranslate"><span class="pre">Profile.read()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read_results"><code class="docutils literal notranslate"><span class="pre">Profile.read_results()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.read_results_MC"><code class="docutils literal notranslate"><span class="pre">Profile.read_results_MC()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.set_dim"><code class="docutils literal notranslate"><span class="pre">Profile.set_dim()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.veil_correction"><code class="docutils literal notranslate"><span class="pre">Profile.veil_correction()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.write"><code class="docutils literal notranslate"><span class="pre">Profile.write()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.write_profile"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.Profile.write_profile_mc"><code class="docutils literal notranslate"><span class="pre">Profile.write_profile_mc()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm"><code class="docutils literal notranslate"><span class="pre">model_atm</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.correct_phi"><code class="docutils literal notranslate"><span class="pre">model_atm.correct_phi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.cut_to_map"><code class="docutils literal notranslate"><span class="pre">model_atm.cut_to_map()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.get_attribute"><code class="docutils literal notranslate"><span class="pre">model_atm.get_attribute()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.interp"><code class="docutils literal notranslate"><span class="pre">model_atm.interp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.read"><code class="docutils literal notranslate"><span class="pre">model_atm.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.read_mod"><code class="docutils literal notranslate"><span class="pre">model_atm.read_mod()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.read_results"><code class="docutils literal notranslate"><span class="pre">model_atm.read_results()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.set_dim"><code class="docutils literal notranslate"><span class="pre">model_atm.set_dim()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.set_limit"><code class="docutils literal notranslate"><span class="pre">model_atm.set_limit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.write"><code class="docutils literal notranslate"><span class="pre">model_atm.write()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.write_model"><code class="docutils literal notranslate"><span class="pre">model_atm.write_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk"><code class="docutils literal notranslate"><span class="pre">profile_stk</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.cut_to_map"><code class="docutils literal notranslate"><span class="pre">profile_stk.cut_to_map()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.cut_to_wave"><code class="docutils literal notranslate"><span class="pre">profile_stk.cut_to_wave()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read"><code class="docutils literal notranslate"><span class="pre">profile_stk.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_results"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_results()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_results_MC"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_results_MC()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.set_dim"><code class="docutils literal notranslate"><span class="pre">profile_stk.set_dim()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.veil_correction"><code class="docutils literal notranslate"><span class="pre">profile_stk.veil_correction()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.write"><code class="docutils literal notranslate"><span class="pre">profile_stk.write()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.write_profile"><code class="docutils literal notranslate"><span class="pre">profile_stk.write_profile()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.write_profile_mc"><code class="docutils literal notranslate"><span class="pre">profile_stk.write_profile_mc()</span></code></a></li>
 </ul>
 </li>
 </ul>

@@ -1,3 +1,7 @@
+.. image:: pictures/sir-mig.png
+   :alt: Icon of SIR-MIG
+   :scale: 50%
+
 
 SIR-MIG Documentation
 =====================
@@ -28,20 +32,42 @@ There are three different modes selectable:
 
 It is also possible to use it without random guesses.
 
-Check out the :doc:`doc` section for further infromations.
 
-Check out the :doc:`code` section for further infromations about the code.
+Configuration
+-------------
 
-Check out the :doc:`usage` section for further information how to use and install the program.
+The code is always executed with a configuration file which is different for each mode. The options can be read here :doc:`here<config>`
 
-Check out the :doc:`functions` section for a list of functions.
+Monte-Carlo Simulation
+----------------------
 
-Check out the :doc:`preprocess` module for a description of functions which are used to preprocess data.
+The simulation is constructed the following way:
 
-Check out the :doc:`classes` section for a list of classes which are used to read and write the Stokes profiles and the models.
+.. image:: pictures/mc.png
+   :alt: Monte-Carlo-Simulation-Structure
+   :scale: 50%
 
-Check out the :doc:`plots` section for a list of functions to plot the results.
+This can be done for as many numbers as needed. The code will do the following
+     1. Create Models as described in the section //Constructing Models//.
+     2. Synthesise the models to produce Stokes Profiles.
+     3. Add Noise to the profiles.
+     4. Invert the noisy profiles to get an Inversion Model.
 
+Constructing Models
+-------------------
+Information about how the models are constructed can be found here:
+
+- Creating Temperature Atmospheres: :doc:`temperature`
+
+- Randomise Parameters: :doc:`Randomising Parameters<randomising>`
+
+Adding Noise
+------------
+
+Noise is added by assuming a normal distribution with a given width $\sigma$ for each Stokes Parameter.
+
+Inversion
+---------
 
 .. note::
 
@@ -52,7 +78,8 @@ Contents
 .. toctree::
   :maxdepth: 1
 
-  doc
-  code
+  usage
+  config
+  randomising
+  temperature
   api
-   

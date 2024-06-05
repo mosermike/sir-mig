@@ -95,7 +95,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 	header = np.genfromtxt(model,max_rows=1)
 	File_T = File.transpose()
 
-	mod = m.Model(nx = 1, ny = 1, nval=len(File_T[0]))
+	mod = m.model_atm(nx = 1, ny = 1, nval=len(File_T[0]))
 
 	#############################
 	# SAVE DATA FROM BASE MODEL #

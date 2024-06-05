@@ -11,15 +11,20 @@ import shutil
 import numpy as np
 import time
 import sys
-import sir
+from tqdm import tqdm
 import glob
-import model_atm as m
-import profile_stk as p
-import create_random_guess as g
 from os.path import exists
 import datetime
+
+import chi2_stk as c
+import create_random_guess as g
 import definitions as d
-from tqdm import tqdm
+import model_atm as m
+import profile_stk as p
+import sir
+
+
+
 
 # ***************************************************************************
 #									SCATTER									*
@@ -123,7 +128,7 @@ def scatter_data(conf, comm, rank, size):
 	waves = comm.bcast(waves, root=0)
 
 	# Put the data together
-	stk = p.Profile(stki_chunk.shape[0],1,nw=stki_chunk.shape[1])
+	stk = p.profile_stk(stki_chunk.shape[0],1,nw=stki_chunk.shape[1])
 	stk.data_cut = True # Already cut before
 	stk.stki[:,0,:] = stki_chunk
 	stk.stkq[:,0,:] = stkq_chunk
@@ -177,9 +182,9 @@ def scatter_data_mc(conf, comm, rank, size):
 			if rank == 0:
 				print("-------> No noise flag used")
 				print("-------> Use synthesis profiles")
-			stk = p.read_profile(os.path.join(path,conf["syn_out"] + d.end_models))
+			stk = p.read_profile(os.path.join(path,conf["syn_out"] + d.end_stokes))
 		else:
-			stk = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_models))
+			stk = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_stokes))
 
 		tasks = sir.create_task_folder_list(conf["num"])
 
@@ -244,7 +249,7 @@ def scatter_data_mc(conf, comm, rank, size):
 	waves = comm.bcast(waves, root=0)
 
 	# Put the data together
-	stk = p.Profile(stki_chunk.shape[0],stki_chunk.shape[1],stki_chunk.shape[2])
+	stk = p.profile_stk(stki_chunk.shape[0],stki_chunk.shape[1],stki_chunk.shape[2])
 	stk.data_cut = True # Already cut before
 	stk.indx = lines
 	stk.stki[:,:] = stki_chunk
@@ -836,34 +841,51 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		tasks = sir.create_task_folder_list(Map) # Structure tasks
 
 		# Create shapes of the arrays which are filled and saved later
-		stokes_inv = p.Profile(0,0,0)
+		stokes_inv = p.profile_stk(0,0,0)
 		stokes_inv.wave = wave # Copy wavelength positions
-		models_inv = m.Model(0,0,0)
-		errors_inv = m.Model(0,0,0)
-		best_guesses = m.Model(0,0,0)
+		models_inv = m.model_atm(0,0,0)
+		errors_inv = m.model_atm(0,0,0)
+		best_guesses = m.model_atm(0,0,0)
+		chi2 = c.chi2_stk(0,0)
 
 		print("-------> Read Models ...")
 		models_inv.read_results(tasks, 'best.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		errors_inv.read_results(tasks, 'best.err', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses.read_results(tasks, d.best_guess, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
-		# Correct for phi ambiguity (no difference between 0 and 180 measurable)
-		#models_inv.correct_phi()
-
 		print("-------> Read Profiles ...")
 		stokes_inv.read_results(tasks, "best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
-		chi2 = np.zeros(shape=(Map[1]-Map[0]+1, Map[3]-Map[2]+1))
+		if conf['chi2'] != "":
+			print("-------> Compute and save χ²...")
+			
+			obs = p.read_profile(os.path.join(path,conf["cube_inv"]))
+			obs.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
+			obs.cut_to_map(conf["map"]) # Cut to the map
+
+			# Number of Nodes in the last step
+			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
+			
+			# Compute chi2
+			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
+			
+			del obs
+			del num_of_nodes
+
+			chi2.write(os.path.join(path, conf['chi2']))
+		
+		#chi2 = np.zeros(shape=(Map[1]-Map[0]+1, Map[3]-Map[2]+1))
+		
 
 		# Collect data from task folders and delete the folder
 		for i in range(len(tasks['x'])):
 			# Get folder name and x,y positions
 			folder = tasks['folders'][i]
-			x = tasks['x'][i]
-			y = tasks['y'][i]
+			#x = tasks['x'][i]
+			#y = tasks['y'][i]
 			
 			# Read chi2 file
-			chi2[x-Map[0], y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
+			#chi2[x-Map[0], y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
 
 			# Remove folder
 			shutil.rmtree(folder)
@@ -935,7 +957,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	# Write the control file with the information from the config file
 	if rank == 0:
 		print(f"-------> Write control file")
-		sir.write_control_mc(os.path.join(conf['path'], d.inv_trol_file), conf)
+		sir._write_control_mc(os.path.join(conf['path'], d.inv_trol_file), conf, "inv")
 	abundance_file = conf['abundance']  # Abundance file
 	
 
@@ -1068,14 +1090,14 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		
 		# Read the profiles and models
 		print("-------> Read Profiles ...")
-		stokes = p.Profile(0,0,0)
+		stokes = p.profile_stk(0,0,0)
 		stokes.read_results_MC(path, tasks, "best.per")
 		stokes.write(f"{os.path.join(path,conf['inv_out'])}{d.end_stokes}")
 
 		print("-------> Read Models ...")
-		models = m.Model(conf["num"],1,0)	# Model
-		errors = m.Model(conf["num"],1,0)	# Error
-		guess  = m.Model(conf["num"],1,0)   # Best guess model
+		models = m.model_atm(conf["num"],1,0)	# Model
+		errors = m.model_atm(conf["num"],1,0)	# Error
+		guess  = m.model_atm(conf["num"],1,0)   # Best guess model
 		
 		models.read_results(tasks, "best.mod", path, int(conf['num']), 1)
 		errors.read_results(tasks, "best.err", path, int(conf['num']), 1)
@@ -1086,8 +1108,29 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		errors.write(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
 		guess.write(f"{os.path.join(path,d.best_guess_file)}")
 
-		chi2 = sir.read_chi2s(conf, tasks)
-		np.save(f"{conf['chi2']}", chi2)
+
+		if conf['chi2'] != "":
+			print("-------> Compute and save χ²...")
+			chi2 = c.chi2_stk(0,0)
+
+			if "--no-noise" in sys.argv:
+				obs = p.read_profile(os.path.join(path,conf["syn_out"] + d.end_stokes))
+			else:
+				obs = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_stokes))
+
+			# Number of Nodes in the last step
+			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
+			
+			# Compute chi2
+			chi2.compute(obs, stokes, [float(i) for i in conf["weights"]], num_of_nodes)
+			
+			del obs
+			del num_of_nodes
+
+			chi2.write(os.path.join(path, conf['chi2']))
+
+		#chi2 = sir.read_chi2s(conf, tasks)
+		#np.save(f"{conf['chi2']}", chi2)
 
 		for i in range(conf['num']):
 			shutil.rmtree(os.path.join(path,tasks['folders'][i]))
@@ -1302,16 +1345,16 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		# 	Perform inversion		#
 		###############################
 		# Create random guesses and select best value and perform inversion
-		chi2_best = execute_inversion_2c(conf, task_folder, rank)
+		execute_inversion_2c(conf, task_folder, rank)
 		
 		##############################################
 		#	Check chi2 and print out informations	#
 		##############################################
 		# If chi2 is not small, print out model number and do not delete the files
-		if d.chi2_verbose:
-			if chi2_best > d.chi2_lim or chi2_best < 1e-2:
-				chi2s = np.append(chi2s,chi2_best)
-				chi2s_num = np.append(chi2s_num,f"{x}_{y}")
+		#if d.chi2_verbose:
+		#	if chi2_best > d.chi2_lim or chi2_best < 1e-2:
+		#		chi2s = np.append(chi2s,chi2_best)
+		#		chi2s_num = np.append(chi2s_num,f"{x}_{y}")
 		performed_models += 1
 	
 		# Do not do allreduce for the last step as the code does not move on from here
@@ -1347,7 +1390,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
 
 		print("-------> Read Profiles ...")
-		stokes_inv = p.Profile(stk.nx, stk.ny, stk.nw)
+		stokes_inv = p.profile_stk(stk.nx, stk.ny, stk.nw)
 
 		stokes_inv.wave = stk.wave # Copy wavelength positions
 		stokes_inv.read_results(tasks, f"best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
@@ -1357,12 +1400,12 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		del stokes_inv
 
 		print("-------> Read Models ...")
-		models_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
-		models_inv2		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
-		errors_inv1		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
-		errors_inv2		= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
-		best_guesses1	= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
-		best_guesses2	= m.Model(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		models_inv1		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		models_inv2		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		errors_inv1		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		errors_inv2		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		best_guesses1	= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+		best_guesses2	= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		chi2			= np.zeros(shape=(Map[1]-Map[0]+1,Map[3]-Map[2]+1))
 
 
@@ -1381,6 +1424,26 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		best_guesses1.write(os.path.join(path, d.best_guess1_file))
 		best_guesses2.write(os.path.join(path,d.best_guess2_file))
 
+
+		if conf['chi2'] != "":
+			print("-------> Compute and save χ²...")
+			chi2 = c.chi2_stk(0,0)
+
+			obs = p.read_profile(os.path.join(path,conf["cube_inv"]))
+			obs.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
+			obs.cut_to_map(conf["map"]) # Cut to the map
+
+			# Number of Nodes in the last step
+			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
+			
+			# Compute chi2
+			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
+			
+			del obs
+			del num_of_nodes
+
+			chi2.write(os.path.join(path, conf['chi2']))
+
 		# Collect data from task folders and delete the folder
 		for i in range(len(tasks['x'])):
 			# Get folder name and x,y positions
@@ -1389,7 +1452,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			y = tasks['y'][i]
 			
 			# Read chi2 file
-			chi2[x-Map[0],y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
+			#chi2[x-Map[0],y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
 
 			# Remove folder
 			shutil.rmtree(folder)

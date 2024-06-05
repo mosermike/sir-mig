@@ -9,4 +9,8 @@ API
    model_atm
    profile_stk
    preprocess
-   visualizer
+   plots.analysis
+   plots.Ic_test
+   plots.result
+   plots.visualizer
+   simulation
