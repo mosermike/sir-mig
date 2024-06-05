@@ -532,9 +532,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
 		if (I2.shape[1] - I2.shape[0]) >= -100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-										layout="compressed",
-									)
 			import matplotlib as mpl
 			f = 1.8
 			mpl.rcParams["xtick.labelsize"] = 18*f
@@ -544,6 +541,11 @@ def result_1C(conf, wave, tau, waveV = -1):
 			mpl.rcParams["axes.titlesize"] = 18*f
 			mpl.rcParams["axes.labelsize"] = 20*f
 			mpl.rcParams["figure.titlesize"] = 24*f
+
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
+													layout="compressed",
+													)
+			
 		else:
 			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 										layout="compressed",
@@ -561,15 +563,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	#	Set labels	#
 	#####################
 	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
-	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c $')
-	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c $')
-	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c $')
-	if waveQ != wave:
-		ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
-	if waveU != wave:
-		ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")
-	if waveV != -1:
-		ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")	
+	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
+	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")
+	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")	
 
 
 	############
@@ -588,10 +584,14 @@ def result_1C(conf, wave, tau, waveV = -1):
 	#	Set labels	#
 	#####################
 	if "-vertical" not in sys.argv:
+		ax1.set_xlabel(f"x [{units}]")
+		ax2.set_xlabel(f"x [{units}]")
 		ax3.set_xlabel(f"x [{units}]")
 	ax4.set_xlabel(f"x [{units}]")
 	ax1.set_ylabel(f"y [{units}]")
+	ax2.set_ylabel(f"y [{units}]")
 	ax3.set_ylabel(f"y [{units}]")
+	ax4.set_ylabel(f"y [{units}]")
 
 	##################################################################
 	# Set title											#
@@ -607,8 +607,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
 		if title2 != '':
 			fig.suptitle(title2, y=1.02, x=xtitle1)
-		else:
-			fig.suptitle(r"Observations", y=1.02, x=xtitle1)
 
 	#########################
 	# Set Legend and Limits #
@@ -646,37 +644,31 @@ def result_1C(conf, wave, tau, waveV = -1):
 	#	Set labels	#
 	#####################
 	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
-	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c $')
-	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c $')
-	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c $')
-	if waveQ != wave:
-		ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
-	if waveU != wave:
-		ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")		
-	if waveV != -1:
-		ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")		
+	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
+	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")		
+	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")		
 
 
 	############
 	# Colorbar #
 	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
 	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
 	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
 	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
-	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
 	############
 
 	#####################
 	#	Set labels	#
 	#####################
 	if "-vertical" not in sys.argv:
+		ax1.set_xlabel(f"x [{units}]")
+		ax2.set_xlabel(f"x [{units}]")
 		ax3.set_xlabel(f"x [{units}]")
 	ax4.set_xlabel(f"x [{units}]")
 	ax1.set_ylabel(f"y [{units}]")
+	ax2.set_ylabel(f"y [{units}]")
 	ax3.set_ylabel(f"y [{units}]")
+	ax4.set_ylabel(f"y [{units}]")
 
 	##################################################################
 	# Set title											#
@@ -692,8 +684,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
 		if title1 != '':
 			fig.suptitle(title1, y=1.02, x=xtitle1)
-		#else:
-		#	fig.suptitle(r"Inversion Results", y=1.02, x=xtitle1)
 
 	plt.savefig(savepath + "stokes" + add)
 
@@ -1273,6 +1263,15 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			fig.subplots_adjust(hspace=0, wspace=0)
 		else:
 			if (I2.shape[1] - I2.shape[0]) >= -100:
+				import matplotlib as mpl
+				f = 1.8
+				mpl.rcParams["xtick.labelsize"] = 18*f
+				mpl.rcParams["ytick.labelsize"] = 18*f
+				mpl.rcParams["legend.fontsize"] = 16*f
+				mpl.rcParams["legend.title_fontsize"] = 16*f
+				mpl.rcParams["axes.titlesize"] = 18*f
+				mpl.rcParams["axes.labelsize"] = 20*f
+				mpl.rcParams["figure.titlesize"] = 24*f
 				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 										layout="compressed",
 									)
@@ -1295,17 +1294,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		#	Set labels	#
 		#####################
 		ax1.set_title(r'$I / I_c $ @' + "%.3f" % wave + r" \AA")
-		ax2.set_title(r'$Q / I_c $')
-		ax3.set_title(r'$U / I_c $')
-		ax4.set_title(r'$V / I_c $')
-
-		
-		if waveQ != wave:
-			ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")	
-		if waveU != wave:
-			ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")	
-		if waveV != wave:
-			ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")	
+		ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")	
+		ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")	
+		ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")	
 
 
 		############
@@ -1324,10 +1315,14 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		#	Set labels	#
 		#####################
 		if "-vertical" not in sys.argv:
+			ax1.set_xlabel(f"x [{units}]")
+			ax2.set_xlabel(f"x [{units}]")
 			ax3.set_xlabel(f"x [{units}]")
 		ax4.set_xlabel(f"x [{units}]")
 		ax1.set_ylabel(f"y [{units}]")
+		ax2.set_ylabel(f"y [{units}]")
 		ax3.set_ylabel(f"y [{units}]")
+		ax4.set_ylabel(f"y [{units}]")
 
 		##################################################################
 		# Set title											#
@@ -1341,8 +1336,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				xtitle1 = 0.5
 			if title2 != '':
 				fig.suptitle(title2, y=1.02, x=xtitle1)
-			else:
-				fig.suptitle(r"Observation Stokes Vector", y=1.02, x=xtitle1)
 
 
 		plt.savefig(savepath + "stokes_obs" + add)
@@ -1377,15 +1370,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		#	Set labels	#
 		#####################
 		ax1.set_title(r'$I / I_c $ @' + "%.3f" % wave + r" \AA")
-		ax2.set_title(r'$Q / I_c $')
-		ax3.set_title(r'$U / I_c $')
-		ax4.set_title(r'$V / I_c $')
-		if waveQ != wave:
-			ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")
-		if waveU != wave:
-			ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")
-		if waveV != wave:
-			ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")
+		ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")
+		ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")
+		ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")
 
 
 		############
@@ -1404,10 +1391,14 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		#	Set labels	#
 		#####################
 		if "-vertical" not in sys.argv:
+			ax1.set_xlabel(f"x [{units}]")
+			ax2.set_xlabel(f"x [{units}]")
 			ax3.set_xlabel(f"x [{units}]")
 		ax4.set_xlabel(f"x [{units}]")
 		ax1.set_ylabel(f"y [{units}]")
+		ax2.set_ylabel(f"y [{units}]")
 		ax3.set_ylabel(f"y [{units}]")
+		ax4.set_ylabel(f"y [{units}]")
 
 		##################################################################
 		# Set title											#
@@ -1421,8 +1412,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				xtitle1 = 0.5
 			if title1 != '':
 				fig.suptitle(title1, y=1.02, x=xtitle1)
-			else:
-				fig.suptitle(r"Inversion Results", y=1.02, x=xtitle1)
 
 		plt.savefig(savepath + "stokes" + add)
 
@@ -1574,8 +1563,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				xtitle1 = 0.55
 			if title3 != '':
 				fig.suptitle(title3, y=1.02, x=xtitle1)
-			else:
-				fig.suptitle(f"Inversion Results for Model {Type[1]}", y=1.02, x=xtitle1)
+			#else:
+			#	fig.suptitle(f"Inversion Results for Model {Type[1]}", y=1.02, x=xtitle1)
 	else:
 		if title4 != "-1":
 			if "-vertical" in sys.argv:
@@ -1584,8 +1573,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				xtitle1 = 0.5
 			if title4 != '':
 				fig.suptitle(title4, y=1.02, x=xtitle1)
-			else:
-				fig.suptitle(f"Inversion Results for Model {Type[1]}", y=1.02, x=xtitle1)
+			#else:
+			#	fig.suptitle(f"Inversion Results for Model {Type[1]}", y=1.02, x=xtitle1)
 
 	plt.savefig(savepath + "inversion" + Type + add)
 
