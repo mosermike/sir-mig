@@ -392,17 +392,17 @@ def result_1C(conf, wave, tau, waveV = -1):
 	indI = np.argmin(abs(models_inv.tau - logI))
 
 	# Cut models to the specific log tau value
-	models_inv.nval = ind
-	models_inv.T = models_inv.T[:,:,:indT]
-	models_inv.Pe = models_inv.Pe[:,:,:ind]
-	models_inv.vmicro = models_inv.vmicro[:,:,:ind]
-	models_inv.B = models_inv.B[:,:,:indB]
-	models_inv.vlos = models_inv.vlos[:,:,:indV]
-	models_inv.gamma = models_inv.gamma[:,:,:indI]
-	models_inv.phi = models_inv.phi[:,:,:ind]
-	models_inv.z = models_inv.z[:,:,:ind]
-	models_inv.rho = models_inv.rho[:,:,:ind]
-	models_inv.Pg = models_inv.Pg[:,:,:ind]
+	models_inv.nval = 1
+	models_inv.T = models_inv.T[:,:,indT]
+	models_inv.Pe = models_inv.Pe[:,:,ind]
+	models_inv.vmicro = models_inv.vmicro[:,:,ind]
+	models_inv.B = models_inv.B[:,:,indB]
+	models_inv.vlos = models_inv.vlos[:,:,indV]
+	models_inv.gamma = models_inv.gamma[:,:,indI]
+	models_inv.phi = models_inv.phi[:,:,ind]
+	models_inv.z = models_inv.z[:,:,ind]
+	models_inv.rho = models_inv.rho[:,:,ind]
+	models_inv.Pg = models_inv.Pg[:,:,ind]
 
 
 	taus = [tau for i in range(11)]
@@ -1139,17 +1139,17 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	indI = np.argmin(abs(models_inv.tau - logI))
 
 	# Cut models to the specific log tau value
-	models_inv.nval = ind
-	models_inv.T = models_inv.T[:,:,:indT]
-	models_inv.Pe = models_inv.Pe[:,:,:ind]
-	models_inv.vmicro = models_inv.vmicro[:,:,:ind]
-	models_inv.B = models_inv.B[:,:,:indB]
-	models_inv.vlos = models_inv.vlos[:,:,:indV]
-	models_inv.gamma = models_inv.gamma[:,:,:indI]
-	models_inv.phi = models_inv.phi[:,:,:ind]
-	models_inv.z = models_inv.z[:,:,:ind]
-	models_inv.rho = models_inv.rho[:,:,:ind]
-	models_inv.Pg = models_inv.Pg[:,:,:ind]
+	models_inv.nval = 1
+	models_inv.T = models_inv.T[:,:,indT]
+	models_inv.Pe = models_inv.Pe[:,:,ind]
+	models_inv.vmicro = models_inv.vmicro[:,:,ind]
+	models_inv.B = models_inv.B[:,:,indB]
+	models_inv.vlos = models_inv.vlos[:,:,indV]
+	models_inv.gamma = models_inv.gamma[:,:,indI]
+	models_inv.phi = models_inv.phi[:,:,ind]
+	models_inv.z = models_inv.z[:,:,ind]
+	models_inv.rho = models_inv.rho[:,:,ind]
+	models_inv.Pg = models_inv.Pg[:,:,ind]
 
 
 	taus = [tau for i in range(11)]
