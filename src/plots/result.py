@@ -771,13 +771,13 @@ def result_1C(conf, wave, tau, waveV = -1):
 		#fig.subplots_adjust(hspace=0.0)
 
 
-	im1 = ax1.imshow(models_inv.T[:,:,0].transpose(), cmap=cmap[1], origin = origin, vmin = limits[1][0], vmax = limits[1][1],extent=Map_plot)
-	im2 = ax2.imshow(models_inv.B[:,:,0].transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
-	im3 = ax3.imshow(models_inv.vlos[:,:,0].transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
+	im1 = ax1.imshow(models_inv.T.transpose(), cmap=cmap[1], origin = origin, vmin = limits[1][0], vmax = limits[1][1],extent=Map_plot)
+	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
+	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
 	if "-plot_chi2" in sys.argv:
 		im4 = ax4.imshow(chi2_inv.transpose(), cmap=cmap[11], origin = origin, vmin = limits[11][0], vmax = limits[11][1],extent=Map_plot)
 	else:
-		im4 = ax4.imshow(models_inv.gamma[:,:,0].transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
+		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
 
 	#####################
 	#	Set labels	#

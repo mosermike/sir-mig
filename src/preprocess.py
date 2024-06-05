@@ -34,12 +34,13 @@ from astropy.io import fits
 import os
 import sys
 import shutil
-import definitions as d
-import profile_stk as p
 import matplotlib.pyplot as plt
 from os.path import exists
 from astropy.convolution import convolve_fft
 from shutil import which
+import tqdm.tqdm as tqdm
+import definitions as d
+import profile_stk as p
 
 
 def merge(conf, dir, ending):
@@ -116,10 +117,7 @@ def merge(conf, dir, ending):
 	data = np.empty((nx, ny, 4, nw))  # shape 4, wavelength, y, 1
 
 	# Create data cube
-	for i in range(len(filenames)):
-		if i % 100 == 0:
-			print(i)
-
+	for i in tqdm(range(len(filenames))):
 		# Load data from one file
 		example = fits.open(filenames[i])
 
