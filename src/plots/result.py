@@ -406,11 +406,12 @@ def result_1C(conf, wave, tau, waveV = -1):
 		filename = sys.argv[sys.argv.index("-errors")+1]
 		errors_inv = m.read_model(filename)
 	
-	if "-chi" not in sys.argv and ("chi2" in sys.argv or "plot_chi2" in sys.argv):
-		chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
-	else:
-		filename = sys.argv[sys.argv.index("-chi")+1]
-		chi2 = c.read_chi2(filename)
+	if ("chi2" in sys.argv or "plot_chi2" in sys.argv):
+		if "-chi" not in sys.argv:
+			chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
+		else:
+			filename = sys.argv[sys.argv.index("-chi")+1]
+			chi2 = c.read_chi2(filename)
 
 	if "-logT" not in sys.argv:
 		logT = tau
@@ -1166,11 +1167,12 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-models2")+1].replace(".mod",".err")
 			errors_inv = m.read_model(filename)
 
-	if "-chi" not in sys.argv and ("chi2" in sys.argv or "plot_chi2" in sys.argv):
-		chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
-	else:
-		filename = sys.argv[sys.argv.index("-chi")+1]
-		chi2 = c.read_chi2(filename)
+	if ("chi2" in sys.argv or "plot_chi2" in sys.argv):
+		if "-chi" not in sys.argv:
+			chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
+		else:
+			filename = sys.argv[sys.argv.index("-chi")+1]
+			chi2 = c.read_chi2(filename)
 
 	if "-logT" not in sys.argv:
 		logT = tau
