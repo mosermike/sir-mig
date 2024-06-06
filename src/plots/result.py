@@ -385,7 +385,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 		
 
 	if "-data" not in sys.argv:
-		stokes = p.read_profile(os.path.join(conf["path"],conf['cube_inv']))
+		stokes = p.read_profile(os.path.join(conf["path"],conf['cube']))
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
 		stokes = p.read_profile(filename)
@@ -1107,7 +1107,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	Map = conf['map']
 	
 	if "-data" not in sys.argv:
-		stokes = p.read_profile(os.path.join(conf["path"],conf['cube_inv']))
+		stokes = p.read_profile(os.path.join(conf["path"],conf['cube']))
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
 		stokes = p.read_profile(filename)

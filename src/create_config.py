@@ -233,7 +233,7 @@ def _config_1C():
 		fts_file	= input ("Absolute path to fts file (if not blank => correct spectral veil): ")
 	shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
 	save_cube	= input ("Save preprocessed data? (1 = True, 0 = False): ")
-	
+
 	quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
 	cycles		= input ("Cycles: ")
 	model		= input ("Base model: ")
@@ -299,8 +299,7 @@ def _config_1C():
 	conf = {
 		"mode" : mode,
 		"path" : path,
-		#"cube" : cube,
-		"cube_inv" : cube_inv,
+		"cube" : cube_inv,
 		"map" : Map,
 		"instrument" : instrument,
 		"shift_wave" : shift_wave,
@@ -359,7 +358,6 @@ def _config_2C():
 		path = sys.argv[sys.argv.index("-path")+1]
 	else:
 		path		= input ("Path: ")
-	#cube			= input ("Location of the Data cube for preprocessing (format is nx,ny,ns,nwave) as a fits or npy file (can be left empty if no preprocessing): ")
 	cube_inv		= input ("Location of the Data cube used for the inversion (format is nx,ny,ns,nwave) in the path as a fits or npy file: ")
 	preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
 	Map			= input ("Map in pixels (format xmin,xmax,ymin,ymax, 0 => all pixels): ")
@@ -462,8 +460,7 @@ def _config_2C():
 	conf = {
 		"mode" : mode,
 		"path" : path,
-		#"cube" : cube,
-		"cube_inv" : cube_inv,
+		"cube" : cube_inv,
 		"map" : Map,
 		"instrument" : instrument,
 		"shift_wave" : shift_wave,

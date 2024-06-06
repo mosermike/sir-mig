@@ -535,7 +535,7 @@ def visualizer_1C(conf, wave):
 	Map = conf['map']
 
 	if "-data" not in sys.argv:
-		stokes = p.read_profile(os.path.join(conf["path"], conf['cube_inv']))
+		stokes = p.read_profile(os.path.join(conf["path"], conf['cube']))
 		stokes.cut_to_map(conf["map"])
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
@@ -897,7 +897,7 @@ def visualizer_2C(conf, wave):
 		wave = 0 # Print the first value in the wavelength range
 
 	if "-data" not in sys.argv:
-		stokes = p.read_profile(os.path.join(conf["path"], conf['cube_inv']))
+		stokes = p.read_profile(os.path.join(conf["path"], conf['cube']))
 		stokes.cut_to_map(conf["map"])
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]

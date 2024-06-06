@@ -18,7 +18,6 @@ end_stokes = '_stokes.bin' # Ending inversion result stokes  KEEP
 end_models = '_models.bin' # Ending inversion result models  KEEP
 end_models1 = '_models_1.bin'  # Ending inversion result models 1 for 2C KEEP
 end_models2 = '_models_2.bin'  # Ending inversion result models 2 for 2C KEEP 
-end_norm = '_norm.bin'  # Normalised ending in file KEEP
 end_errors = '_errors.bin'  # Ending inversion result error KEEP
 end_errors1 = '_errors_1.bin'  # Ending inversion result error 1 for 2C KEEP
 end_errors2 = '_errors_2.bin'  # Ending inversion result error 2 for 2C KEEP

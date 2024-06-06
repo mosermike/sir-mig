@@ -71,7 +71,7 @@ def extract_profile_model_1C(conf, x, y):
 		sys.exit(1)
 
 	# Load data
-	obs1 = p.read_profile(os.path.join(path, conf['cube_inv']))
+	obs1 = p.read_profile(os.path.join(path, conf['cube']))
 	obs1.cut_to_wave(conf["range_wave"]) # Cut the values to data used in the inversion
 
 	inv = p.read_profile(os.path.join(path, conf['inv_out']) + d.end_stokes)
@@ -203,7 +203,7 @@ def extract_profile_model_2C(conf, x, y):
 	Map = conf['map']
 	
 	# Load data
-	obs1 = p.read_profile(conf, filename=conf['cube_inv'])	
+	obs1 = p.read_profile(conf, filename=conf['cube'])	
 	inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
 	guess1 = m.read_model(os.path.join(path,d.best_guess1_file))
 	guess2 = m.read_model(os.path.join(path,d.best_guess2_file))

@@ -59,7 +59,7 @@ def scatter_data(conf, comm, rank, size):
 	if rank == 0:
 			print("[STATUS] Load and scatter data ...")
 			tasks = sir.create_task_folder_list(conf["map"])
-			stk = p.read_profile(os.path.join(path,conf["cube_inv"]))
+			stk = p.read_profile(os.path.join(path,conf["cube"]))
 			
 			# Cut data to the wavelength range and to the map
 			stk.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
@@ -857,9 +857,9 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stokes_inv.read_results(tasks, "best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
 		if conf['chi2'] != "":
-			print("-------> Compute and save χ²...")
+			print("-------> Compute χ²...")
 			
-			obs = p.read_profile(os.path.join(path,conf["cube_inv"]))
+			obs = p.read_profile(os.path.join(path,conf["cube"]))
 			obs.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
 			obs.cut_to_map(conf["map"]) # Cut to the map
 
@@ -872,37 +872,28 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			del obs
 			del num_of_nodes
 
-			chi2.write(os.path.join(path, conf['chi2']))
-		
-		#chi2 = np.zeros(shape=(Map[1]-Map[0]+1, Map[3]-Map[2]+1))
-		
-
-		# Collect data from task folders and delete the folder
-		for i in range(len(tasks['x'])):
-			# Get folder name and x,y positions
-			folder = tasks['folders'][i]
-			#x = tasks['x'][i]
-			#y = tasks['y'][i]
-			
-			# Read chi2 file
-			#chi2[x-Map[0], y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
-
-			# Remove folder
-			shutil.rmtree(folder)
 
 		# Create directory if / exists in inv_out in config
 		if '/' in conf['inv_out']:
 			temp = os.path.join(path, conf["inv_out"])
 			if not exists(temp[:temp.rfind('/')]):
-				os.mkdir(temp[:temp.rfind('/')])
-				
+				os.mkdir(temp[:temp.rfind('/')])		
+		
 		# Save data
 		print("-------> Write Data ...")
 		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
 		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
 		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
 		best_guesses.write(os.path.join(path,d.best_guess_file))
-		np.save(os.path.join(path,conf['chi2']),chi2)
+		if conf['chi2'] != "":
+			chi2.write(os.path.join(path, conf['chi2']))
+			del chi2
+
+		# Delete the folder
+		for i in range(len(tasks['x'])):
+			# Remove folder
+			shutil.rmtree(tasks['folders'][i])
+
 		
 		# Print needed time
 		end = time.time()
@@ -1103,14 +1094,8 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		errors.read_results(tasks, "best.err", path, int(conf['num']), 1)
 		guess.read_results(tasks, d.best_guess, path, int(conf['num']), 1)
 		
-		print("-------> Write Data ...")
-		models.write(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
-		errors.write(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
-		guess.write(f"{os.path.join(path,d.best_guess_file)}")
-
-
 		if conf['chi2'] != "":
-			print("-------> Compute and save χ²...")
+			print("-------> Compute χ²...")
 			chi2 = c.chi2_stk(0,0)
 
 			if "--no-noise" in sys.argv:
@@ -1127,10 +1112,21 @@ def inversion_mc(conf, comm, rank, size, MPI):
 			del obs
 			del num_of_nodes
 
-			chi2.write(os.path.join(path, conf['chi2']))
+		# Create directory if / exists in inv_out in config
+		if '/' in conf['inv_out']:
+			temp = os.path.join(path, conf["inv_out"])
+			if not exists(temp[:temp.rfind('/')]):
+				os.mkdir(temp[:temp.rfind('/')])
 
-		#chi2 = sir.read_chi2s(conf, tasks)
-		#np.save(f"{conf['chi2']}", chi2)
+		print("-------> Write Data ...")
+		models.write(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
+		errors.write(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
+		guess.write(f"{os.path.join(path,d.best_guess_file)}")
+
+
+		if conf['chi2'] != "":
+			chi2.write(os.path.join(path, conf['chi2']))
+			del chi2
 
 		for i in range(conf['num']):
 			shutil.rmtree(os.path.join(path,tasks['folders'][i]))
@@ -1287,11 +1283,8 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	####################################
 	#		START INVERSION PART	#
 	####################################
-	chi2s = np.array([]) # Save chi number for print out above chi_lim
-	chi2s_num = np.array([], dtype=str) # Save task number for print out above chi_lim
 	performed_models = 0 # Counts how many models are performed
 	total_jobs = 1 # Total performed jobs across all processes
-	tasks = sir.create_task_folder_list(Map)
 	max_jobs = len(tasks['folders']) # For comm.allreduce function
 
 	# Load and scatter data => Saving memory and time
@@ -1346,15 +1339,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		###############################
 		# Create random guesses and select best value and perform inversion
 		execute_inversion_2c(conf, task_folder, rank)
-		
-		##############################################
-		#	Check chi2 and print out informations	#
-		##############################################
-		# If chi2 is not small, print out model number and do not delete the files
-		#if d.chi2_verbose:
-		#	if chi2_best > d.chi2_lim or chi2_best < 1e-2:
-		#		chi2s = np.append(chi2s,chi2_best)
-		#		chi2s_num = np.append(chi2s_num,f"{x}_{y}")
+
 		performed_models += 1
 	
 		# Do not do allreduce for the last step as the code does not move on from here
@@ -1416,20 +1401,11 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		best_guesses1.read_results(tasks, d.best_guess1, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses2.read_results(tasks, d.best_guess2, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		
-		print("-------> Write Data ...")
-		models_inv1.write(os.path.join(path,conf['inv_out'] + d.end_models1))
-		models_inv2.write(os.path.join(path,conf['inv_out'] + d.end_models2))
-		errors_inv1.write(os.path.join(path,conf['inv_out'] + d.end_errors1))
-		errors_inv2.write(os.path.join(path,conf['inv_out'] + d.end_errors2))
-		best_guesses1.write(os.path.join(path, d.best_guess1_file))
-		best_guesses2.write(os.path.join(path,d.best_guess2_file))
-
-
 		if conf['chi2'] != "":
-			print("-------> Compute and save χ²...")
+			print("-------> Compute χ²...")
 			chi2 = c.chi2_stk(0,0)
 
-			obs = p.read_profile(os.path.join(path,conf["cube_inv"]))
+			obs = p.read_profile(os.path.join(path,conf["cube"]))
 			obs.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
 			obs.cut_to_map(conf["map"]) # Cut to the map
 
@@ -1441,30 +1417,28 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			
 			del obs
 			del num_of_nodes
-
-			chi2.write(os.path.join(path, conf['chi2']))
-
-		# Collect data from task folders and delete the folder
-		for i in range(len(tasks['x'])):
-			# Get folder name and x,y positions
-			folder = tasks['folders'][i]
-			x = tasks['x'][i]
-			y = tasks['y'][i]
-			
-			# Read chi2 file
-			#chi2[x-Map[0],y-Map[2]] = sir.read_chi2(f"{folder}/{d.inv_trol_file[:d.inv_trol_file.rfind('.')]}.chi", folder)
-
-			# Remove folder
-			shutil.rmtree(folder)
-
+		
 		# Create directory if / exists in inv_out in config
 		if '/' in conf['inv_out']:
 			temp = os.path.join(path, conf["inv_out"])
 			if not exists(temp[:temp.rfind('/')]):
 				os.mkdir(temp[:temp.rfind('/')])
 
-		np.save(conf['chi2'],chi2)
-		
+		print("-------> Write Data ...")
+		models_inv1.write(os.path.join(path,conf['inv_out'] + d.end_models1))
+		models_inv2.write(os.path.join(path,conf['inv_out'] + d.end_models2))
+		errors_inv1.write(os.path.join(path,conf['inv_out'] + d.end_errors1))
+		errors_inv2.write(os.path.join(path,conf['inv_out'] + d.end_errors2))
+		best_guesses1.write(os.path.join(path, d.best_guess1_file))
+		best_guesses2.write(os.path.join(path,d.best_guess2_file))
+		if conf['chi2'] != "":
+			chi2.write(os.path.join(path, conf['chi2']))
+	
+
+		# Delete the folder
+		for i in range(len(tasks['x'])):
+			shutil.rmtree(tasks['folders'][i])
+
 		# Print needed time
 		end = time.time()
 		Time = str(datetime.timedelta(seconds=end-start)).split(".")[0]
@@ -1472,4 +1446,4 @@ def inversion_2c(conf, comm, rank, size, MPI):
 
 	comm.barrier()
 
-	return chi2s, chi2s_num
+	return

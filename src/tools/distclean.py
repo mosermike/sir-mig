@@ -33,13 +33,15 @@ if conf['path'] != os.path.abspath(os.getcwd()):
 		sys.exit()
 
 if conf['mode'] == "1C":
-	if conf["preprocess"] == "1":
-		os.system(f"rm -rv {os.path.join(path,conf['cube'].replace('.bin','')+d.end_norm + '.bin')}")
+	if conf["preprocess"] == "1" and conf["save_cube"] == "1":
+		os.system(f"rm -rfv {os.path.join(path,d.cube)}")
+		os.system(f"rm -rfv {os.path.join(path,d.cube_norm)}")
 	os.system(f"rm -rv {inv_out+d.end_stokes}")
 	os.system(f"rm -rv {inv_out+d.end_models}")
 	os.system(f"rm -rv {inv_out+d.end_errors}")
 	os.system(f"rm -rv {os.path.join(path,d.best_guess_file)}")
-	os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
+	if conf['chi2'] != '':
+		os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
 	os.system(f"rm -rv {os.path.join(path,d.inv_trol_file)}")
 	os.system(f"rm -rv {os.path.join(path,d.Grid)}")
 	os.system(f"rm -rv {os.path.join(path,d.veil_parameters)}")
@@ -49,7 +51,9 @@ if conf['mode'] == "1C":
 		os.system(f"rm -rv {os.path.join(path,d.psf)}")
 
 elif conf['mode'] == '2C':
-	os.system(f"rm -rv {os.path.join(path,conf['cube'].replace('.bin','')+d.end_norm + '.bin')}")
+	if conf["preprocess"] == "1" and conf["save_cube"] == "1":
+		os.system(f"rm -rfv {os.path.join(path,d.cube)}")
+		os.system(f"rm -rfv {os.path.join(path,d.cube_norm)}")
 	os.system(f"rm -rv {inv_out+d.end_stokes}")
 	os.system(f"rm -rv {inv_out+d.end_models1}")
 	os.system(f"rm -rv {inv_out+d.end_models2}")
@@ -57,7 +61,8 @@ elif conf['mode'] == '2C':
 	os.system(f"rm -rv {inv_out+d.end_errors2}")
 	os.system(f"rm -rv {os.path.join(path,d.best_guess1_file)}")
 	os.system(f"rm -rv {os.path.join(path,d.best_guess2_file)}")
-	os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
+	if conf['chi2'] != '':
+		os.system(f"rm -rv {os.path.join(path,conf['chi2'])}")
 	os.system(f"rm -rv {os.path.join(path,d.inv_trol_file)}")
 	os.system(f"rm -rv {os.path.join(path,d.Grid)}")
 	os.system(f"rm -rv {os.path.join(path,d.veil_parameters)}")
@@ -73,7 +78,8 @@ elif conf['mode'] == "MC":
 	os.system(f"rm -rf {os.path.join(path,d.syn_trol_file)}")
 	os.system(f"rm -rf {os.path.join(path,d.inv_trol_file)}")
 	os.system(f"rm -rf {os.path.join(path, d.Grid)}")
-	os.system(f"rm -rf {os.path.join(path, conf['chi2'])}")
+	if conf['chi2'] != '':
+		os.system(f"rm -rf {os.path.join(path, conf['chi2'])}")
 	os.system(f"rm -rf {os.path.join(path, conf['syn_out'] + d.end_models)}")
 	os.system(f"rm -rf {os.path.join(path,conf['syn_out'] + d.end_stokes)}")
 	os.system(f"rm -rf {os.path.join(path,conf['noise_out'] + d.end_stokes)}")

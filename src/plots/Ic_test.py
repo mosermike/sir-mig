@@ -68,7 +68,7 @@ def Ic_test(conf, num):
 	Map = conf['map']
 
 	if "-data" not in sys.argv:
-		stokes = p.read_profile(os.path.join(conf["path"],conf['cube_inv']))
+		stokes = p.read_profile(os.path.join(conf["path"],conf['cube']))
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
 		stokes = p.read_profile(filename)
