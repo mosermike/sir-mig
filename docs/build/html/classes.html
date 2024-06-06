@@ -44,6 +44,8 @@
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Functions" href="functions.html" />
+    <link rel="prev" title="API" href="api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -164,7 +166,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
@@ -239,9 +241,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -282,7 +282,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
@@ -312,6 +312,28 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Classes</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="functions.html">Functions</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="sir.html">sir</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html">Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocess</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="simulation.html">Simulation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -345,6 +367,9 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page">Classes</li>
   </ul>
 </nav>
@@ -370,21 +395,34 @@ document.write(`
 <dd><p>Class containing the <span class="math notranslate nohighlight">\(\chi^2\)</span>-values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>total</strong> (<em>float</em>) – Total chi2 of the full map</p></li>
-<li><p><strong>Itot</strong> (<em>float</em>) – Total chi2 for Stokes I</p></li>
-<li><p><strong>Qtot</strong> (<em>float</em>) – Total chi2 for Stokes Q</p></li>
-<li><p><strong>Utot</strong> (<em>float</em>) – Total chi2 for Stokes U</p></li>
-<li><p><strong>Vtot</strong> (<em>float</em>) – Total chi2 for Stokes V</p></li>
-<li><p><strong>stki</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter I</p></li>
-<li><p><strong>stkq</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter Q</p></li>
-<li><p><strong>stku</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter U</p></li>
-<li><p><strong>stkv</strong> (<em>numpy.ndarray</em>) – chi2 for Stokes Parameter V</p></li>
-<li><p><strong>nx</strong> (<em>int</em>) – Dimension in x</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – Dimension in y</p></li>
-<li><p><strong>ns</strong> (<em>int</em>) – Number of Stokes Parameter</p></li>
-<li><p><strong>noise</strong> (<em>float</em>) – Noise level of the Stokes Parameter</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>total</strong><span class="classifier">float</span></dt><dd><p>Total chi2 of the full map</p>
+</dd>
+<dt><strong>Itot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes I</p>
+</dd>
+<dt><strong>Qtot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes Q</p>
+</dd>
+<dt><strong>Utot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes U</p>
+</dd>
+<dt><strong>Vtot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes V</p>
+</dd>
+<dt><strong>stki</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter I</p>
+</dd>
+<dt><strong>stkq</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter Q</p>
+</dd>
+<dt><strong>stku</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter U</p>
+</dd>
+<dt><strong>stkv</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter V</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in y</p>
+</dd>
+<dt><strong>ns</strong><span class="classifier">int</span></dt><dd><p>Number of Stokes Parameter</p>
+</dd>
+<dt><strong>noise</strong><span class="classifier">float</span></dt><dd><p>Noise level of the Stokes Parameter</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -412,6 +450,20 @@ The computation is based on (Borrero et al, 2021) with the equation
 with <span class="math notranslate nohighlight">\(\omega = \frac{w}{\sigma}\)</span> with the used weight <span class="math notranslate nohighlight">\(w\)</span> and the noise <span class="math notranslate nohighlight">\(\sigma\)</span>. In case, there are
 more spectra considered, <span class="math notranslate nohighlight">\(\Lambda\)</span> may be multiplied with the number of pixels and number of used Stokes Parameter.
 Obviously, also more summations must be considered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>obs</strong><span class="classifier">profile_stk</span></dt><dd><p>Observations</p>
+</dd>
+<dt><strong>syn</strong><span class="classifier">profile_stk</span></dt><dd><p>Synthesis profiles</p>
+</dd>
+<dt><strong>weights</strong><span class="classifier">array</span></dt><dd><p>Weights of the Stokes Parameter</p>
+</dd>
+<dt><strong>num_of_nodes</strong><span class="classifier">int</span></dt><dd><p>Number of nodes used for the last inversion “cycle”</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -420,10 +472,12 @@ Obviously, also more summations must be considered.</p>
 <dd><p>Read a binary fortran file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – Name of the binary file</p></li>
-<li><p><strong>fmt_type</strong> (<em>type</em>) – Type of the fortran file</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>Name of the binary file</p>
+</dd>
+<dt><strong>fmt_type</strong><span class="classifier">type</span></dt><dd><p>Type of the fortran file</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -434,10 +488,12 @@ Obviously, also more summations must be considered.</p>
 <dd><p>Write the data to a binary file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – File name</p></li>
-<li><p><strong>fmt_type</strong> (<em>type</em>) – Type of the fortran file</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>File name</p>
+</dd>
+<dt><strong>fmt_type</strong><span class="classifier">type</span></dt><dd><p>Type of the fortran file</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -447,31 +503,51 @@ Obviously, also more summations must be considered.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="model_atm.model_atm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">model_atm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm" title="Link to this definition">#</a></dt>
-<dd><p>Class containing the models</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class containing the models</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tau</strong> (<em>numpy.array</em>) – Array with the log tau</p></li>
-<li><p><strong>T</strong> (<em>numpy.ndarray</em>) – Temperature in K</p></li>
-<li><p><strong>Pe</strong> (<em>numpy.ndarray</em>) – Electron Pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p></li>
-<li><p><strong>vmicro</strong> (<em>numpy.ndarray</em>) – Microturbulence Velocity in cm/s</p></li>
-<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – Magnetic Field Strength in G</p></li>
-<li><p><strong>vlos</strong> (<em>numpy.ndarray</em>) – Line-of-Sight Velocity in km/s</p></li>
-<li><p><strong>gamma</strong> (<em>numpy.ndarray</em>) – Inclination in deg</p></li>
-<li><p><strong>phi</strong> (<em>numpy.ndarray</em>) – Azimuth in deg</p></li>
-<li><p><strong>z</strong> (<em>numpy.ndarray</em>) – z in km</p></li>
-<li><p><strong>Pg</strong> (<em>numpy.ndarray</em>) – Gas pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p></li>
-<li><p><strong>rho</strong> (<em>numpy.ndarray</em>) – Density in g/cm<span class="math notranslate nohighlight">\(^3\)</span></p></li>
-<li><p><strong>vmacro</strong> (<em>numpy.array</em>) – Macroturbulence Velocity in km/s</p></li>
-<li><p><strong>fill</strong> (<em>numpy.array</em>) – Filling factor</p></li>
-<li><p><strong>stray_light</strong> (<em>numpy.array</em>) – Stray Light Factor in Percent</p></li>
-<li><p><strong>nx</strong> (<em>int</em>) – Dimension in x</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – Dimension in y</p></li>
-<li><p><strong>nval</strong> (<em>int</em>) – Dimension along log_tau</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tau</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with the log tau</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>T</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Temperature in K</p>
+</dd>
+<dt><strong>Pe</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Electron Pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p>
+</dd>
+<dt><strong>vmicro</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Microturbulence Velocity in cm/s</p>
+</dd>
+<dt><strong>B</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Magnetic Field Strength in G</p>
+</dd>
+<dt><strong>vlos</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Line-of-Sight Velocity in km/s</p>
+</dd>
+<dt><strong>gamma</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Inclination in deg</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Azimuth in deg</p>
+</dd>
+<dt><strong>z</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>z in km</p>
+</dd>
+<dt><strong>Pg</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Gas pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p>
+</dd>
+<dt><strong>rho</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Density in g/cm<span class="math notranslate nohighlight">\(^3\)</span></p>
+</dd>
+<dt><strong>vmacro</strong><span class="classifier">numpy.array</span></dt><dd><p>Macroturbulence Velocity in km/s</p>
+</dd>
+<dt><strong>fill</strong><span class="classifier">numpy.array</span></dt><dd><p>Filling factor</p>
+</dd>
+<dt><strong>stray_light</strong><span class="classifier">numpy.array</span></dt><dd><p>Stray Light Factor in Percent</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in y</p>
+</dd>
+<dt><strong>nval</strong><span class="classifier">int</span></dt><dd><p>Dimension along log_tau</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -519,10 +595,14 @@ Obviously, also more summations must be considered.</p>
 those values should be corrected so that I have values from 0 to 360 degrees.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>None</strong></dt><dd></dd>
+</dl>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -533,10 +613,15 @@ those values should be corrected so that I have values from 0 to 360 degrees.</p
 <dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Map</strong> (<em>list</em>) – List with the ranges in pixel in x and y direction</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Map</strong><span class="classifier">list</span></dt><dd><p>List with the ranges in pixel in x and y direction</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -548,14 +633,17 @@ those values should be corrected so that I have values from 0 to 360 degrees.</p
 parameter depending on a string/input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – Determines which physical parameter is returned
+<dd class="field-odd"><dl class="simple">
+<dt><strong>string</strong><span class="classifier">str</span></dt><dd><p>Determines which physical parameter is returned
 Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, fill</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>out</strong> – The wished physical parameter</p>
+</dl>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>The wished physical parameter</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -566,10 +654,15 @@ Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, 
 <dd><p>Interpolate the model to a new log tau scale.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>new_tau</strong> (<em>numpy array</em>) – New log tau scale</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_tau</strong><span class="classifier">numpy array</span></dt><dd><p>New log tau scale</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -580,13 +673,17 @@ Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, 
 <dd><p>Reads a binary model file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – Filename</p></li>
-<li><p><strong>fmt_type</strong> (<em>type</em><em>, </em><em>optional</em>) – Type used to laod data. Default: np.float64</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>Filename</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>Type used to laod data. Default: np.float64</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -598,10 +695,15 @@ Options are: tau, T, Pe, vmicro, B, vlos, gamma, phi, z, Pg, rho, nx, ny, npar, 
 This class will then create the class with nx = ny = 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fname</strong> (<em>str</em>) – Name of the .mod file</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>Name of the .mod file</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -612,16 +714,23 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Reads all the errors from the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>task</strong> (<em>dict</em>) – Dictionary with all the task folders, x and y positions</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) – Filename of the file in each task folder</p></li>
-<li><p><strong>path</strong> (<em>str</em>) – Path where all the files are</p></li>
-<li><p><strong>nx</strong> (<em>int</em>) – how many results are read in x</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – how many results are read in y</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>task</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -632,14 +741,19 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Sets the dimensions if no data is loaded yet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nx</strong> (<em>int</em>) – Number of Models in x</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – Number of Models in y</p></li>
-<li><p><strong>nval</strong> (<em>int</em>) – Number of values per physical parameter</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt><strong>nval</strong><span class="classifier">int</span></dt><dd><p>Number of values per physical parameter</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -650,10 +764,15 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Cuts the arrays to a specific log tau value (should only be used for plotting).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>lim</strong> (<em>int</em>) – log tau value to which the values are cut</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lim</strong><span class="classifier">int</span></dt><dd><p>log tau value to which the values are cut</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -664,13 +783,17 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Write data into a binary fortran file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – File name</p></li>
-<li><p><strong>fmt_type</strong> (<em>type</em>) – type which is used to save it =&gt; numpy.float64 used</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>File name</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>fmt_type</strong><span class="classifier">type</span></dt><dd><p>type which is used to save it =&gt; numpy.float64 used</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -681,14 +804,19 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Write a model with the given data in a specific format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – Name of the saved file</p></li>
-<li><p><strong>x</strong> (<em>int</em>) – Integer determining which model</p></li>
-<li><p><strong>y</strong> (<em>int</em>) – Integer determining which model</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Name of the saved file</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>Integer determining which model</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -701,20 +829,32 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Class containing the Stokes Profiles</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wave</strong> (<em>nump.array</em>) – Wavelength</p></li>
-<li><p><strong>indx</strong> (<em>numpy array</em>) – Index or line numbers in mode ‘MC’</p></li>
-<li><p><strong>stki</strong> (<em>numpy.ndarray</em>) – Stokes Parameter I</p></li>
-<li><p><strong>stkq</strong> (<em>numpy.ndarray</em>) – Stokes Parameter Q</p></li>
-<li><p><strong>stku</strong> (<em>numpy.ndarray</em>) – Stokes Parameter U</p></li>
-<li><p><strong>stkv</strong> (<em>numpy.ndarray</em>) – Stokes Parameter V</p></li>
-<li><p><strong>nx</strong> (<em>int</em>) – Dimension in x</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – Dimension in y</p></li>
-<li><p><strong>ns</strong> (<em>int</em>) – Number of Stokes Parameter</p></li>
-<li><p><strong>nw</strong> (<em>int</em>) – Dimension in wavelength</p></li>
-<li><p><strong>load</strong> (<em>bool</em>) – Data was loaded</p></li>
-<li><p><strong>data_cut</strong> (<em>bool</em>) – Data was cut to the inversion range</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>wave</strong><span class="classifier">nump.array</span></dt><dd><p>Wavelength</p>
+</dd>
+<dt><strong>indx</strong><span class="classifier">numpy array</span></dt><dd><p>Index or line numbers in mode ‘MC’</p>
+</dd>
+<dt><strong>stki</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter I</p>
+</dd>
+<dt><strong>stkq</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter Q</p>
+</dd>
+<dt><strong>stku</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter U</p>
+</dd>
+<dt><strong>stkv</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter V</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in y</p>
+</dd>
+<dt><strong>ns</strong><span class="classifier">int</span></dt><dd><p>Number of Stokes Parameter</p>
+</dd>
+<dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Dimension in wavelength</p>
+</dd>
+<dt><strong>load</strong><span class="classifier">bool</span></dt><dd><p>Data was loaded</p>
+</dd>
+<dt><strong>data_cut</strong><span class="classifier">bool</span></dt><dd><p>Data was cut to the inversion range</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -758,7 +898,10 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>Map</strong> (<em>list</em>) – List with the ranges in pixel in x and y direction</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Map</strong><span class="classifier">list</span></dt><dd><p>List with the ranges in pixel in x and y direction</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -769,7 +912,10 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Cut the data to the range in wavelengths</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>range_wave</strong> (<em>multidimensional list</em>) – List with the ranges from the config file</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>range_wave</strong><span class="classifier">multidimensional list</span></dt><dd><p>List with the ranges from the config file</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -780,13 +926,17 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Reads a binary profile file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – Name of the binary file</p></li>
-<li><p><strong>fmt_type</strong> (<em>type</em><em>, </em><em>optional</em>) – Type of the binary file. Default: np.float32</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>Name of the binary file</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>Type of the binary file. Default: np.float32</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -797,16 +947,23 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Reads all the errors from the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>task</strong> (<em>dict</em>) – Dictionary with all the task folders, x and y positions</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) – Filename of the file in each task folder</p></li>
-<li><p><strong>path</strong> (<em>str</em>) – Path where all the files are</p></li>
-<li><p><strong>nx</strong> (<em>int</em>) – how many results are read in x</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – how many results are read in y</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>task</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the task folders, x and y positions</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Filename of the file in each task folder</p>
+</dd>
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>Path where all the files are</p>
+</dd>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>how many results are read in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>how many results are read in y</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -817,14 +974,19 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Reads all the profiles for the simulation where indx is the line number</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>config</strong> (<em>dict</em>) – Config information</p></li>
-<li><p><strong>tasks</strong> (<em>dict</em>) – Dictionary with the folder names</p></li>
-<li><p><strong>Type</strong> (<em>string</em><em>, </em><em>optional</em>) – Indicating if synthesis or inversion. Default: ‘syn’</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Config information</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>tasks</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the folder names</p>
+</dd>
+<dt><strong>Type</strong><span class="classifier">string, optional</span></dt><dd><p>Indicating if synthesis or inversion. Default: ‘syn’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -835,14 +997,19 @@ This class will then create the class with nx = ny = 1.</p>
 <dd><p>Sets the dimensions if no data is loaded yet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nx</strong> (<em>int</em>) – Number of Models in x</p></li>
-<li><p><strong>ny</strong> (<em>int</em>) – Number of Models in y</p></li>
-<li><p><strong>nw</strong> (<em>int</em>) – Number of wavelength points</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Number of Models in x</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
+</dd>
+<dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Number of wavelength points</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -854,13 +1021,17 @@ This class will then create the class with nx = ny = 1.</p>
 the convoluted equation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nu</strong> (<em>float</em>) – Optimized fraction of spectral veil</p></li>
-<li><p><strong>Ic</strong> (<em>float</em><em>, </em><em>optional</em>) – Continuum intensity of the FTS. Default is “1.0”.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nu</strong><span class="classifier">float</span></dt><dd><p>Optimized fraction of spectral veil</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>Ic</strong><span class="classifier">float, optional</span></dt><dd><p>Continuum intensity of the FTS. Default is “1.0”.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -871,13 +1042,17 @@ the convoluted equation.</p>
 <dd><p>Write data into a binary fortran file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fname</strong> (<em>str</em>) – File name</p></li>
-<li><p><strong>fmt_type</strong> (<em>type</em><em>, </em><em>optional</em>) – type which is used to save it =&gt; numpy.float32 used. Default: np.float32</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>File name</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>type which is used to save it =&gt; numpy.float32 used. Default: np.float32</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -889,15 +1064,21 @@ the convoluted equation.</p>
 Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – String containing the output path of the profile</p></li>
-<li><p><strong>x</strong> (<em>int</em>) – Position in x</p></li>
-<li><p><strong>y</strong> (<em>int</em>) – Position in y</p></li>
-<li><p><strong>Grid</strong> (<em>str</em>) – Grid file</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>String containing the output path of the profile</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt><strong>Grid</strong><span class="classifier">str</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -908,15 +1089,21 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <dd><p>Writes data to SIR profiles as described in the config file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – String containing the output path of the profile</p></li>
-<li><p><strong>x</strong> (<em>int</em>) – Position in x</p></li>
-<li><p><strong>y</strong> (<em>int</em>) – Position in y</p></li>
-<li><p><strong>Grid</strong> (<em>str</em>) – Grid file</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>String containing the output path of the profile</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>Position in x</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>Position in y</p>
+</dd>
+<dt><strong>Grid</strong><span class="classifier">str</span></dt><dd><p>Grid file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -935,6 +1122,24 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="functions.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Functions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

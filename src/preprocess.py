@@ -59,7 +59,8 @@ def merge(conf, dir, ending):
 
 	Returns
 	-------
-	None
+	merge : profile_stk
+		Class with the merged profiles
 
 	"""
 	if conf['instrument'] not in d.instruments:
@@ -68,7 +69,7 @@ def merge(conf, dir, ending):
 		print(f"-------> The code will try to make it work and will ask you for some inputs.")
 		print(f"-------> Consider adapting the script yourself or make an issue in the corresponding git website.")
 
-	output = os.path.join(conf['path'], conf['cube'])  # where it is saved
+	output = os.path.join(conf['path'], d.cube)  # where it is saved
 
 	# Files in the folders from different measurements
 	filenames = []
@@ -122,8 +123,7 @@ def merge(conf, dir, ending):
 		example = fits.open(filenames[i])
 
 		stokes = example[0].data
-		if conf['instrument'] == 'Hinode':
-			header = example[0].header
+		if conf['instrument'] == d.instruments[1]:
 			spbshft = header['SPBSHFT']
 			stokes = example[0].data.astype(np.float32)
 			stokes = np.transpose(stokes, axes=(1, 0, 2))
@@ -142,7 +142,7 @@ def merge(conf, dir, ending):
 
 			data[i] = stokes[:, :, :]
 
-		elif conf['instrument'] == 'GRIS':
+		elif conf['instrument'] == d.instruments[0]:
 			stokes = np.transpose(stokes, axes=(3, 2, 0, 1))  # Structure of GRIS stokes, nw, ny, nx
 			data[i] = stokes[0, :, :, :]
 		else:  # ADAPT for another instrument here for the structure
@@ -188,57 +188,32 @@ def merge(conf, dir, ending):
 	pro.stkq = data[:,:,1,:]
 	pro.stku = data[:,:,2,:]
 	pro.stkv = data[:,:,3,:]
+	pro.load = True # Data is loaded (no warning when saved)
 
-	print("-------> Saving data (this might take a while) ...")
-	pro.load = True # No warning of no loaded data
-	pro.write(output)
+	if conf['save_cube'] == "1" :
+		print("-------> Saving data (this might take a while) ...")
+		pro.write(output)
+		print("Saved as \"%s\"" % output)
 
-	print("Saved as \"%s\"" % output)
-
-	# TODO SAVE MU value
-	# Save some information from the header
+	# Save header
 	filename = os.path.join(conf['path'], d.header_infos)
 	with open(filename, 'w') as f:
+		f.write(f"instrument={conf['instrument']}\n")
+		for card in header.cards:
+			if card.keyword != 'COMMENT':
+				f.write(f"{card.keyword}={card.value}\n")
+		f.write(f"SHIFT={conf['shift_wave']}\n")
 		if conf['instrument'] == 'GRIS':
-			f.write(f"POINT_ID={header['POINT_ID']}\n")
-			f.write(f"DATE-OBS={header['DATE-OBS']}\n")
-			f.write(f"CTYPE1={header['CTYPE1']}\n")
-			f.write(f"CUNIT1={header['CUNIT1']}\n")
-			f.write(f"CRVAL1={header['CRVAL1']}\n")
-			f.write(f"CDELT1={header['CDELT1']}\n")
-			f.write(f"CUNIT2={header['CUNIT2']}\n")
-			f.write(f"CRVAL2={header['CRVAL2']}\n")
-			f.write(f"CDELT2={header['CDELT2']}\n")
-			f.write(f"CRVAL3={header['CRVAL3']}\n")
-			f.write(f"CDELT3={header['CDELT3']}\n")
-			f.write(f"NAXIS2={header['NAXIS2']}\n")
-			f.write(f"NAXIS3={header['NAXIS3']}\n")
-			f.write(f"NAXIS4={header['NAXIS4']}\n")
-			f.write(f"POINT_ID={header['POINT_ID']}\n")
-			f.write(f"POINT_ID={header['POINT_ID']}\n")
-			f.write(f"DSUN_OBS={header['DSUN_OBS']}\n")
-			f.write(f"SHIFT={conf['shift_wave']}\n")
 			f.write(f"END={ending}") # Ending of the used files
-		elif conf['instrument'] == 'Hinode':
-			f.write(f"CRVAL1={header['CRVAL1']}\n")
-			f.write(f"CDELT1={header['CDELT1']}\n")
-			f.write(f"CRVAL2={header['CRVAL2']}\n")
-			f.write(f"CDELT2={header['CDELT2']}\n")
-			f.write(f"SC_ATTX={header['SC_ATTX']}\n")
-			f.write(f"XSCALE={header['XSCALE']}\n")
-			f.write(f"XCEN={header['XCEN']}\n")
-			f.write(f"YCEN={header['YCEN']}\n")
-			f.write(f"CRPIX2={header['CRPIX2']}\n")
-			f.write(f"SPBSHFT={header['SPBSHFT']}\n")
-			f.write(f"SHIFT={conf['shift_wave']}")
-		else:
-			print("[NOTE]   No header information file created as instrument is unknown!")
+		#elif conf['instrument'] == 'Hinode':
+
+	return pro
 
 #################
 #	NORMALISE	#
 #################
 
-def normalise(conf):
+def normalise(conf, pro):
 	"""
 	Normalise the data cube by the given quiet sun range
 
@@ -246,17 +221,22 @@ def normalise(conf):
 	----------
 	conf : dict
 		Dictionary with the information from the config file
-	"""
-	stokes = p.read_profile(os.path.join(conf["path"], conf["cube"]))
+	pro : profile_stk
+		Data cube with the Stokes Profiles
 
+	Return
+	------
+	normalise : profile_stk
+		Normalised data cube
+	"""
 	if len(conf['quiet_sun']) > 1:
 		print("[STATUS] Normalise data ...")
 		# Check if data needs to be normalised
-		if np.mean(stokes.stki) < 10:
+		if np.mean(pro.stki) < 10:
 			print("Is the data already normalised? Abort")
 			return
 
-		ll = np.copy(stokes.wave)
+		ll = np.copy(pro.wave)
 
 		if conf['instrument'] in d.ll_lit_norm:
 			ll1      = np.argmin(abs(ll-d.ll_lit_norm[conf['instrument']][0]))	 # Find lower limit of wavelength for continuum
@@ -273,40 +253,43 @@ def normalise(conf):
 		y2	  = conf['quiet_sun'][3]+1	# Upper limit for region in y
 		
 		# Compute continuum intensity in quiet sun region
-		Ic  = np.mean(stokes.stki[x1:x2,y1:y2,ll1:ll2])  # Average continuum intensity in quiet sun
+		Ic  = np.mean(pro.stki[x1:x2,y1:y2,ll1:ll2])  # Average continuum intensity in quiet sun
 
 		# Divide through the mean
-		stokes.stki /= Ic
-		stokes.stkq /= Ic
-		stokes.stku /= Ic
-		stokes.stkv /= Ic
+		pro.stki /= Ic
+		pro.stkq /= Ic
+		pro.stku /= Ic
+		pro.stkv /= Ic
 	else:
 		print("-------> Skipping normalisation")
 
-	print("-------> Saving data (this might take a while) ...")
-	stokes.write(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm)
+	if conf['save_cube'] == "1" :
+		print("-------> Saving data (this might take a while) ...")
+		pro.write(os.path.join(conf['path'],d.cube_norm))
+
+	return pro
 
 #################################
 #	SPECTRAL VEIL CORRECTION	#
 #################################
 
 def argmin(x):
-	"""
+	r"""
 	Find the argument of the minimum in an multi-dimensional
 	array. It seems to be faster than any numpy-built-in 
 	function as shown in https://stackoverflow.com/questions/30180241/numpy-get-the-column-and-row-index-of-the-minimum-value-of-a-2d-array.
 
 	Parameters
 	----------
-	x : mxn numpy array
+	x : $m$x$n$ numpy array
 		Numpy array with the dataq
 	
 	Returns
 	-------
-	out : int
-		First index
-	out : int
-		Second index
+	argmin : int
+		First index in dim. $m$
+	argmin : int
+		Second index in dim. $n$
 
 	"""
 	k = x.argmin()
@@ -328,7 +311,7 @@ def chi2(y_fit, y_obs):
 
      Returns
      -------
-     out : float
+     chi2 : float
           $\chi^2$-value
      
      """
@@ -353,7 +336,7 @@ def gaussian(x, mean = 0, sigma = 1, norm = True):
 
 	Returns
 	-------
-	out: float
+	gaussian : float
 		Value in the Gaussian function at position x
 	
 	"""
@@ -377,9 +360,9 @@ def convective_blueshift(ll,I):
 
 	Returns
 	-------
-	out : int	
+	convective_blueshift : int	
 		Index of the mean shifted spectral core
-	out : float
+	convective_blueshift : float
 		Wavelength of the mean shifted spectral core
 
 	"""
@@ -418,15 +401,15 @@ def optimise_chi(nu, sigma, I, I_obs):
 	
 	Returns
 	-------
-	out : float
+	optimise_chi : float
 		Optimised sigma
-	out : float
+	optimise_chi : float
 		Uncertainty of the optimised sigma
-	out : float
+	optimise_chi : float
 		Optimised nu
-	out : float
+	optimise_chi : float
 		Uncertainty of the optimised nu
-	out : ndarray
+	optimise_chi : ndarray
 		Array containing all the chi2 for all possible combinations of nu and sigma
 	
 	"""
@@ -504,7 +487,7 @@ def vac_to_air(wavelength, method = "Ciddor1996"):
 
 #################################################################################################3
 
-def correct_spectral_veil(conf):
+def correct_spectral_veil(conf, pro):
 	"""
 	Correct the spectral veil in the data. This function calls the following functions:
 	 - argmin()
@@ -518,6 +501,8 @@ def correct_spectral_veil(conf):
 	----------
 	config : dict
 		Dictionary with all the information from the config file
+	pro : profile_stk
+		Class with the normalised Stokes Profiles
 
 	Returns
 	-------
@@ -534,19 +519,21 @@ def correct_spectral_veil(conf):
 
 	# Do not do anything
 	if conf['fts_file'] == '':
-		print("-------> No spectral veil correction")
-		if not exists(os.path.join(conf["path"], conf["cube_inv"])):
-			if len(conf['quiet_sun']) < 2 and exists(os.path.join(conf["path"], conf["cube"])):
-				print("[STATUS] Copying the non-preprocessed data cube to the file used for the inversion.")
-				shutil.copy(os.path.join(conf['path'],conf['cube']), os.path.join(conf['path'],conf['cube_inv'])) 
-				print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
-			elif exists(os.path.join(conf["path"], conf["cube"]) + d.end_norm):
-				print("[STATUS] Copying the created normalised data cube to the file used for the inversion.")
-				shutil.copy(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm, os.path.join(conf['path'],conf['cube_inv'])) 
-				print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
-			else:
-				print(f"[ERROR] File {conf['cube_inv']} is not created. Are there data in the selected path?")
-
+		print("-------> No spectral veil correction, write the merged or normalised data cube")
+		#if not exists(os.path.join(conf["path"], conf["cube_inv"])):
+			#if len(conf['quiet_sun']) < 2 and exists(os.path.join(conf["path"], conf["cube"])):
+			#	print("[STATUS] Copying the non-preprocessed data cube to the file used for the inversion.")
+			#	shutil.copy(os.path.join(conf['path'],conf['cube']), os.path.join(conf['path'],conf['cube_inv'])) 
+			#	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
+			#elif exists(os.path.join(conf["path"], conf["cube"]) + d.end_norm):
+			#	print("[STATUS] Copying the created normalised data cube to the file used for the inversion.")
+			#	shutil.copy(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm, os.path.join(conf['path'],conf['cube_inv'])) 
+			#	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
+			#else:
+			#	print(f"[ERROR] File {conf['cube_inv']} is not created. Are there data in the selected path?")
+		pro.write(os.path.join(conf["path"], conf["cube_inv"]))
+		
+		del pro
 		return
 	
 	print("[STATUS] Correct spectral veil ...")
@@ -559,9 +546,14 @@ def correct_spectral_veil(conf):
 			print("Abort (Consider changing the config file)")
 			return
 
-	if(conf["instrument"] != "GRIS"):
+	if(conf["instrument"] != d.instruments[0]):
 		print("| Note that the script was only tested for GRIS data in the infrared range.")
 		print("| Take a look at the plotted plots and if they do not look good, consider changing the ranges or the borders")
+	
+	if abs(pro.wave[0] - 15600) > 100 and conf["instrument"] == d.instruments[0]: # GRIS instrument
+		print("| Note that the script was only tested for GRIS data in the infrared range (15600 A).")
+		print("| Take a look at the plotted plots and if they do not look good, consider changing the ranges or the borders")
+		print("| Eventually add another instrument named e.g. 'GRIS1' for the different wavelength range")
 
 	##########################
 	#	Plot settings		#
@@ -597,14 +589,14 @@ def correct_spectral_veil(conf):
 	#						    INITIALIZATION							 #
 	######################################################################################
 	# Load data
-	if len(conf['quiet_sun']) > 1:
-		print("-------> Load normalised data ...")
-		stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin","")+d.end_norm))
-			
-	else:
-		print("-------> Load merged data ...")
-		stokes = p.read_profile(os.path.join(conf["path"],conf["cube"]))
-			
+	#if len(conf['quiet_sun']) > 1:
+	#	print("-------> Load normalised data ...")
+	#	stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin","")+d.end_norm))
+	#		
+	#else:
+	#	print("-------> Load merged data ...")
+	#	stokes = p.read_profile(os.path.join(conf["path"],conf["cube"]))
+	stokes = pro	
 			
 	filename_fts  = conf['fts_file']
 	path = conf['path']

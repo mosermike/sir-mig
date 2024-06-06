@@ -44,6 +44,7 @@
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Preprocess" href="preprocess.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -164,7 +165,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
@@ -239,9 +240,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -282,7 +281,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
@@ -312,6 +311,28 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="functions.html">Functions</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="sir.html">sir</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html">Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocess</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Simulation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -345,6 +366,9 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page">Simulation</li>
   </ul>
 </nav>
@@ -383,13 +407,17 @@ document.write(`
 <dd><p>Adds noise to the Stokes Profiles</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>conf</strong> (<em>dict</em>) – Information from the config file</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print out status. Default: True</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Information from the config file</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>verbose</strong><span class="classifier">bool, optional</span></dt><dd><p>Print out status. Default: True</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -400,10 +428,15 @@ document.write(`
 <dd><p>Creates random models depending on the configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>config</strong> (<em>dict</em>) – Dictionary with the info from the config file</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the info from the config file</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -414,16 +447,18 @@ document.write(`
 <dd><p>Creates a random temperature in the parameter space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tau</strong> (<em>numpy array</em>) – Array with the <span class="math notranslate nohighlight">\(\log\tau\)</span> of the model</p></li>
-<li><p><strong>B</strong> (<em>float</em><em>, </em><em>optional</em>) – Value of the magnetic field in the deepest layer. Default: 0</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>tau</strong><span class="classifier">numpy array</span></dt><dd><p>Array with the <span class="math notranslate nohighlight">\(\log\tau\)</span> of the model</p>
+</dd>
+<dt><strong>B</strong><span class="classifier">float, optional</span></dt><dd><p>Value of the magnetic field in the deepest layer. Default: 0</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>out</strong> – Interpolated numy array with a random temperature atmosphere</p>
+<dd class="field-even"><dl class="simple">
+<dt><strong>out</strong><span class="classifier">numpy array</span></dt><dd><p>Interpolated numy array with a random temperature atmosphere</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy array</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -434,16 +469,23 @@ document.write(`
 <dd><p>Performs the synthesis of all the models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>config</strong> (<em>dict</em>) – Dcitionary with config information</p></li>
-<li><p><strong>rank</strong> (<em>int</em>) – Number of this process</p></li>
-<li><p><strong>comm</strong> (<em>Intracomm</em>) – Communicator from MPI</p></li>
-<li><p><strong>size</strong> (<em>int</em>) – Number of processes</p></li>
-<li><p><strong>MPI</strong> (<em>library</em>) – Library MPI</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dcitionary with config information</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt><strong>rank</strong><span class="classifier">int</span></dt><dd><p>Number of this process</p>
+</dd>
+<dt><strong>comm</strong><span class="classifier">Intracomm</span></dt><dd><p>Communicator from MPI</p>
+</dd>
+<dt><strong>size</strong><span class="classifier">int</span></dt><dd><p>Number of processes</p>
+</dd>
+<dt><strong>MPI</strong><span class="classifier">library</span></dt><dd><p>Library MPI</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -462,6 +504,15 @@ document.write(`
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="preprocess.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Preprocess</p>
+      </div>
+    </a>
 </div>
                 </footer>
               

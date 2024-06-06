@@ -45,8 +45,6 @@ Data Preprocessing
 +============+===============================================================================+
 | preprocess | Determines whether data is preprocessed (1) or not (0)                        |
 +------------+-------------------------------------------------------------------------------+
-| cube       | Data cube name used for preprocessing data                                    |
-+------------+-------------------------------------------------------------------------------+
 | instrument | Name of the instrument used (GRIS,Hinode or empty) to use predefined range    |
 +------------+-------------------------------------------------------------------------------+
 | quiet_sun  | Rectangle area used for normalisation and spectral veil correction            |
@@ -55,10 +53,14 @@ Data Preprocessing
 +------------+-------------------------------------------------------------------------------+
 | shift_wave | Shift the wavelength array by this value to correct for shifts                |
 +------------+-------------------------------------------------------------------------------+
+| save_cube  | Save the preprocessed data (merged and normalised data cube) (1 or 0)         |
++------------+-------------------------------------------------------------------------------+
 
 Notes:
-- When you use the instrument `GRIS` the spectral veil and the normalisation is done in the range [15640.5, 15643] which can be changed in the script `definitions.py`.
-- When you use the instrument `Hinode`, there will be no spectral veil correction and for the normalisation the range [6301, 6301.072] is used.
+- When you use the instrument `GRIS` the spectral veil and the normalisation is done in the range [15640.5, 15643] which can be changed in the script `definitions.py`. Consider adding another instrument called e.g. 'GRIS1' and add the wavelength range you want in case you do not consider data in the range 15600.
+- When you use the instrument `Hinode`, the normalisation is done in the range [6301, 6301.072]. This can be changed in the script 'definitions.py
+- When `fts_file` does not have an entry, no spectral veil correction is used.
+- To select the fits files, use the flag '-dir [path to fits files]'  when you execute the main script.
 
 
 Inversion configuration

@@ -31,9 +31,9 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.autodoc',
     'sphinx.ext.graphviz',
-    'sphinx.ext.autosummary',
+#    'sphinx.ext.autosummary',
     'sphinx_math_dollar',
-    'sphinx.ext.napoleon',
+#    'sphinx.ext.napoleon',
     'numpydoc',
     'sphinx.ext.linkcode'
 ]
@@ -46,7 +46,7 @@ def linkcode_resolve(domain, info):
     filename = info['module'].replace('.', '/')
     return "https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/%s.py" % filename
 
-autosummary_generate = True
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -81,3 +81,4 @@ import sys
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix() + "/src")
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix() + "/src/plots")
 
+autosummary_generate = False

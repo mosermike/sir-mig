@@ -43,6 +43,8 @@
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sir" href="sir.html" />
+    <link rel="prev" title="Classes" href="classes.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -163,7 +165,7 @@
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
@@ -238,9 +240,7 @@ document.write(`
       
       
       
-        
-      
-      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -281,7 +281,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
+                    <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="api.html">
                         API
                       </a>
@@ -311,6 +311,28 @@ document.write(`
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Functions</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="sir.html">sir</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html">Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocess</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="simulation.html">Simulation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -344,6 +366,9 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page">Functions</li>
   </ul>
 </nav>
@@ -435,13 +460,13 @@ white space less</p></td>
 </table>
 <p>A full description of each function can be found <a class="reference internal" href="sir.html"><span class="doc">here</span></a>.</p>
 </section>
-<section id="module-create_config">
-<span id="create-config-py"></span><h2>create_config.py<a class="headerlink" href="#module-create_config" title="Link to this heading">#</a></h2>
+<section id="create-config-py">
+<h2>create_config.py<a class="headerlink" href="#create-config-py" title="Link to this heading">#</a></h2>
 <p>Function to create configuration files which can be executed directly from the terminal.
 The function asks questions which needs to be answered and creates then a config file.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="create_config.create_config">
-<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">create_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_config.create_config" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">create_config.</span></span><span class="sig-name descname"><span class="pre">create_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/create_config.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Creates a configuration file for the different modes</p>
 </dd></dl>
 
@@ -450,24 +475,44 @@ The function asks questions which needs to be answered and creates then a config
 <h2>model_atm.py<a class="headerlink" href="#model-atm-py" title="Link to this heading">#</a></h2>
 <p>Function to read a binary model file with all the physical parameter</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="model_atm.read_model">
-<span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.read_model" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Reads a binary or a .mod file. Expected are model information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Name of the file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>read_model</strong><span class="classifier">model_atm</span></dt><dd><p>Instance of the class model_atm. with the stored entries from the file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="profile-stk-py">
 <h2>profile_stk.py<a class="headerlink" href="#profile-stk-py" title="Link to this heading">#</a></h2>
 <p>Function to read a binary profile file with the four Stokes Parameter</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="profile_stk.read_profile">
-<span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.read_profile" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reads a profile and returns a class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – String with the filename</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file</strong><span class="classifier">str</span></dt><dd><p>String with the filename</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>class Profile</p>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>class Profile</dt><dd></dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -493,6 +538,24 @@ The function asks questions which needs to be answered and creates then a config
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="classes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Classes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="sir.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">sir</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -512,18 +575,9 @@ The function asks questions which needs to be answered and creates then a config
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sir-py">sir.py</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-create_config">create_config.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create_config.create_config"><code class="docutils literal notranslate"><span class="pre">create_config()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-atm-py">model_atm.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.read_model"><code class="docutils literal notranslate"><span class="pre">read_model()</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile-stk-py">profile_stk.py</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.read_profile"><code class="docutils literal notranslate"><span class="pre">read_profile()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-config-py">create_config.py</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-atm-py">model_atm.py</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profile-stk-py">profile_stk.py</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a></li>
 </ul>
   </nav></div>

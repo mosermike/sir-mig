@@ -28,6 +28,8 @@ filling_factor = 'fill'		# Generic start of the npy files with the filling facto
 best_guess_file = 'best_guess.bin'  # Name of the best guess model (best model is saved under this name) KEEP
 best_guess1_file = 'best_guess1.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
 best_guess2_file = 'best_guess2.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
+cube = 'data.bin' # Data cube from the fits files
+cube_norm = 'data_norm.bin' # Normalised data cube
 
 #####################
 # Synthesis Stuff   #
@@ -96,7 +98,7 @@ ll_relative = {
 #################
 # Miscellaneous	#
 #################
-# All defined instruments, add your instrument here if you want to add another one
+# All defined instruments, add your instrument here if you want to add another one. Add it at the end and not between the strings or at the start
 # Merge needs probably adaption. Especially where I noted ADAPT
 instruments = ["GRIS", "Hinode"]
 plt_lib = "" # Name for the matplotlib style sheet to plot if not the mml.mplstyle should be used, use the absolute path

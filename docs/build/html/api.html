@@ -44,7 +44,7 @@
     <link rel="icon" href="_static/SIR-MIG.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="create_config" href="generated/create_config.html" />
+    <link rel="next" title="Classes" href="classes.html" />
     <link rel="prev" title="Temperature" href="temperature.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -319,16 +319,17 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="generated/create_config.html">create_config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/sir.html">sir</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/model_atm.html">model_atm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/profile_stk.html">profile_stk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/preprocess.html">preprocess</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/plots.analysis.html">plots.analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/plots.Ic_test.html">plots.Ic_test</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/plots.result.html">plots.result</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/plots.visualizer.html">plots.visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generated/simulation.html">simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="functions.html">Functions</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="sir.html">sir</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html">Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocess</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="simulation.html">Simulation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
 </ul>
 </div>
 </nav></div>
@@ -385,40 +386,29 @@ document.write(`
                   
   <section id="api">
 <h1>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/create_config.html#module-create_config" title="create_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_config</span></code></a></p></td>
-<td><p>Function to create configuration files which can be executed directly from the terminal.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="sir.html#module-sir" title="sir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sir</span></code></a></p></td>
-<td><p>Miscellaneous Functions used throughout the code</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/model_atm.html#module-model_atm" title="model_atm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_atm</span></code></a></p></td>
-<td><p>Model</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/profile_stk.html#module-profile_stk" title="profile_stk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile_stk</span></code></a></p></td>
-<td><p>Profile</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="preprocess.html#module-preprocess" title="preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a></p></td>
-<td><p>Preprocessing</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="plots.html#module-plots.analysis" title="plots.analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots.analysis</span></code></a></p></td>
-<td><p>Analyses the quality of the Monte Carlo Simulation by computing the standard deviations</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="plots.html#module-plots.Ic_test" title="plots.Ic_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots.Ic_test</span></code></a></p></td>
-<td><p>Plots the result of the SIR inversion</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="plots.html#module-plots.result" title="plots.result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots.result</span></code></a></p></td>
-<td><p>Plots the result of the SIR inversion</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="plots.html#module-plots.visualizer" title="plots.visualizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots.visualizer</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="simulation.html#module-simulation" title="simulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulation</span></code></a></p></td>
-<td><p>Simulation</p></td>
-</tr>
-</tbody>
-</table>
+<p>#   create_config
+#   sir
+#   model_atm
+#   profile_stk
+#   preprocess
+#   plots.analysis
+#   plots.Ic_test
+#   plots.result
+#   plots.visualizer
+#   simulation</p>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inversion.html">Inversion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Simulation</a></li>
+</ul>
+</div>
+</section>
 </section>
 
 
@@ -441,11 +431,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="generated/create_config.html"
+       href="classes.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">create_config</p>
+        <p class="prev-next-title">Classes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -458,6 +448,18 @@ document.write(`
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

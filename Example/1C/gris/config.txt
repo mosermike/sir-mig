@@ -15,6 +15,7 @@ instrument : GRIS # Instrument used (GRIS, Hinode or empty)
 quiet_sun : xmin,xmax,ymin,ymax # Quiet sun region for normalization as a list (0 => already normalised)
 fts_file : path to fts file # Absolute path to fts file, blank = do not correct spectral veil
 shift_wave : 0 # Shift the wavelength grid when waves file is created in mA
+save_cube : 0 # Save preprocessed data (merged and normalised) (1=True,0=False)
 # 
 # Inversion configuration
 # 

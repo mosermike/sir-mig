@@ -24,6 +24,7 @@ def help():
 	sir.option("-dir:","Merge data with the files in this directory (if not set, data is not merged) [Only in mode 1C and 2C]")
 	sir.option("-end:","Ending for GRIS data (001,002,...) [Only in mode 1C and 2C]")
 	sir.option("-save:","Additional savepath for plots from spectral veil correction, ending with / [Only in mode 1C and 2C]")
+	sir.option("-d", "Save each created data cube (merged and normalised)")
 	sir.option("--no-create","Do not create models [Only in mode MC]")
 	sir.option("--no-syn","Do not perform the synthesis [Only in mode MC]")
 	sir.option("--no-noise","Do not add noise [Only in mode MC]")
@@ -79,22 +80,21 @@ def main():
 						ends = "001"
 					else:
 						ends = ''
-					preprocess.merge(conf, Dir, ends)
+					pro = preprocess.merge(conf, Dir, ends)
 
 				######################
 				# NORMALISE THE DATA #
 				######################
-				preprocess.normalise(conf)
+				pro = preprocess.normalise(conf, pro)
 				
 				#########################
 				# CORRECT SPECTRAL VEIL #
 				#########################
 				if conf['fts_file'] != '':
-					preprocess.correct_spectral_veil(conf)
-				elif not exists(os.path.join(conf['path'],conf['cube_inv'])) and len(conf['quiet_sun']) > 1:
-					import shutil
-					import definitions as d
-					shutil.copy(os.path.join(conf['path'],conf['cube']).replace(".bin","") + d.end_norm, os.path.join(conf['path'],conf['cube_inv']))
+					preprocess.correct_spectral_veil(conf, pro)
+				elif not exists(os.path.join(conf['path'],conf['cube_inv'])):
+					print("-------> Saving data (this might take a while) ...")
+					pro.write(os.path.join(conf['path'],conf['cube_inv']))
 				else:
 					print("[main] No preprocessing steps are actually performed. Is 'preprocess=1' really needed in the config file?")
 

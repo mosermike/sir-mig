@@ -425,26 +425,28 @@ document.write(`
 <tr class="row-even"><td><p>preprocess</p></td>
 <td><p>Determines whether data is preprocessed (1) or not (0)</p></td>
 </tr>
-<tr class="row-odd"><td><p>cube</p></td>
-<td><p>Data cube name used for preprocessing data</p></td>
-</tr>
-<tr class="row-even"><td><p>instrument</p></td>
+<tr class="row-odd"><td><p>instrument</p></td>
 <td><p>Name of the instrument used (GRIS,Hinode or empty) to use predefined range</p></td>
 </tr>
-<tr class="row-odd"><td><p>quiet_sun</p></td>
+<tr class="row-even"><td><p>quiet_sun</p></td>
 <td><p>Rectangle area used for normalisation and spectral veil correction</p></td>
 </tr>
-<tr class="row-even"><td><p>fts_file</p></td>
+<tr class="row-odd"><td><p>fts_file</p></td>
 <td><p>File with FTS data to correct for spectral veil in the defined wavelengths</p></td>
 </tr>
-<tr class="row-odd"><td><p>shift_wave</p></td>
+<tr class="row-even"><td><p>shift_wave</p></td>
 <td><p>Shift the wavelength array by this value to correct for shifts</p></td>
+</tr>
+<tr class="row-odd"><td><p>save_cube</p></td>
+<td><p>Save the preprocessed data (merged and normalised data cube) (1 or 0)</p></td>
 </tr>
 </tbody>
 </table>
 <p>Notes:
-- When you use the instrument <cite>GRIS</cite> the spectral veil and the normalisation is done in the range [15640.5, 15643] which can be changed in the script <cite>definitions.py</cite>.
-- When you use the instrument <cite>Hinode</cite>, there will be no spectral veil correction and for the normalisation the range [6301, 6301.072] is used.</p>
+- When you use the instrument <cite>GRIS</cite> the spectral veil and the normalisation is done in the range [15640.5, 15643] which can be changed in the script <cite>definitions.py</cite>. Consider adding another instrument called e.g. ‘GRIS1’ and add the wavelength range you want in case you do not consider data in the range 15600.
+- When you use the instrument <cite>Hinode</cite>, the normalisation is done in the range [6301, 6301.072]. This can be changed in the script ‘definitions.py
+- When <cite>fts_file</cite> does not have an entry, no spectral veil correction is used.
+- To select the fits files, use the flag ‘-dir [path to fits files]’  when you execute the main script.</p>
 </section>
 <section id="inversion-configuration">
 <h3>Inversion configuration<a class="headerlink" href="#inversion-configuration" title="Link to this heading">#</a></h3>

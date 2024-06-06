@@ -54,8 +54,8 @@ class model_atm:
 	-------
 	None
 
-
 	"""
+	
 	def __init__(self, nx = 0, ny = 0, nval = 0):
 		"""
 
@@ -677,6 +677,19 @@ class model_atm:
 		return self
 
 def read_model(filename):
+	"""
+	Reads a binary or a .mod file. Expected are model information
+
+	Parameters
+	----------
+	filename : str
+		Name of the file
+	
+	Returns
+	-------
+	read_model : model_atm
+		Instance of the class model_atm. with the stored entries from the file
+	"""
 	mod = model_atm(0,0,0)
 	if ".mod" in filename:
 		mod.read_mod(filename)

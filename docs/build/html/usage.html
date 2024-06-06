@@ -387,14 +387,14 @@ document.write(`
 <p>Then, create a config file by executing
 .. code-block:: console</p>
 <blockquote>
-<div><p>(.venv) $ python [code location]/src/create_config.py</p>
+<div><p>(.venv) $ python src/create_config.py</p>
 </div></blockquote>
 <p>where several questions will be asked to create a config file which defines what the code will do. Copy or create all necessary files for the sir inversion (sir.x, abundance file, lines file, model file)</p>
 <p>A description for the different options in the configuration files can be found <a class="reference internal" href="config.html"><span class="doc">here</span></a></p>
 <p>Afterwards, perform the main program by executing
 .. code-block:: console</p>
 <blockquote>
-<div><p>(.venv) $ mpirun -np [num] python [code location]/src/main.py [config file] -dir [path to l1 data]</p>
+<div><p>(.venv) $ mpirun -np [num] python src/main.py [config file] -dir [path to l1 data]</p>
 </div></blockquote>
 <p>Use the ‘-h’ flag to print a help for the script ‘main.py’.</p>
 </section>
@@ -403,13 +403,13 @@ document.write(`
 <p>Then, create a config file by executing
 .. code-block:: console</p>
 <blockquote>
-<div><p>(.venv) $ python [code location]/src/create_config.py</p>
+<div><p>(.venv) $ python src/create_config.py</p>
 </div></blockquote>
 <p>where several questions will be asked to create a config file which defines what the code will do.</p>
 <p>Afterwards, one can start the simulation by performing
 .. code-block:: console</p>
 <blockquote>
-<div><p>(.venv) $ mpirun -np [num] python [code location]/src/main.py [config file]</p>
+<div><p>(.venv) $ mpirun -np [num] python src/main.py [config file]</p>
 </div></blockquote>
 <p>Use the ‘-h’ flag to print a help for the script ‘main.py’.</p>
 </section>

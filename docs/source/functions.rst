@@ -59,6 +59,7 @@ create_config.py
 
 .. automodule:: create_config
   :members:
+  :no-index:
 
 model_atm.py
 ------------
@@ -66,7 +67,7 @@ model_atm.py
 Function to read a binary model file with all the physical parameter
 
 .. autofunction:: model_atm.read_model
-
+  :no-index:
 
 profile_stk.py
 --------------
@@ -74,7 +75,7 @@ profile_stk.py
 Function to read a binary profile file with the four Stokes Parameter
 
 .. autofunction:: profile_stk.read_profile
-
+  :no-index:
 
 Contents
 --------

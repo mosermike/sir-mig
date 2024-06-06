@@ -5,7 +5,12 @@ Classes
    :members:
 
 .. autoclass:: model_atm.model_atm
-   :members: 
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 .. autoclass:: profile_stk.profile_stk
    :members:
+
+
+

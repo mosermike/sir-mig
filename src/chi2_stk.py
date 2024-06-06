@@ -173,8 +173,8 @@ class chi2_stk:
 		ny : int
 			Dimension in y
 
-		Return
-		------
+		Returns
+		-------
 		None
 		
 		"""
@@ -203,8 +203,8 @@ class chi2_stk:
 		more spectra considered, $\Lambda$ may be multiplied with the number of pixels and number of used Stokes Parameter.
 		Obviously, also more summations must be considered.
 
-		Parameter
-		---------
+		Parameters
+		----------
 		obs : profile_stk
 			Observations
 		syn : profile_stk
@@ -256,6 +256,7 @@ class chi2_stk:
 			Name of the binary file
 		fmt_type : type
 			Type of the fortran file
+			
 		"""
 		f = FortranFile(fname, 'r')
 		first_rec = f.read_record(dtype=fmt_type)

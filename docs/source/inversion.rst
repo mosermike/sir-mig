@@ -1,3 +1,5 @@
+Inversion
+=========
 
 .. automodule:: inversion
 	:members:
