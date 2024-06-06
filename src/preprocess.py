@@ -531,13 +531,13 @@ def correct_spectral_veil(conf, pro):
 			#	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
 			#else:
 			#	print(f"[ERROR] File {conf['cube_inv']} is not created. Are there data in the selected path?")
-		pro.write(os.path.join(conf["path"], conf["cube_inv"]))
+		pro.write(os.path.join(conf["path"], conf["cube"]))
 		
 		del pro
 		return
 	
 	print("[STATUS] Correct spectral veil ...")
-	if exists(os.path.join(conf['path'],conf['cube_inv'])):
+	if exists(os.path.join(conf['path'],conf['cube'])):
 		temp = ''
 		print("[WARN] The data cube used for the inversion already exists and spectral veil correction is selected.")
 		while temp != 'y' and temp != 'n':
@@ -772,6 +772,6 @@ def correct_spectral_veil(conf, pro):
 	
 
 	print("-------> Saving data (this might take a while) ...")
-	stokes.write(os.path.join(conf['path'],conf['cube_inv']))
+	stokes.write(os.path.join(conf['path'],conf['cube']))
 
 	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
