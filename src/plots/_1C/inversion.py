@@ -1,13 +1,11 @@
 """
 Plots the result of the SIR synthesis
 """
-
-print('NEEDS TO BE REVISED')
 import numpy as np 
 import sys, os
 sys.path.append(sys.path[0] + "/../..")
 sys.path.append(sys.path[0] + "/../../tools")
-import sir, obs
+import sir
 import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists
@@ -100,27 +98,24 @@ def inversion(conf, x, y):
 
 	path = conf["path"]
 	Map = conf['map']
-	waves = np.load(os.path.join(path, conf['waves']))
-	waves_inv = np.load(os.path.join(path,conf['inv_out']) + d.end_wave)
-	range_wave1 = sir.angstrom_to_pixel(waves, conf['range_wave'])
-	range_wave2 = sir.angstrom_to_pixel(waves_inv, conf['range_wave'])
-	phy = np.load(os.path.join(path, conf["inv_out"] + d.end_models))[x - Map[0],y - Map[2]]    # Inversion Models
-	err = np.load(os.path.join(path, conf["inv_out"] + d.end_errors))[x - Map[0],y - Map[2]]    # Inversion Errors
-	obs1 = obs.load_data(conf, filename=conf['cube_inv'])[x, y]  # Observation Profiles
-	fit = np.load(os.path.join(path, conf["inv_out"] + d.end_stokes))[x - Map[0],y - Map[2]]   # Inversion Profiles
+	
+	
+	phy = m.read_model(os.path.join(path, conf["inv_out"] + d.end_models))#[x - Map[0],y - Map[2]]    # Inversion Models
+	err = m.read_model(os.path.join(path, conf["inv_out"] + d.end_errors))#[x - Map[0],y - Map[2]]    # Inversion Errors
+	obs1 = p.read_profile(os.path.join(conf['path'],conf['cube']))#[x, y]  # Observation Profiles
+	fit = p.read_profile(os.path.join(path, conf["inv_out"] + d.end_stokes))#[x - Map[0],y - Map[2]]   # Inversion Profiles
+
+	obs1.cut_to_map(conf['map'])
+	#obs1.cut_to_stokes(conf['range_wave'])
 
 	instrument = conf["instrument"] # Instrument used for labels
 
 	# Observation from synthesis
-	I, Q, U, V = obs1[0], obs1[1], obs1[2], obs1[3]
+	I, Q, U, V = obs1.stki[x - Map[0],y - Map[2]], obs1.stkq[x - Map[0],y - Map[2]], obs1.stku[x - Map[0],y - Map[2]], obs1.stkv[x - Map[0],y - Map[2]]
 	
 	# Load fit data
-	I_fit, Q_fit, U_fit, V_fit = fit[0], fit[1], fit[2], fit[3]
-	ll = np.copy(waves)
-
-	# vlos in km /s
-	phy[5] = phy[5]/1e5
-	err[5] = err[5]/1e5
+	I_fit, Q_fit, U_fit, V_fit = fit.stki[x - Map[0],y - Map[2]], fit.stkq[x - Map[0],y - Map[2]], fit.stku[x - Map[0],y - Map[2]], fit.stkv[x - Map[0],y - Map[2]]
+	ll = np.copy(obs1.wave)
 
 	# Additional savepath
 	savepath = ''
@@ -164,24 +159,6 @@ def inversion(conf, x, y):
 			ll -= float(temp)
 			label_x = temp
 
-	# Delete not fitted part
-	ll_temp = np.copy(ll)
-	I_temp = np.copy(I_fit)
-	Q_temp = np.copy(Q_fit)
-	U_temp = np.copy(U_fit)
-	V_temp = np.copy(V_fit)
-	ll_fit = []
-	I_fit = []
-	Q_fit = []
-	U_fit = []
-	V_fit = []
-	for i in range(len(range_wave2)):
-		ll_fit.append(ll_temp[range_wave2[i][0]:range_wave2[i][1]+1])
-		I_fit.append(I_temp[range_wave2[i][0]:range_wave2[i][1]+1])
-		Q_fit.append(Q_temp[range_wave2[i][0]:range_wave2[i][1]+1])
-		U_fit.append(U_temp[range_wave2[i][0]:range_wave2[i][1]+1])
-		V_fit.append(V_temp[range_wave2[i][0]:range_wave2[i][1]+1])
-
 	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"] # Get colors used in the actual cycle
 
 	########################
@@ -210,15 +187,15 @@ def inversion(conf, x, y):
 	ax3.plot(ll, U, "-", alpha=0.5, color=colors[0])
 	ax4.plot(ll, V, "-", alpha=0.5, color=colors[0])
 
-	for i in range(len(ll_fit)):
+	for i in range(len(ll)):
 		if i > 0:
 			label1 = '_'
 		else:
 			label1= "Best Fit"
-		ax1.plot(ll_fit[i], I_fit[i], "-", label=label1, color=colors[1])
-		ax2.plot(ll_fit[i], Q_fit[i], "-", label=label1, color=colors[1])
-		ax3.plot(ll_fit[i], U_fit[i], "-", label=label1, color=colors[1])
-		ax4.plot(ll_fit[i], V_fit[i], "-", label=label1, color=colors[1])
+		ax1.plot(fit.wave[i], I_fit[i], "-", label=label1, color=colors[1])
+		ax2.plot(fit.wave[i], Q_fit[i], "-", label=label1, color=colors[1])
+		ax3.plot(fit.wave[i], U_fit[i], "-", label=label1, color=colors[1])
+		ax4.plot(fit.wave[i], V_fit[i], "-", label=label1, color=colors[1])
 
 	# Set xlimits
 	ax1.set_xlim(xlim)
@@ -250,10 +227,6 @@ def inversion(conf, x, y):
 			xtitle1 = 0.41
 		else:
 			xtitle1 = 0.5
-		if instrument == "GRIS":
-			fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle1)
-		elif instrument == "Hinode":
-			fig.suptitle("Visible Lines", y=0.98, x=xtitle1)
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle1)
 		elif title is not None:
@@ -263,10 +236,6 @@ def inversion(conf, x, y):
 	# Set Legend and Limits #
 	#########################
 	if "-vertical" in sys.argv:
-		# ax1.set_ylim(0.9*np.min(np.abs(np.append(I,I_fit))), 1.1*np.max(np.abs(np.append(I,I_fit))))
-		# ax2.set_ylim(-1.1*np.max(np.abs(np.append(Q,Q_fit))), 1.1*np.max(np.abs(np.append(Q,Q_fit))))
-		# ax3.set_ylim(-1.1*np.max(np.abs(np.append(U,U_fit))), 1.1*np.max(np.abs(np.append(U,U_fit))))
-		# ax4.set_ylim(-1.1*np.max(np.abs(np.append(V,V_fit))), 1.1*np.max(np.abs(np.append(V,V_fit))))
 		ax1.legend(bbox_to_anchor=(1.01, 0.95))
 		# set the spacing between subplots
 		plt.tight_layout(pad=2, h_pad=0.0)
@@ -303,14 +272,14 @@ def inversion(conf, x, y):
 			ax1.scatter([], [], color="w", alpha=0, label=add_label)
 
 			# Plot
-			ax1.plot(phy[0], phy[index[i]], label="Best Fit Model", color='#FF2C00')
+			ax1.plot(phy.tau, phy.get_attribute(inputs[i][1:]), label="Best Fit Model", color='#FF2C00')
 
 			# Error of fit
-			ax1.fill_between(phy[0], phy[index[i]] - err[index[i]], phy[index[i]] + err[index[i]], alpha=0.5,
+			ax1.fill_between(phy.tau, phy.get_attribute(inputs[i][1:]) - err.get_attribute(inputs[i][1:]), phy.get_attribute(inputs[i][1:]) + err.get_attribute(inputs[i][1:]), alpha=0.5,
 								color='#FF2C00', lw=0)
 
 			# Set xlimits
-			ax1.set_xlim(phy[0][0], phy[0][-1])
+			ax1.set_xlim(phy.tau[0], phy.tau[-1])
 
 			# Set labels
 			ax1.set_xlabel(r"$\log \tau_{500}$")
@@ -328,13 +297,8 @@ def inversion(conf, x, y):
 			plt.savefig(savepath + "inversion_" + str(inputs[i][1:]) + f"_{x}_{y}" + add)
 		
 	# Plot T,B,vlos, inc in one figure
-	lim_max = phy[0, -1]
-	if lim_max < -3:
-		lim_max = -3
-		# Cut data so that the plot limits are adjusted to the shorted range
-		n = np.where(phy[0] < -3)[0][0]
-		err = err[:, 0:n]
-		phy = phy[:, 0:n]
+	phy.set_limit(-3)
+	err.set_limit(-3)
 	if "-vertical" in sys.argv:
 		fig, (ax1, ax2, ax3, ax4) = plt.subplots(4,1, figsize=(12, 16), sharex=True,
 													gridspec_kw=dict(hspace=0))
@@ -343,22 +307,25 @@ def inversion(conf, x, y):
 		fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), sharex=True)
 
 	llabel = "Best Fit"
-	ax1.plot(phy[0], phy[1], label=llabel, color='#FF2C00')
-	ax2.plot(phy[0], phy[4], label=llabel, color='#FF9500')
-	ax3.plot(phy[0], phy[5], label=llabel, color='#474747')
-	ax4.plot(phy[0], phy[6], label=llabel, color='#C20078')
+	x = x - Map[0]
+	y = y - Map[2]
 
-	ax1.fill_between(phy[0], phy[1] - err[1], phy[1] + err[1], alpha=0.5, color='#FF2C00', lw=0)
-	ax2.fill_between(phy[0], phy[4] - err[4], phy[4] + err[4], alpha=0.5, color='#FF9500', lw=0)
-	ax3.fill_between(phy[0], phy[5] - err[5], phy[5] + err[5], alpha=0.5, color='#474747', lw=0)
-	ax4.fill_between(phy[0], phy[6] - err[6], phy[6] + err[6], alpha=0.5, color='#C20078', lw=0)
+	ax1.plot(phy.tau, phy.T[x,y], label=llabel, color='#FF2C00')
+	ax2.plot(phy.tau, phy.B[x,y], label=llabel, color='#FF9500')
+	ax3.plot(phy.tau, phy.vlos[x,y], label=llabel, color='#474747')
+	ax4.plot(phy.tau, phy.gamma[x,y], label=llabel, color='#C20078')
+
+	ax1.fill_between(phy.tau, phy.T[x,y] - err.T[x,y], phy.T[x,y] + err.T[x,y], alpha=0.5, color='#FF2C00', lw=0)
+	ax2.fill_between(phy.tau, phy.B[x,y] - err.B[x,y], phy.B[x,y] + err.B[x,y], alpha=0.5, color='#FF9500', lw=0)
+	ax3.fill_between(phy.tau, phy.vlos[x,y] - err.vlos[x,y], phy.vlos[x,y] + err.vlos[x,y], alpha=0.5, color='#474747', lw=0)
+	ax4.fill_between(phy.tau, phy.gamma[x,y] - err.gamma[x,y], phy.gamma[x,y] + err.gamma[x,y], alpha=0.5, color='#C20078', lw=0)
 	#################
 	# Set limits	#
 	#################
-	ax1.set_xlim(phy[0][0], lim_max)
-	ax2.set_xlim(phy[0][0], lim_max)
-	ax3.set_xlim(phy[0][0], lim_max)
-	ax4.set_xlim(phy[0][0], lim_max)
+	ax1.set_xlim(phy.tau[0], -3)
+	ax2.set_xlim(phy.tau[0], -3)
+	ax3.set_xlim(phy.tau[0], -3)
+	ax4.set_xlim(phy.tau[0], -3)
 
 	Min, Max = ax2.get_ylim()
 	ax2.set_ylim(Min, Max*1.15)
@@ -399,10 +366,6 @@ def inversion(conf, x, y):
 			xtitle2 = 0.51
 		else:
 			xtitle2 = 0.55
-		if instrument == "GRIS":
-			fig.suptitle("Near-Infrared Lines", y=0.98, x=xtitle2)
-		elif instrument == "Hinode":
-			fig.suptitle("Visible Lines", y=0.98, x=xtitle2)
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle2)
 

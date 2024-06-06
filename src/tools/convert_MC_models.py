@@ -1,15 +1,15 @@
 import numpy as np
 import sys
-sys.path(sys.path[0]+"/../")
+sys.path.append(sys.path[0]+"/../")
 import model_atm as m
 # Convert old version to new version of SIR-MIG-MC of the models
 # 1st argument: first file
-# 3rd argument: destination
+# 2nd argument: destination
 
 
-data = np.load(sys.argv[0])
+data = np.load(sys.argv[1])
 
-mod = m.Model(data.shape[0],data.shape[1], data.shape[3])
+mod = m.model_atm(data.shape[0],data.shape[1], data.shape[3])
 
 mod.tau = data[0,0,0,:]
 mod.T = data[:,:,1]
@@ -25,4 +25,4 @@ mod.rho = data[:, :, 10]
 mod.fill += 1
 mod.vmacro += 0.1
 
-mod.write(sys.argv[1])
+mod.write(sys.argv[2])

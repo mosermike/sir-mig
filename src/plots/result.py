@@ -610,7 +610,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	#	Plot settings for arcsecond	#
 	####################################
 	if "-arc" in sys.argv:
-		infos = dict(np.loadtxt(os.path.join(path, d.header_infos), delimiter='=', dtype=str))
+		infos = dict(np.genfromtxt("infos.txt",dtype='str', delimiter="="), dtype=str)
 		if conf['instrument'] == 'GRIS':
 			# y position starts at the end but I start with the pixels lower left
 			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
@@ -628,10 +628,10 @@ def result_1C(conf, wave, tau, waveV = -1):
 			y_max = y_pos + ((I2.shape[1]-1) - infos['CRPIX2']) * delta_y # Used for flipx
 
 			Map_plot = [
-				(Map[0]-1) * delta_x + x_pos,
-				(Map[1]-1) * delta_x + x_pos,
-				(Map[2]-1 - infos['CRPIX2']) * delta_y + y_pos,
-			    (Map[3]-1 - infos['CRPIX2']) * delta_y + y_pos
+				(Map[0]) * delta_x + x_pos,
+				(Map[1]) * delta_x + x_pos,
+				(Map[2] - infos['CRPIX2']) * delta_y + y_pos,
+			    (Map[3] - infos['CRPIX2']) * delta_y + y_pos
 			]
 	else:
 		Map_plot = Map
@@ -1312,7 +1312,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	#	Plot settings for arcsecond	#
 	####################################
 	if "-arc" in sys.argv:
-		infos = dict(np.loadtxt(os.path.join(path, d.header_infos), delimiter='=', dtype=str))
+		infos = dict(np.genfromtxt("infos.txt",dtype='str', delimiter="="), dtype=str)
 		if conf['instrument'] == 'GRIS':
 			# y position starts at the end but I start with the pixels lower left
 			y_pos = float(infos['CRVAL2']) + (stokes.shape[1] - 1) * float(infos['CDELT2'])
@@ -1329,10 +1329,10 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			y_pos = float(infos['YCEN'])
 			y_max = y_pos + ((stokes.shape[1] - 1) - infos['CRPIX2']) * delta_y  # Used for flipx
 			Map_plot = [
-				(Map[0] - 1) * delta_x + x_pos,
-				(Map[1] - 1) * delta_x + x_pos,
-				(Map[2] - 1 - infos['CRPIX2']) * delta_y + y_pos,
-				(Map[3] - 1 - infos['CRPIX2']) * delta_y + y_pos
+				(Map[0]) * delta_x + x_pos,
+				(Map[1]) * delta_x + x_pos,
+				(Map[2] - infos['CRPIX2']) * delta_y + y_pos,
+				(Map[3] - infos['CRPIX2']) * delta_y + y_pos
 			]
 	else:
 		Map_plot = Map
