@@ -68,13 +68,19 @@ def scatter_data(conf, comm, rank, size, return_stk=False):
 			stk1.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
 			stk1.cut_to_map(conf["map"]) # Cut to the map
 
-			
+			stki = np.copy(stk1.stki)
+			stkq = np.copy(stk1.stkq)
+			stku = np.copy(stk1.stku)
+			stkv = np.copy(stk1.stkv)
 			# Create one data cube
-			stki = np.copy(stk1.stki).reshape(-1, stk1.nw) # Flatten Stokes I corresponding to the tasks list
-			stkq = np.copy(stk1.stkq).reshape(-1, stk1.nw) # Flatten Stokes Q corresponding to the tasks list
-			stku = np.copy(stk1.stku).reshape(-1, stk1.nw) # Flatten Stokes U corresponding to the tasks list
-			stkv = np.copy(stk1.stkv).reshape(-1, stk1.nw) # Flatten Stokes V corresponding to the tasks list		
+			stki = stki.reshape(-1, stk1.nw) # Flatten Stokes I corresponding to the tasks list
+			stkq = stkq.reshape(-1, stk1.nw) # Flatten Stokes Q corresponding to the tasks list
+			stku = stku.reshape(-1, stk1.nw) # Flatten Stokes U corresponding to the tasks list
+			stkv = stkv.reshape(-1, stk1.nw) # Flatten Stokes V corresponding to the tasks list		
+			
 			waves = np.copy(stk1.wave)
+
+			print(stk1.stki.shape)
 
 			if not return_stk:
 				del stk1 # Free Memory
