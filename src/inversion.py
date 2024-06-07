@@ -70,11 +70,11 @@ def scatter_data(conf, comm, rank, size, return_stk=False):
 
 			
 			# Create one data cube
-			stki = stk1.stki.reshape(-1, stk1.nw) # Flatten Stokes I corresponding to the tasks list
-			stkq = stk1.stkq.reshape(-1, stk1.nw) # Flatten Stokes Q corresponding to the tasks list
-			stku = stk1.stku.reshape(-1, stk1.nw) # Flatten Stokes U corresponding to the tasks list
-			stkv = stk1.stkv.reshape(-1, stk1.nw) # Flatten Stokes V corresponding to the tasks list		
-			waves = stk1.wave
+			stki = np.copy(stk1.stki).reshape(-1, stk1.nw) # Flatten Stokes I corresponding to the tasks list
+			stkq = np.copy(stk1.stkq).reshape(-1, stk1.nw) # Flatten Stokes Q corresponding to the tasks list
+			stku = np.copy(stk1.stku).reshape(-1, stk1.nw) # Flatten Stokes U corresponding to the tasks list
+			stkv = np.copy(stk1.stkv).reshape(-1, stk1.nw) # Flatten Stokes V corresponding to the tasks list		
+			waves = np.copy(stk1.wave)
 
 			if not return_stk:
 				del stk1 # Free Memory
