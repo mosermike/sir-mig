@@ -79,7 +79,7 @@ def _help():
 	sir.option("-arc:","Print x and y axis in arcseconds")
 	sir.option("-flipx:","Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun")
 	sir.option("-swapx:","Swap the x axis")
-	sir.option("-f [float]","Factor for the fontsizes (if not used: 1.8)")
+	sir.option("-f [float]","Factor for the fontsizes")
 
 	sys.exit()
 
@@ -349,7 +349,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	-swapx
 		Swap the x axis
 	-f [float]
-		Factor for the fontsizes (if not used: 1.8)
+		Factor for the fontsizes
 
 	"""
 
@@ -602,11 +602,28 @@ def result_1C(conf, wave, tau, waveV = -1):
 		alpha = I2.shape[0] / 12
 		figsize = [I2.shape[0] / alpha , I2.shape[1]/alpha-1]
 		frac = figsize[1] / figsize[0]
+		if "-f" in sys.argv:
+			f = float(sys.argv[sys.argv.index("-f")+1])
+		else:
+			f = 1.2
 	else: # for 2x2 plot
 		alpha = I2.shape[0] / 12
 		figsize = [I2.shape[0] / alpha, I2.shape[1]/alpha]
 		frac = figsize[1] / figsize[0] * 1.25
+		if "-f" in sys.argv:
+			f = float(sys.argv[sys.argv.index("-f")+1])
+		else:
+			f = 0.65
 	
+	import matplotlib as mpl
+	mpl.rcParams["xtick.labelsize"] = 18*f
+	mpl.rcParams["ytick.labelsize"] = 18*f
+	mpl.rcParams["legend.fontsize"] = 16*f
+	mpl.rcParams["legend.title_fontsize"] = 16*f
+	mpl.rcParams["axes.titlesize"] = 18*f
+	mpl.rcParams["axes.labelsize"] = 20*f
+	mpl.rcParams["figure.titlesize"] = 24*f
+
 	####################################
 	#	Plot settings for arcsecond	#
 	####################################
@@ -666,18 +683,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
 		if (I2.shape[1] - I2.shape[0]) >= -100:
-			import matplotlib as mpl
-			if "-f" in sys.argv:
-				f = float(sys.argv[sys.argv.index("-f")+1])
-			else:
-				f = 1.2
-			mpl.rcParams["xtick.labelsize"] = 18*f
-			mpl.rcParams["ytick.labelsize"] = 18*f
-			mpl.rcParams["legend.fontsize"] = 16*f
-			mpl.rcParams["legend.title_fontsize"] = 16*f
-			mpl.rcParams["axes.titlesize"] = 18*f
-			mpl.rcParams["axes.labelsize"] = 20*f
-			mpl.rcParams["figure.titlesize"] = 24*f
+			
 
 			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
 													layout="compressed",
@@ -1088,7 +1094,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	-swapx
 		Swap the x axis
 	-f [float]
-		Factor for the fontsizes (if not used: 1.8)
+		Factor for the fontsizes
 
 	"""
 
@@ -1320,14 +1326,31 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	#########################
 	#  PLOTTING STUFF		#
 	#########################
-	if I2.shape[0] / I2.shape[1] >= 0.8:
+	if (I2.shape[1] - I2.shape[0]) >= -100:
 		alpha = I2.shape[0] / 12
 		figsize = [I2.shape[0] / alpha , I2.shape[1]/alpha-1]
 		frac = figsize[1] / figsize[0]
-	else:
-		alpha = I2.shape[1] / 18
-		figsize = [I2.shape[0] / alpha, I2.shape[1]/alpha-5]
+		if "-f" in sys.argv:
+			f = float(sys.argv[sys.argv.index("-f")+1])
+		else:
+			f = 1.2
+	else: # for 2x2 plot
+		alpha = I2.shape[0] / 12
+		figsize = [I2.shape[0] / alpha, I2.shape[1]/alpha]
 		frac = figsize[1] / figsize[0] * 1.25
+		if "-f" in sys.argv:
+			f = float(sys.argv[sys.argv.index("-f")+1])
+		else:
+			f = 0.65
+	
+	import matplotlib as mpl
+	mpl.rcParams["xtick.labelsize"] = 18*f
+	mpl.rcParams["ytick.labelsize"] = 18*f
+	mpl.rcParams["legend.fontsize"] = 16*f
+	mpl.rcParams["legend.title_fontsize"] = 16*f
+	mpl.rcParams["axes.titlesize"] = 18*f
+	mpl.rcParams["axes.labelsize"] = 20*f
+	mpl.rcParams["figure.titlesize"] = 24*f
 
 	####################################
 	#	Plot settings for arcsecond	#
@@ -1417,26 +1440,14 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			fig.subplots_adjust(hspace=0, wspace=0)
 		else:
 			if (I2.shape[1] - I2.shape[0]) >= -100:
-				import matplotlib as mpl
-				if "-f" in sys.argv:
-					f = float(sys.argv[sys.argv.index("-f")+1])
-				else:
-					f = 1.8
-				mpl.rcParams["xtick.labelsize"] = 18*f
-				mpl.rcParams["ytick.labelsize"] = 18*f
-				mpl.rcParams["legend.fontsize"] = 16*f
-				mpl.rcParams["legend.title_fontsize"] = 16*f
-				mpl.rcParams["axes.titlesize"] = 18*f
-				mpl.rcParams["axes.labelsize"] = 20*f
-				mpl.rcParams["figure.titlesize"] = 24*f
 				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-										layout="compressed",
-									)
+														layout="compressed",
+														)
+				
 			else:
 				fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 											layout="compressed",
 										)
-
 
 
 		############################
