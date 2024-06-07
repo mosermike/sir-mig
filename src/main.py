@@ -60,10 +60,9 @@ def main():
 	# PREPROCESS	#
 	#####################
 	if (conf['mode'] == "1C" or conf['mode'] == "2C") and rank == 0:
-		if rank == 0:
-			# Check for flags and print it out
-			if "--no-inv" in sys.argv:
-				print("-------> Flag 'no-inv' used")
+		# Check for flags and print it out
+		if "--no-inv" in sys.argv:
+			print("-------> Flag 'no-inv' used")
 		if conf['preprocess'] == "1":
 			import preprocess
 			print("[STATUS] Preprocess data")
