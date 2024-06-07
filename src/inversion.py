@@ -891,10 +891,6 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		if conf['chi2'] != "":
 			print("-------> Compute χ² ...")
 			
-			#obs = p.read_profile(os.path.join(path,conf["cube"]))
-			obs.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
-			obs.cut_to_map(conf["map"]) # Cut to the map
-
 			# Number of Nodes in the last step
 			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
 			
