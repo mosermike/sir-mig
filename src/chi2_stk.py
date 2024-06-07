@@ -144,6 +144,8 @@ class chi2_stk:
 		Total chi2 for Stokes U
 	Vtot : float
 		Total chi2 for Stokes V
+	tot : numpy.ndarray
+		chi2 for all 4 Stokes Parameter
 	stki : numpy.ndarray
 		chi2 for Stokes Parameter I
 	stkq : numpy.ndarray

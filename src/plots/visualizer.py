@@ -11,6 +11,7 @@ import definitions as d
 import signal
 import profile_stk as p
 import model_atm as m
+import chi2_stk as c
 
 def _signal_handling(signum,frame):
 	"""
@@ -47,8 +48,8 @@ def _help():
 	sir.option("-vmicro","Plot microturbulence in cm/s")
 	sir.option("-B","Plot magentic field strength in Gauss")
 	sir.option("-vlos","Plot line of sight velocity in km/s")
-	sir.option("-inc","Plot inclination in deg")
-	sir.option("-azi","Plot azimuth in deg")
+	sir.option("-gamma","Plot inclination in deg")
+	sir.option("-phi","Plot azimuth in deg")
 	sir.option("-z","Plot real height in km")
 	sir.option("-Pg","Plot gas pressure in dyn/cm^2")
 	sir.option("-rho","Plot density")
@@ -580,11 +581,12 @@ def visualizer_1C(conf, wave):
 	rand = int(np.random.uniform(0,100))
 
 	if use_model:
-		if "-chi" not in sys.argv:
-			chi2_inv = np.load(os.path.join(path,conf['chi2']))
-		else:
-			filename = sys.argv[sys.argv.index("-chi")+1]
-			chi2_inv = np.load(filename)
+		if '-chi2' in sys.ragv:
+			if "-chi" not in sys.argv:
+				chi2_inv = c.read_chi2(os.path.join(path,conf['chi2']))
+			else:
+				filename = sys.argv[sys.argv.index("-chi")+1]
+				chi2_inv = c.read_chi2(filename)
 
 		ind = np.argmin(abs(models_inv.tau - tau))
 		
@@ -594,7 +596,7 @@ def visualizer_1C(conf, wave):
 		###################################################
 
 		# Define labels and get from arguments which parameter should be plot
-		inputs = ["___","-T", '-Pe', '-vmicro', '-B', "-vlos", "-inc", "-azi", "-z", "-Pg","-rho","-chi2", "-Bz"]
+		inputs = ["___","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-chi2", "-Bz"]
 		labels = ["", "T [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", "B [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", "z [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$",r"$\chi^2$", r"$B \cdot \cos \gamma$ [G]"]
 		titles   = ["",r"Temperature T", r"Electron Pressure $\log P_e$",r"Microturbulence Velocity $\mathrm{v}_{\mathrm{micro}}$", r"Magnetic Field Strength B",
 					r"Line-of-Sight Velocity $\mathrm{v}_{\mathrm{los}}$",
@@ -614,7 +616,7 @@ def visualizer_1C(conf, wave):
 				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(tau))
 				if inputs[i] == '-chi2':
 					ax.set_title(titles[i])
-					im = ax.imshow(chi2_inv.transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)	
+					im = ax.imshow(chi2_inv.tot.transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)	
 				elif inputs[i] == '-Bz':
 					ax.set_title(titles[i])
 					im = ax.imshow((models_inv.B*np.cos(models_inv.gamma/180*np.pi)).transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)					
