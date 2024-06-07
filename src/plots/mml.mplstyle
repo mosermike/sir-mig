@@ -71,7 +71,7 @@ grid.linewidth : 1
 lines.linewidth : 2.
 
 # figure dpi
-savefig.dpi : 300
+savefig.dpi : 100
 savefig.format : pdf
 
 axes.titlepad: 10 

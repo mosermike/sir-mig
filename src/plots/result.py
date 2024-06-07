@@ -445,9 +445,12 @@ def result_1C(conf, wave, tau, waveV = -1):
 	if "-waveV" in sys.argv:
 		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
 		waveV = _check_range(stokes_inv.wave, waveV)
+	else:
+		waveV = wave
+	waveV_ind1 = np.argmin(abs(stokes.wave-waveV))
+	waveV_ind2 = np.argmin(abs(stokes_inv.wave-waveV))
 
-	if int(waveV) != -1:
-		waveV = _check_range(stokes_inv.wave, waveV)
+
 
 	if "-waveQ" in sys.argv:
 		waveQ = float(sys.argv[sys.argv.index("-waveQ")+1])
@@ -482,13 +485,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 	waves = stokes.wave
 	waves_inv = stokes_inv.wave
 
-	if waveV == -1:
-		waveV_ind1 = np.argmin(abs(waves-wave))
-		waveV_ind2 = np.argmin(abs(waves_inv-wave))
-	else:
-		waveV_ind1 = np.argmin(abs(waves-waveV))
-		waveV_ind2 = np.argmin(abs(waves_inv-waveV))
-		waveV = waves[waveV_ind1]
 	# Determine indexes for the wavelength
 	wave_ind1 = np.argmin(abs(waves-wave))
 	wave_ind2 = np.argmin(abs(waves_inv-wave))
@@ -602,13 +598,13 @@ def result_1C(conf, wave, tau, waveV = -1):
 	##############################################
 	#  Plot I, Q, U and V  at wave for obs		#
 	##############################################
-	if I2.shape[0] / I2.shape[1] >= 0.8:
+	if (I2.shape[1] - I2.shape[0]) >= -100:
 		alpha = I2.shape[0] / 12
 		figsize = [I2.shape[0] / alpha , I2.shape[1]/alpha-1]
 		frac = figsize[1] / figsize[0]
-	else:
-		alpha = I2.shape[0] / 18
-		figsize = [I2.shape[0] / alpha, I2.shape[1]/alpha-5]
+	else: # for 2x2 plot
+		alpha = I2.shape[0] / 12
+		figsize = [I2.shape[0] / alpha, I2.shape[1]/alpha]
 		frac = figsize[1] / figsize[0] * 1.25
 	
 	####################################
@@ -674,7 +670,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 			if "-f" in sys.argv:
 				f = float(sys.argv[sys.argv.index("-f")+1])
 			else:
-				f = 1.8
+				f = 1.2
 			mpl.rcParams["xtick.labelsize"] = 18*f
 			mpl.rcParams["ytick.labelsize"] = 18*f
 			mpl.rcParams["legend.fontsize"] = 16*f
@@ -688,6 +684,19 @@ def result_1C(conf, wave, tau, waveV = -1):
 													)
 			
 		else:
+			import matplotlib as mpl
+			if "-f" in sys.argv:
+				f = float(sys.argv[sys.argv.index("-f")+1])
+			else:
+				f = 0.65
+			mpl.rcParams["xtick.labelsize"] = 18*f
+			mpl.rcParams["ytick.labelsize"] = 18*f
+			mpl.rcParams["legend.fontsize"] = 16*f
+			mpl.rcParams["legend.title_fontsize"] = 16*f
+			mpl.rcParams["axes.titlesize"] = 18*f
+			mpl.rcParams["axes.labelsize"] = 20*f
+			mpl.rcParams["figure.titlesize"] = 24*f
+
 			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 										layout="compressed",
 									)
