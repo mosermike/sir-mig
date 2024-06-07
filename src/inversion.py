@@ -68,15 +68,11 @@ def scatter_data(conf, comm, rank, size, return_stk=False):
 			stk1.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
 			stk1.cut_to_map(conf["map"]) # Cut to the map
 
-			stki = np.copy(stk1.stki)
-			stkq = np.copy(stk1.stkq)
-			stku = np.copy(stk1.stku)
-			stkv = np.copy(stk1.stkv)
 			# Create one data cube
-			stki = stki.reshape(-1, stk1.nw) # Flatten Stokes I corresponding to the tasks list
-			stkq = stkq.reshape(-1, stk1.nw) # Flatten Stokes Q corresponding to the tasks list
-			stku = stku.reshape(-1, stk1.nw) # Flatten Stokes U corresponding to the tasks list
-			stkv = stkv.reshape(-1, stk1.nw) # Flatten Stokes V corresponding to the tasks list		
+			stki = np.copy(stk1.stki).reshape(-1, stk1.nw) # Flatten Stokes I corresponding to the tasks list
+			stkq = np.copy(stk1.stkq).reshape(-1, stk1.nw) # Flatten Stokes Q corresponding to the tasks list
+			stku = np.copy(stk1.stku).reshape(-1, stk1.nw) # Flatten Stokes U corresponding to the tasks list
+			stkv = np.copy(stk1.stkv).reshape(-1, stk1.nw) # Flatten Stokes V corresponding to the tasks list		
 			
 			waves = np.copy(stk1.wave)
 
@@ -699,9 +695,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	# Define parameters for easier understanding
 	path = conf["path"]
 	model = conf["model"]
-	
-	#output =  os.path.join(path,conf["inv_out"]) # Output file
-	cycles = conf['cycles'] # How many cycles
+
 	line_file = conf['line'] # line file
 
 	# Read inversion stuff
@@ -780,8 +774,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stk, tasks, obs = scatter_data(conf, comm, rank, size, True)
 	else:
 		stk, tasks = scatter_data(conf, comm, rank, size, False)
-	if rank == 0:
-		print(obs.stki.shape)
+
 	comm.barrier()
 	
 	# Write the control file with the information from the config file

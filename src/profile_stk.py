@@ -41,8 +41,8 @@ class profile_stk:
 		Dimension in wavelength
 	load : bool
 		Data was loaded
-	data_cut : bool
-		Data was cut to the inversion range
+	data_cut_wave : bool
+		Data was cut to the inversion range in the wavelength (this is necessary when data is written into a SIR profile file)
 
 	"""
 	def __init__(self, nx=None, ny = None, nw=0):
@@ -79,7 +79,8 @@ class profile_stk:
 		self.stku = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
 		self.stkv = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
 
-		self.data_cut = False
+		self._data_cut_map = False
+		self.data_cut_wave = False
 
 	def __read_grid(self, filename):
 		"""
@@ -161,7 +162,6 @@ class profile_stk:
 			Stokes V
 		"""
 		data = np.loadtxt(filename).transpose()
-		line = data[0].astype(int)
 		ll = data[1].astype(np.float32)
 		I  = data[2].astype(np.float32)
 		Q  = data[3].astype(np.float32)
@@ -217,6 +217,9 @@ class profile_stk:
 			List with the ranges in pixel in x and y direction
 
 		"""
+		if self._data_cut_map:
+			print("[cut_to_map] The data was already cut before!")
+
 		if((Map[1]-Map[0]+1) > self.stki.shape[0]):
 			print(f"[cut_to_map] The selected map region is too big! ({Map[1]-Map[0]+1} vs. {self.stki.shape[0]})")
 			return self
@@ -234,6 +237,7 @@ class profile_stk:
 		self.stku = self.stku[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
 		self.stkv = self.stkv[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
 		
+		self._data_cut_map = True
 		
 		return self
 
@@ -247,6 +251,9 @@ class profile_stk:
 			List with the ranges from the config file
 
 		"""
+		if self.data_cut_wave:
+			print("[cut_to_wave] The data was already cut before!")
+
 		# Number of wavelengths
 		temp = range_wave[:,2].astype(int)
 		nws = [0, temp[0]]
@@ -275,7 +282,7 @@ class profile_stk:
 		self.stkv = lstkv
 
 		self.nw = self.wave.shape[0]
-		self.data_cut = True
+		self.data_cut_wave = True
 		
 		return self
 	
@@ -597,7 +604,7 @@ class profile_stk:
 		None
 
 		"""
-		if not self.data_cut:
+		if not self.data_cut_wave:
 			print("[WARN] The data was not cut. Consider running Profile.cut_to_wave! Make sure that only data used in the inversion is loaded!")
 
 		# Load data from config
