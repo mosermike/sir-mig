@@ -79,6 +79,7 @@ def _help():
 	sir.option("-arc:","Print x and y axis in arcseconds")
 	sir.option("-flipx:","Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun")
 	sir.option("-swapx:","Swap the x axis")
+	sir.option("-f [float]","Factor for the fontsizes (if not used: 1.8)")
 
 	sys.exit()
 
@@ -345,6 +346,10 @@ def result_1C(conf, wave, tau, waveV = -1):
 		Print x and y axis in arcseconds
 	-flipx
 		Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+	-swapx
+		Swap the x axis
+	-f [float]
+		Factor for the fontsizes (if not used: 1.8)
 
 	"""
 
@@ -666,7 +671,10 @@ def result_1C(conf, wave, tau, waveV = -1):
 	else:
 		if (I2.shape[1] - I2.shape[0]) >= -100:
 			import matplotlib as mpl
-			f = 1.8
+			if "-f" in sys.argv:
+				f = float(sys.argv[sys.argv.index("-f")+1])
+			else:
+				f = 1.8
 			mpl.rcParams["xtick.labelsize"] = 18*f
 			mpl.rcParams["ytick.labelsize"] = 18*f
 			mpl.rcParams["legend.fontsize"] = 16*f
@@ -1068,6 +1076,10 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		Print x and y axis in arcseconds
 	-flipx
 		Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+	-swapx
+		Swap the x axis
+	-f [float]
+		Factor for the fontsizes (if not used: 1.8)
 
 	"""
 
@@ -1397,7 +1409,10 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		else:
 			if (I2.shape[1] - I2.shape[0]) >= -100:
 				import matplotlib as mpl
-				f = 1.8
+				if "-f" in sys.argv:
+					f = float(sys.argv[sys.argv.index("-f")+1])
+				else:
+					f = 1.8
 				mpl.rcParams["xtick.labelsize"] = 18*f
 				mpl.rcParams["ytick.labelsize"] = 18*f
 				mpl.rcParams["legend.fontsize"] = 16*f
