@@ -76,8 +76,6 @@ def scatter_data(conf, comm, rank, size, return_stk=False):
 			
 			waves = np.copy(stk1.wave)
 
-			print(stk1.stki.shape)
-
 			if not return_stk:
 				del stk1 # Free Memory
 			
