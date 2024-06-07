@@ -780,7 +780,8 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stk, tasks, obs = scatter_data(conf, comm, rank, size, True)
 	else:
 		stk, tasks = scatter_data(conf, comm, rank, size, False)
-
+	if rank == 0:
+		print(obs.stki.shape)
 	comm.barrier()
 	
 	# Write the control file with the information from the config file
