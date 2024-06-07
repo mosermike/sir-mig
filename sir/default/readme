@@ -1,0 +1,16 @@
+The default LINES file contains 143 spectral lines whose wavelengths
+have been taken from 
+
+Nave G., Johansson S., Learner R.C.M, Thorne A.P., Brault J.W., 1994, 
+ApJS 94, 221
+
+The log gf values have been taken from  
+
+Th\'evenin F., 1989, A\&AS 77, 137
+Th\'evenin F., 1990, A\&AS 82, 179
+
+A good source of accurate log gf values and central wavelengths
+for near-infrared spectral lines is
+
+Borrero, J.M., Bellot Rubio, L.R., Barklem, P.S., & del Toro 
+Iniesta, J.C. 2003, A&A, in press
