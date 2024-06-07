@@ -31,7 +31,7 @@ import sir
 #									DATA									*
 #****************************************************************************
 
-def scatter_data(conf, comm, rank, size):
+def scatter_data(conf, comm, rank, size, return_stk=False):
 	"""
 	Loads and scatters the data equally into all the processes.
 
@@ -45,36 +45,39 @@ def scatter_data(conf, comm, rank, size):
 		Number of actual process
 	size : int
 		Number of available processes
-
+	return_stk : bool
+		If True, the full stokes profile is also returned
 
 	Returns
 	-------
-	out : Profile
+	scatter_data : profile_stk
 		Stokes Profiles used in each process
-	out : dict
+	scatter_data : dict
 		Dictionary with the folders, x and y positions for each process
+	scatter_data : profile_stk
+		Complete stokes profiles in rank 0 (in other ranks 'None') if return_stk = True
 	"""
 	path = conf["path"]
 	
 	if rank == 0:
 			print("[STATUS] Load and scatter data ...")
 			tasks = sir.create_task_folder_list(conf["map"])
-			stk = p.read_profile(os.path.join(path,conf["cube"]))
+			stk1 = p.read_profile(os.path.join(path,conf["cube"]))
 			
 			# Cut data to the wavelength range and to the map
-			stk.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
-			stk.cut_to_map(conf["map"]) # Cut to the map
+			stk1.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
+			stk1.cut_to_map(conf["map"]) # Cut to the map
 
 			
 			# Create one data cube
-			stki = stk.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
-			stkq = stk.stkq.reshape(-1, stk.nw) # Flatten Stokes Q corresponding to the tasks list
-			stku = stk.stku.reshape(-1, stk.nw) # Flatten Stokes U corresponding to the tasks list
-			stkv = stk.stkv.reshape(-1, stk.nw) # Flatten Stokes V corresponding to the tasks list		
-			waves = stk.wave
+			stki = stk1.stki.reshape(-1, stk.nw) # Flatten Stokes I corresponding to the tasks list
+			stkq = stk1.stkq.reshape(-1, stk.nw) # Flatten Stokes Q corresponding to the tasks list
+			stku = stk1.stku.reshape(-1, stk.nw) # Flatten Stokes U corresponding to the tasks list
+			stkv = stk1.stkv.reshape(-1, stk.nw) # Flatten Stokes V corresponding to the tasks list		
+			waves = stk1.wave
 
-
-			del stk # Free Memory
+			if not return_stk:
+				del stk1 # Free Memory
 			
 			# Compute the contribution
 			stki_size = stki.shape[0]
@@ -116,6 +119,7 @@ def scatter_data(conf, comm, rank, size):
 			y_chunks = None
 			tasks_chunks = None
 			waves = None
+			stk1 = None
 
 	# Scatter data chunks and task structure to all processes
 	stki_chunk = comm.scatter(stki_chunks, root=0)
@@ -150,9 +154,13 @@ def scatter_data(conf, comm, rank, size):
 	del x_chunk
 	del y_chunk
 
-	return stk, tasks
+	if return_stk:
+		return stk, tasks, stk1
+	else:
+		return stk, tasks
 
-def scatter_data_mc(conf, comm, rank, size):
+
+def scatter_data_mc(conf, comm, rank, size, return_stk=False):
 	"""
 	Scatters the data equally into all the ranks for the MC simulation.
 
@@ -182,21 +190,22 @@ def scatter_data_mc(conf, comm, rank, size):
 			if rank == 0:
 				print("-------> No noise flag used")
 				print("-------> Use synthesis profiles")
-			stk = p.read_profile(os.path.join(path,conf["syn_out"] + d.end_stokes))
+			stk1 = p.read_profile(os.path.join(path,conf["syn_out"] + d.end_stokes))
 		else:
-			stk = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_stokes))
+			stk1 = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_stokes))
 
 		tasks = sir.create_task_folder_list(conf["num"])
 
 		# Create one data cube
-		stki = stk.stki
-		stkq = stk.stkq
-		stku = stk.stku
-		stkv = stk.stkv
-		lines = stk.indx
-		waves = stk.wave
+		stki = stk1.stki
+		stkq = stk1.stkq
+		stku = stk1.stku
+		stkv = stk1.stkv
+		lines = stk1.indx
+		waves = stk1.wave
 
-		del stk # Free Memory
+		if not return_stk:
+			del stk1 # Free Memory
 
 		# Compute the contribution
 		stki_size = stki.shape[0]
@@ -237,6 +246,7 @@ def scatter_data_mc(conf, comm, rank, size):
 		tasks_chunks = None
 		waves = None
 		lines = None
+		stk1 = None
 
 	# Scatter data chunks and task structure to all processes
 	stki_chunk = comm.scatter(stki_chunks, root=0)
@@ -270,7 +280,10 @@ def scatter_data_mc(conf, comm, rank, size):
 	del task_chunk
 	del num_chunk
 
-	return stk, tasks
+	if return_stk:
+		return stk, tasks, stk1
+	else:
+		return stk, tasks
 
 """
 *****************************************************************************
@@ -437,7 +450,12 @@ def execute_inversion_1c(conf, task_folder, rank):
 
 		# Perform inversion once and read chi2 value
 		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
-			
+		
+		# Check if chi2 file exists and inversion finished successfully
+		if not exists(chi_file):
+			print("[read_chi2] " + chi_file + " does not exist in " + task_folder + ".")
+			sys.exit(1)
+
 		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.mod", f"best.mod")
 		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.err", f"best.err")
 		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.per", f"best.per")
@@ -610,7 +628,10 @@ def execute_inversion_2c(conf, task_folder, rank):
 		shutil.copy(model1,d.guess1)
 		shutil.copy(model2,d.guess2)
 		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
-		chi2_best = sir.read_chi2(chi_file, task_folder)
+		# Check if inversion was successful
+		if not exists(chi_file):
+			print("[read_chi2] " + chi_file + " does not exist in " + task_folder + ".")
+			sys.exit(1)
 		shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.mod", f"best1.mod")
 		shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.err", f"best1.err")
 		shutil.move(f"{d.guess2.replace('.mod','')}_{cycles}.mod", f"best2.mod")
@@ -749,7 +770,11 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	# SCATTER AND LOAD DATA #
 	#########################
 	# Load and scatter data => Saving memory and time
-	stk, tasks = scatter_data(conf, comm, rank, size)
+	if conf['chi2'] != "":
+		stk, tasks, obs = scatter_data(conf, comm, rank, size, True)
+	else:
+		stk, tasks = scatter_data(conf, comm, rank, size, False)
+
 	comm.barrier()
 	
 	# Write the control file with the information from the config file
@@ -857,9 +882,9 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stokes_inv.read_results(tasks, "best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
 		if conf['chi2'] != "":
-			print("-------> Compute χ²...")
+			print("-------> Compute χ² ...")
 			
-			obs = p.read_profile(os.path.join(path,conf["cube"]))
+			#obs = p.read_profile(os.path.join(path,conf["cube"]))
 			obs.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
 			obs.cut_to_map(conf["map"]) # Cut to the map
 
@@ -1016,12 +1041,15 @@ def inversion_mc(conf, comm, rank, size, MPI):
 	total_jobs = 1  # Total performed jobs across all processes
 	max_jobs = conf['num']  # For comm.allreduce function
 
-
-	stk, tasks = scatter_data_mc(conf, comm, rank, size)
+	if conf['chi2'] != "":
+		stk, tasks, obs = scatter_data_mc(conf, comm, rank, size, True)
+	else:
+		stk, tasks = scatter_data_mc(conf, comm, rank, size, False)
 
 	# Root process initializes the progress bar
 	if rank == 0:
 		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
+		
 	comm.barrier()
 
 	for i in range(0,len(tasks['num'])):
@@ -1097,11 +1125,6 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		if conf['chi2'] != "":
 			print("-------> Compute χ²...")
 			chi2 = c.chi2_stk(0,0)
-
-			if "--no-noise" in sys.argv:
-				obs = p.read_profile(os.path.join(path,conf["syn_out"] + d.end_stokes))
-			else:
-				obs = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_stokes))
 
 			# Number of Nodes in the last step
 			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
@@ -1288,11 +1311,15 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	max_jobs = len(tasks['folders']) # For comm.allreduce function
 
 	# Load and scatter data => Saving memory and time
-	stk, tasks = scatter_data(conf, comm)
+	if conf['chi2'] != "":
+		stk, tasks, obs = scatter_data(conf, comm, rank, size, True)
+	else:
+		stk, tasks = scatter_data(conf, comm, rank, size, False)
 
 	# Root process initializes the progress bar
 	if rank == 0:
 		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
+
 	comm.barrier()
 
 	if rank == 0:
@@ -1391,8 +1418,6 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		errors_inv2		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		best_guesses1	= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		best_guesses2	= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
-		chi2			= np.zeros(shape=(Map[1]-Map[0]+1,Map[3]-Map[2]+1))
-
 
 		models_inv1.read_results(tasks, 'best1.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		models_inv2.read_results(tasks, 'best2.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
@@ -1402,12 +1427,8 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		best_guesses2.read_results(tasks, d.best_guess2, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		
 		if conf['chi2'] != "":
-			print("-------> Compute χ²...")
+			print("-------> Compute χ² (this might take a while) ...")
 			chi2 = c.chi2_stk(0,0)
-
-			obs = p.read_profile(os.path.join(path,conf["cube"]))
-			obs.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
-			obs.cut_to_map(conf["map"]) # Cut to the map
 
 			# Number of Nodes in the last step
 			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
