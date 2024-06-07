@@ -135,7 +135,8 @@ def scatter_data(conf, comm, rank, size, return_stk=False):
 
 	# Put the data together
 	stk = p.profile_stk(stki_chunk.shape[0],1,nw=stki_chunk.shape[1])
-	stk.data_cut = True # Already cut before
+	stk.data_cut_wave = True # Already cut before
+	stk._data_cut_map = True # Already cut before
 	stk.stki[:,0,:] = stki_chunk
 	stk.stkq[:,0,:] = stkq_chunk
 	stk.stku[:,0,:] = stku_chunk
