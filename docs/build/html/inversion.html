@@ -527,7 +527,7 @@ used for the mode ‘2C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.scatter_data">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data" title="Link to this definition">#</a></dt>
 <dd><p>Loads and scatters the data equally into all the processes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -540,13 +540,17 @@ used for the mode ‘2C’.</p>
 </dd>
 <dt><strong>size</strong><span class="classifier">int</span></dt><dd><p>Number of available processes</p>
 </dd>
+<dt><strong>return_stk</strong><span class="classifier">bool</span></dt><dd><p>If True, the full stokes profile is also returned</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">Profile</span></dt><dd><p>Stokes Profiles used in each process</p>
+<dt><strong>scatter_data</strong><span class="classifier">profile_stk</span></dt><dd><p>Stokes Profiles used in each process</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the folders, x and y positions for each process</p>
+<dt><strong>scatter_data</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the folders, x and y positions for each process</p>
+</dd>
+<dt><strong>scatter_data</strong><span class="classifier">profile_stk</span></dt><dd><p>Complete stokes profiles in rank 0 (in other ranks ‘None’) if return_stk = True</p>
 </dd>
 </dl>
 </dd>
@@ -555,7 +559,7 @@ used for the mode ‘2C’.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="inversion.scatter_data_mc">
-<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data_mc" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">inversion.</span></span><span class="sig-name descname"><span class="pre">scatter_data_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_stk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#inversion.scatter_data_mc" title="Link to this definition">#</a></dt>
 <dd><p>Scatters the data equally into all the ranks for the MC simulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

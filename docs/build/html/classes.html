@@ -406,6 +406,8 @@ document.write(`
 </dd>
 <dt><strong>Vtot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes V</p>
 </dd>
+<dt><strong>tot</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for all 4 Stokes Parameter</p>
+</dd>
 <dt><strong>stki</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter I</p>
 </dd>
 <dt><strong>stkq</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter Q</p>
@@ -852,7 +854,7 @@ This class will then create the class with nx = ny = 1.</p>
 </dd>
 <dt><strong>load</strong><span class="classifier">bool</span></dt><dd><p>Data was loaded</p>
 </dd>
-<dt><strong>data_cut</strong><span class="classifier">bool</span></dt><dd><p>Data was cut to the inversion range</p>
+<dt><strong>data_cut_wave</strong><span class="classifier">bool</span></dt><dd><p>Data was cut to the inversion range in the wavelength (this is necessary when data is written into a SIR profile file)</p>
 </dd>
 </dl>
 </dd>
