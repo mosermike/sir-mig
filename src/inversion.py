@@ -926,14 +926,16 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
 		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
 		best_guesses.write(os.path.join(path,d.best_guess_file))
+		
 		if conf['chi2'] != "":
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
 
-		# Delete the folder
-		for i in range(len(tasks['x'])):
-			# Remove folder
-			shutil.rmtree(tasks['folders'][i])
+		if "--debug" not in sys.argv:
+			# Delete the folder
+			for i in range(len(tasks['x'])):
+				# Remove folder
+				shutil.rmtree(tasks['folders'][i])
 
 		
 		# Print needed time
@@ -1167,8 +1169,9 @@ def inversion_mc(conf, comm, rank, size, MPI):
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
 
-		for i in range(conf['num']):
-			shutil.rmtree(os.path.join(path,tasks['folders'][i]))
+		if "--debug" not in sys.argv:
+			for i in range(conf['num']):
+				shutil.rmtree(os.path.join(path,tasks['folders'][i]))
 
 		# Print needed time
 		end = time.time()
@@ -1472,9 +1475,10 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			chi2.write(os.path.join(path, conf['chi2']))
 	
 
-		# Delete the folder
-		for i in range(len(tasks['x'])):
-			shutil.rmtree(tasks['folders'][i])
+		if "--debug" not in sys.argv:
+			# Delete the folder
+			for i in range(len(tasks['x'])):
+				shutil.rmtree(tasks['folders'][i])
 
 		# Print needed time
 		end = time.time()

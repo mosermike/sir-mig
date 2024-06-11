@@ -848,6 +848,7 @@ def synthesis(conf, comm, rank, size, MPI):
 			print(f"\rTotal finished Jobs: {finished_jobs}", end='', flush=False)
 
 		os.chdir('../') # Go back in case relative paths are used
+	
 	os.chdir(path)
 	# Collect data and save it
 	if rank == 0:

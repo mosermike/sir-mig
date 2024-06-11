@@ -29,6 +29,7 @@ def help():
 	sir.option("--no-noise","Do not add noise [Only in mode MC]")
 	sir.option("--no-inv","Do not perform the inversion")
 	sir.option("--only-inv","Only perform inversion [Only in mode MC]")
+	sir.option("--debug", "Debugging (task folders in inversions are not deleted)")
 	sys.exit()
 
 def main():
