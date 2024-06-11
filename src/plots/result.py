@@ -80,6 +80,7 @@ def _help():
 	sir.option("-flipy:","Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
 	sir.option("-swapx:","Swap the x axis")
 	sir.option("-f [float]","Factor for the fontsizes")
+	sir.option("-symv","Symmetric limits for vlos")
 
 	sys.exit()
 
@@ -350,6 +351,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 		Swap the x axis
 	-f [float]
 		Factor for the fontsizes
+	-symv
+		Symmetric limits for vlos
 
 	"""
 
@@ -859,6 +862,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000]]
 	i = 0
 
+	if "-symv" in sys.argv:
+		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
+
 	if "-limitT" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
 		limits[1] = [int(i) for i in temp ]
@@ -1098,7 +1104,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		Swap the x axis
 	-f [float]
 		Factor for the fontsizes
-
+	-symv
+		Symmetric limits for vlos
 	"""
 
 	# Import library
@@ -1599,6 +1606,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None, None, None]
 	limits = [[None,None],[np.min(models_inv[:,:,1]),np.max(models_inv[:,:,1])],[None,None],[None,None],[0,4000],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000], [0,1]]
 	i = 0
+
+	if "-symv" in sys.argv:
+		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
 
 	if "-limitT" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
