@@ -881,7 +881,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stokes_inv.read_results(tasks, "best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
 		if conf['chi2'] != "":
-			print("-------> Compute χ² ...")
+			print("-------> Compute χ² (this might take a while) ...")
 			
 			# Number of Nodes in the last step
 			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
@@ -1118,7 +1118,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		guess.read_results(tasks, d.best_guess, path, int(conf['num']), 1)
 		
 		if conf['chi2'] != "":
-			print("-------> Compute χ²...")
+			print("-------> Compute χ² (this might take a while) ...")
 			chi2 = c.chi2_stk(0,0)
 
 			# Number of Nodes in the last step

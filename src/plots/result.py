@@ -77,7 +77,7 @@ def _help():
 	sir.option("-limitchi2:","Set the limit for the colorbar in chi2.")
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
 	sir.option("-arc:","Print x and y axis in arcseconds")
-	sir.option("-flipx:","Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun")
+	sir.option("-flipy:","Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
 	sir.option("-swapx:","Swap the x axis")
 	sir.option("-f [float]","Factor for the fontsizes")
 
@@ -344,8 +344,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 		Set the limit for the colorbar in Stokes I.
 	-arc
 		Print x and y axis in arcseconds
-	-flipx
-		Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+	-flipy
+		Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
 	-swapx
 		Swap the x axis
 	-f [float]
@@ -633,11 +633,13 @@ def result_1C(conf, wave, tau, waveV = -1):
 			# y position starts at the end but I start with the pixels lower left
 			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
 			y_max = float(infos['CRVAL2']) # Used if flipx is used
-			Map_plot = [float(infos['CRVAL1']) - float(infos['CDELT1']) * (Map[0]-1),
-						float(infos['CRVAL1']) - float(infos['CDELT1']) * (Map[1]-1),
+			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0]-1),
+						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1]-1),
 						y_pos - float(infos['CDELT2']) * (Map[2]-1),
 						y_pos - float(infos['CDELT2']) * (Map[3]-1)
 						]
+			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
+				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
 		elif conf['instrument'] == 'Hinode':
 			delta_y = float(infos['CDELT2'])  # Delta y of slit
 			delta_x = float(infos['XSCALE'])
@@ -654,9 +656,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	else:
 		Map_plot = Map
 
-	# Gris data is sometimes flipped along x! Perform real flip also in arcsec
-	if "-flipx" in sys.argv:
-		print("[NOTE]  Plots are flipped/mirrored along x")
+	# Gris data is sometimes rotated along the y axis but keeping the y axis the same
+	if "-flipy" in sys.argv:
+		print("[NOTE]  Plots are rotated of 180 deg along y")
 		if d.origin == 'upper':
 			origin = 'lower'
 		else:
@@ -667,6 +669,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	else:
 		origin = d.origin
 
+	# Swap x axis without changing the image
 	if "-swapx" in sys.argv:
 		print("[NOTE]  Axis on x swaped")
 		Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
@@ -1089,8 +1092,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		Set the limit for the colorbar in Stokes I.
 	-arc
 		Print x and y axis in arcseconds
-	-flipx
-		Mirror/Flip data as sometimes it is wrong in GRIS with the location on the sun
+	-flipy
+		Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
 	-swapx
 		Swap the x axis
 	-f [float]
@@ -1361,11 +1364,13 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			# y position starts at the end but I start with the pixels lower left
 			y_pos = float(infos['CRVAL2']) + (stokes.shape[1] - 1) * float(infos['CDELT2'])
 			y_max = float(infos['CRVAL2'])  # Used if flipx is used
-			Map_plot = [float(infos['CRVAL1']) - float(infos['CDELT1']) * (Map[0] - 1),
-						float(infos['CRVAL1']) - float(infos['CDELT1']) * (Map[1] - 1),
+			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0] - 1),
+						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1] - 1),
 						y_pos - float(infos['CDELT2']) * (Map[2] - 1),
 						y_pos - float(infos['CDELT2']) * (Map[3] - 1)
 						]
+			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
+				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
 		elif conf['instrument'] == 'Hinode':
 			delta_y = float(infos['CDELT2'])  # Delta y of slit
 			delta_x = float(infos['XSCALE'])
@@ -1381,8 +1386,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	else:
 		Map_plot = Map
 	# Gris data is sometimes flipped along x! Perform real flip also in arcsec
-	if "-flipx" in sys.argv:
-		print("[NOTE]  Plots are flipped/mirrored along x")
+	if "-flipy" in sys.argv:
+		print("[NOTE]  Plots are rotated of 180 deg along y")
 		if d.origin == 'upper':
 			origin = 'lower'
 		else:
