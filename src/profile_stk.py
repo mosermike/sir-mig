@@ -349,6 +349,35 @@ class profile_stk:
 
 		return self
 
+	def read_profile(self, filename, x=0, y=0):
+		"""
+		Reads a single profile file and stores it in the class
+
+		Parameters
+		----------
+		filename : str
+			Name of the file
+		x : int
+			x position to put the values
+		y : int
+			y position to put the values
+		"""
+		ll, I, Q, U, V = self.__read_profile_sir(filename)
+		if(self.nw == 0 or self.stki.shape[2] == 0):
+			self.nw = len(ll)
+			self.stki = np.zeros((self.nx,self.ny,self.nw))
+			self.stkq = np.zeros((self.nx,self.ny,self.nw))
+			self.stku = np.zeros((self.nx,self.ny,self.nw))
+			self.stkv = np.zeros((self.nx,self.ny,self.nw))
+
+		if((self.wave == 0).all()):
+			self.wave = ll/1e3
+		
+		self.stki[x, y] = I
+		self.stkq[x, y] = Q
+		self.stku[x, y] = U
+		self.stkv[x, y] = V
+
 	def read_results(self, task, filename, path, nx, ny):
 		"""
 		Reads all the errors from the inversion
@@ -691,8 +720,11 @@ def read_profile(file):
 	class Profile
 
 	"""
-	pro = profile_stk(0,0,0)
-	pro.read(file)
+	pro = profile_stk(1,1,0)
+	if(".per" in file):
+		pro.read_profile(file,0,0)
+	else:
+		pro.read(file)
 
 	return pro
 

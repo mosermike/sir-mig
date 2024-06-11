@@ -394,11 +394,15 @@ def execute_inversion_1c(conf, task_folder, rank):
 				os.remove(f"{guess1}_{j+1}.err")
 				os.remove(f"{guess1}_{j+1}.per")
 
+		# Check if the best model has NaN entries
+		index = chi2.argmin()+1
+		mod_is_nan = np.isnan(np.loadtxt(f"{guess1}__{str(index)}.mod", skiprows=1).transpose()).any()
+		
 		# All inversions failed => Redo inversion until one does not fail
-		if chi2.min() > 1e8:
+		if chi2.min() > 1e8 or mod_is_nan:
 			it = 0 # Number of iterations until sir converges
 			chi2_best = 0.0
-			while chi2_best == 0.0:
+			while chi2_best == 0.0 or mod_is_nan:
 				# Copy the guess which did not work
 				shutil.copy(model, "bad_guess" + str(i+1) + ".mod")
 
@@ -411,11 +415,17 @@ def execute_inversion_1c(conf, task_folder, rank):
 				# Execute inversion again
 				os.system(f"echo {d.inv_trol_file} | ./sir.x >> inv.log 2>&1")
 
-				# Read chi2 value
+				# Read chi2 value and the model
 				chi2_best = sir.read_chi2(chi_file, task_folder)
-	
+				mod_is_nan = np.isnan(np.loadtxt(f"{guess1}_{cycles}.mod", skiprows=1)).any()
+
 				# +1 iteration
 				it += 1
+
+				# break the iteration
+				if it > 50:
+					print(task_folder[task_folder.rfind('/')+1:], " failed!")
+					break
 			
 			shutil.copy(f"{d.model_inv}", f"{d.best_guess}")  # Copy best guess model
 			shutil.move(f"{guess1}_{cycles}.mod", f"best.mod")
@@ -423,7 +433,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 			shutil.move(f"{guess1}_{cycles}.per", f"best.per")
 			# Warn if the repetition of the inverse needed to be done more than 20 times
 			if it > 10:
-				print(f"\nNote that the while loop run in {task_folder[task_folder.rfind('/')+1:]} took {it} iterations because chi2 was 0.0...")
+				print(f"\nNote that the while loop run in {task_folder[task_folder.rfind('/')+1:]} took {it} iterations because chi2 was 0.0 or the model contained NaNs...")
 
 		# Determine best fit and copy stuff
 		else:
@@ -578,11 +588,16 @@ def execute_inversion_2c(conf, task_folder, rank):
 				os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.err")
 				os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.per")
 
+		# Check if the model has NaNs
+		index = str(chi2.argmin()+1)
+		mod_is_nan1 = np.isnan(np.loadtxt(f"{d.model1}_{index}.mod", skiprows=1)).any()
+		mod_is_nan2 = np.isnan(np.loadtxt(f"{d.model2}_{index}.mod", skiprows=1)).any()
+
 		# All inversions failed => Redo inversion until one does not fail
-		if chi2.min() > 1e8:
+		if chi2.min() > 1e8 or mod_is_nan1 or mod_is_nan2:
 			it = 0 # Number of iterations until sir converges
 			chi2_best = 0.0
-			while chi2_best == 0.0:
+			while chi2_best == 0.0 or mod_is_nan1 or mod_is_nan2:
 				# Create New Guess
 				g.create_guesses_2c(conf, output = "./", number = 1)
 				# Copy to the model
@@ -592,11 +607,17 @@ def execute_inversion_2c(conf, task_folder, rank):
 				# Execute inversion again
 				os.system(f"echo {d.inv_trol_file} | ./sir.x >> inv.log 2>&1")
 
-				# Read chi2 value
+				# Read chi2 value and model
 				chi2_best = sir.read_chi2(chi_file, task=task_folder)
+				mod_is_nan1 = np.isnan(np.loadtxt(f"{d.guess1.replace('.mod','')}_{cycles}.mod", skiprows=1)).any()
+				mod_is_nan2 = np.isnan(np.loadtxt(f"{d.guess2.replace('.mod','')}_{cycles}.mod", skiprows=1)).any()
 
 				# +1 iteration
 				it += 1
+
+				if (it > 50):
+					print(task_folder[task_folder.rfind('/')+1:], " failed!")
+					break
 			
 			shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.mod", f"best1.mod") # Model for Model 1
 			shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.err", f"best1.err") # Error for Model 1

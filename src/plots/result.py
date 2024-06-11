@@ -81,7 +81,7 @@ def _help():
 	sir.option("-swapx:","Swap the x axis")
 	sir.option("-f [float]","Factor for the fontsizes")
 	sir.option("-symv","Symmetric limits for vlos")
-
+	sir.option("-rot90","Rotate the image 90 deg")
 	sys.exit()
 
 
@@ -244,7 +244,15 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 	############
 	plt.savefig(savepath + "chi2_total" + add)
 
-
+def _get_angle(x,y):
+	"""
+	Determine the angle of the taken picture
+	"""
+	#Degree in the 3rd or 4th quadrant
+	if (x < 0):
+		return np.atan(x/y) + np.pi
+	else:
+		return np.atan(x/y)
 def result_1C(conf, wave, tau, waveV = -1):
 	"""
 
@@ -347,6 +355,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 		Print x and y axis in arcseconds
 	-flipy
 		Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
+	-rot90
+		Rotate the image 90 deg
 	-swapx
 		Swap the x axis
 	-f [float]
@@ -1106,6 +1116,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		Factor for the fontsizes
 	-symv
 		Symmetric limits for vlos
+	-rot90
+		Rotate the image 90 deg
 	"""
 
 	# Import library
