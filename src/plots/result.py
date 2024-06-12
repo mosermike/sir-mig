@@ -853,6 +853,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
+	if "-arc" in sys.argv and "-varrow" in sys.argv:
+			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+			
 	#####################
 	#	Set labels	#
 	#####################
@@ -1495,7 +1498,12 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		if "-flipy" in sys.argv:
 			print("Arrow mirrored along y")
 			sign2 *= -1
-			
+		
+		# Account for the angle between (x,y) and the center
+		alpha = np.arctan((y+Map_plot[3]/2)/(x+Map_plot[1]/2)) # Angle at the center of the image
+		sign1 = sign1*np.cos(np.arctan(y/x))
+		sign2 = sign2*np.sin(np.arctan(y/x))
+
 		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
 		Map_plot = Map
@@ -1645,6 +1653,10 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
 		im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 		im4 = ax4.imshow(V2[:,:,waveV_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
+
+
+		if "-arc" in sys.argv and "-varrow" in sys.argv:
+			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
 
 		#####################
 		#	Set labels	#
