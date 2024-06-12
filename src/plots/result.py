@@ -77,7 +77,7 @@ def _help():
 	sir.option("-limitchi2:","Set the limit for the colorbar in chi2.")
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
 	sir.option("-arc:","Print x and y axis in arcseconds")
-	sir.option("-flipy:","Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
+	sir.option("-flipy:","Flip inmage along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
 	sir.option("-swapx:","Swap the x axis")
 	sir.option("-f [float]","Factor for the fontsizes")
 	sir.option("-symv","Symmetric limits for vlos")
@@ -354,7 +354,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	-arc
 		Print x and y axis in arcseconds
 	-flipy
-		Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
+		Flip the image along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
 	-rot90
 		Rotate the image 90 deg
 	-swapx
@@ -727,12 +727,12 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 	origin = d.origin
 	if "-flipy" in sys.argv:
+		print("Image flipped in y direction")
 		if origin == "lower":
 			origin = "upper"
-			print("TEST")
-		if origin == "upper":
+		elif origin == "upper":
 			origin = "lower"
-			print("TEST1")
+
 
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
