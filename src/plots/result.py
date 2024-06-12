@@ -716,7 +716,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 			print("Arrow mirrored along y")
 			sign2 *= -1
 			
-		n = np.max(I2.shape)*0.6
+		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
 		Map_plot = Map
 
@@ -1416,6 +1416,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	####################################
 	#	Plot settings for arcsecond	#
 	####################################
+	'''
 	if "-arc" in sys.argv:
 		infos = dict(np.genfromtxt("infos.txt",dtype='str', delimiter="="), dtype=str)
 		if conf['instrument'] == 'GRIS':
@@ -1443,18 +1444,58 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			]
 	else:
 		Map_plot = Map
-	# Gris data is sometimes flipped along x! Perform real flip also in arcsec
-	if "-flipy" in sys.argv:
-		print("[NOTE]  Plots are rotated of 180 deg along y")
-		if d.origin == 'upper':
-			origin = 'lower'
-		else:
-			origin = 'upper'
-		Map_plot[2] = y_pos + (y_max - Map_plot[2])
-		Map_plot[3] = y_pos + (y_max - Map_plot[3])
-		Map_plot[2], Map_plot[3] = Map_plot[3], Map_plot[2]
+	'''
+	if "-arc" in sys.argv:
+		infos = dict(np.genfromtxt(d.header_infos,dtype='str', delimiter="="), dtype=str)
+		if conf['instrument'] == 'GRIS':
+			# y position starts at the end but I start with the pixels lower left
+			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
+			y_max = float(infos['CRVAL2']) # Used if flipx is used
+			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0]-1),
+						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1]-1),
+						y_pos - float(infos['CDELT2']) * (Map[2]-1),
+						y_pos - float(infos['CDELT2']) * (Map[3]-1)
+						]
+			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
+				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
+
+			
+			x = float(infos['CRVAL1'])
+			y = float(infos['CRVAL2'])
+			dx = float(infos['CDELT1'])
+			dy = float(infos['CDELT2'])
+			
+			
+			
+		elif conf['instrument'] == 'Hinode':
+			dy = float(infos['CDELT2'])  # Delta y of slit
+			dx = float(infos['XSCALE'])
+			x = float(infos['XCEN'])
+			y = float(infos['YCEN'])
+			
+		Map_plot = [0,stokes_inv.nx*abs(dx),0,stokes_inv.ny*abs(dy)]
+		if x > 0 and y > 0:
+			sign1 = -1
+			sign2 = -1
+		elif x > 0 and y < 0:
+			sign1 = -1
+			sign2 = +1
+		elif x < 0 and y > 0:
+			sign1 = +1
+			sign2 = -1
+		elif x < 0 and y < 0:
+			sign1 = +1
+			sign2 = +1
+
+		if "-flipy" in sys.argv:
+			print("Arrow mirrored along y")
+			sign2 *= -1
+			
+		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
-		origin = d.origin
+		Map_plot = Map
+	
+	origin = d.origin
 
 	if "-swapx" in sys.argv:
 		print("[NOTE]  Axis on x swaped")
