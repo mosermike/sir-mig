@@ -54,7 +54,9 @@ def main():
 	conf = sir.read_config(sys.argv[1])
 	if rank == 0:
 		sir.initial(conf['mode'])
-
+		if("--debug" in sys.argv):
+			print("-------> Flag 'debug' used")
+			
 	comm.barrier()
 
 	#####################

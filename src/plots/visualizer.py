@@ -535,12 +535,13 @@ def visualizer_1C(conf, wave):
 	path = conf["path"]
 	Map = conf['map']
 
+	print("Loading data (this might take a while) ...")
 	if "-data" not in sys.argv:
 		stokes = p.read_profile(os.path.join(conf["path"], conf['cube']))
 		stokes.cut_to_map(conf["map"])
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
-		stokes = p.read_proile(filename)
+		stokes = p.read_profile(filename)
 		stokes.cut_to_map(conf["map"])
 
 	if "-stokes" not in sys.argv:
@@ -581,7 +582,7 @@ def visualizer_1C(conf, wave):
 	rand = int(np.random.uniform(0,100))
 
 	if use_model:
-		if '-chi2' in sys.ragv:
+		if '-chi2' in sys.argv:
 			if "-chi" not in sys.argv:
 				chi2_inv = c.read_chi2(os.path.join(path,conf['chi2']))
 			else:
@@ -903,7 +904,7 @@ def visualizer_2C(conf, wave):
 		stokes.cut_to_map(conf["map"])
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
-		stokes = p.read_proile(filename)
+		stokes = p.read_profile(filename)
 		stokes.cut_to_map(conf["map"])
 
 	if "-stokes" not in sys.argv:

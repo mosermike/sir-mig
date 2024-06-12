@@ -401,7 +401,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	path = conf["path"]
 	Map = conf['map']
 		
-
+	print("Load data (this might take a while) ...")
 	if "-data" not in sys.argv:
 		stokes = p.read_profile(os.path.join(conf["path"],conf['cube']))
 	else:
@@ -640,6 +640,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	####################################
 	#	Plot settings for arcsecond	#
 	####################################
+	"""
 	if "-arc" in sys.argv:
 		infos = dict(np.genfromtxt("infos.txt",dtype='str', delimiter="="), dtype=str)
 		if conf['instrument'] == 'GRIS':
@@ -668,24 +669,58 @@ def result_1C(conf, wave, tau, waveV = -1):
 			]
 	else:
 		Map_plot = Map
+	"""
+	if "-arc" in sys.argv:
+		infos = dict(np.genfromtxt(d.header_infos,dtype='str', delimiter="="), dtype=str)
+		if conf['instrument'] == 'GRIS':
+			# y position starts at the end but I start with the pixels lower left
+			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
+			y_max = float(infos['CRVAL2']) # Used if flipx is used
+			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0]-1),
+						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1]-1),
+						y_pos - float(infos['CDELT2']) * (Map[2]-1),
+						y_pos - float(infos['CDELT2']) * (Map[3]-1)
+						]
+			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
+				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
 
-	# Gris data is sometimes rotated along the y axis but keeping the y axis the same
-	if "-flipy" in sys.argv:
-		print("[NOTE]  Plots are rotated of 180 deg along y")
-		if d.origin == 'upper':
-			origin = 'lower'
-		else:
-			origin = 'upper'
-		Map_plot[2] = y_pos + (y_max - Map_plot[2])
-		Map_plot[3] = y_pos + (y_max - Map_plot[3])
-		Map_plot[2], Map_plot[3] = Map_plot[3], Map_plot[2]
+			
+			x = float(infos['CRVAL1'])
+			y = float(infos['CRVAL2'])
+			dx = float(infos['CDELT1'])
+			dy = float(infos['CDELT2'])
+			
+			
+			
+		elif conf['instrument'] == 'Hinode':
+			dy = float(infos['CDELT2'])  # Delta y of slit
+			dx = float(infos['XSCALE'])
+			x = float(infos['XCEN'])
+			y = float(infos['YCEN'])
+			
+		Map_plot = [0,stokes_inv.nx*abs(dx),0,stokes_inv.ny*abs(dy)]
+		if x > 0 and y > 0:
+			sign1 = -1
+			sign2 = -1
+		elif x > 0 and y < 0:
+			sign1 = -1
+			sign2 = +1
+		elif x < 0 and y > 0:
+			sign1 = +1
+			sign2 = -1
+		elif x < 0 and y < 0:
+			sign1 = +1
+			sign2 = +1
+
+		if "-flipy" in sys.argv:
+			print("Arrow mirrored along y")
+			sign2 *= -1
+			
+		n = np.max(I2.shape)*0.6
 	else:
-		origin = d.origin
+		Map_plot = Map
 
-	# Swap x axis without changing the image
-	if "-swapx" in sys.argv:
-		print("[NOTE]  Axis on x swaped")
-		Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
+	origin = d.origin
 
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
@@ -730,7 +765,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 	im2 = ax2.imshow(Q1[:,:,waveQ_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
 	im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 	im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
-
+	if "-arc" in sys.argv:
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
 	#####################
 	#	Set labels	#
 	#####################
@@ -871,7 +907,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
 		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000]]
 	i = 0
-
+	
 	if "-symv" in sys.argv:
 		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
 
@@ -902,7 +938,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 			else:
 				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
-
+			if inputs[i] == "-vlos":
+				if "-arc" in sys.argv and "-varrow" in sys.argv:
+					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
 			# Set labels
 			ax.set_xlabel(f"x [{units}]")
 			ax.set_ylabel(f"y [{units}]")
@@ -942,7 +980,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 		im4 = ax4.imshow(chi2.tot.transpose(), cmap='gist_gray', origin = origin,extent=Map_plot)
 	else:
 		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
-
+	if "-arc" in sys.argv and "-varrow" in sys.argv:
+		ax3.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
 	#####################
 	#	Set labels	#
 	#####################
@@ -1482,6 +1521,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 		im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
+		if "-arc" in sys.argv and "-varrow" in sys.argv:
+			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+
 		#####################
 		#	Set labels	#
 		#####################
@@ -1657,7 +1699,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			else:
 				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
-				
+			if "-vlos" in sys.argv:
+				if "-arc" in sys.argv and "-varrow" in sys.argv:
+					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
 
 			# Set labels
 			ax.set_xlabel(f"x [{units}]")
@@ -1697,7 +1741,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		im4 = ax4.imshow(models_inv.fill.transpose(),'gist_gray', origin = origin, vmin = limits[13][0], vmax = limits[13][1],extent=Map_plot)
 	else:
 		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
-
+	if "-arc" in sys.argv and "-varrow" in sys.argv:
+		ax3.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
 	#####################
 	#	Set labels	#
 	#####################
