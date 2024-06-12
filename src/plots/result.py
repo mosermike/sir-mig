@@ -729,9 +729,11 @@ def result_1C(conf, wave, tau, waveV = -1):
 	if "-flipy" in sys.argv:
 		if origin == "lower":
 			origin = "upper"
+			print("TEST")
 		if origin == "upper":
 			origin = "lower"
-			
+			print("TEST1")
+
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
 	else:
