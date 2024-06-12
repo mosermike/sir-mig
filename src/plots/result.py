@@ -719,14 +719,19 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 		if "-flipy" in sys.argv:
 			print("Arrow mirrored along y")
-			sign2 *= -1
+			#sign2 *= -1
 			
 		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
 		Map_plot = Map
 
 	origin = d.origin
-
+	if "-flipy" in sys.argv:
+		if origin == "lower":
+			origin = "upper"
+		if origin == "upper":
+			origin = "lower"
+			
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
 	else:
@@ -855,7 +860,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 	if "-arc" in sys.argv and "-varrow" in sys.argv:
 			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
-			
+
 	#####################
 	#	Set labels	#
 	#####################
