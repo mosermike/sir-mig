@@ -712,6 +712,11 @@ def result_1C(conf, wave, tau, waveV = -1):
 			sign1 = +1
 			sign2 = +1
 
+		# Account for the angle between (x,y) and the center
+		alpha = np.arctan((y+Map_plot[3]/2)/(x+Map_plot[1]/2)) # Angle at the center of the image
+		sign1 = sign1*np.cos(np.arctan(y/x))
+		sign2 = sign2*np.sin(np.arctan(y/x))
+
 		if "-flipy" in sys.argv:
 			print("Arrow mirrored along y")
 			sign2 *= -1
