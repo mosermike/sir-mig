@@ -78,7 +78,6 @@ def _help():
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
 	sir.option("-arc:","Print x and y axis in arcseconds")
 	sir.option("-flipy:","Flip inmage along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
-	sir.option("-swapx:","Swap the x axis")
 	sir.option("-f [float]","Factor for the fontsizes")
 	sir.option("-symv","Symmetric limits for vlos")
 	sir.option("-rot90","Rotate the image 90 deg")
@@ -357,8 +356,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 		Flip the image along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
 	-rot90
 		Rotate the image 90 deg
-	-swapx
-		Swap the x axis
 	-f [float]
 		Factor for the fontsizes
 	-symv
@@ -716,10 +713,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 		alpha = np.arctan((y+Map_plot[3]/2)/(x+Map_plot[1]/2)) # Angle at the center of the image
 		sign1 = sign1*np.cos(np.arctan(y/x))
 		sign2 = sign2*np.sin(np.arctan(y/x))
-
-		if "-flipy" in sys.argv:
-			print("Arrow mirrored along y")
-			#sign2 *= -1
 			
 		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
@@ -1163,9 +1156,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	-arc
 		Print x and y axis in arcseconds
 	-flipy
-		Rotate around 180 deg along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
-	-swapx
-		Swap the x axis
+		Flip image along y axis as sometimes the orientation is wrong in GRIS with the location on the sun
 	-f [float]
 		Factor for the fontsizes
 	-symv
@@ -1501,10 +1492,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		elif x < 0 and y < 0:
 			sign1 = +1
 			sign2 = +1
-
-		if "-flipy" in sys.argv:
-			print("Arrow mirrored along y")
-			sign2 *= -1
 		
 		# Account for the angle between (x,y) and the center
 		alpha = np.arctan((y+Map_plot[3]/2)/(x+Map_plot[1]/2)) # Angle at the center of the image
@@ -1517,9 +1504,13 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	
 	origin = d.origin
 
-	if "-swapx" in sys.argv:
-		print("[NOTE]  Axis on x swaped")
-		Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
+	origin = d.origin
+	if "-flipy" in sys.argv:
+		print("Image flipped in y direction")
+		if origin == "lower":
+			origin = "upper"
+		elif origin == "upper":
+			origin = "lower"
 		
 	if "-arc" in sys.argv:
 		units = 'Arcsec'
