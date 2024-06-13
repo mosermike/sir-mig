@@ -711,8 +711,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 		# Account for the angle between (x,y) and the center
 		alpha = np.arctan((y+Map_plot[3]/2)/(x+Map_plot[1]/2)) # Angle at the center of the image
-		sign1 = sign1*np.cos(np.arctan(y/x))
-		sign2 = sign2*np.sin(np.arctan(y/x))
+		sign1 = sign1*np.cos(alpha)
+		sign2 = sign2*np.sin(alpha)
 			
 		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
@@ -771,7 +771,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 	im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 	im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 	if "-arc" in sys.argv:
-		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+		l = np.min([Map_plot[1],Map_plot[3]])*0.025
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 	#####################
 	#	Set labels	#
 	#####################
@@ -853,8 +854,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
-	if "-arc" in sys.argv and "-varrow" in sys.argv:
-			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+	if "-arc" in sys.argv:
+		l = np.min([Map_plot[1],Map_plot[3]])*0.025
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 
 	#####################
 	#	Set labels	#
@@ -948,7 +950,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 							extent=Map_plot)
 			if inputs[i] == "-vlos":
 				if "-arc" in sys.argv and "-varrow" in sys.argv:
-					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+					l = np.min([Map_plot[1],Map_plot[3]])*0.025
+					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 			# Set labels
 			ax.set_xlabel(f"x [{units}]")
 			ax.set_ylabel(f"y [{units}]")
@@ -989,7 +992,8 @@ def result_1C(conf, wave, tau, waveV = -1):
 	else:
 		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
 	if "-arc" in sys.argv and "-varrow" in sys.argv:
-		ax3.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+		l = np.min([Map_plot[1],Map_plot[3]])*0.025
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 	#####################
 	#	Set labels	#
 	#####################
@@ -1573,8 +1577,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 		im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
-		if "-arc" in sys.argv and "-varrow" in sys.argv:
-			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+		if "-arc" in sys.argv:
+			l = np.min([Map_plot[1],Map_plot[3]])*0.025
+			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 
 		#####################
 		#	Set labels	#
@@ -1653,8 +1658,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		im4 = ax4.imshow(V2[:,:,waveV_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
 
-		if "-arc" in sys.argv and "-varrow" in sys.argv:
-			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+		if "-arc" in sys.argv:
+			l = np.min([Map_plot[1],Map_plot[3]])*0.025
+			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 
 		#####################
 		#	Set labels	#
@@ -1757,7 +1763,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 							extent=Map_plot)
 			if "-vlos" in sys.argv:
 				if "-arc" in sys.argv and "-varrow" in sys.argv:
-					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+					l = np.min([Map_plot[1],Map_plot[3]])*0.025
+					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 
 			# Set labels
 			ax.set_xlabel(f"x [{units}]")
@@ -1798,7 +1805,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	else:
 		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
 	if "-arc" in sys.argv and "-varrow" in sys.argv:
-		ax3.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=1, head_length=1, fc='red', ec='r')
+		l = np.min([Map_plot[1],Map_plot[3]])*0.025
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 	#####################
 	#	Set labels	#
 	#####################
