@@ -1388,10 +1388,13 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
 
+	performed_models = 0  # Counts how many models are performed in each rank
 	total_jobs = 1  # Total performed jobs across all processes
 	temp_tasks = sir.create_task_folder_list(Map) # Structure tasks
 	max_jobs = len(temp_tasks['folders'])  # For comm.allreduce function
 	del temp_tasks
+
+	
 
 	# Root process initializes the progress bar
 	if rank == 0 and progress:
