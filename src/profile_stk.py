@@ -362,7 +362,7 @@ class profile_stk:
 		y : int
 			y position to put the values
 		"""
-		ll, I, Q, U, V = self.__read_profile_sir(filename)
+		line, ll, I, Q, U, V = self.__read_profile_sir_mc(filename)
 		if(self.nw == 0 or self.stki.shape[2] == 0):
 			self.nw = len(ll)
 			self.stki = np.zeros((self.nx,self.ny,self.nw))
@@ -372,7 +372,7 @@ class profile_stk:
 
 		if((self.wave == 0).all()):
 			self.wave = ll/1e3
-		
+			self.indx = line
 		self.stki[x, y] = I
 		self.stkq[x, y] = Q
 		self.stku[x, y] = U

@@ -376,7 +376,7 @@ class model_atm:
 		self.Pe[0,0]	 	= data[2]
 		self.vmicro[0,0] 	= data[3]
 		self.B[0,0]	 	= data[4]
-		self.vlos[0,0]     	= data[5]
+		self.vlos[0,0]     	= data[5]/1e5
 		self.gamma[0,0]  	= data[6]
 		self.phi[0,0]	= data[7]
 		if len(data) > 8:
