@@ -944,7 +944,10 @@ def result_1C(conf, wave, tau, waveV = -1):
 		if inputs[i] in sys.argv:
 			# Plot
 			fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
-			ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]))
+			if inputs[i] == "-Bz":
+				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[4]))
+			else:
+				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]))
 			if inputs[i] == "-Bz":
 				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
@@ -1725,8 +1728,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				
 			if inputs[i] == "-fill":
 				ax.set_title(titles[i] + f" for Model {Type[1]}" + add_label)			
-			if inputs[i] == "-Bz":
-				
+			elif inputs[i] == "-Bz":
 				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[4]) + f" for Model {Type[1]}" + add_label)
 			else:
 				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]) + f" for Model {Type[1]}" + add_label)
