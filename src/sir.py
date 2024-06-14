@@ -212,7 +212,7 @@ def read_config(filename, check = True, change_config = False):
 		if Dict["mode"] == "2C" and not exists(os.path.join(Dict['path'],Dict['model2'])):
 			print(f"[read_config] {Dict['model2']} does not exist.")
 		if Dict['mode'] == "1C" or Dict['mode'] == "2C":
-			if not exists(os.path.join(Dict['path'],Dict['fts_file'])) and Dict['preprocess'] == "1":
+			if Dict['preprocess'] == "1" and not exists(os.path.join(Dict['path'],Dict['fts_file'])):
 				print(f"[read_config] {Dict['fts_file']} does not exist.")
 	
 
