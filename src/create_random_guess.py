@@ -411,7 +411,7 @@ def create_guesses_2c(conf, output = "./", number = 0):
 		lim_phi			= __split_to_float(conf[f"lim_phi{j}"])
 
 		mod = create_guess(model, conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
-		mod.fill[0,0] = conf['fill'].split(',')[j] # Assign filling factor from config
+		mod.fill[0,0] = conf['fill'].split(',')[j-1] # Assign filling factor from config
 		mod.vmacro[0,0] = conf["vmacro"] # Assign vmacro from config
 		if j == 1:
 			mod.write_model(output + f"{d.model1}" + str(number) + ".mod", 0, 0)

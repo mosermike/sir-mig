@@ -583,7 +583,6 @@ def execute_inversion_2c(conf, task_folder, rank):
 				os.remove(f"{d.guess1.replace('.mod','')}_{i+1}.per")
 				os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.mod")
 				os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.err")
-				os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.per")
 
 		# Check if the model has NaNs
 		index = str(chi2.argmin()+1)
@@ -680,7 +679,6 @@ def execute_inversion_2c(conf, task_folder, rank):
 			os.remove(f"{d.guess1.replace('.mod','')}_{i+1}.per")
 			os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.mod")
 			os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.err")
-			os.remove(f"{d.guess2.replace('.mod','')}_{i+1}.per")
 
 	# Change to old path
 	os.chdir(old_pw)
@@ -1266,10 +1264,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	# Read inversion stuff
 	Map = conf['map']
 	
-	# Write the control file with the information from the config file
-	if rank == 0:
-		print(f"-------> Write control file")
-		sir.write_control_2c(os.path.join(conf['path'],d.inv_trol_file), conf)
+	
 
 	abundance_file = conf['abundance'] # Abundance file	
 	end='.per' # ending of the file for the profile
@@ -1325,12 +1320,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		
 		guess2 = comm.bcast(guess2, root=0)
 
-	##########################
-	#	CREATE GRID FILE	#
-	##########################
-	if rank == 0:
-		# Write Grid file based on the chosen wavelength ranges in the config file
-		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
+	
 
 	# Print out randomisation setting
 	if rank == 0:
@@ -1374,30 +1364,30 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			for i in glob.glob(os.path.join(path,d.task_start + "*")):
 				shutil.rmtree(i)
 
-	comm.barrier() # Continues when all processes entered this function
-
-	
-	####################################
-	#		START INVERSION PART	#
-	####################################
-	performed_models = 0 # Counts how many models are performed
-	total_jobs = 1 # Total performed jobs across all processes
-	max_jobs = len(tasks['folders']) # For comm.allreduce function
-
 	# Load and scatter data => Saving memory and time
 	if conf['chi2'] != "":
 		stk, tasks, obs = scatter_data(conf, comm, rank, size, True)
 	else:
 		stk, tasks = scatter_data(conf, comm, rank, size, False)
 
+	# Write the control file with the information from the config file
+	if rank == 0:
+		print(f"-------> Write control and grid file")
+		sir._write_control_2c(os.path.join(conf['path'],d.inv_trol_file), conf)
+		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
+
+	performed_models = 0 # Counts how many models are performed
+	total_jobs = 1 # Total performed jobs across all processes
+	max_jobs = len(tasks['folders']) # For comm.allreduce function
+
+	if rank == 0:
+		print("[STATUS] Start Computing Inversions ...")
+
 	# Root process initializes the progress bar
 	if rank == 0:
 		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
 
 	comm.barrier()
-
-	if rank == 0:
-		print("[STATUS] Start Computing Inversions ...")
 
 	for i in range(0, len(tasks['folders'])):
 		#########################################
@@ -1421,23 +1411,21 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		for sir_file in sir_files:
 			shutil.copy(os.path.join(path, sir_file), os.path.join(task_folder, sir_file))
 		
-		# Create guess from npy file if wanted
-		# Copy the data from the imported numpy array to the model in the task folder
+		
+		# Use a guess file for model 1
 		if conf["guess1"] != '':
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
 			guess1.write_model(os.path.join(task_folder,model1),x1,y1)
 			
+		# Use a guess file for model 1
 		if conf["guess2"] != '':
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
 			guess1.write_model(os.path.join(task_folder,model2),x1,y1)
 
-		###############################
-		# 	Perform inversion		#
-		###############################
 		# Create random guesses and select best value and perform inversion
 		execute_inversion_2c(conf, task_folder, rank)
 
