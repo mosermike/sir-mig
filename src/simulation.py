@@ -762,7 +762,7 @@ def create_temperature(tau, B = 0):
 
 	return np.interp(tau, np.flip(log_taus), np.flip(Ts))
 
-def synthesis(conf, comm, rank, size, MPI):
+def synthesis(conf, comm, rank, size, MPI, progress = True):
 	"""
 	Performs the synthesis of all the models.
 
@@ -778,6 +778,8 @@ def synthesis(conf, comm, rank, size, MPI):
 		Number of processes
 	MPI : library
 		Library MPI
+	progress : bool,optional
+		Print a progress bar
 
 	Returns
 	-------
@@ -844,7 +846,7 @@ def synthesis(conf, comm, rank, size, MPI):
 		if finished_jobs < (conf['num'] - conf['num'] % size):
 			finished_jobs = comm.allreduce(performed_models, op=MPI.SUM)
 
-		if rank == 0:
+		if rank == 0 and progress:
 			print(f"\rTotal finished Jobs: {finished_jobs}", end='', flush=False)
 
 		os.chdir('../') # Go back in case relative paths are used
@@ -853,8 +855,6 @@ def synthesis(conf, comm, rank, size, MPI):
 	# Collect data and save it
 	if rank == 0:
 		print(f"\rTotal finished Jobs: {conf['num']}", end='', flush=False)
-		output =  os.path.join(path,conf["syn_out"]) # Output file
-		atoms = [i.split(",") for i in conf['atoms']]
 
 		# Read the profiles
 		stk = p.profile_stk(conf['num'],1,0)

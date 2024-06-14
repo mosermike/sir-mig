@@ -30,6 +30,7 @@ def help():
 	sir.option("--no-inv","Do not perform the inversion")
 	sir.option("--only-inv","Only perform inversion [Only in mode MC]")
 	sir.option("--debug", "Debugging (task folders in inversions are not deleted)")
+	sir.option("--no-progress", "Do not print a progress bar")
 	sys.exit()
 
 def main():
@@ -107,7 +108,7 @@ def main():
 		#####################
 		if not "--no-inv" in sys.argv:
 			import inversion
-			inversion.inversion_1c(conf, comm, rank, size, MPI)
+			inversion.inversion_1c(conf, comm, rank, size, MPI, "--debug" in sys.argv, not "--no-progress" in sys.argv)
 
 	elif conf['mode'] == '2C':
 		#####################
@@ -115,7 +116,7 @@ def main():
 		#####################
 		if not "--no-inv" in sys.argv:
 			import inversion
-			inversion.inversion_2c(conf, comm, rank, size, MPI)
+			inversion.inversion_2c(conf, comm, rank, size, MPI, "--debug" in sys.argv, not "--no-progress" in sys.argv)
 
 	elif conf['mode'] == 'MC':
 		import simulation  # Creating Models
@@ -151,7 +152,7 @@ def main():
 			# Perform Synthesis #
 			#####################
 			if not "--no-syn" in sys.argv:
-				simulation.synthesis(conf, comm, rank, size, MPI)
+				simulation.synthesis(conf, comm, rank, size, MPI, not "--no-progress" in sys.argv)
 
 			comm.barrier()
 
@@ -172,7 +173,7 @@ def main():
 			#####################
 			# PERFORM INVERSION #
 			#####################
-			inversion.inversion_mc(conf, comm, rank, size, MPI)
+			inversion.inversion_mc(conf, comm, rank, size, MPI, "--debug" in sys.argv, not "--no-progress" in sys.argv)
 
 
 
@@ -186,4 +187,5 @@ if __name__ == "__main__":
 		help()
 	else:
 		main()
+
 

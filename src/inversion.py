@@ -695,7 +695,7 @@ def execute_inversion_2c(conf, task_folder, rank):
 """
 
 
-def inversion_1c(conf, comm, rank, size, MPI):
+def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 	"""
 	Performs the inversion of all the models for the 1 component inversion.
 
@@ -711,7 +711,10 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		Number of available processes
 	MPI : library
 		 MPI library imported as 'from mpi4py import MPI'
-	
+	debug : bool,optional
+		Execute in debugging mode
+	progress : bool,optional
+		Print a progress bar
 
 	Returns
 	-------
@@ -835,7 +838,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	performed_models = 0  # Counts how many models are performed
 
 	# Root process initializes the progress bar
-	if rank == 0:
+	if rank == 0 and progress:
 		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
 	comm.barrier()
 
@@ -878,18 +881,18 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		performed_models += 1
 
 		# Do not do allreduce for the last step as the code does not move on from here
-		if total_jobs < (max_jobs - max_jobs % size):
+		if total_jobs < (max_jobs - max_jobs % size) and progress:
 			# Root process updates the progress bar
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
 		
 		# Update progres bar
-		if rank == 0:
+		if rank == 0 and progress:
 			pbar.n = total_jobs
 			pbar.refresh()
 	
 	comm.barrier()
 		
-	if rank == 0:
+	if rank == 0 and progress:
 		pbar.n = max_jobs
 		pbar.refresh()
 		pbar.close()
@@ -955,7 +958,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
 
-		if "--debug" not in sys.argv:
+		if debug:
 			# Delete the folder
 			for i in range(len(tasks['x'])):
 				# Remove folder
@@ -980,7 +983,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 *****************************************************************************
 """
 
-def inversion_mc(conf, comm, rank, size, MPI):
+def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 	"""
 	Performs the inversion of all the models for the MC simulation.
 
@@ -996,7 +999,10 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		Number of available processes
 	MPI : library
 		MPI library imported as 'from mpi4py import MPI'
-	
+	debug : bool,optional
+		Execute in debugging mode
+	progress : bool,optional
+		Print a progress bar
 
 	Returns
 	-------
@@ -1103,7 +1109,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		stk, tasks = scatter_data_mc(conf, comm, rank, size, False)
 
 	# Root process initializes the progress bar
-	if rank == 0:
+	if rank == 0 and progress:
 		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
 		
 	comm.barrier()
@@ -1137,18 +1143,18 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		performed_models += 1
 	
 		# Do not do allreduce for the last step as the code does not move on from here
-		if total_jobs < (max_jobs - max_jobs % size):
+		if total_jobs < (max_jobs - max_jobs % size) and progress:
 			# Root process updates the progress bar
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
 		
 		# Update progres bar
-		if rank == 0:
+		if rank == 0 and progress:
 			pbar.n = total_jobs
 			pbar.refresh()
 
 	comm.barrier()
 		
-	if rank == 0:
+	if rank == 0 and progress:
 		pbar.n = max_jobs
 		pbar.refresh()
 		pbar.close()
@@ -1206,7 +1212,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
 
-		if "--debug" not in sys.argv:
+		if debug:
 			for i in range(conf['num']):
 				shutil.rmtree(os.path.join(path,tasks['folders'][i]))
 
@@ -1226,7 +1232,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 *****************************************************************************
 """
 
-def inversion_2c(conf, comm, rank, size, MPI):
+def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 	"""
 	Performs the inversion of all the models for the 2 component inversion.
 
@@ -1242,7 +1248,10 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		Number of available processes
 	MPI : library
 		MPI library imported as 'from mpi4py import MPI'
-	
+	debug : bool,optional
+		Execute in debugging mode
+	progress : bool,optional
+		Print a progress bar
 	
 	Returns
 	-------
@@ -1383,9 +1392,9 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	temp_tasks = sir.create_task_folder_list(Map) # Structure tasks
 	max_jobs = len(temp_tasks['folders'])  # For comm.allreduce function
 	del temp_tasks
-	
+
 	# Root process initializes the progress bar
-	if rank == 0:
+	if rank == 0 and progress:
 		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
 
 	comm.barrier()
@@ -1438,13 +1447,13 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
 		
 		# Update progres bar
-		if rank == 0:
+		if rank == 0 and progress:
 			pbar.n = total_jobs
 			pbar.refresh()
 
 	comm.barrier()
 		
-	if rank == 0:
+	if rank == 0 and progress:
 		pbar.n = max_jobs
 		pbar.refresh()
 		pbar.close()
@@ -1520,7 +1529,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			del chi2
 	
 
-		if "--debug" not in sys.argv:
+		if debug:
 			# Delete the folder
 			for i in range(len(tasks['x'])):
 				shutil.rmtree(tasks['folders'][i])
