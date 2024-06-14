@@ -448,15 +448,12 @@ def execute_inversion_1c(conf, task_folder, rank):
 	else:
 		# Check if vmacro is different in the header of the model and if yes change it
 		header = np.loadtxt(conf['model'], max_rows=1)
-		if header[0] != float(conf['vmacro']):
-			header[0] = float(conf['vmacro'])
-			tem = np.loadtxt(conf['model'], skiprows=1)
-			if len(tem) > 8:
-				sir.write_model(conf["model"], header, tem[0], tem[1], tem[2], tem[3], tem[4], tem[5], tem[6], tem[7], tem[8], tem[9], tem[10])
-			else:
-				sir.write_model(conf["model"], header, tem[0], tem[1], tem[2], tem[3], tem[4], tem[5], tem[6], tem[7])
+		if header[0] != round(float(conf['vmacro']),4):
+			temp_mod = m.read_model(conf['model'])
+			temp_mod.vmacro[0,0] = float(conf['vmacro'])
+			temp_mod.write_model(conf['model'], 0, 0)
 		
-		# Copy to the model
+		# Copy to inversion model
 		shutil.copy(conf["model"], d.model_inv)
 
 		# Perform inversion once and read chi2 value
@@ -646,6 +643,20 @@ def execute_inversion_2c(conf, task_folder, rank):
 			chi2_best = chi2[chi2_best]
 
 	else:
+		# Correct for vmacro
+		header = np.loadtxt(conf['model1'], max_rows=1)
+		if header[0] != round(float(conf['vmacro']),4):
+			temp_mod = m.read_model(conf['model1'])
+			temp_mod.vmacro[0,0] = float(conf['vmacro'])
+			temp_mod.write_model(conf['model1'], 0, 0)
+		
+		# Correct of different vmacro
+		header = np.loadtxt(conf['model2'], max_rows=1)
+		if header[0] != round(float(conf['vmacro']),4):
+			temp_mod = m.read_model(conf['model2'])
+			temp_mod.vmacro[0,0] = float(conf['vmacro'])
+			temp_mod.write_model(conf['model2'], 0, 0)
+
 		# Perform inversion once and read chi2 value
 		shutil.copy(model1,d.guess1)
 		shutil.copy(model2,d.guess2)
@@ -732,11 +743,25 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			else:
 				shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 	
-	# Create guess from npy file if wanted
+	# Create guess from bin file if wanted
 	if conf["guess"] != '':
+		guess = None
 		if rank == 0:
-			print(f"-------> File {conf['guess']} used as initial guess/base model")
-		guess = m.read_model(os.path.join(path,conf["guess"]))
+			guess = m.read_model(os.path.join(path, conf["guess"].split(" ")[0]))
+			print(f"-------> File {conf['guess'].split(' ')[0]} used as initial guess/base model")
+			if guess.nx > Map[1]-Map[0]+1 or guess.ny > Map[3]-Map[2]+1:
+					print("[Warn]   The shapes of the initial guess/base model are bigger than the map in the config.")
+			if guess.nx < Map[1]-Map[0]+1 or guess.ny < Map[3]-Map[2]+1:
+					print(f"[ERROR]  The shapes ({guess.nx},{guess.ny}) of the initial guess/base model are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
+					return
+			
+			# Small variation around the guess
+			if(len(conf["guess"].split(" ")) > 1):
+				factor = float(conf["guess"].split(" ")[1])
+				print(f"-------> Create small variation around the initial guess with the factor {factor}")
+				guess = g.create_small_guess(guess, conf["random_pars"], factor)
+		
+		guess = comm.bcast(guess, root=0)
 		
 	if rank == 0:
 		# Check if there are old task folders and delete them => can result to errors
@@ -747,7 +772,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 	
 	if rank == 0:
 		# Write which parameters are randomised
-		if conf["random_guess"] > 0:
+		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) != 1):
 			random_pars = conf["random_pars"]
 			print("-------> Parameters to be randomised: ", end='')
 			print_out = ''
@@ -772,11 +797,12 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			if 'rho' in random_pars:
 				print_out += "Density, "
 			print(print_out[0:-2] + ".")
-			if conf['random_guess'] == 1:
+
+			if conf['random_guess'] == 1 and conf["guess"] == '':
 				print(f"-------> Create {conf['random_guess']} random guess per pixel.")
-			else:
+			elif conf["guess"] == '':
 				print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
-		else:
+		elif conf["guess"] == '':
 			print(f"-------> Use Base Model '{conf['model']}' as initial guess.")
 
 	########################
@@ -842,7 +868,13 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			# Write the new initial model from here:
 			x1 = x - Map[0]  # x position taking the Map into account
 			y1 = y - Map[2]  # y position taking the Map into account
+			if rank == 0:
+				print(x1,y1, guess.T[0,0,0])
+				print(os.path.join(task_folder, model))
+				print(guess.T[0,0])
+				guess.write_model(os.path.join("test.mod"), x1, y1)
 			guess.write_model(os.path.join(task_folder, model), x1, y1)
+			
 
 		#####################
 		# Perform inversion #
@@ -925,7 +957,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
 		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
 		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
-		best_guesses.write(os.path.join(path,d.best_guess_file))
+		best_guesses.write(os.path.join(path,conf['inv_out'] + d.best_guess_file))
 		
 		if conf['chi2'] != "":
 			chi2.write(os.path.join(path, conf['chi2']))
@@ -997,9 +1029,23 @@ def inversion_mc(conf, comm, rank, size, MPI):
 
 	# Create guess from bin file if wanted
 	if conf["guess"] != '':
-		guess = m.read_model(os.path.join(path, conf["guess"]))
+		guess = None
 		if rank == 0:
-			print(f"-------> File {conf['guess']} used as initial guess/base model")
+			guess = m.read_model(os.path.join(path, conf["guess"].split(" ")[0]))
+			print(f"-------> File {conf['guess'].split(' ')[0]} used as initial guess/base model")
+			if guess.nx > conf['num']:
+					print("[Warn] The shapes of the initial guess/base model are bigger than the map in the config.")
+			if guess.nx < conf['num']:
+					print(f"[ERROR]  The shapes ({guess.nx},{guess.ny}) of the initial guess/base model are not compatible with the map ({conf['num']},1) in the config.")
+					return
+			
+			# Small variation around the guess
+			if(len(conf["guess"].split(" ")) > 1):
+				factor1 = float(conf["guess"].split(" ")[1])
+				print(f"-------> Create small variation around the initial guess with the factor {factor1}")
+				guess = g.create_small_guess(guess, conf["random_pars"], factor1)
+		
+		guess = comm.bcast(guess, root=0)
 
 	####################
 	# CREATE GRID FILE #
@@ -1008,7 +1054,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		# Write Grid file based on the chosen wavelength ranges in the config file
 		sir.write_grid(conf, os.path.join(path, d.Grid))
 		# Write which parameters are randomised
-		if conf["random_guess"] > 0:
+		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) == 1):
 			random_pars = conf["random_pars"]
 			print("-------> Parameters to be randomised: ", end='')
 			print_out = ''
@@ -1033,9 +1079,9 @@ def inversion_mc(conf, comm, rank, size, MPI):
 			if 'rho' in random_pars:
 				print_out += "Density, "
 			print(print_out[0:-2] + ".")
-			if conf['random_guess'] == 1:
+			if conf['random_guess'] == 1 and conf['guess'] == "":
 				print(f"-------> Create {conf['random_guess']} random guess per pixel.")
-			else:
+			elif conf['guess'] == '':
 				print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
 		else:
 			if rank == 0:
@@ -1085,8 +1131,7 @@ def inversion_mc(conf, comm, rank, size, MPI):
 		for sir_file in sir_files:
 			shutil.copy(os.path.join(path, sir_file), os.path.join(task_folder, sir_file))
 		
-		# Create guess from npy file if wanted
-		# Copy the data from the imported numpy array to the model in the task folder
+		# Create guess from bin file
 		if conf["guess"] != '':
 			# Write the new initial model from here:
 			guess.write_model(os.path.join(task_folder, model), i, 0)
@@ -1160,9 +1205,9 @@ def inversion_mc(conf, comm, rank, size, MPI):
 				os.mkdir(temp[:temp.rfind('/')])
 
 		print("-------> Write Data ...")
-		models.write(f"{os.path.join(path,conf['inv_out'])}{d.end_models}")
-		errors.write(f"{os.path.join(path,conf['inv_out'])}{d.end_errors}")
-		guess.write(f"{os.path.join(path,d.best_guess_file)}")
+		models.write(f"{os.path.join(path,conf['inv_out']+d.end_models)}")
+		errors.write(f"{os.path.join(path,conf['inv_out']+d.end_errors)}")
+		guess. write(f"{os.path.join(path,conf['inv_out']+d.best_guess_file)}")
 
 
 		if conf['chi2'] != "":
@@ -1247,28 +1292,44 @@ def inversion_2c(conf, comm, rank, size, MPI):
 				if(conf['psf'] != d.psf):
 					shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 
-	# Create guess from npy file if wanted
+	# Create guess from bin file if wanted
 	if conf["guess1"] != '':
-			guess1 = m.read_model(os.path.join(path,conf["guess1"])) # Load data
-			if rank == 0:
-				print(f"-------> File {conf['guess1']} used as initial guess/base model 1")
-				# Check if the shapes match
-				if guess1.nx > Map[1]-Map[0]+1 or guess1.ny > Map[3]-Map[2]+1:
+		guess1 = None
+		if rank == 0:
+			guess1 = m.read_model(os.path.join(path, conf["guess1"].split(" ")[0]))
+			print(f"-------> File {conf['guess1'].split(' ')[0]} used as initial guess/base model 1")
+			if guess1.nx > Map[1]-Map[0]+1 or guess1.ny > Map[3]-Map[2]+1:
 					print("[Warn]   The shapes of the initial guess/base model 1 are bigger than the map in the config.")
-				elif guess1.nx < Map[1]-Map[0]+1 or guess1.ny < Map[3]-Map[2]+1:
-					print(f"[ERROR] The shapes ({guess1.nx},{guess1.ny}) of the initial guess/base model 1 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
-					sys.exit()
-	# Create guess from npy file if wanted
+			if guess1.nx < Map[1]-Map[0]+1 or guess1.ny < Map[3]-Map[2]+1:
+					print(f"[ERROR]  The shapes ({guess1.nx},{guess1.ny}) of the initial guess/base model 1 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
+					return
+			
+			# Small variation around the guess
+			if(len(conf["guess1"].split(" ")) > 1):
+				factor1 = float(conf["guess1"].split(" ")[1])
+				print(f"-------> Create small variation around the initial guess with the factor {factor1}")
+				guess1 = g.create_small_guess(guess1, conf["random_pars"], factor1)
+		
+		guess1 = comm.bcast(guess1, root=0)
+
 	if conf["guess2"] != '':
-			guess2 = m.read_model(os.path.join(path,conf["guess2"])) # Load data
-			if rank == 0:
-				print(f"-------> File {conf['guess2']} used as initial guess/base model 2")
-				# Check if the shapes match
-				if guess2.nx > Map[1]-Map[0]+1 or guess2.ny > Map[3]-Map[2]+1:
+		guess2 = None
+		if rank == 0:
+			guess2 = m.read_model(os.path.join(path, conf["guess2"].split(" ")[0]))
+			print(f"-------> File {conf['guess2'].split(' ')[0]} used as initial guess/base model 2")
+			if guess2.nx > Map[1]-Map[0]+1 or guess2.ny > Map[3]-Map[2]+1:
 					print("[Warn]   The shapes of the initial guess/base model 2 are bigger than the map in the config.")
-				if guess2.nx < Map[1]-Map[0]+1 or guess2.ny < Map[3]-Map[2]+1:
+			if guess2.nx < Map[1]-Map[0]+1 or guess2.ny < Map[3]-Map[2]+1:
 					print(f"[ERROR]  The shapes ({guess2.nx},{guess2.ny}) of the initial guess/base model 2 are not compatible with the map ({Map[1]-Map[0]+1},{Map[3]-Map[2]+1}) in the config.")
 					return
+			
+			# Small variation around the guess
+			if(len(conf["guess2"].split(" ")) > 1):
+				factor2 = float(conf["guess2"].split(" ")[1])
+				print(f"-------> Create small variation around the initial guess with the factor {factor2}")
+				guess2 = g.create_small_guess(guess2, conf["random_pars"], factor2)
+		
+		guess2 = comm.bcast(guess2, root=0)
 
 	##########################
 	#	CREATE GRID FILE	#
@@ -1280,7 +1341,7 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	# Print out randomisation setting
 	if rank == 0:
 		# Write which parameters are randomised
-		if conf["random_guess"] > 0:
+		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) == 1):
 			random_pars = conf["random_pars"]
 			print("-------> Parameters to be randomised: ", end = '')
 			print_out = ''
@@ -1305,9 +1366,9 @@ def inversion_2c(conf, comm, rank, size, MPI):
 			if 'rho' in random_pars:
 				print_out += "Density, "
 			print(print_out[0:-2] + ".")
-			if conf['random_guess'] == 1:
+			if conf['random_guess'] == 1 and (conf['guess1'] == "" or conf['guess2'] == ""):
 				print(f"-------> Create {conf['random_guess']} random guess per pixel.")
-			else:
+			elif conf['guess1'] == "" or conf['guess2'] == "":
 				print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
 		else:
 			print(f"-------> Use Base Model '{conf['model']}' as initial guess.")
@@ -1469,10 +1530,11 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		models_inv2.write(os.path.join(path,conf['inv_out'] + d.end_models2))
 		errors_inv1.write(os.path.join(path,conf['inv_out'] + d.end_errors1))
 		errors_inv2.write(os.path.join(path,conf['inv_out'] + d.end_errors2))
-		best_guesses1.write(os.path.join(path, d.best_guess1_file))
-		best_guesses2.write(os.path.join(path,d.best_guess2_file))
+		best_guesses1.write(os.path.join(path,conf['inv_out'] + d.best_guess1_file))
+		best_guesses2.write(os.path.join(path,conf['inv_out'] + d.best_guess2_file))
 		if conf['chi2'] != "":
 			chi2.write(os.path.join(path, conf['chi2']))
+			del chi2
 	
 
 		if "--debug" not in sys.argv:

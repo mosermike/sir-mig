@@ -240,6 +240,116 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 
 	return mod
 
+def create_small_guess(mod, random_pars, factor):
+	r"""
+	Create random guesses in a small area around the provided values.
+
+	Parameters
+	----------
+	model : model_atm
+		Class with the guesses for the full map
+	random_pars : list
+		List with what is randomised
+	factor : float
+		Factor which is used to create a guess around the parameter in the guess file
+		E.g. factor = 0.05 would create a parameter space of $[-0.95\cdot P, 1.05\cdot P)$, where P is a model parameter
+		
+	Return
+	------
+	Class Model with the random Model
+
+	"""
+	
+	###################################################################################
+	#					Define variables from input					    #
+	###################################################################################
+	cT = cPe = cvmicro = cB = cvlos = cinc = cazi = cz = cPg = crho = False
+	if 'T' in random_pars:
+		cT = True
+	if 'Pe' in random_pars:
+		cPe = True
+	if 'vmicro' in random_pars:
+		cvmicro = True
+	if 'B' in random_pars:
+		cB = True
+	if 'vlos' in random_pars:
+		cvlos = True
+	if 'gamma' in random_pars:
+		cinc = True
+	if 'phi' in random_pars:
+		cazi = True
+	if 'z' in random_pars:
+		cz = True
+	if 'Pg' in random_pars:
+		cPg = True
+	if 'rho' in random_pars:
+		crho = True
+
+	for x in range(mod.nx):
+		for y in range(mod.ny):		
+			###############################
+			#	    NEW MAGNETIC FIELD	  #
+			###############################
+			if cB:
+				mod.B[x,y] *= np.random.uniform(1-factor,1+factor)
+			
+			#############################
+			#	    NEW TEMPERATURE		#
+			#############################
+			if cT:
+				mod.T[x,y] *= np.random.uniform(1-factor,1+factor)
+				
+				
+			#########################
+			# NEW ELECTRON PRESSURE #
+			#########################
+			if cPe:
+				mod.Pe[x,y] *= np.random.uniform(1-factor,1+factor)
+			
+			#######################
+			# NEW MICROTURBULENCE #
+			#######################
+			if cvmicro:
+				mod.vmicro[x,y] *= np.random.uniform(1-factor,1+factor)
+
+			#############################
+			#		    NEW VLOS		#
+			#############################
+			if cvlos:
+				mod.vlos[x,y] *= np.random.uniform(1-factor,1+factor)
+			
+			#############################
+			#	    NEW INCLINATION		#
+			#############################
+			if cinc:
+				mod.gamma[x,y] *= np.random.uniform(1-factor,1+factor)
+			
+			#############################
+			#	    NEW AZIMUTH		    #
+			#############################
+			if cazi:
+				mod.phi[x,y] *= np.random.uniform(1-factor,1+factor)
+			
+			#############################
+			#	    NEW HEIGHT			#
+			#############################
+			if cz:
+				print("z change not implemented")
+			
+			####################################
+			#	    NEW GAS PRESSURE	    #
+			####################################
+			if cPg:
+				print("Pg change not implemented")
+			
+			####################################
+			#	    NEW DENSITY		    #
+			####################################
+			if crho:
+				print("rho change not implemented")
+
+	return mod
+
 
 def create_guesses_1c(conf, output = "./", number = 0):
 	"""

@@ -76,7 +76,7 @@ def _config_MC():
 		random_pars = input("Randomize these parameters [B,T,vlos,gamma]: ")
 	else:
 		random_pars = ''
-	guess = input ("Take npy file as initial guess? Write name of the file, if used: ")
+	guess = input ("Take bin file as initial guess? Write name of the file, if used [with add. number, create guess around the provided value with this factor]: ")
 
 	weights = input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
 	nodes_temp = input("Nodes in temperature  (as list)        : ")
@@ -240,13 +240,13 @@ def _config_1C():
 	inv_out		= input ("Inversion Prefix [out]: ")
 	line			= input ("Line file                       [Lines]: ")
 	atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
-	range_wave		= input ("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file:" )
+	range_wave		= input ("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelengths) for each line in the grid file:" )
 	random_guess	= input ("Number of random guess models (0 = use base model): ")
 	if random_guess != '0':
 		random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
 	else:
 		random_pars = ''
-	guess		= input ("Take bin file as initial guess? Write name of the file, if used: ")
+	guess		= input ("Take bin file as initial guess? Write name of the file, if used [additional number to create new guess around value with this factor]: ")
 	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used): ")
 
 	weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
@@ -386,8 +386,8 @@ def _config_2C():
 	else:
 		random_pars = ''
 		fill = ''
-	guess1		= input ("Take bin file as initial guess for model 1? Write name of the file, if used: ")
-	guess2		= input ("Take bin file as initial guess for model 2? Write name of the file, if used: ")
+	guess1		= input ("Take bin file as initial guess for model 1? Write name of the file, if used [if additional number, create small guess around it with this factor]: ")
+	guess2		= input ("Take bin file as initial guess for model 2? Write name of the file, if used [if additional number, create small guess around it with this factor]: ")
 	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used: ")
 	fill		= input ("Filling factor for the two models? Seperated by a ',': ")
 
