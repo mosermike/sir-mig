@@ -73,18 +73,19 @@ def extract_profile_model_1C(conf, x, y):
 	# Load data
 	obs1 = p.read_profile(os.path.join(path, conf['cube']))
 	obs1.cut_to_wave(conf["range_wave"]) # Cut the values to data used in the inversion
+	obs1.cut_to_map(conf["map"]) # Cut the values to data used in the inversion
 
-	inv = p.read_profile(os.path.join(path, conf['inv_out']) + d.end_stokes)
-	mod = m.read_model(filename=os.path.join(path,conf['inv_out'] + d.end_models))
-	guess = m.read_model(filename=os.path.join(path,d.best_guess_file))
-	err = m.read_model(filename=os.path.join(path,conf['inv_out'] + d.end_errors))
+	inv   = p.read_profile(os.path.join(path, conf['inv_out']) + d.end_stokes)
+	mod   = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models))
+	guess = m.read_model(os.path.join(path,conf['inv_out'] + d.best_guess_file))
+	err   = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors))
 
 	# Change to the reduced Map
 	x = x - Map[0]
 	y = y - Map[2]
 	
 	# Save data in formats for SIR
-	obs1.write_profile(savepath + "profile" + add + ".per", x + Map[0], y + Map[2], d.Grid)
+	obs1.write_profile(savepath + "profile" + add + ".per", x, y, d.Grid)
 	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, d.Grid)
 	mod.write_model(savepath + "model_result" + add + ".mod", x, y)
 	guess.write_model(savepath + d.guess.replace(".mod","") + add + ".mod", x, y)
@@ -149,7 +150,7 @@ def extract_profile_model_MC(conf, num):
 
 	# Now with the class model/error
 	mod = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models))
-	gue = m.read_model(os.path.join(path,d.best_guess_file))
+	gue = m.read_model(os.path.join(path,conf['inv_out'] + d.best_guess_file))
 	syn = m.read_model(os.path.join(path,conf["syn_out"]+ d.end_models))
 	err = m.read_model(os.path.join(path, os.path.join(path,conf['inv_out'] + d.end_errors)))
 	
@@ -205,8 +206,8 @@ def extract_profile_model_2C(conf, x, y):
 	# Load data
 	obs1 = p.read_profile(conf, filename=conf['cube'])	
 	inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
-	guess1 = m.read_model(os.path.join(path,d.best_guess1_file))
-	guess2 = m.read_model(os.path.join(path,d.best_guess2_file))
+	guess1 = m.read_model(os.path.join(path,conf['inv_out'] + d.best_guess1_file))
+	guess2 = m.read_model(os.path.join(path,conf['inv_out'] + d.best_guess2_file))
 	mod1 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models1))
 	mod2 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models2))
 	err1 = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors1))

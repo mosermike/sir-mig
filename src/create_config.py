@@ -226,26 +226,29 @@ def _config_1C():
 	Map			= input ("Map in pixels to be used for the inversion (format xmin,xmax,ymin,ymax): ")
 
 	instrument	= input ("Instrument          (GRIS, Hinode or blank): ")
-	# Ask for spectral veil for Gris:
-	if instrument == 'Hinode':
-		fts_file = ''
-	else:
-		fts_file	= input ("Absolute path to fts file (if not blank => correct spectral veil): ")
-	shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
-	save_cube	= input ("Save preprocessed data? (1 = True, 0 = False): ")
 
-	quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
+	if preprocess == "1":
+		# Ask for spectral veil for Gris:
+		if instrument == 'Hinode':
+			fts_file = ''
+		else:
+			fts_file	= input ("Absolute path to fts file (if not blank => correct spectral veil): ")
+		shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
+		save_cube	= input ("Save preprocessed data? (1 = True, 0 = False): ")
+		quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
+	else:
+		fts_file = ""
+		shift_wave = "0"
+		save_cube = "0"
+		quiet_sun = "0,0,0,0"
+		
+	
 	cycles		= input ("Cycles: ")
 	model		= input ("Base model: ")
 	inv_out		= input ("Inversion Prefix [out]: ")
 	line			= input ("Line file                       [Lines]: ")
 	atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	range_wave		= input ("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelengths) for each line in the grid file:" )
-	random_guess	= input ("Number of random guess models (0 = use base model): ")
-	if random_guess != '0':
-		random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
-	else:
-		random_pars = ''
 	guess		= input ("Take bin file as initial guess? Write name of the file, if used [additional number to create new guess around value with this factor]: ")
 	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used): ")
 
@@ -261,10 +264,18 @@ def _config_1C():
 	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
 	gas_pressure   = input ("Gas Pressure Boundary condition  [-1 => 3944]: ")
 
-	lim_B		= input ("Limits for randomising the magn. field in G             [0,5000]: ")
-	lim_vlos		= input ("Limits for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
-	lim_gamma		= input ("Limits for randomising the inclination in deg            [0,180]: ")
-	lim_azimuth	= input ("Limits for randomising the azimuth in deg                [0,180]: ")
+	random_guess	= input ("Number of random guess models (0 = use base model or provided guess): ")
+	random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
+	if random_guess != '0':
+		lim_B		= input ("Limits for randomising the magn. field in G             [0,5000]: ")
+		lim_vlos		= input ("Limits for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
+		lim_gamma		= input ("Limits for randomising the inclination in deg            [0,180]: ")
+		lim_azimuth	= input ("Limits for randomising the azimuth in deg                [0,180]: ")
+	else:
+		lim_B = "0,0"
+		lim_vlos = "0e5,0e5"
+		lim_gamma = "0,0"
+		lim_azimuth = "0,0"
 
 
 
@@ -359,19 +370,25 @@ def _config_2C():
 	else:
 		path		= input ("Path: ")
 	cube_inv		= input ("Location of the Data cube used for the inversion (format is nx,ny,ns,nwave) in the path as a fits or npy file: ")
-	preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
 	Map			= input ("Map in pixels (format xmin,xmax,ymin,ymax, 0 => all pixels): ")
-
 	instrument	= input ("Instrument          (GRIS, Hinode or blank): ")
-	# Ask for spectral veil for Gris:
-	if instrument == 'Hinode':
-		fts_file = ''
-	else:
-		fts_file	= input ("Absolute fts file (if not blank => correct spectral veil): ")
-	shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
-	save_cube	= input ("Save preprocessed data? (1 = True, 0 = False): ")
+	preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
 
-	quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
+	if preprocess == '1':
+		# Ask for spectral veil for Gris:
+		if instrument == 'Hinode':
+			fts_file = ''
+		else:
+			fts_file	= input ("Absolute fts file (if not blank => correct spectral veil): ")
+		shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
+		save_cube	= input ("Save preprocessed data? (1 = True, 0 = False): ")
+		quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
+	else:
+		fts_file = ""
+		shift_wave = "0"
+		save_cube = "0"
+		quiet_sun = "0,0,0,0"
+
 	cycles		= input ("Cycles: ")
 	model1		= input ("Base model 1: ")
 	model2		= input ("Base model 2: ")
@@ -379,13 +396,8 @@ def _config_2C():
 	line			= input ("Line file                       [Lines]: ")
 	atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	range_wave  = input("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file:")
-	random_guess	= input ("Number of random guess models (0 = use base model): ")
-	if random_guess != '0':
-		random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
-		fill		= input ("Filling factor for the two models? Seperated by a ',': ")
-	else:
-		random_pars = ''
-		fill = ''
+	
+	fill		= input ("Filling factor for the two models? Seperated by a ',': ")
 	guess1		= input ("Take bin file as initial guess for model 1? Write name of the file, if used [if additional number, create small guess around it with this factor]: ")
 	guess2		= input ("Take bin file as initial guess for model 2? Write name of the file, if used [if additional number, create small guess around it with this factor]: ")
 	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used: ")
@@ -408,15 +420,26 @@ def _config_2C():
 	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
 	gas_pressure   = input ("Gas Pressure Boundary condition  [-1 => 3.944e+3]: ")
 
-	lim_B1		= input ("Limits 1 for randomising the magn. field in G             [0,5000]: ")
-	lim_vlos1		= input ("Limits 1 for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
-	lim_gamma1	= input ("Limits 1 for randomising the inclination in deg            [0,180]: ")
-	lim_azimuth1	= input ("Limits 1 for randomising the azimuth in deg                [0,180]: ")
-	lim_B2		= input ("Limits 2 for randomising the magn. field in G             [0,5000]: ")
-	lim_vlos2		= input ("Limits 2 for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
-	lim_gamma2	= input ("Limits 2 for randomising the inclination in deg            [0,180]: ")
-	lim_azimuth2	= input ("Limits 2 for randomising the azimuth in deg                [0,180]: ")
-
+	random_guess	= input ("Number of random guess models (0 = use base model or provided guess model): ")
+	random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
+	if random_guess != '0':
+		lim_B1		= input ("Limits 1 for randomising the magn. field in G             [0,5000]: ")
+		lim_vlos1		= input ("Limits 1 for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
+		lim_gamma1	= input ("Limits 1 for randomising the inclination in deg            [0,180]: ")
+		lim_azimuth1	= input ("Limits 1 for randomising the azimuth in deg                [0,180]: ")
+		lim_B2		= input ("Limits 2 for randomising the magn. field in G             [0,5000]: ")
+		lim_vlos2		= input ("Limits 2 for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
+		lim_gamma2	= input ("Limits 2 for randomising the inclination in deg            [0,180]: ")
+		lim_azimuth2	= input ("Limits 2 for randomising the azimuth in deg                [0,180]: ")
+	else:
+		lim_B1 = "0,0"
+		lim_vlos1 = "0e5,0e5"
+		lim_gamma1 = "0,0"
+		lim_azimuth1 = "0,0"
+		lim_B2 = "0,0"
+		lim_vlos2 = "0e5,0e5"
+		lim_gamma2 = "0,0"
+		lim_azimuth2 = "0,0"
 
 
 
