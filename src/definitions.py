@@ -23,10 +23,9 @@ end_errors1 = '_errors_1.bin'  # Ending inversion result error 1 for 2C KEEP
 end_errors2 = '_errors_2.bin'  # Ending inversion result error 2 for 2C KEEP
 veil_parameters = 'veil.npy'  # numpy file with sigma and nu from the spectral veil correction KEEP
 header_infos = 'infos.txt'  # Information about the observations from the Header # KEEP
-filling_factor = 'fill'		# Generic start of the npy files with the filling factors (end_modelsX is added)
-best_guess_file = 'best_guess.bin'  # Name of the best guess model (best model is saved under this name) KEEP
-best_guess1_file = 'best_guess1.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
-best_guess2_file = 'best_guess2.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
+best_guess_file = '_best_guess.bin'  # Name of the best guess model (best model is saved under this name) KEEP
+best_guess1_file = '_best_guess1.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
+best_guess2_file = '_best_guess2.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
 cube = 'data.bin' # Data cube from the fits files
 cube_norm = 'data_norm.bin' # Normalised data cube
 
