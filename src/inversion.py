@@ -1375,13 +1375,15 @@ def inversion_2c(conf, comm, rank, size, MPI):
 		sir._write_control_2c(os.path.join(conf['path'],d.inv_trol_file), conf)
 		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
 
-	performed_models = 0 # Counts how many models are performed
-	total_jobs = 1 # Total performed jobs across all processes
-	max_jobs = len(tasks['folders']) # For comm.allreduce function
 
 	if rank == 0:
 		print("[STATUS] Start Computing Inversions ...")
 
+	total_jobs = 1  # Total performed jobs across all processes
+	temp_tasks = sir.create_task_folder_list(Map) # Structure tasks
+	max_jobs = len(temp_tasks['folders'])  # For comm.allreduce function
+	del temp_tasks
+	
 	# Root process initializes the progress bar
 	if rank == 0:
 		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
