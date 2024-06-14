@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from os.path import exists
 import sys
 import os
-sys.path.append(sys.path[0] + "/..")
+sys.path.append(sys.path[0] + "/../src")
 import os, sys, sir
 import definitions as d
 import profile_stk as p

@@ -9,11 +9,9 @@ import matplotlib.pyplot as plt
 from os.path import exists
 import os
 import sys
-sys.path.append(sys.path[0] + "/..")
-sys.path.append(sys.path[0] + "/../tools")
+sys.path.append(sys.path[0] + "/../src")
 import sir
 import definitions as d
-from change_config_path import change_config_path
 import model_atm as m
 import profile_stk as p
 import chi2_stk as c

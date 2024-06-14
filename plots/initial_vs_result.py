@@ -2,7 +2,7 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import sys, os
-sys.path.append(sys[0] +  "/..") 
+sys.path.append(sys[0] +  "/../src") 
 import sir
 import definitions as d
 from os.path import exists

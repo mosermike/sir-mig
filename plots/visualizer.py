@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import os
-sys.path.append(sys.path[0] + "/..")
+sys.path.append(sys.path[0] + "/../src")
 from matplotlib.backend_bases import MouseButton
 import sir
 from os.path import exists

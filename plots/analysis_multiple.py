@@ -7,8 +7,8 @@ Analyses the quality of multiple Monte Carlo Simulations
 import numpy as np 
 import sys
 import os
-sys.path.append(sys.path[0] + "/../")
-sys.path.append(sys.path[0] + "/../tools")
+sys.path.append(sys.path[0] + "/../src/")
+
 import sir
 import definitions as d
 from model_atm import *  # Model class

@@ -4,7 +4,7 @@ Plots the result of the SIR synthesis
 
 import numpy as np 
 import sys, os
-sys.path.append(sys.path[0] + "/../..")
+sys.path.append(sys.path[0] + "/../../src")
 import sir
 import definitions as d
 import matplotlib.pyplot as plt

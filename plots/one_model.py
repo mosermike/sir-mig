@@ -4,7 +4,7 @@ Plots the changed parameters for one model
 import matplotlib.pyplot as plt
 import numpy as np
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), "..")) 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../src")) 
 import sir
 import definitions as d
 

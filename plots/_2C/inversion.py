@@ -5,15 +5,14 @@ Plots the result of the SIR synthesis
 import numpy as np 
 import sys
 import os
-sys.path.append(sys.path[0] + "/../..")
-sys.path.append(sys.path[0] + "/../../tools")
+sys.path.append(sys.path[0] + "/../../src")
 import sir
 import obs
 import definitions as d
 import matplotlib.pyplot as plt
 from os.path import exists
 import os
-from change_config_path import change_config_path
+
 
 # TODO CHANGE TO MODEL
 sys.exit()

@@ -4,13 +4,12 @@ Plots the result of the SIR inversion
 
 import numpy as np 
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../tools"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../src"))
+
 import sir
 import model_atm as m
 import definitions as d
 import matplotlib.pyplot as plt
-from change_config_path import change_config_path
 from os.path import exists
 import os
 
@@ -81,9 +80,8 @@ def inversion(conf, num):
 
 	# Check if path exists
 	if not exists(conf['path']):
-		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")
-		if Inp == "y":
-			change_config_path(conf, os.path.abspath(os.getcwd()))
+		print(f"[NOTE] Path {conf['path']} does not exist.")
+		
 	############################
 	# READ INPUT AND LOAD DATA #
 	############################

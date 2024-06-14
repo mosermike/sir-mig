@@ -6,7 +6,7 @@ import numpy as np
 import sys, os
 import matplotlib.pyplot as plt
 from os.path import exists
-sys.path.append(os.path.join(os.path.dirname(__file__), "../..")) 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../src")) 
 import sir
 import definitions as d
 
