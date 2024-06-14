@@ -868,13 +868,7 @@ def inversion_1c(conf, comm, rank, size, MPI):
 			# Write the new initial model from here:
 			x1 = x - Map[0]  # x position taking the Map into account
 			y1 = y - Map[2]  # y position taking the Map into account
-			if rank == 0:
-				print(x1,y1, guess.T[0,0,0])
-				print(os.path.join(task_folder, model))
-				print(guess.T[0,0])
-				guess.write_model(os.path.join("test.mod"), x1, y1)
 			guess.write_model(os.path.join(task_folder, model), x1, y1)
-			
 
 		#####################
 		# Perform inversion #
