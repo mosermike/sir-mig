@@ -1270,7 +1270,6 @@ def inversion_2c(conf, comm, rank, size, MPI):
 	end='.per' # ending of the file for the profile
 
 	# Write psf function, if needed
-
 	if rank == 0:
 		if conf['psf'] != '':
 			print("-------> Spectral PSF is used")
