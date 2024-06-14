@@ -465,7 +465,7 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py" id="simulation.synthesis">
-<span class="sig-prename descclassname"><span class="pre">simulation.</span></span><span class="sig-name descname"><span class="pre">synthesis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/simulation.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulation.synthesis" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">simulation.</span></span><span class="sig-name descname"><span class="pre">synthesis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MPI</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/simulation.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulation.synthesis" title="Link to this definition">#</a></dt>
 <dd><p>Performs the synthesis of all the models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -479,6 +479,8 @@ document.write(`
 <dt><strong>size</strong><span class="classifier">int</span></dt><dd><p>Number of processes</p>
 </dd>
 <dt><strong>MPI</strong><span class="classifier">library</span></dt><dd><p>Library MPI</p>
+</dd>
+<dt><strong>progress</strong><span class="classifier">bool,optional</span></dt><dd><p>Print a progress bar</p>
 </dd>
 </dl>
 </dd>
