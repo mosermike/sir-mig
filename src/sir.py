@@ -139,10 +139,6 @@ def read_config(filename, check = True, change_config = False):
 
 		i[0] = i[0].replace('  ','')   # replace double spaces
 
-	# Get the name of the file
-	if "/" in filename:
-		filename = filename[filename.rfind('/')+1:]
-
 	# Create dictionary
 	Dict = {
 		"filename" : filename,
@@ -167,7 +163,10 @@ def read_config(filename, check = True, change_config = False):
 	# Transform the information into lists or in different types than string
 	if Dict['mode'] == "1C" or Dict['mode'] == "2C":
 		Dict['map'] = np.array([int(i) for i in Dict["map"].split(',')], dtype=int)
-		Dict["quiet_sun"] = np.array([int(i) for i in Dict["quiet_sun"].split(',')])
+		
+		if "quiet_sun" in Dict:
+			Dict["quiet_sun"] = np.array([int(i) for i in Dict["quiet_sun"].split(',')])
+		
 		# Convert the ranges into integers or floats
 		temp = [i. split(',') for i in Dict["range_wave"].split(';')]
 		Dict["range_wave"] = np.zeros((len(temp),3))
