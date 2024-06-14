@@ -388,9 +388,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 
 	# Check if path exists
 	if not exists(conf['path']):
-		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")
-		if Inp == "y":
-			change_config_path(conf,os.path.abspath(os.getcwd()),)
+		print(f"[NOTE] Path {conf['path']} does not exist.")
+		return
+
 
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#
@@ -534,6 +534,9 @@ def result_1C(conf, wave, tau, waveV = -1):
 	indB = np.argmin(abs(models_inv.tau - logB))
 	indV = np.argmin(abs(models_inv.tau - logV))
 	indI = np.argmin(abs(models_inv.tau - logI))
+
+	# Correct for 180 deg ambiguity
+	models_inv.correct_phi()
 
 	# Cut models to the specific log tau value
 	models_inv.nval = 1
@@ -1191,11 +1194,11 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				plt.rcParams["text.usetex"] = "False"
 				plt.rcParams["font.family"] = 'sans-serif'
 				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	
 	# Check if path exists
 	if not exists(conf['path']):
-		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")
-		if Inp == "y":
-			change_config_path(conf,os.path.abspath(os.getcwd()))
+		print(f"[NOTE] Path {conf['path']} does not exist.")
+		return
 
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#
@@ -1383,6 +1386,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	models_inv.Pe = np.log(models_inv.Pe)
 	models_inv.Pg = np.log(models_inv.Pg)
 
+	# Correct for 180 deg ambiguity
+	models_inv.correct_phi()
+
 	stokes.cut_to_map(Map)
 	I1 = stokes.stki
 	Q1 = stokes.stkq
@@ -1426,35 +1432,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	####################################
 	#	Plot settings for arcsecond	#
 	####################################
-	'''
-	if "-arc" in sys.argv:
-		infos = dict(np.genfromtxt("infos.txt",dtype='str', delimiter="="), dtype=str)
-		if conf['instrument'] == 'GRIS':
-			# y position starts at the end but I start with the pixels lower left
-			y_pos = float(infos['CRVAL2']) + (stokes.shape[1] - 1) * float(infos['CDELT2'])
-			y_max = float(infos['CRVAL2'])  # Used if flipx is used
-			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0] - 1),
-						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1] - 1),
-						y_pos - float(infos['CDELT2']) * (Map[2] - 1),
-						y_pos - float(infos['CDELT2']) * (Map[3] - 1)
-						]
-			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
-				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
-		elif conf['instrument'] == 'Hinode':
-			delta_y = float(infos['CDELT2'])  # Delta y of slit
-			delta_x = float(infos['XSCALE'])
-			x_pos = float(infos['XCEN'])
-			y_pos = float(infos['YCEN'])
-			y_max = y_pos + ((stokes.shape[1] - 1) - infos['CRPIX2']) * delta_y  # Used for flipx
-			Map_plot = [
-				(Map[0]) * delta_x + x_pos,
-				(Map[1]) * delta_x + x_pos,
-				(Map[2] - infos['CRPIX2']) * delta_y + y_pos,
-				(Map[3] - infos['CRPIX2']) * delta_y + y_pos
-			]
-	else:
-		Map_plot = Map
-	'''
 	if "-arc" in sys.argv:
 		infos = dict(np.genfromtxt(d.header_infos,dtype='str', delimiter="="), dtype=str)
 		if conf['instrument'] == 'GRIS':
