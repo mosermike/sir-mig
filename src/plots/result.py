@@ -1725,19 +1725,23 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 				
 			if inputs[i] == "-fill":
 				ax.set_title(titles[i] + f" for Model {Type[1]}" + add_label)			
-
+			if inputs[i] == "-Bz":
+				
+				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[4]) + f" for Model {Type[1]}" + add_label)
 			else:
 				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]) + f" for Model {Type[1]}" + add_label)
 			
 			if inputs[i] == "-Bz":
 				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
+				
 			elif inputs[i] == '-fill':
 				im = ax.imshow(models_inv.fill.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			else:
 				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
+				
 			if "-vlos" in sys.argv:
 				if "-arc" in sys.argv and "-varrow" in sys.argv:
 					l = np.min([Map_plot[1],Map_plot[3]])*0.025
