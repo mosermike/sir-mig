@@ -33,7 +33,7 @@ def help():
 	sir.option("--no-progress", "Do not print a progress bar")
 	sys.exit()
 
-def main():
+def sir_mig():
 	"""
 	Function which executes the programme
 
@@ -186,6 +186,6 @@ if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
 	else:
-		main()
+		sir_mig()
 
 
