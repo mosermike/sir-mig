@@ -98,7 +98,8 @@ Inversion configuration
 
 
 Notes:
-- 'Base Model' refers to the model where the data is taken which are not randomised
+- `Base Model` refers to the model where the data is taken which are not randomised
+- For `guess(1/2)`, there is another option. If one provides after the name a value, the provided guess will be randomised with this factor. `0.02` would result into multiplying the guess with a random factor in [0.98,1.02]. The parameters which should be randomised are defined in the option `random_pars`. Note that if `random_guess` is not 0, the provided guess will be randomised in the selected parameters. If you want to use this option with the factor, set `random_guess` to 0.
 
 
 Control file

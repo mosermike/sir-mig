@@ -871,25 +871,28 @@ This class will then create the class with nx = ny = 1.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read" title="profile_stk.profile_stk.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Reads a binary profile file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results" title="profile_stk.profile_stk.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_profile" title="profile_stk.profile_stk.read_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_profile</span></code></a>(filename[, x, y])</p></td>
+<td><p>Reads a single profile file and stores it in the class</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results" title="profile_stk.profile_stk.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
 <td><p>Reads all the errors from the inversion</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results_MC" title="profile_stk.profile_stk.read_results_MC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results_MC</span></code></a>(path, tasks, filename)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results_MC" title="profile_stk.profile_stk.read_results_MC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results_MC</span></code></a>(path, tasks, filename)</p></td>
 <td><p>Reads all the profiles for the simulation where indx is the line number</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.set_dim" title="profile_stk.profile_stk.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nw)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.set_dim" title="profile_stk.profile_stk.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nw)</p></td>
 <td><p>Sets the dimensions if no data is loaded yet</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.veil_correction" title="profile_stk.profile_stk.veil_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">veil_correction</span></code></a>(nu[, Ic])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.veil_correction" title="profile_stk.profile_stk.veil_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">veil_correction</span></code></a>(nu[, Ic])</p></td>
 <td><p>Correct the spectrum for the spectral veil by simly inverting the convoluted equation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write" title="profile_stk.profile_stk.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write" title="profile_stk.profile_stk.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
 <td><p>Write data into a binary fortran file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile" title="profile_stk.profile_stk.write_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile</span></code></a>(filename, x, y, Grid)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile" title="profile_stk.profile_stk.write_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile</span></code></a>(filename, x, y, Grid)</p></td>
 <td><p>Writes data to profiles as described in the config file Note to call cut_to_wave, otherwise it writes the wrong profiles!</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile_mc" title="profile_stk.profile_stk.write_profile_mc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile_mc</span></code></a>(filename, x)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile_mc" title="profile_stk.profile_stk.write_profile_mc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile_mc</span></code></a>(filename, x)</p></td>
 <td><p>Writes data to SIR profiles as described in the config file</p></td>
 </tr>
 </tbody>
@@ -938,6 +941,24 @@ This class will then create the class with nx = ny = 1.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.profile_stk.read_profile">
+<span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.read_profile" title="Link to this definition">#</a></dt>
+<dd><p>Reads a single profile file and stores it in the class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Name of the file</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>x position to put the values</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>y position to put the values</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1184,6 +1205,7 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.cut_to_map"><code class="docutils literal notranslate"><span class="pre">profile_stk.cut_to_map()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.cut_to_wave"><code class="docutils literal notranslate"><span class="pre">profile_stk.cut_to_wave()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read"><code class="docutils literal notranslate"><span class="pre">profile_stk.read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_profile"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_profile()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_results"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_results()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_results_MC"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_results_MC()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.set_dim"><code class="docutils literal notranslate"><span class="pre">profile_stk.set_dim()</span></code></a></li>

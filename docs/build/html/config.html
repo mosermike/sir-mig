@@ -499,7 +499,8 @@ document.write(`
 </tbody>
 </table>
 <p>Notes:
-- ‘Base Model’ refers to the model where the data is taken which are not randomised</p>
+- <cite>Base Model</cite> refers to the model where the data is taken which are not randomised
+- For <cite>guess(1/2)</cite>, there is another option. If one provides after the name a value, the provided guess will be randomised with this factor. <cite>0.02</cite> would result into multiplying the guess with a random factor in [0.98,1.02]. The parameters which should be randomised are defined in the option <cite>random_pars</cite>. Note that if <cite>random_guess</cite> is not 0, the provided guess will be randomised in the selected parameters. If you want to use this option with the factor, set <cite>random_guess</cite> to 0.</p>
 </section>
 <section id="control-file">
 <h3>Control file<a class="headerlink" href="#control-file" title="Link to this heading">#</a></h3>
