@@ -393,14 +393,13 @@ def _on_click_1C(event, obs, fit, Models, Map):
 		ax3.set_ylabel(r'$U/I_c$')
 		ax4.set_ylabel(r'$V/I_c$')
 
-		fig1.suptitle(f"Pixel ({x},{y})")
+		fig1.suptitle(f"Pixel ({x + Map[0]},{y + Map[2]})")
 		ax1.legend(fontsize=12)
 		fig1.tight_layout()
 		
 		if not xlims:
 			fig2, ((ax11,ax21),(ax31,ax41)) = plt.subplots(2,2)
 			plt.get_current_fig_manager().set_window_title('Model_' + str(rand))
-			size2 = fig2.get_size_inches()
 			if px2 == -1:
 				_move_figure("right2")
 			else:
@@ -439,7 +438,7 @@ def _on_click_1C(event, obs, fit, Models, Map):
 		ax31.set_xlim(log_tau[0],log_tau[-1])
 		ax41.set_xlim(log_tau[0],log_tau[-1])
 
-		fig2.suptitle(f"Pixel ({x},{y})")
+		fig2.suptitle(f"Pixel ({x + Map[0]},{y + Map[2]})")
 
 		fig2.tight_layout()
 		
