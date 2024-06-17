@@ -16,11 +16,11 @@ EXECUTED
 ##############
 end_stokes = '_stokes.bin' # Ending inversion result stokes  KEEP
 end_models = '_models.bin' # Ending inversion result models  KEEP
-end_models1 = '_models_1.bin'  # Ending inversion result models 1 for 2C KEEP
-end_models2 = '_models_2.bin'  # Ending inversion result models 2 for 2C KEEP 
+end_models1 = '_models1.bin'  # Ending inversion result models 1 for 2C KEEP
+end_models2 = '_models2.bin'  # Ending inversion result models 2 for 2C KEEP 
 end_errors = '_errors.bin'  # Ending inversion result error KEEP
-end_errors1 = '_errors_1.bin'  # Ending inversion result error 1 for 2C KEEP
-end_errors2 = '_errors_2.bin'  # Ending inversion result error 2 for 2C KEEP
+end_errors1 = '_errors1.bin'  # Ending inversion result error 1 for 2C KEEP
+end_errors2 = '_errors2.bin'  # Ending inversion result error 2 for 2C KEEP
 veil_parameters = 'veil.npy'  # numpy file with sigma and nu from the spectral veil correction KEEP
 header_infos = 'infos.txt'  # Information about the observations from the Header # KEEP
 best_guess_file = '_best_guess.bin'  # Name of the best guess model (best model is saved under this name) KEEP
