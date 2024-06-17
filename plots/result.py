@@ -250,7 +250,468 @@ def _get_angle(x,y):
 		return np.atan(x/y) + np.pi
 	else:
 		return np.atan(x/y)
-def result_1C(conf, wave, tau, waveV = -1):
+	
+
+def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath, add, chi2, Map_plot, origin, sign1, sign2, n, dx, dy, Type=""):
+
+
+	if "-logT" not in sys.argv:
+		logT = tau
+	else:
+		logT = float(sys.argv[sys.argv.index("-logT")+1])
+
+	if "-logB" not in sys.argv:
+		logB = tau
+	else:
+		logB = float(sys.argv[sys.argv.index("-logB")+1])
+
+	if "-logV" not in sys.argv:
+		logV = tau
+	else:
+		logV = float(sys.argv[sys.argv.index("-logV")+1])
+
+	if "-logI" not in sys.argv:
+		logI = tau
+	else:
+		logI = float(sys.argv[sys.argv.index("-logI")+1])
+
+	taus = [tau for i in range(11)]
+	taus[1] = logT
+	taus[4] = logB
+	taus[5] = logV
+	taus[6] = logI
+
+	# Restrict models to the given tau
+	ind  = np.argmin(abs(models_inv.tau - tau))
+	indT = np.argmin(abs(models_inv.tau - logT))
+	indB = np.argmin(abs(models_inv.tau - logB))
+	indV = np.argmin(abs(models_inv.tau - logV))
+	indI = np.argmin(abs(models_inv.tau - logI))
+
+	# Correct for 180 deg ambiguity
+	models_inv.correct_phi()
+
+	# Cut models to the specific log tau value
+	models_inv.nval = 1
+	models_inv.T = models_inv.T[:,:,indT]
+	models_inv.Pe = models_inv.Pe[:,:,ind]
+	models_inv.vmicro = models_inv.vmicro[:,:,ind]
+	models_inv.B = models_inv.B[:,:,indB]
+	models_inv.vlos = models_inv.vlos[:,:,indV]
+	models_inv.gamma = models_inv.gamma[:,:,indI]
+	models_inv.phi = models_inv.phi[:,:,ind]
+	models_inv.z = models_inv.z[:,:,ind]
+	models_inv.rho = models_inv.rho[:,:,ind]
+	models_inv.Pg = models_inv.Pg[:,:,ind]
+
+	# Pressure in log
+	models_inv.Pe = np.log(models_inv.Pe)
+	models_inv.Pg = np.log(models_inv.Pg)
+
+	
+
+	# Define labels and get from arguments which parameter should be plot
+	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz","-fill"]
+	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B$ [G]",r"$\alpha$"]
+	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Magnetic Field $B \cdot \cos \gamma$","Filling Factor"]
+	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,None, "gist_gray"]
+	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
+		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000], [0,1]]
+	i = 0
+	
+	if "-symv" in sys.argv:
+		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
+
+	if "-limitT" in sys.argv:
+		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
+		limits[1] = [int(i) for i in temp ]
+	
+	if "-limitB" in sys.argv:
+		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
+		limits[4] = [int(i) for i in temp ]
+	if "-limitv" in sys.argv:
+		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
+		limits[5] = [int(i) for i in temp ]
+	if "-limitchi2" in sys.argv:
+		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
+		limits[11] = [int(i) for i in temp ]
+	if Type != "":
+		add_str =  f" for Model {Type} "
+	else:
+		add_str = ""
+	for i in range(len(inputs)):
+		if inputs[i] in sys.argv:
+			# Plot
+			fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
+			if inputs[i] == "-Bz":
+				ax.set_title(titles[i] + add_str + r" @ $\log \tau = $" + str(taus[4]))
+			elif inputs[i] == "-fill":
+				ax.set_title(titles[i] + add_str)
+			else:
+				ax.set_title(titles[i] + add_str + r" @ $\log \tau = $" + str(taus[i]))
+			if inputs[i] == "-Bz":
+				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
+							extent=Map_plot)
+			if inputs[i] == "-fill":
+				im = ax.imshow(models_inv.fill.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
+							extent=Map_plot)
+			else:
+				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
+							extent=Map_plot)
+			if inputs[i] == "-vlos":
+				if "-arc" in sys.argv and "-varrow" in sys.argv:
+					l = np.min([Map_plot[1],Map_plot[3]])*0.025
+					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
+			# Set labels
+			ax.set_xlabel(f"x [{units}]")
+			ax.set_ylabel(f"y [{units}]")
+			############
+			# Colorbar #
+			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04)
+			cbar.set_label(label = labels[i], loc = 'center')
+			############
+			# set the spacing between subplots
+			#plt.tight_layout(pad=2)
+			plt.savefig(savepath + "plot_" + str(inputs[i][1:]) + Type + add)
+
+
+	# Plot T,B,vlos, inc in one figure
+	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Vel.", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"$\chi^2$", r"Line-of-Sight Magnetic Field"]
+
+	if "-vertical" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
+			 gridspec_kw=dict(hspace=0), figsize=figsize)
+		fig.subplots_adjust(hspace=0, wspace=0)
+	else:
+		if (models_inv.ny - models_inv.nx) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
+										layout="compressed",
+									)
+		else:
+			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
+										layout="compressed",
+									)
+
+
+
+	im1 = ax1.imshow(models_inv.T.transpose(), cmap=cmap[1], origin = origin, vmin = limits[1][0], vmax = limits[1][1],extent=Map_plot)
+	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
+	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
+	if "-plot_chi2" in sys.argv:
+		im4 = ax4.imshow(chi2.tot.transpose(), cmap='gist_gray', origin = origin,extent=Map_plot)
+	elif "-plot_fill" in sys.argv:
+		im4 = ax4.imshow(models_inv.fill.transpose(),'gist_gray', origin = origin, vmin = 0, vmax = 1,extent=Map_plot)
+	else:
+		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
+	if "-arc" in sys.argv and "-varrow" in sys.argv:
+		l = np.min([Map_plot[1],Map_plot[3]])*0.025
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
+	#####################
+	#	Set labels	#
+	#####################
+	#if "-vertical" not in sys.argv:
+	#	ax3.set_xlabel(r"x [Pixels]")
+	if "-vertical" not in sys.argv:
+		ax1.set_xlabel(f"x [{units}]")
+		ax2.set_xlabel(f"x [{units}]")
+		ax3.set_xlabel(f"x [{units}]")
+	ax4.set_xlabel(f"x [{units}]")
+	ax1.set_ylabel(f"y [{units}]")
+	ax2.set_ylabel(f"y [{units}]")
+	ax3.set_ylabel(f"y [{units}]")
+	ax4.set_ylabel(f"y [{units}]")
+
+	###############################
+	#	Set title and legend	#
+	###############################
+	if "-vertical" not in sys.argv:
+		ax1.set_title(titles[1] + r" @ $\log\tau = $ " + str(logT))
+		ax2.set_title(titles[4] + r" @ $\log\tau = $ " + str(logB))
+		ax3.set_title(titles[5] + r" @ $\log\tau = $ " + str(logV))
+		if "-plot_chi2" in sys.argv:
+			ax4.set_title(titles[11])
+		elif "-plot_fill" in sys.argv:
+			ax4.set_title("Filling Factor")
+		else:
+			ax4.set_title(titles[6] + r" @ $\log\tau = $ " + str(logI))
+
+	############
+	# Colorbar #
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
+	cbar1.set_label(label = labels[1], loc = 'center', labelpad=20)
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
+	cbar2.set_label(label = labels[4], loc = 'center', labelpad=20)
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
+	cbar3.set_label(label = labels[5], loc = 'center', labelpad=20)
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
+	if "-plot_chi2" in sys.argv:
+		cbar4.set_label(label = labels[11], loc = 'center', labelpad=20)
+	elif "-plot_fill" in sys.argv:
+		cbar4.set_label(label = r"$\alpha$", loc = 'center', labelpad=20)	
+	else:
+		cbar4.set_label(label = labels[6], loc = 'center', labelpad=20)
+	############
+	# Set title position depending on the chosen plot and consider the flags hinode and gris
+	if Type != "2":
+		if title3 != "-1":
+			if "-vertical" in sys.argv:
+				xtitle1 = 0.41
+			else:
+				xtitle1 = 0.5
+			if "-xtitle" in sys.argv:
+				xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
+			if title3 != '':
+				fig.suptitle(title3, y=1.02, x=xtitle1)
+
+	if Type == "2":
+		if title4 != "-1":
+			if "-vertical" in sys.argv:
+				xtitle1 = 0.41
+			else:
+				xtitle1 = 0.5
+			if "-xtitle" in sys.argv:
+				xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
+			if title4 != '':
+				fig.suptitle(title4, y=1.02, x=xtitle1)
+	
+
+	plt.savefig(savepath + "inversion" + Type + + add)
+
+
+
+def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  title2, Map_plot, origin, sign1, sign2, dx, dy, n, savepath, add):
+	'''
+	Print the stokes vector (for internal use)
+	'''
+
+	waves = stokes.wave
+	waves_inv = stokes_inv.wave
+
+	# Determine indexes for the wavelength
+	wave_ind1 = np.argmin(abs(waves-wave))
+	wave_ind2 = np.argmin(abs(waves_inv-wave))
+	wave = waves[wave_ind1]
+
+	# Check whether the wavelength is in range
+	wave = _check_range(stokes_inv.wave, wave)
+	
+	if "-waveV" in sys.argv:
+		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
+		waveV = _check_range(stokes_inv.wave, waveV)
+	else:
+		waveV = wave
+	waveV_ind1 = np.argmin(abs(stokes.wave-waveV))
+	waveV_ind2 = np.argmin(abs(stokes_inv.wave-waveV))
+
+
+
+	if "-waveQ" in sys.argv:
+		waveQ = float(sys.argv[sys.argv.index("-waveQ")+1])
+		waveQ = _check_range(stokes_inv.wave, waveQ)
+	else:
+		waveQ = wave
+	waveQ_ind1 = np.argmin(abs(stokes.wave-waveQ))
+	waveQ_ind2 = np.argmin(abs(stokes_inv.wave-waveQ))
+
+	if "-waveU" in sys.argv:
+		waveU = float(sys.argv[sys.argv.index("-waveU")+1])
+		waveU = _check_range(stokes_inv.wave, waveU)
+	else:
+		waveU = wave
+	waveU_ind1 = np.argmin(abs(stokes.wave-waveU))
+	waveU_ind2 = np.argmin(abs(stokes_inv.wave-waveU))
+
+	if not stokes._data_cut_map:
+		stokes.cut_to_map(Map)
+	
+	I1 = stokes.stki
+	Q1 = stokes.stkq
+	U1 = stokes.stku
+	V1 = stokes.stkv
+
+	I2 = stokes_inv.stki
+	Q2 = stokes_inv.stkq
+	U2 = stokes_inv.stku
+	V2 = stokes_inv.stkv
+
+	limits_stokes1 = [  [np.min(I1[:,:,wave_ind1]), np.max(I1[:,:,wave_ind1])],
+					[-np.max(np.abs(Q1[:,:,wave_ind1])), np.max(np.abs(Q1[:,:,wave_ind1]))],
+					[-np.max(np.abs(U1[:,:,wave_ind1])), np.max(np.abs(U1[:,:,wave_ind1]))],
+					[-np.max(np.abs(V1[:,:,wave_ind1])), np.max(np.abs(V1[:,:,waveV_ind1]))]
+		]
+	limits_stokes2 = [  [np.min(I2[:,:,wave_ind2]), np.max(I2[:,:,wave_ind2])],
+					[-np.max(np.abs(Q2[:,:,wave_ind2])), np.max(np.abs(Q2[:,:,wave_ind2]))],
+					[-np.max(np.abs(U2[:,:,wave_ind2])), np.max(np.abs(U2[:,:,wave_ind2]))],
+					[-np.max(np.abs(V2[:,:,wave_ind2])), np.max(np.abs(V2[:,:,waveV_ind2]))]
+		]
+
+
+	if "-limitI" in sys.argv:
+		temp = sys.argv[sys.argv.index("-limitI")+1].split(',')
+		limits_stokes1[0] = [int(i) for i in temp ]
+		limits_stokes2[0] = [int(i) for i in temp ]
+	
+		
+
+	if "-vertical" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
+			 gridspec_kw=dict(hspace=0), figsize=figsize)
+		fig.subplots_adjust(hspace=0, wspace=0)
+	else:
+		if (I2.shape[1] - I2.shape[0]) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
+													layout="compressed",
+													)
+			
+		else:
+			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
+										layout="compressed",
+									)
+		#fig.subplots_adjust(hspace=0.0)
+	############################
+	# Plot the Stokes profiles #
+	############################
+	im1 = ax1.imshow(I1[:,:,wave_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
+	im2 = ax2.imshow(Q1[:,:,waveQ_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
+	im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
+	im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
+	if "-arc" in sys.argv:
+		l = np.min([Map_plot[1],Map_plot[3]])*0.025
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
+	#####################
+	#	Set labels	#
+	#####################
+	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
+	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
+	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")
+	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")	
+
+
+	############
+	# Colorbar #
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
+	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
+	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
+	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
+	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
+	############
+
+	#####################
+	#	Set labels	#
+	#####################
+	if "-vertical" not in sys.argv:
+		ax1.set_xlabel(f"x [{units}]")
+		ax2.set_xlabel(f"x [{units}]")
+		ax3.set_xlabel(f"x [{units}]")
+	ax4.set_xlabel(f"x [{units}]")
+	ax1.set_ylabel(f"y [{units}]")
+	ax2.set_ylabel(f"y [{units}]")
+	ax3.set_ylabel(f"y [{units}]")
+	ax4.set_ylabel(f"y [{units}]")
+
+	##################################################################
+	# Set title											#
+	# The position is relative to the chosen plot (vertical or not)  #
+	##################################################################
+
+	if title2 != "-1": # -1 => Print no title
+		if "-vertical" in sys.argv:
+			xtitle1 = 0.41
+		else:
+			xtitle1 = 0.5
+		if "-xtitle" in sys.argv:
+			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
+		if title2 != '':
+			fig.suptitle(title2, y=1.02, x=xtitle1)
+
+	#########################
+	# Set Legend and Limits #
+	#########################
+	
+	plt.savefig(savepath + "stokes_obs" + add)
+
+	##############################################
+	#  Plot I, Q, U and V  at wave for result	#
+	##############################################
+	if "-vertical" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
+			 gridspec_kw=dict(hspace=0), figsize=figsize)
+		fig.subplots_adjust(hspace=0, wspace=0)
+	else:
+		if (I2.shape[1] - I2.shape[0]) >= -100:
+			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
+										layout="compressed",
+									)
+		else:
+			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
+										layout="compressed",
+									)
+		#fig.subplots_adjust(hspace=0.0)
+
+	############################
+	# Plot the Stokes profiles #
+	############################
+	im1 = ax1.imshow(I2[:,:,wave_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
+	im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
+	im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
+	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
+
+	
+	if "-arc" in sys.argv:
+		l = np.min([Map_plot[1],Map_plot[3]])*0.025
+		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
+
+	#####################
+	#	Set labels	#
+	#####################
+	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
+	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
+	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")		
+	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")		
+
+
+	############
+	# Colorbar #
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
+	############
+
+	#####################
+	#	Set labels	#
+	#####################
+	if "-vertical" not in sys.argv:
+		ax1.set_xlabel(f"x [{units}]")
+		ax2.set_xlabel(f"x [{units}]")
+		ax3.set_xlabel(f"x [{units}]")
+	ax4.set_xlabel(f"x [{units}]")
+	ax1.set_ylabel(f"y [{units}]")
+	ax2.set_ylabel(f"y [{units}]")
+	ax3.set_ylabel(f"y [{units}]")
+	ax4.set_ylabel(f"y [{units}]")
+
+	##################################################################
+	# Set title											#
+	# The position is relative to the chosen plot (vertical or not)  #
+	##################################################################
+
+	if title1 != "-1": # -1 => Print no title
+		if "-vertical" in sys.argv:
+			xtitle1 = 0.41
+		else:
+			xtitle1 = 0.5
+		if "-xtitle" in sys.argv:
+			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
+		if title1 != '':
+			fig.suptitle(title1, y=1.02, x=xtitle1)
+
+	plt.savefig(savepath + "stokes" + add)
+
+def result_1C(conf, wave, tau):
 	"""
 
 	Plots the result of the inversion 1C
@@ -263,8 +724,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 		Wavelength in A where the Stokes vector is plottet
 	tau : float
 		log tau value where the model is plotted
-	waveV : float, optional
-		Wavelength for Stokes V in A (-1 not used), Default: -1
 
 	Returns
 	-------
@@ -424,77 +883,18 @@ def result_1C(conf, wave, tau, waveV = -1):
 			filename = sys.argv[sys.argv.index("-chi")+1]
 			chi2 = c.read_chi2(filename)
 
-	if "-logT" not in sys.argv:
-		logT = tau
-	else:
-		logT = float(sys.argv[sys.argv.index("-logT")+1])
-
-	if "-logB" not in sys.argv:
-		logB = tau
-	else:
-		logB = float(sys.argv[sys.argv.index("-logB")+1])
-
-	if "-logV" not in sys.argv:
-		logV = tau
-	else:
-		logV = float(sys.argv[sys.argv.index("-logV")+1])
-
-	if "-logI" not in sys.argv:
-		logI = tau
-	else:
-		logI = float(sys.argv[sys.argv.index("-logI")+1])
-
-
-	# Check whether the wavelength is in range
-	wave = _check_range(stokes_inv.wave, wave)
-	
-	if "-waveV" in sys.argv:
-		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
-		waveV = _check_range(stokes_inv.wave, waveV)
-	else:
-		waveV = wave
-	waveV_ind1 = np.argmin(abs(stokes.wave-waveV))
-	waveV_ind2 = np.argmin(abs(stokes_inv.wave-waveV))
-
-
-
-	if "-waveQ" in sys.argv:
-		waveQ = float(sys.argv[sys.argv.index("-waveQ")+1])
-		waveQ = _check_range(stokes_inv.wave, waveQ)
-	else:
-		waveQ = wave
-	waveQ_ind1 = np.argmin(abs(stokes.wave-waveQ))
-	waveQ_ind2 = np.argmin(abs(stokes_inv.wave-waveQ))
-
-	if "-waveU" in sys.argv:
-		waveU = float(sys.argv[sys.argv.index("-waveU")+1])
-		waveU = _check_range(stokes_inv.wave, waveU)
-	else:
-		waveU = wave
-	waveU_ind1 = np.argmin(abs(stokes.wave-waveU))
-	waveU_ind2 = np.argmin(abs(stokes_inv.wave-waveU))
-
-
 	# Cut data in x and y position	
 	if "-limitxy" in sys.argv:
 		limit_xy = np.array([int(i) for i in sys.argv[sys.argv.index("-limitxy")+1].split(",")], dtype=int)
 
 		# Cut data to the new range:
-		#stokes = stokes[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
 		stokes_inv = stokes_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 		models_inv = models_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
-		#errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 
 		# Save the new limits as the new Map
 		Map = limit_xy
 
-	waves = stokes.wave
-	waves_inv = stokes_inv.wave
-
-	# Determine indexes for the wavelength
-	wave_ind1 = np.argmin(abs(waves-wave))
-	wave_ind2 = np.argmin(abs(waves_inv-wave))
-	wave = waves[wave_ind1]
+	
 
 	# Additional savepath
 	savepath = ''
@@ -519,105 +919,17 @@ def result_1C(conf, wave, tau, waveV = -1):
 	if '-title3' in sys.argv:
 		title3 = sys.argv[sys.argv.index("-title3")+1]
 
-	# Additional label
-	add_label = '_'
-	if '-label' in sys.argv:
-		add_label = sys.argv[sys.argv.index("-label")+1]
-
-	# Restrict models to the given tau
-	ind  = np.argmin(abs(models_inv.tau - tau))
-	indT = np.argmin(abs(models_inv.tau - logT))
-	indB = np.argmin(abs(models_inv.tau - logB))
-	indV = np.argmin(abs(models_inv.tau - logV))
-	indI = np.argmin(abs(models_inv.tau - logI))
-
-	# Correct for 180 deg ambiguity
-	models_inv.correct_phi()
-
-	# Cut models to the specific log tau value
-	models_inv.nval = 1
-	models_inv.T = models_inv.T[:,:,indT]
-	models_inv.Pe = models_inv.Pe[:,:,ind]
-	models_inv.vmicro = models_inv.vmicro[:,:,ind]
-	models_inv.B = models_inv.B[:,:,indB]
-	models_inv.vlos = models_inv.vlos[:,:,indV]
-	models_inv.gamma = models_inv.gamma[:,:,indI]
-	models_inv.phi = models_inv.phi[:,:,ind]
-	models_inv.z = models_inv.z[:,:,ind]
-	models_inv.rho = models_inv.rho[:,:,ind]
-	models_inv.Pg = models_inv.Pg[:,:,ind]
-
-
-	taus = [tau for i in range(11)]
-	taus[1] = logT
-	taus[4] = logB
-	taus[5] = logV
-	taus[6] = logI
-	
-	# Pressure in log
-	models_inv.Pe = np.log(models_inv.Pe)
-	models_inv.Pg = np.log(models_inv.Pg)
-
-	#############################################################
-	#					PLOTTING STUFF					#
-	#############################################################
-	Markers = ["-", '--', 'dotted', 'dashdotdotted', 'densely dashed']
-
-	linestyle_str = [
-		'solid',	# Same as (0, ()) or '-'
-		'dotted',    # Same as (0, (1, 1)) or ':'
-		'dashed',    # Same as '--'
-		'dashdot',
-		'solid',	# Same as (0, ()) or '-'
-		'dotted',    # Same as (0, (1, 1)) or ':'
-		'dashed',    # Same as '--'
-		'dashdot',
-		(0, (3,10,1,10))
-		] 
-
-
-	stokes.cut_to_map(Map)
-	I1 = stokes.stki
-	Q1 = stokes.stkq
-	U1 = stokes.stku
-	V1 = stokes.stkv
-
-	I2 = stokes_inv.stki
-	Q2 = stokes_inv.stkq
-	U2 = stokes_inv.stku
-	V2 = stokes_inv.stkv
-
-	limits_stokes1 = [  [np.min(I1[:,:,wave_ind1]), np.max(I1[:,:,wave_ind1])],
-					[-np.max(np.abs(Q1[:,:,wave_ind1])), np.max(np.abs(Q1[:,:,wave_ind1]))],
-					[-np.max(np.abs(U1[:,:,wave_ind1])), np.max(np.abs(U1[:,:,wave_ind1]))],
-					[-np.max(np.abs(V1[:,:,wave_ind1])), np.max(np.abs(V1[:,:,waveV_ind1]))]
-		]
-	limits_stokes2 = [  [np.min(I2[:,:,wave_ind2]), np.max(I2[:,:,wave_ind2])],
-					[-np.max(np.abs(Q2[:,:,wave_ind2])), np.max(np.abs(Q2[:,:,wave_ind2]))],
-					[-np.max(np.abs(U2[:,:,wave_ind2])), np.max(np.abs(U2[:,:,wave_ind2]))],
-					[-np.max(np.abs(V2[:,:,wave_ind2])), np.max(np.abs(V2[:,:,waveV_ind2]))]
-		]
-
-
-	if "-limitI" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitI")+1].split(',')
-		limits_stokes1[0] = [int(i) for i in temp ]
-		limits_stokes2[0] = [int(i) for i in temp ]
-
-	##############################################
-	#  Plot I, Q, U and V  at wave for obs		#
-	##############################################
-	if (I2.shape[1] - I2.shape[0]) >= -100:
-		alpha = I2.shape[0] / 12
-		figsize = [I2.shape[0] / alpha , I2.shape[1]/alpha-1]
+	if (stokes_inv.ny - stokes_inv.nx) >= -100:
+		alpha = stokes_inv.nx / 12
+		figsize = [stokes_inv.nx / alpha , stokes_inv.ny/alpha-1]
 		frac = figsize[1] / figsize[0]
 		if "-f" in sys.argv:
 			f = float(sys.argv[sys.argv.index("-f")+1])
 		else:
 			f = 1.2
 	else: # for 2x2 plot
-		alpha = I2.shape[0] / 12
-		figsize = [I2.shape[0] / alpha, I2.shape[1]/alpha]
+		alpha = stokes_inv.nx / 12
+		figsize = [stokes_inv.nx / alpha, stokes_inv.ny/alpha]
 		frac = figsize[1] / figsize[0] * 1.25
 		if "-f" in sys.argv:
 			f = float(sys.argv[sys.argv.index("-f")+1])
@@ -636,58 +948,14 @@ def result_1C(conf, wave, tau, waveV = -1):
 	####################################
 	#	Plot settings for arcsecond	#
 	####################################
-	"""
-	if "-arc" in sys.argv:
-		infos = dict(np.genfromtxt("infos.txt",dtype='str', delimiter="="), dtype=str)
-		if conf['instrument'] == 'GRIS':
-			# y position starts at the end but I start with the pixels lower left
-			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
-			y_max = float(infos['CRVAL2']) # Used if flipx is used
-			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0]-1),
-						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1]-1),
-						y_pos - float(infos['CDELT2']) * (Map[2]-1),
-						y_pos - float(infos['CDELT2']) * (Map[3]-1)
-						]
-			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
-				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
-		elif conf['instrument'] == 'Hinode':
-			delta_y = float(infos['CDELT2'])  # Delta y of slit
-			delta_x = float(infos['XSCALE'])
-			x_pos = float(infos['XCEN'])
-			y_pos = float(infos['YCEN'])
-			y_max = y_pos + ((I2.shape[1]-1) - infos['CRPIX2']) * delta_y # Used for flipx
-
-			Map_plot = [
-				(Map[0]) * delta_x + x_pos,
-				(Map[1]) * delta_x + x_pos,
-				(Map[2] - infos['CRPIX2']) * delta_y + y_pos,
-			    (Map[3] - infos['CRPIX2']) * delta_y + y_pos
-			]
-	else:
-		Map_plot = Map
-	"""
+	sign1 = sign2 = n = dx = dy = None
 	if "-arc" in sys.argv:
 		infos = dict(np.genfromtxt(d.header_infos,dtype='str', delimiter="="), dtype=str)
 		if conf['instrument'] == 'GRIS':
-			# y position starts at the end but I start with the pixels lower left
-			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
-			y_max = float(infos['CRVAL2']) # Used if flipx is used
-			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0]-1),
-						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1]-1),
-						y_pos - float(infos['CDELT2']) * (Map[2]-1),
-						y_pos - float(infos['CDELT2']) * (Map[3]-1)
-						]
-			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
-				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
-
-			
 			x = float(infos['CRVAL1'])
 			y = float(infos['CRVAL2'])
 			dx = float(infos['CDELT1'])
 			dy = float(infos['CDELT2'])
-			
-			
-			
 		elif conf['instrument'] == 'Hinode':
 			dy = float(infos['CDELT2'])  # Delta y of slit
 			dx = float(infos['XSCALE'])
@@ -732,325 +1000,16 @@ def result_1C(conf, wave, tau, waveV = -1):
 		units = 'Pixels'
 
 
-	if "-vertical" in sys.argv:
-		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
-			 gridspec_kw=dict(hspace=0), figsize=figsize)
-		fig.subplots_adjust(hspace=0, wspace=0)
-	else:
-		if (I2.shape[1] - I2.shape[0]) >= -100:
-			
-
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-													layout="compressed",
-													)
-			
-		else:
-			import matplotlib as mpl
-			if "-f" in sys.argv:
-				f = float(sys.argv[sys.argv.index("-f")+1])
-			else:
-				f = 0.65
-			mpl.rcParams["xtick.labelsize"] = 18*f
-			mpl.rcParams["ytick.labelsize"] = 18*f
-			mpl.rcParams["legend.fontsize"] = 16*f
-			mpl.rcParams["legend.title_fontsize"] = 16*f
-			mpl.rcParams["axes.titlesize"] = 18*f
-			mpl.rcParams["axes.labelsize"] = 20*f
-			mpl.rcParams["figure.titlesize"] = 24*f
-
-			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
-										layout="compressed",
-									)
-		#fig.subplots_adjust(hspace=0.0)
-	############################
-	# Plot the Stokes profiles #
-	############################
-	im1 = ax1.imshow(I1[:,:,wave_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
-	im2 = ax2.imshow(Q1[:,:,waveQ_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
-	im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
-	im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
-	if "-arc" in sys.argv:
-		l = np.min([Map_plot[1],Map_plot[3]])*0.025
-		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-	#####################
-	#	Set labels	#
-	#####################
-	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
-	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
-	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")
-	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")	
-
-
-	############
-	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
-	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
-	############
-
-	#####################
-	#	Set labels	#
-	#####################
-	if "-vertical" not in sys.argv:
-		ax1.set_xlabel(f"x [{units}]")
-		ax2.set_xlabel(f"x [{units}]")
-		ax3.set_xlabel(f"x [{units}]")
-	ax4.set_xlabel(f"x [{units}]")
-	ax1.set_ylabel(f"y [{units}]")
-	ax2.set_ylabel(f"y [{units}]")
-	ax3.set_ylabel(f"y [{units}]")
-	ax4.set_ylabel(f"y [{units}]")
-
-	##################################################################
-	# Set title											#
-	# The position is relative to the chosen plot (vertical or not)  #
-	##################################################################
-
-	if title2 != "-1": # -1 => Print no title
-		if "-vertical" in sys.argv:
-			xtitle1 = 0.41
-		else:
-			xtitle1 = 0.5
-		if "-xtitle" in sys.argv:
-			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
-		if title2 != '':
-			fig.suptitle(title2, y=1.02, x=xtitle1)
-
-	#########################
-	# Set Legend and Limits #
-	#########################
-	
-	plt.savefig(savepath + "stokes_obs" + add)
-
-	##############################################
-	#  Plot I, Q, U and V  at wave for result	#
-	##############################################
-	if "-vertical" in sys.argv:
-		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
-			 gridspec_kw=dict(hspace=0), figsize=figsize)
-		fig.subplots_adjust(hspace=0, wspace=0)
-	else:
-		if (I2.shape[1] - I2.shape[0]) >= -100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-										layout="compressed",
-									)
-		else:
-			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
-										layout="compressed",
-									)
-		#fig.subplots_adjust(hspace=0.0)
-
-	############################
-	# Plot the Stokes profiles #
-	############################
-	im1 = ax1.imshow(I2[:,:,wave_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
-	im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
-	im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
-	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
-
-	if "-arc" in sys.argv:
-		l = np.min([Map_plot[1],Map_plot[3]])*0.025
-		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-
-	#####################
-	#	Set labels	#
-	#####################
-	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
-	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
-	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")		
-	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")		
-
-
-	############
-	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
-	############
-
-	#####################
-	#	Set labels	#
-	#####################
-	if "-vertical" not in sys.argv:
-		ax1.set_xlabel(f"x [{units}]")
-		ax2.set_xlabel(f"x [{units}]")
-		ax3.set_xlabel(f"x [{units}]")
-	ax4.set_xlabel(f"x [{units}]")
-	ax1.set_ylabel(f"y [{units}]")
-	ax2.set_ylabel(f"y [{units}]")
-	ax3.set_ylabel(f"y [{units}]")
-	ax4.set_ylabel(f"y [{units}]")
-
-	##################################################################
-	# Set title											#
-	# The position is relative to the chosen plot (vertical or not)  #
-	##################################################################
-
-	if title1 != "-1": # -1 => Print no title
-		if "-vertical" in sys.argv:
-			xtitle1 = 0.41
-		else:
-			xtitle1 = 0.5
-		if "-xtitle" in sys.argv:
-			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
-		if title1 != '':
-			fig.suptitle(title1, y=1.02, x=xtitle1)
-
-	plt.savefig(savepath + "stokes" + add)
+	_plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  title2,  Map_plot, origin, sign1, sign2, dx, dy, n, savepath, add)
 
 	###################################################
 	#			Plot physical parameters			#
 	###################################################
 
-	# Define labels and get from arguments which parameter should be plot
-	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz"]
-	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B$ [G]"]
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Magnetic Field $B \cdot \cos \gamma$"]
-	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,None]
-	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
-		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000]]
-	i = 0
-	
-	if "-symv" in sys.argv:
-		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
+	_plot_model(models_inv, tau, figsize, frac, units, title3, "-1", savepath, add, chi2, Map_plot, origin, sign1, sign2, n, dx, dy, "")
 
-	if "-limitT" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
-		limits[1] = [int(i) for i in temp ]
-	
-	if "-limitB" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
-		limits[4] = [int(i) for i in temp ]
-	if "-limitv" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
-		limits[5] = [int(i) for i in temp ]
-	if "-limitchi2" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
-		limits[11] = [int(i) for i in temp ]
-	
 	if "-chi2" in sys.argv:
 		plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin)
-	for i in range(len(inputs)):
-		if inputs[i] in sys.argv:
-			# Plot
-			fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
-			if inputs[i] == "-Bz":
-				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[4]))
-			else:
-				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]))
-			if inputs[i] == "-Bz":
-				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
-							extent=Map_plot)
-			else:
-				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
-							extent=Map_plot)
-			if inputs[i] == "-vlos":
-				if "-arc" in sys.argv and "-varrow" in sys.argv:
-					l = np.min([Map_plot[1],Map_plot[3]])*0.025
-					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-			# Set labels
-			ax.set_xlabel(f"x [{units}]")
-			ax.set_ylabel(f"y [{units}]")
-			############
-			# Colorbar #
-			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04)
-			cbar.set_label(label = labels[i], loc = 'center')
-			############
-			# set the spacing between subplots
-			#plt.tight_layout(pad=2)
-			plt.savefig(savepath + "plot_" + str(inputs[i][1:]) + add)
-
-
-	# Plot T,B,vlos, inc in one figure
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Vel.", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"$\chi^2$", r"Line-of-Sight Magnetic Field"]
-
-	if "-vertical" in sys.argv:
-		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
-			 gridspec_kw=dict(hspace=0), figsize=figsize)
-		fig.subplots_adjust(hspace=0, wspace=0)
-	else:
-		if (I2.shape[1] - I2.shape[0]) >= -100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-										layout="compressed",
-									)
-		else:
-			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
-										layout="compressed",
-									)
-		#fig.subplots_adjust(hspace=0.0)
-
-
-	im1 = ax1.imshow(models_inv.T.transpose(), cmap=cmap[1], origin = origin, vmin = limits[1][0], vmax = limits[1][1],extent=Map_plot)
-	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
-	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
-	if "-plot_chi2" in sys.argv:
-		im4 = ax4.imshow(chi2.tot.transpose(), cmap='gist_gray', origin = origin,extent=Map_plot)
-	else:
-		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
-	if "-arc" in sys.argv and "-varrow" in sys.argv:
-		l = np.min([Map_plot[1],Map_plot[3]])*0.025
-		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-	#####################
-	#	Set labels	#
-	#####################
-	#if "-vertical" not in sys.argv:
-	#	ax3.set_xlabel(r"x [Pixels]")
-	if "-vertical" not in sys.argv:
-		ax1.set_xlabel(f"x [{units}]")
-		ax2.set_xlabel(f"x [{units}]")
-		ax3.set_xlabel(f"x [{units}]")
-	ax4.set_xlabel(f"x [{units}]")
-	ax1.set_ylabel(f"y [{units}]")
-	ax2.set_ylabel(f"y [{units}]")
-	ax3.set_ylabel(f"y [{units}]")
-	ax4.set_ylabel(f"y [{units}]")
-
-	###############################
-	#	Set title and legend	#
-	###############################
-	if "-vertical" not in sys.argv:
-		ax1.set_title(titles[1] + r" @ $\log\tau = $ " + str(logT))
-		ax2.set_title(titles[4] + r" @ $\log\tau = $ " + str(logB))
-		ax3.set_title(titles[5] + r" @ $\log\tau = $ " + str(logV))
-		if "-plot_chi2" in sys.argv:
-			ax4.set_title(titles[11])
-		else:
-			ax4.set_title(titles[6] + r" @ $\log\tau = $ " + str(logI))
-
-	############
-	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-	cbar1.set_label(label = labels[1], loc = 'center', labelpad=20)
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-	cbar2.set_label(label = labels[4], loc = 'center', labelpad=20)
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-	cbar3.set_label(label = labels[5], loc = 'center', labelpad=20)
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
-	if "-plot_chi2" in sys.argv:
-		cbar4.set_label(label = labels[11], loc = 'center', labelpad=20)	
-	else:
-		cbar4.set_label(label = labels[6], loc = 'center', labelpad=20)
-	############
-	# Set title position depending on the chosen plot and consider the flags hinode and gris
-	if title3 != "-1":
-		if "-vertical" in sys.argv:
-			xtitle1 = 0.41
-		else:
-			xtitle1 = 0.5
-		if "-xtitle" in sys.argv:
-			xtitle1 = float(sys.argv[sys.argv.index("-xtitle")+1])
-		if title3 != '':
-			fig.suptitle(title3, y=1.02, x=xtitle1)
-		#else:
-		#	fig.suptitle(r"Result Models", y=1.02, x=xtitle1)
-
-	plt.savefig(savepath + "inversion" + add)
 
 def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	"""
@@ -1215,28 +1174,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	else:
 		filename = sys.argv[sys.argv.index("-stokes")+1]
 		stokes_inv = p.read_profile(filename)
-
-	# Check whether the wavelength is in range
-	wave = _check_range(stokes.wave, wave)
-	
-	if "-waveQ" in sys.argv:
-		waveQ = float(sys.argv[sys.argv.index("-waveQ")+1])
-		waveQ = _check_range(stokes_inv.wave, waveQ)
-	else:
-		waveQ = wave
-
-	if "-waveU" in sys.argv:
-		waveU = float(sys.argv[sys.argv.index("-waveU")+1])
-		waveU = _check_range(stokes_inv.wave, waveU)
-	else:
-		waveU = wave
-
-	if "-waveV" in sys.argv:
-		waveV = float(sys.argv[sys.argv.index("-waveV")+1])
-		waveV = _check_range(stokes_inv.wave, waveV)
-	else:
-		waveV = wave
-	
 	
 
 	if Type == "_1":
@@ -1259,25 +1196,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-chi")+1]
 			chi2 = c.read_chi2(filename)
 
-	if "-logT" not in sys.argv:
-		logT = tau
-	else:
-		logT = float(sys.argv[sys.argv.index("-logT")+1])
-
-	if "-logB" not in sys.argv:
-		logB = tau
-	else:
-		logB = float(sys.argv[sys.argv.index("-logB")+1])
-
-	if "-logV" not in sys.argv:
-		logV = tau
-	else:
-		logV = float(sys.argv[sys.argv.index("-logV")+1])
-
-	if "-logI" not in sys.argv:
-		logI = tau
-	else:
-		logI = float(sys.argv[sys.argv.index("-logI")+1])
 
 	# Cut data in x and y position	
 	if "-limitxy" in sys.argv:
@@ -1291,39 +1209,19 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		# Save the new limits as the new Map
 		Map = limit_xy
 
-	# Get waves indeces used in the observation closest to the chosen one
-	wave_ind1 = np.argmin(abs(stokes.wave-wave))
-	wave_ind2 = np.argmin(abs(stokes_inv.wave-wave))
-	wave = stokes.wave[wave_ind1]
-
-	waveQ_ind1 = np.argmin(abs(stokes.wave-waveQ))
-	waveQ_ind2 = np.argmin(abs(stokes_inv.wave-waveQ))
-	waveQ = stokes.wave[waveQ_ind1]
-
-	waveU_ind1 = np.argmin(abs(stokes.wave-waveU))
-	waveU_ind2 = np.argmin(abs(stokes.wave-waveU))
-	waveU = stokes.wave[waveU_ind1]
-
-	waveV_ind1 = np.argmin(abs(stokes.wave-waveV))
-	waveV_ind2 = np.argmin(abs(stokes_inv.wave-waveV))
-	waveV = stokes.wave[waveV_ind1]
 
 	# Additional savepath
 	savepath = ''
 	if '-save' in sys.argv:
 		savepath = path + "/" + sys.argv[sys.argv.index("-save")+1]
-		if not exists(savepath):
-			os.mkdir(savepath)
+		if not exists(savepath[:savepath.rfind('/')]):
+			os.mkdir(savepath[:savepath.rfind('/')])
 
 	# Additional text in output
 	add = ''
 	if '-add' in sys.argv:
 		add = sys.argv[sys.argv.index("-add")+1]
 	
-	# Additional text in the title of the single plots
-	add_label = ''
-	if '-label' in sys.argv:
-		add_label = sys.argv[sys.argv.index("-label")+1]
 
 	# Title
 	title1 = ''
@@ -1339,65 +1237,20 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	if '-title4' in sys.argv:
 		title4 = sys.argv[sys.argv.index("-title4")+1]
 
-	# Restrict models to the given tau
-	ind = np.argmin(abs(models_inv.tau - tau))
-	indT = np.argmin(abs(models_inv.tau - logT))
-	indB = np.argmin(abs(models_inv.tau - logB))
-	indV = np.argmin(abs(models_inv.tau - logV))
-	indI = np.argmin(abs(models_inv.tau - logI))
-
-	# Cut models to the specific log tau value
-	models_inv.nval = 1
-	models_inv.T = models_inv.T[:,:,indT]
-	models_inv.Pe = models_inv.Pe[:,:,ind]
-	models_inv.vmicro = models_inv.vmicro[:,:,ind]
-	models_inv.B = models_inv.B[:,:,indB]
-	models_inv.vlos = models_inv.vlos[:,:,indV]
-	models_inv.gamma = models_inv.gamma[:,:,indI]
-	models_inv.phi = models_inv.phi[:,:,ind]
-	models_inv.z = models_inv.z[:,:,ind]
-	models_inv.rho = models_inv.rho[:,:,ind]
-	models_inv.Pg = models_inv.Pg[:,:,ind]
-
-
-	taus = [tau for i in range(11)]
-	taus[1] = logT
-	taus[4] = logB
-	taus[5] = logV
-	taus[6] = logI
-	
-	# Pressure in log
-	models_inv.Pe = np.log(models_inv.Pe)
-	models_inv.Pg = np.log(models_inv.Pg)
-
-	# Correct for 180 deg ambiguity
-	models_inv.correct_phi()
-
-	stokes.cut_to_map(Map)
-	I1 = stokes.stki
-	Q1 = stokes.stkq
-	U1 = stokes.stku
-	V1 = stokes.stkv
-
-	I2 = stokes_inv.stki
-	Q2 = stokes_inv.stkq
-	U2 = stokes_inv.stku
-	V2 = stokes_inv.stkv
-
 	#########################
 	#  PLOTTING STUFF		#
 	#########################
-	if (I2.shape[1] - I2.shape[0]) >= -100:
-		alpha = I2.shape[0] / 12
-		figsize = [I2.shape[0] / alpha , I2.shape[1]/alpha-1]
+	if (stokes_inv.ny - stokes_inv.nx) >= -100:
+		alpha = stokes_inv.nx / 12
+		figsize = [stokes_inv.nx / alpha , stokes_inv.ny/alpha-1]
 		frac = figsize[1] / figsize[0]
 		if "-f" in sys.argv:
 			f = float(sys.argv[sys.argv.index("-f")+1])
 		else:
 			f = 1.2
 	else: # for 2x2 plot
-		alpha = I2.shape[0] / 12
-		figsize = [I2.shape[0] / alpha, I2.shape[1]/alpha]
+		alpha = stokes_inv.nx / 12
+		figsize = [stokes_inv.nx / alpha, stokes_inv.ny/alpha]
 		frac = figsize[1] / figsize[0] * 1.25
 		if "-f" in sys.argv:
 			f = float(sys.argv[sys.argv.index("-f")+1])
@@ -1416,28 +1269,14 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	####################################
 	#	Plot settings for arcsecond	#
 	####################################
+	dx = dy = sign1 = sign2 = n = None
 	if "-arc" in sys.argv:
 		infos = dict(np.genfromtxt(d.header_infos,dtype='str', delimiter="="), dtype=str)
 		if conf['instrument'] == 'GRIS':
-			# y position starts at the end but I start with the pixels lower left
-			y_pos = float(infos['CRVAL2']) + (I2.shape[1]-1) * float(infos['CDELT2'])
-			y_max = float(infos['CRVAL2']) # Used if flipx is used
-			Map_plot = [float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[0]-1),
-						float(infos['CRVAL1']) + float(infos['CDELT1']) * (Map[1]-1),
-						y_pos - float(infos['CDELT2']) * (Map[2]-1),
-						y_pos - float(infos['CDELT2']) * (Map[3]-1)
-						]
-			if(float(infos['CRVAL1']) > 0 and float(infos['CDELT1']) < 0):
-				Map_plot[0], Map_plot[1] = Map_plot[1], Map_plot[0]
-
-			
 			x = float(infos['CRVAL1'])
 			y = float(infos['CRVAL2'])
 			dx = float(infos['CDELT1'])
-			dy = float(infos['CDELT2'])
-			
-			
-			
+			dy = float(infos['CDELT2'])	
 		elif conf['instrument'] == 'Hinode':
 			dy = float(infos['CDELT2'])  # Delta y of slit
 			dx = float(infos['XSCALE'])
@@ -1469,7 +1308,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	
 	origin = d.origin
 
-	origin = d.origin
 	if "-flipy" in sys.argv:
 		print("Image flipped in y direction")
 		if origin == "lower":
@@ -1483,353 +1321,12 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		units = 'Pixels'
 
 	if plot_stokes:
-
-		limits_stokes1 = [  [np.min(I1[:,:,wave_ind1]), np.max(I1[:,:,wave_ind1])],
-						[-np.max(np.abs(Q1[:,:,waveQ_ind1])), np.max(np.abs(Q1[:,:,waveQ_ind1]))],
-						[-np.max(np.abs(U1[:,:,waveU_ind1])), np.max(np.abs(U1[:,:,waveU_ind1]))],
-						[-np.max(np.abs(V1[:,:,waveV_ind1])), np.max(np.abs(V1[:,:,waveV_ind1]))]
-			]
-		limits_stokes2 = [  [np.min(I2[:,:,wave_ind2]), np.max(I2[:,:,wave_ind2])],
-						[-np.max(np.abs(Q2[:,:,waveQ_ind2])), np.max(np.abs(Q2[:,:,waveQ_ind2]))],
-						[-np.max(np.abs(U2[:,:,waveU_ind2])), np.max(np.abs(U2[:,:,waveU_ind2]))],
-						[-np.max(np.abs(V2[:,:,waveV_ind2])), np.max(np.abs(V2[:,:,waveV_ind2]))]
-			]
-
-
-		if "-limitI" in sys.argv:
-			temp = sys.argv[sys.argv.index("-limitI")+1].split(',')
-			limits_stokes1[0] = [int(i) for i in temp ]
-			limits_stokes2[0] = [int(i) for i in temp ]
-
-		##############################################
-		#  Plot I, Q, U and V  at wave for obs		#
-		##############################################
-			
-		if "-vertical" in sys.argv:
-			fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
-				gridspec_kw=dict(hspace=0), figsize=figsize)
-			fig.subplots_adjust(hspace=0, wspace=0)
-		else:
-			if (I2.shape[1] - I2.shape[0]) >= -100:
-				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-														layout="compressed",
-														)
-				
-			else:
-				fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
-											layout="compressed",
-										)
-
-
-		############################
-		# Plot the Stokes profiles #
-		############################
-		im1 = ax1.imshow(I1[:,:,wave_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
-		im2 = ax2.imshow(Q1[:,:,waveQ_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
-		im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
-		im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
-
-		if "-arc" in sys.argv:
-			l = np.min([Map_plot[1],Map_plot[3]])*0.025
-			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-
-		#####################
-		#	Set labels	#
-		#####################
-		ax1.set_title(r'$I / I_c $ @' + "%.3f" % wave + r" \AA")
-		ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")	
-		ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")	
-		ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")	
-
-
-		############
-		# Colorbar #
-		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-		#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
-		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-		#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
-		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-		#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
-		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
-		#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
-		############
-
-		#####################
-		#	Set labels	#
-		#####################
-		if "-vertical" not in sys.argv:
-			ax1.set_xlabel(f"x [{units}]")
-			ax2.set_xlabel(f"x [{units}]")
-			ax3.set_xlabel(f"x [{units}]")
-		ax4.set_xlabel(f"x [{units}]")
-		ax1.set_ylabel(f"y [{units}]")
-		ax2.set_ylabel(f"y [{units}]")
-		ax3.set_ylabel(f"y [{units}]")
-		ax4.set_ylabel(f"y [{units}]")
-
-		##################################################################
-		# Set title											#
-		# The position is relative to the chosen plot (vertical or not)  #
-		##################################################################
-
-		if title2 != "-1": # -1 => Print no title
-			if "-vertical" in sys.argv:
-				xtitle1 = 0.41
-			else:
-				xtitle1 = 0.5
-			if title2 != '':
-				fig.suptitle(title2, y=1.02, x=xtitle1)
-
-
-		plt.savefig(savepath + "stokes_obs" + add)
-
-		##############################################
-		#  Plot I, Q, U and V  at wave for result	#
-		##############################################
-		if "-vertical" in sys.argv:
-			fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
-				gridspec_kw=dict(hspace=0), figsize=figsize)
-			fig.subplots_adjust(hspace=0, wspace=0)
-		else:
-			if (I2.shape[1] - I2.shape[0]) >= -100:
-				fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-										layout="compressed",
-									)
-			else:
-				fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
-											layout="compressed",
-										)
-
-
-		############################
-		# Plot the Stokes profiles #
-		############################
-		im1 = ax1.imshow(I2[:,:,wave_ind2 ]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
-		im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
-		im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
-		im4 = ax4.imshow(V2[:,:,waveV_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
-
-
-		if "-arc" in sys.argv:
-			l = np.min([Map_plot[1],Map_plot[3]])*0.025
-			ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-
-		#####################
-		#	Set labels	#
-		#####################
-		ax1.set_title(r'$I / I_c $ @' + "%.3f" % wave + r" \AA")
-		ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")
-		ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")
-		ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")
-
-
-		############
-		# Colorbar #
-		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-		#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
-		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-		#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
-		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-		#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
-		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
-		#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
-		############
-
-		#####################
-		#	Set labels	#
-		#####################
-		if "-vertical" not in sys.argv:
-			ax1.set_xlabel(f"x [{units}]")
-			ax2.set_xlabel(f"x [{units}]")
-			ax3.set_xlabel(f"x [{units}]")
-		ax4.set_xlabel(f"x [{units}]")
-		ax1.set_ylabel(f"y [{units}]")
-		ax2.set_ylabel(f"y [{units}]")
-		ax3.set_ylabel(f"y [{units}]")
-		ax4.set_ylabel(f"y [{units}]")
-
-		##################################################################
-		# Set title											#
-		# The position is relative to the chosen plot (vertical or not)  #
-		##################################################################
-
-		if title1 != "-1": # -1 => Print no title
-			if "-vertical" in sys.argv:
-				xtitle1 = 0.41
-			else:
-				xtitle1 = 0.5
-			if title1 != '':
-				fig.suptitle(title1, y=1.02, x=xtitle1)
-
-		plt.savefig(savepath + "stokes" + add)
+		_plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  title2, Map_plot, origin, sign1, sign2, dx, dy, n, savepath, add)
 
 	###################################################
 	#			Plot physical parameters			#
 	###################################################
-
-	# Define labels and get from arguments which parameter should be plot
-	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz", "-fill"]
-	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B \cdot \cos \gamma$ [G]", r"$\alpha$"]
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Line-of-Sight Magnetic Field", r"Filling Factor"]
-	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None, None, None]
-	limits = [[None,None],[np.min(models_inv[:,:,1]),np.max(models_inv[:,:,1])],[None,None],[None,None],[0,4000],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000], [0,1]]
-	i = 0
-
-	if "-symv" in sys.argv:
-		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
-
-	if "-limitT" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
-		limits[1] = [int(i) for i in temp ]
-	
-	if "-limitB" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
-		limits[4] = [int(i) for i in temp ]
-
-	if "-limitv" in sys.argv:
-		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
-		limits[5] = [int(i) for i in temp ]
-	
-	if "-chi2" in sys.argv:
-		plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin)
-	
-	for i in range(len(inputs)):
-		if inputs[i] in sys.argv:
-			# Plot
-			fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
-				
-			if inputs[i] == "-fill":
-				ax.set_title(titles[i] + f" for Model {Type[1]}" + add_label)			
-			elif inputs[i] == "-Bz":
-				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[4]) + f" for Model {Type[1]}" + add_label)
-			else:
-				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(taus[i]) + f" for Model {Type[1]}" + add_label)
-			
-			if inputs[i] == "-Bz":
-				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
-							extent=Map_plot)
-				
-			elif inputs[i] == '-fill':
-				im = ax.imshow(models_inv.fill.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
-							extent=Map_plot)
-			else:
-				im = ax.imshow(models_inv.get_attribute(inputs[i][1:]).T, cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
-							extent=Map_plot)
-				
-			if "-vlos" in sys.argv:
-				if "-arc" in sys.argv and "-varrow" in sys.argv:
-					l = np.min([Map_plot[1],Map_plot[3]])*0.025
-					ax.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-
-			# Set labels
-			ax.set_xlabel(f"x [{units}]")
-			ax.set_ylabel(f"y [{units}]")
-			############
-			# Colorbar #
-			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04)
-			cbar.set_label(label = labels[i], loc = 'center')
-
-			plt.savefig(savepath + "plot_" + str(inputs[i][1:]) + Type + add)
-
-
-	# Plot T,B,vlos, inc in one figure
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Vel.", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"$\chi^2$", r"Line-of-Sight Magnetic Field", r"Filling Factor"]
-
-	if "-vertical" in sys.argv:
-			fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
-				gridspec_kw=dict(hspace=0), figsize=figsize)
-			fig.subplots_adjust(hspace=0, wspace=0)
-	else:
-		if (I2.shape[1] - I2.shape[0]) >= -100:
-			fig, ((ax1,ax2,ax3,ax4)) = plt.subplots(1,4,figsize=[figsize[0]*2,figsize[1]*2/4],
-										layout="compressed",
-									)
-		else:
-			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
-										layout="compressed",
-									)
-
-
-	im1 = ax1.imshow(models_inv.T.transpose(), cmap=cmap[1], origin = origin, vmin = limits[1][0], vmax = limits[1][1],extent=Map_plot)
-	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
-	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
-	if "-plot_chi2" in sys.argv:
-		im4 = ax4.imshow(chi2.tot.transpose(), cmap=cmap[11], origin = origin, extent=Map_plot)
-	elif "-plot_fill" in sys.argv:
-		im4 = ax4.imshow(models_inv.fill.transpose(),'gist_gray', origin = origin, vmin = limits[13][0], vmax = limits[13][1],extent=Map_plot)
-	else:
-		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
-	if "-arc" in sys.argv and "-varrow" in sys.argv:
-		l = np.min([Map_plot[1],Map_plot[3]])*0.025
-		ax1.arrow(Map_plot[1]//2, Map_plot[3]//2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
-	#####################
-	#	Set labels	#
-	#####################
-	#if "-vertical" not in sys.argv:
-	#	ax3.set_xlabel(r"x [Pixels]")
-	if "-vertical" not in sys.argv:
-		ax1.set_xlabel(f"x [{units}]")
-		ax2.set_xlabel(f"x [{units}]")
-		ax3.set_xlabel(f"x [{units}]")
-	ax4.set_xlabel(f"x [{units}]")
-	ax1.set_ylabel(f"y [{units}]")
-	ax2.set_ylabel(f"y [{units}]")
-	ax3.set_ylabel(f"y [{units}]")
-	ax4.set_ylabel(f"y [{units}]")
-
-	###############################
-	#	Set title and legend	#
-	###############################
-	if "-vertical" not in sys.argv:
-		ax1.set_title(titles[1] + r" @ $\log\tau = $ " + str(logT), fontsize=16)
-		ax2.set_title(titles[4] + r" @ $\log\tau = $ " + str(logB), fontsize=16)
-		ax3.set_title(titles[5] + r" @ $\log\tau = $ " + str(logV), fontsize=16)
-		if "-plot_chi2" in sys.argv:
-			ax4.set_title(titles[11], fontsize=16)
-		elif "-plot_fill" in sys.argv:
-			ax4.set_title(titles[13], fontsize=16)
-		else:
-			ax4.set_title(titles[6] + r" @ $\log\tau = $ " + str(logI), fontsize=16)
-
-	############
-	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.046 * frac, pad=0.04)
-	cbar1.set_label(label = labels[1], loc = 'center')
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.046 * frac, pad=0.04)
-	cbar2.set_label(label = labels[4], loc = 'center')
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.046 * frac, pad=0.04)
-	cbar3.set_label(label = labels[5], loc = 'center')
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.046 * frac, pad=0.04)
-	if "-plot_chi2" in sys.argv:
-		cbar4.set_label(label = labels[11], loc = 'center')
-	elif "-plot_fill" in sys.argv:
-		cbar4.set_label(label = labels[13], loc = 'center')		
-	else:
-		cbar4.set_label(label = labels[6], loc = 'center')
-	############
-	# Set title position depending on the chosen plot and consider the flags hinode and gris
-	if Type == "_1":
-		if title3 != "-1":
-			if "-vertical" in sys.argv:
-				xtitle1 = 0.41
-			else:
-				xtitle1 = 0.55
-			if title3 != '':
-				fig.suptitle(title3, y=1.02, x=xtitle1)
-			#else:
-			#	fig.suptitle(f"Inversion Results for Model {Type[1]}", y=1.02, x=xtitle1)
-	else:
-		if title4 != "-1":
-			if "-vertical" in sys.argv:
-				xtitle1 = 0.41
-			else:
-				xtitle1 = 0.5
-			if title4 != '':
-				fig.suptitle(title4, y=1.02, x=xtitle1)
-			#else:
-			#	fig.suptitle(f"Inversion Results for Model {Type[1]}", y=1.02, x=xtitle1)
-
-	plt.savefig(savepath + "inversion" + Type + add)
+	_plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath, add, chi2, Map_plot, origin, sign1, sign2, n, dx, dy, Type)
 
 # Used if executed directly
 if __name__ == "__main__":
@@ -1841,8 +1338,8 @@ if __name__ == "__main__":
 		result_1C(conf, float(sys.argv[2]), float(sys.argv[3]))
 
 	elif conf['mode'] == '2C':
-		result_2C(conf, float(sys.argv[2]), float(sys.argv[3]))
-		result_2C(conf, float(sys.argv[2]), float(sys.argv[3]), Type = "_2" , plot_stokes = False)
+		result_2C(conf, float(sys.argv[2]), float(sys.argv[3]), "1")
+		result_2C(conf, float(sys.argv[2]), float(sys.argv[3]), Type = "2" , plot_stokes = False)
 
 	else:
 		print(f"[result] Mode '{conf['mode']}' not known or undefined!")
