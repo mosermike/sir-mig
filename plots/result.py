@@ -1252,19 +1252,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-models2")+1]
 			models_inv = m.read_model(filename)
 
-	#if Type == "_1":
-	#	if "-models1" not in sys.argv:
-	#		errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors1))
-	#	else:
-	#		filename = sys.argv[sys.argv.index("-models1")+1].replace(".mod",".err")
-	#		errors_inv = m.read_model(filename)
-	#if Type == "_2":
-	#	if "-models2" not in sys.argv:
-	#		errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors2))
-	#	else:
-	#		filename = sys.argv[sys.argv.index("-models2")+1].replace(".mod",".err")
-	#		errors_inv = m.read_model(filename)
-
 	if ("chi2" in sys.argv or "plot_chi2" in sys.argv):
 		if "-chi" not in sys.argv:
 			chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
@@ -1496,15 +1483,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		units = 'Pixels'
 
 	if plot_stokes:
-		I1 = stokes[Map[0]:Map[1]+1, Map[2]:Map[3]+1, 0, :]
-		Q1 = stokes[Map[0]:Map[1]+1, Map[2]:Map[3]+1, 1, :]
-		U1 = stokes[Map[0]:Map[1]+1, Map[2]:Map[3]+1, 2, :]
-		V1 = stokes[Map[0]:Map[1]+1, Map[2]:Map[3]+1, 3, :]
-
-		I2 = stokes_inv[:, :,0 ,:]
-		Q2 = stokes_inv[:, :,1 ,:]
-		U2 = stokes_inv[:, :,2 ,:]
-		V2 = stokes_inv[:, :,3 ,:]
 
 		limits_stokes1 = [  [np.min(I1[:,:,wave_ind1]), np.max(I1[:,:,wave_ind1])],
 						[-np.max(np.abs(Q1[:,:,waveQ_ind1])), np.max(np.abs(Q1[:,:,waveQ_ind1]))],
