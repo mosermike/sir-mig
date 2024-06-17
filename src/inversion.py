@@ -1492,9 +1492,6 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		stokes_inv.wave = stk.wave # Copy wavelength positions
 		stokes_inv.read_results(tasks, f"best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
-		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
-
-		del stokes_inv
 
 		print("-------> Read Models ...")
 		models_inv1		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
@@ -1531,17 +1528,27 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 				os.mkdir(temp[:temp.rfind('/')])
 
 		print("-------> Write Data ...")
+		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
 		models_inv1.write(os.path.join(path,conf['inv_out'] + d.end_models1))
 		models_inv2.write(os.path.join(path,conf['inv_out'] + d.end_models2))
 		errors_inv1.write(os.path.join(path,conf['inv_out'] + d.end_errors1))
 		errors_inv2.write(os.path.join(path,conf['inv_out'] + d.end_errors2))
 		best_guesses1.write(os.path.join(path,conf['inv_out'] + d.best_guess1_file))
 		best_guesses2.write(os.path.join(path,conf['inv_out'] + d.best_guess2_file))
+		
 		if conf['chi2'] != "":
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
 	
 
+		del stokes_inv
+		del models_inv1
+		del models_inv2
+		del errors_inv1
+		del errors_inv2
+		del best_guesses1
+		del best_guesses2
+		
 		if debug:
 			# Delete the folder
 			for i in range(len(tasks['x'])):
