@@ -36,7 +36,7 @@ def _help():
 	sir.option("-models: (1C)","Rel. path to the Models of the inversion if standard labelling is not used.")
 	sir.option("-models1: (2C)","Rel. path to the Models 1 of the inversion if standard labelling is not used.")
 	sir.option("-models2: (2C)","Rel. path to the Models 2 of the inversion if standard labelling is not used.")
-	sir.option("-errors:","Rel. path to the Errors of the inversion if standard labelling is not used.")
+	#sir.option("-errors:","Rel. path to the Errors of the inversion if standard labelling is not used.")
 	sir.option("-chi:","Rel. path to the chi2 file of the inversion if standard labelling is not used.")
 	sir.option("-save:","Additional save path (optional, default './')")
 	sir.option("-add:","Additional text in filenames (optional)")
@@ -280,8 +280,6 @@ def result_1C(conf, wave, tau, waveV = -1):
 		Rel. path to the Stokes result if standard labelling is not used, optional.
 	-models [str]
 		Rel. path to the Models of the inversion if standard labelling is not used.
-	-errors
-		Rel. path to the Errors of the inversion if standard labelling is not used.
 	-chi
 		Rel. path to the chi2 file of the inversion if standard labelling is not used.
 	-save [str], optional
@@ -413,11 +411,11 @@ def result_1C(conf, wave, tau, waveV = -1):
 	else:
 		filename = sys.argv[sys.argv.index("-models")+1]
 		models_inv = m.read_model(filename)
-	if "-errors" not in sys.argv:
-		errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors))
-	else:
-		filename = sys.argv[sys.argv.index("-errors")+1]
-		errors_inv = m.read_model(filename)
+	#if "-errors" not in sys.argv:
+	#	errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors))
+	#else:
+	#	filename = sys.argv[sys.argv.index("-errors")+1]
+	#	errors_inv = m.read_model(filename)
 	
 	if ("chi2" in sys.argv or "plot_chi2" in sys.argv):
 		if "-chi" not in sys.argv:
@@ -485,7 +483,7 @@ def result_1C(conf, wave, tau, waveV = -1):
 		#stokes = stokes[limit_xy[0]-Map[0]:limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2]:limit_xy[3]+1-(Map[3]+1)]
 		stokes_inv = stokes_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 		models_inv = models_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
-		errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
+		#errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 
 		# Save the new limits as the new Map
 		Map = limit_xy
@@ -1087,8 +1085,6 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		Rel. path to the Models 1 of the inversion if standard labelling is not used.
 	-models2 [str]
 		Rel. path to the Models 2 of the inversion if standard labelling is not used.
-	-errors
-		Rel. path to the Errors of the inversion if standard labelling is not used.
 	-chi
 		Rel. path to the chi2 file of the inversion if standard labelling is not used.
 	-save [str], optional
@@ -1256,18 +1252,18 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-models2")+1]
 			models_inv = m.read_model(filename)
 
-	if Type == "_1":
-		if "-models1" not in sys.argv:
-			errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors1))
-		else:
-			filename = sys.argv[sys.argv.index("-models1")+1].replace(".mod",".err")
-			errors_inv = m.read_model(filename)
-	if Type == "_2":
-		if "-models2" not in sys.argv:
-			errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors2))
-		else:
-			filename = sys.argv[sys.argv.index("-models2")+1].replace(".mod",".err")
-			errors_inv = m.read_model(filename)
+	#if Type == "_1":
+	#	if "-models1" not in sys.argv:
+	#		errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors1))
+	#	else:
+	#		filename = sys.argv[sys.argv.index("-models1")+1].replace(".mod",".err")
+	#		errors_inv = m.read_model(filename)
+	#if Type == "_2":
+	#	if "-models2" not in sys.argv:
+	#		errors_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors2))
+	#	else:
+	#		filename = sys.argv[sys.argv.index("-models2")+1].replace(".mod",".err")
+	#		errors_inv = m.read_model(filename)
 
 	if ("chi2" in sys.argv or "plot_chi2" in sys.argv):
 		if "-chi" not in sys.argv:
@@ -1303,7 +1299,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		# Cut data to the new range:
 		stokes_inv = stokes_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 		models_inv = models_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
-		errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
+		#errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 
 		# Save the new limits as the new Map
 		Map = limit_xy
