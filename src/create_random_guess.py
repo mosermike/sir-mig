@@ -404,7 +404,7 @@ def create_guesses_2c(conf, output = "./", number = 0):
 	###################################################################################
 
 	for j in [1,2]:
-		model = conf[f"model{j}"]		# Base Model
+		model = conf[f"model{j}"] + str(j)		# Base Model
 		lim_B		= __split_to_float(conf[f"lim_B{j}"])
 		lim_vlos		= __split_to_float(conf[f"lim_vlos{j}"])
 		lim_gamma		= __split_to_float(conf[f"lim_gamma{j}"])
@@ -412,6 +412,7 @@ def create_guesses_2c(conf, output = "./", number = 0):
 
 		mod = create_guess(model, conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
 		mod.fill[0,0] = conf['fill'].split(',')[j-1] # Assign filling factor from config
+		print(mod.fill[0,0], j, "TEST")
 		mod.vmacro[0,0] = conf["vmacro"] # Assign vmacro from config
 		if j == 1:
 			mod.write_model(output + f"{d.model1}" + str(number) + ".mod", 0, 0)

@@ -503,8 +503,8 @@ def execute_inversion_2c(conf, task_folder, rank):
 	os.chdir(task_folder)
 
 	# Define parameters for simplicity reasons
-	model1 = conf['model1']
-	model2 = conf['model2']
+	model1 = conf['model1'] + "1"
+	model2 = conf['model2'] + "2"
 	cycles = conf["cycles"]
 	chi_file = d.inv_trol_file[:d.inv_trol_file.rfind('.')] + ".chi"
 
@@ -644,16 +644,18 @@ def execute_inversion_2c(conf, task_folder, rank):
 	else:
 		# Correct for vmacro
 		header = np.loadtxt(conf['model1'], max_rows=1)
-		if header[0] != round(float(conf['vmacro']),4):
+		if header[0] != round(float(conf['vmacro']),4) or header[1] != round(float(conf['fill'].split(",")[0]),4):
 			temp_mod = m.read_model(conf['model1'])
 			temp_mod.vmacro[0,0] = float(conf['vmacro'])
+			temp_mod.fill[0,0] = float(conf['fill'].split(",")[0])
 			temp_mod.write_model(conf['model1'], 0, 0)
 		
 		# Correct of different vmacro
 		header = np.loadtxt(conf['model2'], max_rows=1)
-		if header[0] != round(float(conf['vmacro']),4):
+		if header[0] != round(float(conf['vmacro']),4) or header[1] != round(float(conf['fill'].split(",")[1]),4):
 			temp_mod = m.read_model(conf['model2'])
 			temp_mod.vmacro[0,0] = float(conf['vmacro'])
+			temp_mod.fill[0,0] = float(conf['fill'].split(",")[1])
 			temp_mod.write_model(conf['model2'], 0, 0)
 
 		# Perform inversion once and read chi2 value
@@ -1372,6 +1374,11 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			for i in glob.glob(os.path.join(path,d.task_start + "*")):
 				shutil.rmtree(i)
 
+	if rank == 0:
+		fills = [float(i) for i in conf["fill"].split(",")]
+		if (fills[0] + fills[1] != 1.0):
+			print(f"-------> WARNING: Filling factors do not add up to 1.0 ({fills[0]} + {fills[1]} = {'%.2f' % (fills[0] + fills[1])})")
+
 	# Load and scatter data => Saving memory and time
 	if conf['chi2'] != "":
 		stk, tasks, obs = scatter_data(conf, comm, rank, size, True)
@@ -1418,11 +1425,14 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		
 		# Copy stuff for the inversion
 		if conf['psf'] != '':
-			sir_files = [d.inv_trol_file, model1, model2, "sir.x", line_file, d.Grid, abundance_file, d.psf]
+			sir_files_src = [d.inv_trol_file, model1,       model2, "sir.x", line_file, d.Grid, abundance_file, d.psf]
+			sir_files_dst = [d.inv_trol_file, model1 + "1", model2 + "2", "sir.x", line_file, d.Grid, abundance_file, d.psf]
 		else:
-			sir_files = [d.inv_trol_file, model1, model2, "sir.x", line_file, d.Grid, abundance_file]
-		for sir_file in sir_files:
-			shutil.copy(os.path.join(path, sir_file), os.path.join(task_folder, sir_file))
+			sir_files_src = [d.inv_trol_file, model1,       model2, "sir.x", line_file, d.Grid, abundance_file]
+			sir_files_dst = [d.inv_trol_file, model1 + "1", model2 + "2", "sir.x", line_file, d.Grid, abundance_file]
+
+		for i in range(len(sir_files_src)):
+			shutil.copy(os.path.join(path, sir_files_src[i]), os.path.join(task_folder, sir_files_dst[i]))
 		
 		
 		# Use a guess file for model 1
@@ -1430,14 +1440,14 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
-			guess1.write_model(os.path.join(task_folder,model1),x1,y1)
+			guess1.write_model(os.path.join(task_folder,model1 + "1"),x1,y1)
 			
 		# Use a guess file for model 1
 		if conf["guess2"] != '':
 			# Write the new initial model from here:
 			x1 = x - Map[0] # x position taking the Map into account
 			y1 = y - Map[2] # y position taking the Map into account
-			guess1.write_model(os.path.join(task_folder,model2),x1,y1)
+			guess1.write_model(os.path.join(task_folder,model2 + "2"),x1,y1)
 
 		# Create random guesses and select best value and perform inversion
 		execute_inversion_2c(conf, task_folder, rank)
