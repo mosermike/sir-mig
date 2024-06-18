@@ -75,7 +75,7 @@ def _help():
 	sir.option("-limitchi2:","Set the limit for the colorbar in chi2.")
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
 	sir.option("-arc:","Print x and y axis in arcseconds")
-	sir.option("-flipy:","Flip inmage along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
+	sir.option("-flipy:","Flip image along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
 	sir.option("-f [float]","Factor for the fontsizes")
 	sir.option("-symv","Symmetric limits for vlos")
 	sir.option("-rot90","Rotate the image 90 deg")
@@ -1013,9 +1013,9 @@ def result_1C(conf, wave, tau):
 	if "-chi2" in sys.argv:
 		plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin)
 
-def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
+def result(conf, wave, tau, Type = "", plot_stokes = True):
 	"""
-	Plots the result of the inversion for 2C
+	Plots the result of the inversion
 
 	Parameters
 	----------
@@ -1026,7 +1026,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	tau : float
 		log tau value where the model is plotted
 	Type : string, optional
-		prefix for determining which model is used. Default: '_1'
+		prefix for determining which model is used. Default: '' for Mode 1C, "1" for model 1 from mode 2C, "2" for model 2 from mode 2C
 	plot_stokes : bool, optional
 		Plot the stokes vector. Default: True
 
@@ -1042,10 +1042,12 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		Rel. path to the spectral veil corrected data if standard labelling is not used, optional.
 	-stokes [str]
 		Rel. path to the Stokes result if standard labelling is not used, optional.
-	-models1 [str]
-		Rel. path to the Models 1 of the inversion if standard labelling is not used.
-	-models2 [str]
-		Rel. path to the Models 2 of the inversion if standard labelling is not used.
+	-model [str]
+		Rel. path to the Models of the inversion if standard labelling is not used (Mode `1C`).
+	-model1 [str]
+		Rel. path to the Models 1 of the inversion if standard labelling is not used (Mode `2C`).
+	-model2 [str]
+		Rel. path to the Models 2 of the inversion if standard labelling is not used (Mode `2C`).
 	-chi
 		Rel. path to the chi2 file of the inversion if standard labelling is not used.
 	-save [str], optional
@@ -1059,9 +1061,9 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	-title2 [str]
 		Title in Obs. Stokes plot
 	-title3 [str]
-		Title in Model 1 plot
+		Title in Model (1) plot
 	-title4 [str]
-		Title in Model 2 plot with 4 plots
+		Title in Model 2 plot with 4 plots (Mode `1C`)
 	-xtitle [float]
 		Changing the x position of the title
 	-T
@@ -1179,16 +1181,22 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	
 
 	if Type == "1":
-		if "-models1" not in sys.argv:
+		if "-model1" not in sys.argv:
 			models_inv = m.read_model(os.path.join(path, conf['inv_out'] + d.end_models1))
 		else:
-			filename = sys.argv[sys.argv.index("-models1")+1]
+			filename = sys.argv[sys.argv.index("-model1")+1]
 			models_inv = m.read_model(filename)
-	if Type == "2":
-		if "-models2" not in sys.argv:
+	elif Type == "2":
+		if "-model2" not in sys.argv:
 			models_inv = m.read_model(os.path.join(path, conf['inv_out'] + d.end_models2))
 		else:
-			filename = sys.argv[sys.argv.index("-models2")+1]
+			filename = sys.argv[sys.argv.index("-model2")+1]
+			models_inv = m.read_model(filename)
+	else:
+		if "-model" not in sys.argv:
+			models_inv = m.read_model(os.path.join(path, conf['inv_out'] + d.end_models))
+		else:
+			filename = sys.argv[sys.argv.index("-model")+1]
 			models_inv = m.read_model(filename)
 
 	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
@@ -1199,6 +1207,42 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			chi2 = c.read_chi2(filename)
 	else:
 		chi2 = None
+
+	# Rotate by 90 deg
+	if "-rot90" in sys.argv:
+		print("[INFO] Images are rotated by 90°!")
+		models_inv.T = models_inv.T.T
+		models_inv.Pe = models_inv.Pe.T
+		models_inv.vmicro = models_inv.vmicro.T
+		models_inv.B = models_inv.B.T
+		models_inv.vlos = models_inv.vlos.T
+		models_inv.gamma = models_inv.gamma.T
+		models_inv.phi = models_inv.phi.T
+		models_inv.z = models_inv.z.T
+		models_inv.rho = models_inv.rho.T
+		models_inv.Pg = models_inv.Pg.T
+		models_inv.nx, models_inv.ny = models_inv.ny, models_inv.nx
+
+		stokes.stki = stokes.stki.T
+		stokes.stkq = stokes.stkq.T
+		stokes.stku = stokes.stku.T
+		stokes.stkv = stokes.stkv.T
+		stokes.nx, stokes.ny = stokes.ny, stokes.nx
+
+		stokes_inv.stki = stokes_inv.stki.T
+		stokes_inv.stkq = stokes_inv.stkq.T
+		stokes_inv.stku = stokes_inv.stku.T
+		stokes_inv.stkv = stokes_inv.stkv.T
+		stokes_inv.nx, stokes_inv.ny = stokes_inv.ny, stokes_inv.nx
+		if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
+			chi2.stki = chi2.stki.T
+			chi2.stkq = chi2.stkq.T
+			chi2.stku = chi2.stku.T
+			chi2.stkv = chi2.stkv.T
+			chi2.tot = chi2.tot.T
+			chi2.nx, chi2.ny = chi2.ny, chi2.nx
+		Map = [Map[2],Map[3],Map[0],Map[1]]
+
 
 	# Cut data in x and y position	
 	if "-limitxy" in sys.argv:
@@ -1340,11 +1384,11 @@ if __name__ == "__main__":
 	conf = sir.read_config(sys.argv[1])
 
 	if conf['mode'] == '1C':
-		result_1C(conf, float(sys.argv[2]), float(sys.argv[3]))
+		result(conf, float(sys.argv[2]), float(sys.argv[3]),"",True)
 
 	elif conf['mode'] == '2C':
-		result_2C(conf, float(sys.argv[2]), float(sys.argv[3]), "1")
-		result_2C(conf, float(sys.argv[2]), float(sys.argv[3]), Type = "2" , plot_stokes = False)
+		result(conf, float(sys.argv[2]), float(sys.argv[3]), "1")
+		result(conf, float(sys.argv[2]), float(sys.argv[3]), Type = "2" , plot_stokes = False)
 
 	else:
 		print(f"[result] Mode '{conf['mode']}' not known or undefined!")
