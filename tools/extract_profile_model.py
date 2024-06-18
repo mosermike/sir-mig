@@ -3,7 +3,7 @@ Extracts the profile file and the mdoel file from a data cube
 """
 import numpy as np
 import sys, os, shutil
-sys.path.append(sys.path[0]+"/..")
+sys.path.append(sys.path[0]+"/../src")
 import sir
 import definitions as d
 from os.path import exists

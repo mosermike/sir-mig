@@ -73,7 +73,7 @@ fit  = sys.argv[1]   # Best fit
 phy1 = sys.argv[3]   # Physical parameter of best fit
 phy2 = sys.argv[4]   # Physical parameter of best fit
 
-num = None
+num = 0
 if '-num' in sys.argv:
 	num = int(sys.argv[sys.argv.index("-num")+1])
 if '-line' in sys.argv:
@@ -105,7 +105,7 @@ pars2_err = np.array([log_tau, T, Pe, v_micro, B, vlos/1e5, inc, azimuth, z, Pg,
 # Additional savepath
 savepath = ''
 if '-save' in sys.argv:
-	savepath = path + "/" + sys.argv[sys.argv.index("-save")+1]
+	savepath = sys.argv[sys.argv.index("-save")+1]
 	if not exists(savepath):
 		os.mkdir(savepath)
 
@@ -316,11 +316,12 @@ if lim_max < -3:
 	lim_max = -3
 	# Cut data so that the plot limits are adjusted to the shorted range
 	I = np.where(pars1[0] < -3)[0][0]
-	pars1[0] = pars1[0][0:I]
+	print(pars1.shape)
+	#pars1[0] = pars1[0][0:I]
 	pars1  = pars1[:,0:I]
 	pars1_err  = pars1_err[:,0:I]
 	I = np.where(pars2[0] < -3)[0][0]
-	pars2[0] = pars2[0][0:I]
+	#pars2[0] = pars2[0][0:I]
 	pars2  = pars2[:,0:I]
 	pars2_err  = pars2_err[:,0:I]
 

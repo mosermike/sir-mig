@@ -1,6 +1,6 @@
 import numpy as np
 import sys
-sys.path(sys.path[0]+"/../")
+sys.path(sys.path[0]+"/../src")
 import model_atm as m
 # Convert old version to new version of SIR-MIG-MC of the profiles
 # 1st argument: first npy file

@@ -4,7 +4,7 @@ Changes all possible values by a factor where log(tau) = 0 is taken as the refer
 
 import numpy as np 
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
 import sir
 from os.path import exists
 

@@ -4,7 +4,7 @@ Cleans the files from the inversion
 
 import sys
 import os
-sys.path.append(sys.path[0] + "/../")
+sys.path.append(sys.path[0] + "/../src")
 import sir
 import definitions as d
 
