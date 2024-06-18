@@ -877,13 +877,14 @@ def result_1C(conf, wave, tau):
 	#	filename = sys.argv[sys.argv.index("-errors")+1]
 	#	errors_inv = m.read_model(filename)
 	
-	if ("chi2" in sys.argv or "plot_chi2" in sys.argv):
+	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
 		if "-chi" not in sys.argv:
 			chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
 		else:
 			filename = sys.argv[sys.argv.index("-chi")+1]
 			chi2 = c.read_chi2(filename)
-
+	else:
+		chi2 = None
 	# Cut data in x and y position	
 	if "-limitxy" in sys.argv:
 		limit_xy = np.array([int(i) for i in sys.argv[sys.argv.index("-limitxy")+1].split(",")], dtype=int)
