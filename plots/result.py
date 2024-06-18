@@ -316,7 +316,7 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Magnetic Field $B \cdot \cos \gamma$","Filling Factor"]
 	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,None, "gist_gray"]
 	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
-		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-2000,2000], [0,1]]
+		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi))),np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi)))], [0,1]]
 	i = 0
 	
 	if "-symv" in sys.argv:
@@ -982,7 +982,7 @@ def result_1C(conf, wave, tau):
 		sign1 = sign1*np.cos(alpha)
 		sign2 = sign2*np.sin(alpha)
 			
-		n = np.min([stokes.nx,stokes.ny])*0.25
+		n = np.min([stokes.nx*abs(dx),stokes.ny*abs(dy)])*0.25
 	else:
 		Map_plot = Map
 
@@ -1304,7 +1304,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		sign1 = sign1*np.cos(np.arctan(y/x))
 		sign2 = sign2*np.sin(np.arctan(y/x))
 
-		n = np.min([stokes.nx,stokes.ny])*0.25
+		n = np.min([stokes.nx*abs(dx),stokes.ny*abs(dy)])*0.25
 	else:
 		Map_plot = Map
 	
