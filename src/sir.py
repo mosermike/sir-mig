@@ -703,6 +703,7 @@ def _write_config_2c(File, conf, verbose = True):
 		f.write(f"nodes_vlos2 : {conf['nodes_vlos2']} # Nodes 2 in vlos\n")
 		f.write(f"nodes_gamma2 : {conf['nodes_gamma2']} # Nodes 2 in gamma\n")
 		f.write(f"nodes_phi2 : {conf['nodes_phi2']} # Nodes 2 in phi\n")
+		f.write(f"invert_fill : {conf['invert_fill']} # Invert filling factor (1 or 0)")
 		f.write(f"mu_cos : {conf['mu_cos']} # mu = cos theta\n")
 		f.write(f"abundance : {conf['abundance']} # Abundance file\n")
 		f.write(f"gas_pressure : {conf['gas_pressure']} # Gas Pressure Boundary condition\n")
@@ -1034,6 +1035,7 @@ def _write_control_1c(filename, conf):
 	abundance		= conf['abundance']		# Abundance file
 	line			= conf['line']			# Name of the line file
 	gas_pressure   = conf['gas_pressure']	# Gas Pressure
+	fill = conf["invert_fill"] # invert filling factor
 	# Write lines
 	with open(filename, 'w') as f:
 		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
@@ -1066,7 +1068,7 @@ def _write_control_1c(filename, conf):
 		f.write('Nodes for gamma 2             :                   \n')
 		f.write('Nodes for phi 2               :                   \n')
 		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert filling factor?        :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert filling factor?        : ' + fill  + '                  ! (0 or blank=no, 1=yes)\n')
 		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
 		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
 		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')

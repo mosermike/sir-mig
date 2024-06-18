@@ -415,6 +415,7 @@ def _config_2C():
 	nodes_gamma2	= input ("Nodes 2 in inclination/gamma (as list)   : ")
 	nodes_phi2	= input ("Nodes 2 in azimuth/phi (as list)         : ")
 	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
+	fill		= input ("Invert filling factor? [0/1]: ")
 	mu_cos		= input ("mu = cos theta                         : ")
 	abundance		= input ("Abundance file               [THEVENIN]: ")
 	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
@@ -514,6 +515,7 @@ def _config_2C():
 		"nodes_vlos2" : nodes_vlos2,
 		"nodes_gamma2" : nodes_gamma2,
 		"nodes_phi2" : nodes_phi2,
+		"invert_fill" : fill,
 		"vmacro" : vmacro,
 		"mu_cos" : mu_cos,
 		"abundance" : abundance,
