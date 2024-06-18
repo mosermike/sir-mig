@@ -1176,13 +1176,13 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		stokes_inv = p.read_profile(filename)
 	
 
-	if Type == "_1":
+	if Type == "1":
 		if "-models1" not in sys.argv:
 			models_inv = m.read_model(os.path.join(path, conf['inv_out'] + d.end_models1))
 		else:
 			filename = sys.argv[sys.argv.index("-models1")+1]
 			models_inv = m.read_model(filename)
-	if Type == "_2":
+	if Type == "2":
 		if "-models2" not in sys.argv:
 			models_inv = m.read_model(os.path.join(path, conf['inv_out'] + d.end_models2))
 		else:
