@@ -983,7 +983,7 @@ def result_1C(conf, wave, tau):
 		sign1 = sign1*np.cos(alpha)
 		sign2 = sign2*np.sin(alpha)
 			
-		n = np.min([stokes.nx*abs(dx),stokes.ny*abs(dy)])*0.25
+		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
 		Map_plot = Map
 
@@ -1305,7 +1305,7 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 		sign1 = sign1*np.cos(np.arctan(y/x))
 		sign2 = sign2*np.sin(np.arctan(y/x))
 
-		n = np.min([stokes.nx*abs(dx),stokes.ny*abs(dy)])*0.25
+		n = np.min([stokes.nx,stokes.ny])*0.25
 	else:
 		Map_plot = Map
 	
