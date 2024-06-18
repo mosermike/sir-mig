@@ -717,7 +717,7 @@ def _on_click_2C(event, obs, fit, Models1, Models2, Map):
 		if not xlims:
 			fig1, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2)
 			plt.get_current_fig_manager().set_window_title('Stokes_' + str(rand))
-			if px1 == -1:
+			if px2 == -1:
 				_move_figure("right1")
 			else:
 				_move_figure("right1", Monitor="2")
@@ -757,7 +757,7 @@ def _on_click_2C(event, obs, fit, Models1, Models2, Map):
 		ax2.set_ylabel(r'$Q/I_c$')
 		ax3.set_ylabel(r'$U/I_c$')
 		ax4.set_ylabel(r'$V/I_c$')
-		fig1.suptitle(f"Pixel ({x},{y})")
+		fig1.suptitle(f"Pixel ({x + Map[0]},{y + Map[2]})")
 		plt.tight_layout()
 
 		if not xlims:		
@@ -805,7 +805,7 @@ def _on_click_2C(event, obs, fit, Models1, Models2, Map):
 		ax21.set_xlim(log_tau[0],log_tau[-1])
 		ax31.set_xlim(log_tau[0],log_tau[-1])
 		ax41.set_xlim(log_tau[0],log_tau[-1])
-		fig2.suptitle(f"Pixel ({x},{y})")
+		fig2.suptitle(f"Pixel ({x + Map[0]},{y + Map[2]})")
 
 		plt.tight_layout()
 		
@@ -874,10 +874,25 @@ def visualizer_2C(conf, wave):
 	"""
 	# Import library
 	dirname = os.path.split(os.path.abspath(__file__))[0]
-	if exists(dirname + '/../mml.mplstyle'):
-		plt.style.use(dirname + '/../mml.mplstyle')
-	elif "mml" in plt.style.available:
-		plt.style.use('mml')
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if os.path.exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#
@@ -939,26 +954,27 @@ def visualizer_2C(conf, wave):
 	
 
 	if use_model:
-		if "-chi" not in sys.argv:
-			chi2_inv = np.load(os.path.join(path,conf['chi2']))
-		else:
-			filename = sys.argv[sys.argv.index("-chi")+1]
-			chi2_inv = np.load(filename)
+		if "-chi2" in sys.argv:
+			if "-chi" not in sys.argv:
+				chi2_inv = c.read_chi2(os.path.join(path,conf['chi2']))
+			else:
+				filename = sys.argv[sys.argv.index("-chi")+1]
+				chi2_inv = c.read_chi2(filename)
 
-		ind = np.argmin(abs(models1_inv[0,0,0,:] - tau))
+		ind = np.argmin(abs(models1_inv.tau - tau))
 			
 		###################################################
 		#			Plot physical parameters			#
 		###################################################
 
 		# Define labels and get from arguments which parameter should be plot
-		inputs = ["___","-T", '-Pe', '-vmicro', '-B', "-vlos", "-inc", "-azi", "-z", "-Pg","-rho","-chi2", "-Bz"]
+		inputs = ["___","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-chi2", "-Bz"]
 		labels = ["", "T [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", "B [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", "z [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$",r"$\chi^2$", r"$B \cdot \cos \gamma$ [G]"]
 		titles   = ["",r"Temperature T", r"Electron Pressure $\log P_e$",r"Microturbulence Velocity $\mathrm{v}_{\mathrm{micro}}$", r"Magnetic Field Strength B",
 					r"Line-of-Sight Velocity $\mathrm{v}_{\mathrm{los}}$",
 				r"Inclination $\gamma$", r"Azimuth $\phi$", r"Height $z$", r"Gas Pressure $\log P_g$", r"Density $\rho$", r"$\chi^2$", r"Line-of-Sight Magnetic Field $B \cdot \cos \gamma$"]
 		cmap = [None,None,None,None,None,'seismic','jet','hsv',None,None,None,'gist_gray', None]
-		limits = [[None,None],[np.min(models1_inv[:,:,1,ind]),np.max(models1_inv[:,:,1,ind])],[None,None],[None,None],[0,4500],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[None,None],[-2000,2000]]
+		limits = [[None,None],[np.min(models1_inv.T[:,:,ind]),np.max(models1_inv.T[:,:,ind])],[None,None],[None,None],[0,4500],[-5,5],[0,180],[0,180],[None, None],[None, None],[None, None],[None,None],[-2000,2000]]
 		i = 0
 		imgscale = 7
 		frac = (Map[3]+1-Map[2])/(Map[1]+1-Map[0])
@@ -968,7 +984,7 @@ def visualizer_2C(conf, wave):
 				fig, ax = plt.subplots(figsize=[imgscale * 1.4, imgscale * frac])
 				plt.get_current_fig_manager().set_window_title('Image_' + str(rand))
 				size = fig.get_size_inches()
-				_move_figure("left", int(size[0]*fig.dpi),int(size[1]*fig.dpi))
+				_move_figure("left")
 				ax.set_title(titles[i] + r" @ $\log \tau = $" + str(tau))
 				if inputs[i] == '-chi2':
 					ax.set_title(titles[i])
@@ -977,7 +993,7 @@ def visualizer_2C(conf, wave):
 					ax.set_title(titles[i])
 					im = ax.imshow((models1_inv.B*np.cos(models1_inv.gamma/180*np.pi)).transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)					
 				else:
-					im = ax.imshow(models1_inv.get_attribute(inputs[i][2:])[:,:,ind].transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)
+					im = ax.imshow(models1_inv.get_attribute(inputs[i][1:])[:,:,ind].transpose(), cmap=cmap[i], origin = d.origin, vmin = limits[i][0], vmax = limits[i][1], extent=Map)
 					
 				# Set labels
 				ax.set_xlabel(r"x [Pixels]")
