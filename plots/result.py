@@ -313,7 +313,7 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	# Define labels and get from arguments which parameter should be plot
 	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz","-fill"]
 	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B$ [G]",r"$\alpha$"]
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Magnetic Field $B \cdot \cos \gamma$","Filling Factor"]
+	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Magnetic Field $B_{\text{los}}$","Filling Factor"]
 	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,None, "gist_gray"]
 	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
 		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi))),np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi)))], [0,1]]
@@ -377,7 +377,7 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 
 
 	# Plot T,B,vlos, inc in one figure
-	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Vel.", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"$\chi^2$", r"Line-of-Sight Magnetic Field"]
+	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Vel.", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"$\chi^2$", r"Magnetic Field $B_{\text{los}}$"]
 
 	if "-vertical" in sys.argv:
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
@@ -399,9 +399,9 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	im2 = ax2.imshow(models_inv.B.transpose(), cmap=cmap[4], origin = origin, vmin = limits[4][0], vmax = limits[4][1],extent=Map_plot)
 	im3 = ax3.imshow(models_inv.vlos.transpose(), cmap=cmap[5], origin = origin, vmin = limits[5][0], vmax = limits[5][1],extent=Map_plot)
 	if "-plot_chi2" in sys.argv:
-		im4 = ax4.imshow(chi2.tot.transpose(), cmap='gist_gray', origin = origin,extent=Map_plot)
+		im4 = ax4.imshow(chi2.tot.transpose(), cmap='Greys', origin = origin,extent=Map_plot)
 	elif "-plot_fill" in sys.argv:
-		im4 = ax4.imshow(models_inv.fill.transpose(),'gist_gray', origin = origin, vmin = 0, vmax = 1,extent=Map_plot)
+		im4 = ax4.imshow(models_inv.fill.transpose(),'Greys', origin = origin, vmin = 0, vmax = 1,extent=Map_plot)
 	else:
 		im4 = ax4.imshow(models_inv.gamma.transpose(), cmap=cmap[6], origin = origin, vmin = limits[6][0], vmax = limits[6][1],extent=Map_plot)
 	if "-arc" in sys.argv and "-varrow" in sys.argv:

@@ -960,7 +960,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
 
-		if debug:
+		if not debug:
 			# Delete the folder
 			for i in range(len(tasks['x'])):
 				# Remove folder
@@ -1214,7 +1214,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
 
-		if debug:
+		if not debug:
 			for i in range(conf['num']):
 				shutil.rmtree(os.path.join(path,tasks['folders'][i]))
 
@@ -1549,7 +1549,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		del best_guesses1
 		del best_guesses2
 		
-		if debug:
+		if not debug:
 			# Delete the folder
 			for i in range(len(tasks['x'])):
 				shutil.rmtree(tasks['folders'][i])
