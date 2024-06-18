@@ -1211,35 +1211,35 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 	# Rotate by 90 deg
 	if "-rot90" in sys.argv:
 		print("[INFO] Images are rotated by 90°!")
-		models_inv.T = models_inv.T.T
-		models_inv.Pe = models_inv.Pe.T
-		models_inv.vmicro = models_inv.vmicro.T
-		models_inv.B = models_inv.B.T
-		models_inv.vlos = models_inv.vlos.T
-		models_inv.gamma = models_inv.gamma.T
-		models_inv.phi = models_inv.phi.T
-		models_inv.z = models_inv.z.T
-		models_inv.rho = models_inv.rho.T
-		models_inv.Pg = models_inv.Pg.T
+		models_inv.T = np.moveaxis(models_inv.T,(0,1,2),(1,0,2))
+		models_inv.Pe = np.moveaxis(models_inv.Pe,(0,1,2),(1,0,2))
+		models_inv.vmicro = np.moveaxis(models_inv.vmicro,(0,1,2),(1,0,2))
+		models_inv.B = np.moveaxis(models_inv.B,(0,1,2),(1,0,2))
+		models_inv.vlos = np.moveaxis(models_inv.vlos,(0,1,2),(1,0,2))
+		models_inv.gamma = np.moveaxis(models_inv.gamma,(0,1,2),(1,0,2))
+		models_inv.phi = np.moveaxis(models_inv.phi,(0,1,2),(1,0,2))
+		models_inv.z = np.moveaxis(models_inv.z,(0,1,2),(1,0,2))
+		models_inv.rho = np.moveaxis(models_inv.rho,(0,1,2),(1,0,2))
+		models_inv.Pg = np.moveaxis(models_inv.Pg,(0,1,2),(1,0,2))
 		models_inv.nx, models_inv.ny = models_inv.ny, models_inv.nx
 
-		stokes.stki = stokes.stki.T
-		stokes.stkq = stokes.stkq.T
-		stokes.stku = stokes.stku.T
-		stokes.stkv = stokes.stkv.T
+		stokes.stki = np.moveaxis(stokes.stki,(0,1,2),(1,0,2))
+		stokes.stkq = np.moveaxis(stokes.stkq,(0,1,2),(1,0,2))
+		stokes.stku = np.moveaxis(stokes.stku,(0,1,2),(1,0,2))
+		stokes.stkv = np.moveaxis(stokes.stkv,(0,1,2),(1,0,2))
 		stokes.nx, stokes.ny = stokes.ny, stokes.nx
 
-		stokes_inv.stki = stokes_inv.stki.T
-		stokes_inv.stkq = stokes_inv.stkq.T
-		stokes_inv.stku = stokes_inv.stku.T
-		stokes_inv.stkv = stokes_inv.stkv.T
+		stokes_inv.stki = np.moveaxis(stokes_inv.stki,(0,1,2),(1,0,2))
+		stokes_inv.stkq = np.moveaxis(stokes_inv.stkq,(0,1,2),(1,0,2))
+		stokes_inv.stku = np.moveaxis(stokes_inv.stku,(0,1,2),(1,0,2))
+		stokes_inv.stkv = np.moveaxis(stokes_inv.stkv,(0,1,2),(1,0,2))
 		stokes_inv.nx, stokes_inv.ny = stokes_inv.ny, stokes_inv.nx
 		if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
-			chi2.stki = chi2.stki.T
-			chi2.stkq = chi2.stkq.T
-			chi2.stku = chi2.stku.T
-			chi2.stkv = chi2.stkv.T
-			chi2.tot = chi2.tot.T
+			chi2.stki = np.moveaxis(chi2.stki,(0,1,2),(1,0,2))
+			chi2.stkq = np.moveaxis(chi2.stkq,(0,1,2),(1,0,2))
+			chi2.stku = np.moveaxis(chi2.stku,(0,1,2),(1,0,2))
+			chi2.stkv = np.moveaxis(chi2.stkv,(0,1,2),(1,0,2))
+			chi2.tot = np.moveaxis(chi2.tot,(0,1,2),(1,0,2))
 			chi2.nx, chi2.ny = chi2.ny, chi2.nx
 		Map = [Map[2],Map[3],Map[0],Map[1]]
 
