@@ -349,10 +349,11 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 				ax.set_title(titles[i] + add_str)
 			else:
 				ax.set_title(titles[i] + add_str + r" @ $\log \tau = $" + str(taus[i]))
+			
 			if inputs[i] == "-Bz":
 				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
-			if inputs[i] == "-fill":
+			elif inputs[i] == "-fill":
 				im = ax.imshow(models_inv.fill.transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
 							extent=Map_plot)
 			else:
@@ -475,7 +476,7 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 				fig.suptitle(title4, y=1.02, x=xtitle1)
 	
 
-	plt.savefig(savepath + "inversion" + Type + + add)
+	plt.savefig(savepath + "inversion" + Type + add)
 
 
 
@@ -1189,13 +1190,14 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-models2")+1]
 			models_inv = m.read_model(filename)
 
-	if ("chi2" in sys.argv or "plot_chi2" in sys.argv):
+	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
 		if "-chi" not in sys.argv:
 			chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
 		else:
 			filename = sys.argv[sys.argv.index("-chi")+1]
 			chi2 = c.read_chi2(filename)
-
+	else:
+		chi2 = None
 
 	# Cut data in x and y position	
 	if "-limitxy" in sys.argv:
