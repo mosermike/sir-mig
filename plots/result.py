@@ -1330,6 +1330,8 @@ def result_2C(conf, wave, tau, Type = "_1", plot_stokes = True):
 	###################################################
 	_plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath, add, chi2, Map_plot, origin, sign1, sign2, n, dx, dy, Type)
 
+	if "-chi2" in sys.argv:
+		plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin)
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
