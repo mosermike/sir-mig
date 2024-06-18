@@ -1035,7 +1035,7 @@ def _write_control_1c(filename, conf):
 	abundance		= conf['abundance']		# Abundance file
 	line			= conf['line']			# Name of the line file
 	gas_pressure   = conf['gas_pressure']	# Gas Pressure
-	fill = conf["invert_fill"] # invert filling factor
+	
 	# Write lines
 	with open(filename, 'w') as f:
 		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
@@ -1068,7 +1068,7 @@ def _write_control_1c(filename, conf):
 		f.write('Nodes for gamma 2             :                   \n')
 		f.write('Nodes for phi 2               :                   \n')
 		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert filling factor?        : ' + fill  + '                  ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert filling factor?        :                    ! (0 or blank=no, 1=yes)\n')
 		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
 		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
 		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')
@@ -1119,6 +1119,8 @@ def _write_control_2c(filename, conf):
 	abundance		= conf['abundance']		# Abundance file
 	line			= conf['line']			# Name of the line file
 	gas_pressure   = conf['gas_pressure']	# Gas Pressure
+	fill = conf["invert_fill"] # invert filling factor
+	
 	# Write lines
 	with open(filename, 'w') as f:
 		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
@@ -1151,7 +1153,7 @@ def _write_control_2c(filename, conf):
 		f.write('Nodes for gamma 2             :' + nodes_gamma2 + '\n')
 		f.write('Nodes for phi 2               :' + nodes_phi2 + '\n')
 		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert filling factor?        :1                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert filling factor?        :' + fill  + '                    ! (0 or blank=no, 1=yes)\n')
 		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
 		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
 		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')
