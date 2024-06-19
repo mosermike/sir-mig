@@ -41,7 +41,7 @@ def help():
 	sir.option("-rho","Plot density")
 	sir.option("-syn","Synthesised model .mod file")
 	sir.option("-vertical","Plot spectra vertically")
-		sir.option("-num:","Number of the line considered (Default: take first one) (for Mode 'MC')")
+	sir.option("-num:","Number of the line considered (Default: take first one) (for Mode 'MC')")
 	sys.exit()
 
 def inversion(conf : dict, x : int, y : int):
@@ -58,12 +58,13 @@ def inversion(conf : dict, x : int, y : int):
 		y position of 1st inversion
 
 	
-	Return
-	------
+	Returns
+	-------
 	None
 
 	Other Parameters
 	----------------
+	Additional parameters given as an argument when the script is executed.
 	-T
 		Plot temperature in K
 	-Pe

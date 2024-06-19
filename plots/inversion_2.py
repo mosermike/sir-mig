@@ -68,8 +68,8 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	y2 : int
 		y position of 2nd inversion
 	
-	Return
-	------
+	Returns
+	-------
 	None
 
 	Other Parameters

@@ -392,7 +392,7 @@ document.write(`
 <p>Analyses the quality of the Monte Carlo Simulation by computing the standard deviations</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.analysis.</span></span><span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.analysis.</span></span><span class="sig-name descname"><span class="pre">analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Analysis of a MC simulation by plotting the standard deviations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -441,7 +441,7 @@ document.write(`
 <p>Compares two simulations by computing and plotting the chi2 value as well as computing the mean value.</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.analysis_compare_chi2.</span></span><span class="sig-name descname"><span class="pre">analysis_compare_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_compare_chi2.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.analysis_compare_chi2.</span></span><span class="sig-name descname"><span class="pre">analysis_compare_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_compare_chi2.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Compares the chi2 of two simulations for different physical parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -488,7 +488,7 @@ document.write(`
 <p>Analyses the quality of multiple Monte Carlo Simulations</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.analysis_multiple.</span></span><span class="sig-name descname"><span class="pre">analysis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_multiple.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.analysis_multiple.</span></span><span class="sig-name descname"><span class="pre">analysis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/analysis_multiple.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Analysis multiple simulations and puts it in one plot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -538,17 +538,322 @@ document.write(`
 <p>Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.</p>
 </dd></dl>
 
+<p>Plots a single inversion</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion.</span></span><span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Help Page</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion.</span></span><span class="sig-name descname"><span class="pre">inversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>”
+Plots the result of one inversion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Config infos for 1st inversion</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>x position of 1st inversion</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>y position of 1st inversion</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Savepath, if not actual directory desired</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional string at the end of file names</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title of the figures</p>
+</dd>
+<dt><strong>-add_label [str]</strong></dt><dd><p>Additional label in the legend. Can be used e.g. as a title</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot it vertically</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Plots the result of the SIR synthesis</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion_single.</span></span><span class="sig-name descname"><span class="pre">inversion_single_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_single.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fit</strong><span class="classifier">str</span></dt><dd><p>Best Fit Profile</p>
+</dd>
+<dt><strong>obs</strong><span class="classifier">str</span></dt><dd><p>Observation profiles</p>
+</dd>
+<dt><strong>phy</strong><span class="classifier">str</span></dt><dd><p>Best Fit Model</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Additional save path (optional, default ‘./’)</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames (optional)</p>
+</dd>
+<dt><strong>-label [str]</strong></dt><dd><p>Add label text (optional)</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title in Stokes plot</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magnetic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in cm/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-syn</strong></dt><dd><p>Synthesised model .mod file</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>Number of the line considered</p>
+</dd>
+<dt><strong>-line [str]</strong></dt><dd><p>Line file if -num is used</p>
+</dd>
+<dt><strong>-instrument [str]</strong></dt><dd><p>which instrument is used (GRIS 15648A line or Hinode) for relative wavelength, otherwise asked</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion_single.</span></span><span class="sig-name descname"><span class="pre">inversion_single_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_single.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fit</strong><span class="classifier">str</span></dt><dd><p>Best Fit Profile</p>
+</dd>
+<dt><strong>obs</strong><span class="classifier">str</span></dt><dd><p>Observation profiles</p>
+</dd>
+<dt><strong>phy1</strong><span class="classifier">str</span></dt><dd><p>Best Fit Model 1</p>
+</dd>
+<dt><strong>phy2</strong><span class="classifier">str</span></dt><dd><p>Best Fit Model 2</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Additional save path (optional, default ‘./’)</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames (optional)</p>
+</dd>
+<dt><strong>-label [str]</strong></dt><dd><p>Add label text (optional)</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title in Stokes plot</p>
+</dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magnetic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in cm/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-syn</strong></dt><dd><p>Synthesised model .mod file</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>Number of the line considered</p>
+</dd>
+<dt><strong>-line [str]</strong></dt><dd><p>Line file if -num is used</p>
+</dd>
+<dt><strong>-instrument [str]</strong></dt><dd><p>which instrument is used (GRIS 15648A line or Hinode) for relative wavelength, otherwise asked</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion_single.</span></span><span class="sig-name descname"><span class="pre">inversion_single_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">syn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_single.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Print a single inversion directly from the .mod and .per files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>fit</strong><span class="classifier">str</span></dt><dd><p>Best Fit Profile</p>
+</dd>
+<dt><strong>obs</strong><span class="classifier">str</span></dt><dd><p>Observation profiles</p>
+</dd>
+<dt><strong>phy</strong><span class="classifier">str</span></dt><dd><p>Best Fit Model</p>
+</dd>
+<dt><strong>syn</strong><span class="classifier">str</span></dt><dd><p>Synthesis Model</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Plots two single inversions</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion_2.</span></span><span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_2.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Help Page</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion_2.</span></span><span class="sig-name descname"><span class="pre">inversion_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_2.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>”
+Plots the result of one inversion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>conf1</strong><span class="classifier">dict</span></dt><dd><p>Config infos for 1st inversion</p>
+</dd>
+<dt><strong>x1</strong><span class="classifier">int</span></dt><dd><p>x position of 1st inversion</p>
+</dd>
+<dt><strong>y1</strong><span class="classifier">int</span></dt><dd><p>y position of 1st inversion</p>
+</dd>
+<dt><strong>conf2</strong><span class="classifier">dict</span></dt><dd><p>Config infos for 2nd inversion</p>
+</dd>
+<dt><strong>x2</strong><span class="classifier">int</span></dt><dd><p>x position of 2nd inversion</p>
+</dd>
+<dt><strong>y2</strong><span class="classifier">int</span></dt><dd><p>y position of 2nd inversion</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Savepath, if not actual directory desired</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional string at the end of file names</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title of the figures</p>
+</dd>
+<dt><strong>-add_label [str]</strong></dt><dd><p>Additional label in the legend. Can be used e.g. as a title</p>
+</dd>
+<dt><strong>-label1 [str]</strong></dt><dd><p>Label for the 1st inversion. Default: “1st Inversion”</p>
+</dd>
+<dt><strong>-label2 [str]</strong></dt><dd><p>Label for the 2nd inversion. Default: “2nd Inversion”</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot it vertically</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <p>Plots the result of the SIR inversion</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.Ic_test.</span></span><span class="sig-name descname"><span class="pre">Ic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/Ic_test.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.Ic_test.</span></span><span class="sig-name descname"><span class="pre">Ic_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/Ic_test.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Plots Ic fit vs I obs in a plot. It uses the first element in the wavelength range as continuum</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dict. with all the information from the config</p>
-</dd>
-<dt><strong>num</strong><span class="classifier">int</span></dt><dd><p>determines which range is used (1 = 1st line in grid, etc.)</p>
 </dd>
 </dl>
 </dd>
@@ -612,122 +917,8 @@ document.write(`
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waveV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Plots the result of the inversion 1C</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dict. with all the information from the config</p>
-</dd>
-<dt><strong>wave</strong><span class="classifier">float</span></dt><dd><p>Wavelength in A where the Stokes vector is plottet</p>
-</dd>
-<dt><strong>tau</strong><span class="classifier">float</span></dt><dd><p>log tau value where the model is plotted</p>
-</dd>
-<dt><strong>waveV</strong><span class="classifier">float, optional</span></dt><dd><p>Wavelength for Stokes V in A (-1 not used), Default: -1</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
-</dd>
-<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
-<dt><strong>-data [str]</strong></dt><dd><p>Rel. path to the spectral veil corrected data if standard labelling is not used, optional.</p>
-</dd>
-<dt><strong>-stokes [str]</strong></dt><dd><p>Rel. path to the Stokes result if standard labelling is not used, optional.</p>
-</dd>
-<dt><strong>-models [str]</strong></dt><dd><p>Rel. path to the Models of the inversion if standard labelling is not used.</p>
-</dd>
-<dt><strong>-errors</strong></dt><dd><p>Rel. path to the Errors of the inversion if standard labelling is not used.</p>
-</dd>
-<dt><strong>-chi</strong></dt><dd><p>Rel. path to the chi2 file of the inversion if standard labelling is not used.</p>
-</dd>
-<dt><strong>-save [str], optional</strong></dt><dd><p>Additional save path. Default ‘./’.</p>
-</dd>
-<dt><strong>-add [str]</strong></dt><dd><p>Additional text in filenames</p>
-</dd>
-<dt><strong>-label [str]</strong></dt><dd><p>Add label text</p>
-</dd>
-<dt><strong>-title1 [str]</strong></dt><dd><p>Title in Result Stokes plot</p>
-</dd>
-<dt><strong>-title2 [str]</strong></dt><dd><p>Title in Obs. Stokes plot</p>
-</dd>
-<dt><strong>-title3 [str]</strong></dt><dd><p>Title in Model 1 plot</p>
-</dd>
-<dt><strong>-xtitle [float]</strong></dt><dd><p>Changing the x position of the title</p>
-</dd>
-<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
-</dd>
-<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
-</dd>
-<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
-</dd>
-<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
-</dd>
-<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
-</dd>
-<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
-</dd>
-<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
-</dd>
-<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
-</dd>
-<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
-</dd>
-<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
-</dd>
-<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
-</dd>
-<dt><strong>-chi2</strong></dt><dd><p>Plot chi2</p>
-</dd>
-<dt><strong>-plot_chi2</strong></dt><dd><p>Plot chi2 in the 4 subplots plot</p>
-</dd>
-<dt><strong>-waveQ [float]</strong></dt><dd><p>Plot Stokes Q in another wavelength position in A</p>
-</dd>
-<dt><strong>-waveU [float]</strong></dt><dd><p>Plot Stokes U in another wavelength position in A</p>
-</dd>
-<dt><strong>-waveV [float]</strong></dt><dd><p>Plot Stokes V in another wavelength position in A</p>
-</dd>
-<dt><strong>-logT [float]</strong></dt><dd><p>Plot Temperature at this log tau.</p>
-</dd>
-<dt><strong>-logB [float]</strong></dt><dd><p>Plot Magnetic Field at this log tau.</p>
-</dd>
-<dt><strong>-logV [float]</strong></dt><dd><p>Plot LoS Velocity at this log tau.</p>
-</dd>
-<dt><strong>-logI [float]</strong></dt><dd><p>Plot Inclination at this log tau.</p>
-</dd>
-<dt><strong>-limitxy [float,float,float,float]</strong></dt><dd><p>Limit in the x and y plot as a list xmin,xmax,ymin,xmax</p>
-</dd>
-<dt><strong>-limitT [float,float]</strong></dt><dd><p>Set the limit for the colorbar in the temperature.</p>
-</dd>
-<dt><strong>-limitB [float,float]</strong></dt><dd><p>Set the limit for the colorbar in the magnetic field.</p>
-</dd>
-<dt><strong>-limitchi2 [float,float]</strong></dt><dd><p>Set the limit for the colorbar in chi2.</p>
-</dd>
-<dt><strong>-limitI [float,float]</strong></dt><dd><p>Set the limit for the colorbar in Stokes I.</p>
-</dd>
-<dt><strong>-arc</strong></dt><dd><p>Print x and y axis in arcseconds</p>
-</dd>
-<dt><strong>-flipy</strong></dt><dd><p>Flip the image along y axis as sometimes the orientation is wrong in GRIS with the location on the sun</p>
-</dd>
-<dt><strong>-rot90</strong></dt><dd><p>Rotate the image 90 deg</p>
-</dd>
-<dt><strong>-f [float]</strong></dt><dd><p>Factor for the fontsizes</p>
-</dd>
-<dt><strong>-symv</strong></dt><dd><p>Symmetric limits for vlos</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result_2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Plots the result of the inversion for 2C</p>
+<span class="sig-prename descclassname"><span class="pre">plots.result.</span></span><span class="sig-name descname"><span class="pre">result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/result.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plots the result of the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -737,7 +928,7 @@ document.write(`
 </dd>
 <dt><strong>tau</strong><span class="classifier">float</span></dt><dd><p>log tau value where the model is plotted</p>
 </dd>
-<dt><strong>Type</strong><span class="classifier">string, optional</span></dt><dd><p>prefix for determining which model is used. Default: ‘_1’</p>
+<dt><strong>Type</strong><span class="classifier">string, optional</span></dt><dd><p>prefix for determining which model is used. Default: ‘’ for Mode 1C, “1” for model 1 from mode 2C, “2” for model 2 from mode 2C</p>
 </dd>
 <dt><strong>plot_stokes</strong><span class="classifier">bool, optional</span></dt><dd><p>Plot the stokes vector. Default: True</p>
 </dd>
@@ -755,11 +946,11 @@ document.write(`
 </dd>
 <dt><strong>-stokes [str]</strong></dt><dd><p>Rel. path to the Stokes result if standard labelling is not used, optional.</p>
 </dd>
-<dt><strong>-models1 [str]</strong></dt><dd><p>Rel. path to the Models 1 of the inversion if standard labelling is not used.</p>
+<dt><strong>-model [str]</strong></dt><dd><p>Rel. path to the Models of the inversion if standard labelling is not used (Mode <cite>1C</cite>).</p>
 </dd>
-<dt><strong>-models2 [str]</strong></dt><dd><p>Rel. path to the Models 2 of the inversion if standard labelling is not used.</p>
+<dt><strong>-model1 [str]</strong></dt><dd><p>Rel. path to the Models 1 of the inversion if standard labelling is not used (Mode <cite>2C</cite>).</p>
 </dd>
-<dt><strong>-errors</strong></dt><dd><p>Rel. path to the Errors of the inversion if standard labelling is not used.</p>
+<dt><strong>-model2 [str]</strong></dt><dd><p>Rel. path to the Models 2 of the inversion if standard labelling is not used (Mode <cite>2C</cite>).</p>
 </dd>
 <dt><strong>-chi</strong></dt><dd><p>Rel. path to the chi2 file of the inversion if standard labelling is not used.</p>
 </dd>
@@ -773,9 +964,9 @@ document.write(`
 </dd>
 <dt><strong>-title2 [str]</strong></dt><dd><p>Title in Obs. Stokes plot</p>
 </dd>
-<dt><strong>-title3 [str]</strong></dt><dd><p>Title in Model 1 plot</p>
+<dt><strong>-title3 [str]</strong></dt><dd><p>Title in Model (1) plot</p>
 </dd>
-<dt><strong>-title4 [str]</strong></dt><dd><p>Title in Model 2 plot with 4 plots</p>
+<dt><strong>-title4 [str]</strong></dt><dd><p>Title in Model 2 plot with 4 plots (Mode <cite>1C</cite>)</p>
 </dd>
 <dt><strong>-xtitle [float]</strong></dt><dd><p>Changing the x position of the title</p>
 </dd>

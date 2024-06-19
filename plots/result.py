@@ -729,8 +729,8 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 	plot_stokes : bool, optional
 		Plot the stokes vector. Default: True
 
-	Return
-	------
+	Returns
+	-------
 	None
 
 	Other Parameters

@@ -57,8 +57,8 @@ def inversion_single_1C(fit : str, obs : str, phy : str):
 	phy : str
 		Best Fit Model
 
-	Return
-	------
+	Returns
+	-------
 	None
 
 	Other Parameters
@@ -456,8 +456,8 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 	phy2 : str
 		Best Fit Model 2
 
-	Return
-	------
+	Returns
+	-------
 	None
 
 	Other Parameters
@@ -879,8 +879,8 @@ def inversion_single_mc(fit : str, obs : str, phy : str, syn : str):
 	syn : str
 		Synthesis Model
 
-	Return
-	------
+	Returns
+	-------
 	None
 
 	"""
