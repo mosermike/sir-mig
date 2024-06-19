@@ -159,7 +159,7 @@ def merge(conf, dir, ending):
 			data[i] = stokes[0, :, :, :]
 
 	data = data.reshape(nx, ny, 4, nw)  # shape x, y, values, wavelengths
-
+	print()
 	##############################
 	# Determine real wavelengths #
 	##############################
