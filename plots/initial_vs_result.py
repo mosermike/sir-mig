@@ -27,51 +27,28 @@ def help():
 	
 	sys.exit()
 
-def plot_initial_vs_result():
-	"""
+def plot_initial_vs_result(Guess_file : list, Result_file : list, chi2_file : list, tau : float):
+	r"""
 	Plots the initial value vs the resulting value for different physical parameters and the chi2 value in a 2x2 plot
 
 	Parameters
 	----------
-	None
-
+	Guess_file : list
+		List of strings with the guess files
+	Result_file : list
+		List of strings with the result model files
+	chi2_file : list
+		List of strings with the chi2 files
+	tau : float
+		at which $\log\tau$ the models are evaluated
+		
 	Returns
 	-------
 	None
 
 	"""
 	# Import library
-	dirname = os.path.split(os.path.abspath(__file__))[0]
-	plt.rcParams["savefig.format"] = "pdf"
-	if d.plt_lib != "":
-		plt.style.use(d.plt_lib)
-	else:
-		if exists(dirname + '/mml.mplstyle'):
-			plt.style.use(dirname + '/mml.mplstyle')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-		elif "mml" in plt.style.available:
-			plt.style.use('mml')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-
-
-	##########################
-	#	Define variables	#
-	##########################
-	Guess_file  = sys.argv[1].split(",") # List of the Guess Models
-	Result_file = sys.argv[2].split(",") # List of the Results Models
-	inv_file = sys.argv[3].split(",") # List of the chi2 files
-
-	arg = float(sys.argv[4])	# at what log_tau it is evaluated
+	sir.mpl_library()
 
 	# Additional labels
 	save = ''
@@ -126,10 +103,10 @@ def plot_initial_vs_result():
 		error[i][2] = B
 		error[i][3] = vlos/1e5
 		error[i][4] = inc
-		chi2[i] = sir.read_chi2(inv_file[i])
+		chi2[i] = sir.read_chi2(chi2_file[i])
 		
 	# Determine index, where log_tau = arg
-	ind = np.where(log_tau == arg)[0][0]
+	ind = np.where(log_tau == tau)[0][0]
 
 	fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16*0.8,12*0.8), sharex=True)
 
@@ -162,7 +139,7 @@ def plot_initial_vs_result():
 	titles   = [r"Temperature T", r"Magnetic Field Strength B",
 		       r"Line-of-Sight Velocity $v_{\mathrm{los}}$", r"$\chi^2$"]
 
-	labels = [r"T ($\log \tau_5 = " + str(arg) + r"$)[K]",r"B ($\log \tau_5 = " + str(arg) + r"$)[G]", r"$v_{\mathrm{los}}$ ($\log \tau_5 = " + str(arg) + r"$) $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$\chi^2$"]
+	labels = [r"T ($\log \tau_5 = " + str(tau) + r"$)[K]",r"B ($\log \tau_5 = " + str(tau) + r"$)[G]", r"$v_{\mathrm{los}}$ ($\log \tau_5 = " + str(tau) + r"$) $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$\chi^2$"]
 
 	ax1.set_ylabel(labels[0])
 	ax2.set_ylabel(labels[1])
@@ -185,5 +162,10 @@ def plot_initial_vs_result():
 if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
-	plot_initial_vs_result()
+	Guess_file  = sys.argv[1].split(",") # List of the Guess Models
+	Result_file = sys.argv[2].split(",") # List of the Results Models
+	chi2_file = sys.argv[3].split(",") # List of the chi2 files
+
+	tau = float(sys.argv[4])	# at what log_tau it is evaluated
+	plot_initial_vs_result(Guess_file, Result_file, chi2_file, tau)
 

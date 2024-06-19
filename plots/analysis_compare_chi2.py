@@ -37,7 +37,7 @@ def _help():
 	sys.exit()
 
 
-def _chi2_err(y_fit, y_obs, yerr):
+def _chi2_err(y_fit : np.array, y_obs : np.array, yerr : np.array) -> float:
 	r"""
 	Computes the merit-function $\chi^2$.
 	
@@ -58,7 +58,7 @@ def _chi2_err(y_fit, y_obs, yerr):
 	"""
 	return np.sum((y_fit-y_obs)**2 / yerr**2)
 
-def analysis_compare_chi2(conf1, conf2):
+def analysis_compare_chi2(conf1 : dict, conf2 : dict):
 	"""
 	Compares the chi2 of two simulations for different physical parameters.
 	
@@ -99,29 +99,8 @@ def analysis_compare_chi2(conf1, conf2):
 
 
 	"""
-
 	# Import library
-	dirname = os.path.split(os.path.abspath(__file__))[0]
-	plt.rcParams["savefig.format"] = "pdf"
-	if d.plt_lib != "":
-		plt.style.use(d.plt_lib)
-	else:
-		if exists(dirname + '/mml.mplstyle'):
-			plt.style.use(dirname + '/mml.mplstyle')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-		elif "mml" in plt.style.available:
-			plt.style.use('mml')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	sir.mpl_library()
 
 
 	###############################################
@@ -161,21 +140,6 @@ def analysis_compare_chi2(conf1, conf2):
 	add2 = '_'
 	if len(sys.argv) > 9:
 		add2 = " " + sys.argv[sys.argv.index("-add2")+1]
-
-	# Plotting settings
-	Markers = ["-", '--', 'dotted', 'dashdotdotted', 'densely dashed']
-
-	linestyle_str = [
-		'solid',	 # Same as (0, ()) or '-'
-		'dotted',    # Same as (0, (1, 1)) or ':'
-		'dashed',    # Same as '--'
-		'dashdot',
-		'solid',	 # Same as (0, ()) or '-'
-		'dotted',    # Same as (0, (1, 1)) or ':'
-		'dashed',    # Same as '--'
-		'dashdot',
-		(0, (3,10,1,10))
-		] 
 
 	#######################################
 	# DETERMINE WHAT PARAMETER ARE CHOSEN #

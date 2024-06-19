@@ -55,48 +55,7 @@ def _help():
 	
 	sys.exit()
 
-def _get_attribute(model, att):
-	'''
-	Returns a model parameter depending on a string
-
-	Parameters
-	----------
-	model : Model
-		Class with the Model
-	att : str
-		String which attribute is returned
-
-	Returns
-	-------
-	None
-
-	'''
-	if att == "tau":
-		return model.tau
-	elif att == "T":
-		return model.T[:,0,:]
-	elif att == "Pe":
-		return model.Pe[:,0,:]
-	elif att == "vmicro":
-		return model.vmicro[:,0,:]
-	elif att == "B":
-		return model.B[:,0,:]
-	elif att == "vlos":
-		return model.vlos[:,0,:]
-	elif att == "gamma":
-		return model.gamma[:,0,:]
-	elif att == "phi":
-		return model.phi[:,0,:]
-	elif att == "z":
-		return model.z[:,0,:]
-	elif att == "Pg":
-		return model.Pg[:,0,:]
-	elif att == "rho":
-		return model.rho[:,0,:]
-	else:
-		return 0
-
-def analysis(conf):
+def analysis(conf : dict):
 	"""
 	Analysis of a MC simulation by plotting the standard deviations
 
@@ -141,33 +100,12 @@ def analysis(conf):
 	"""
 
 	# Import library
-	dirname = os.path.split(os.path.abspath(__file__))[0]
-	plt.rcParams["savefig.format"] = "pdf"
-	if d.plt_lib != "":
-		plt.style.use(d.plt_lib)
-	else:
-		if exists(dirname + '/mml.mplstyle'):
-			plt.style.use(dirname + '/mml.mplstyle')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-		elif "mml" in plt.style.available:
-			plt.style.use('mml')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	sir.mpl_library()
+	
 	# Check if path exists
 	if not exists(conf['path']):
-		Inp = input("[NOTE] Path does not exist. You want to overwrite it with the actual path? [y/n] ")
-		if Inp == "y":
-			change_config_path(conf,os.path.abspath(os.getcwd()))
-
+		print(f"[WARN] Path {conf['path']} does not exist.")
+		
 
 	#########################################################################
 	#	    READ INPUT, WRITE DEFINITIONS AND LOAD DATA				  #
@@ -200,20 +138,6 @@ def analysis(conf):
 	if '-xtitle' in sys.argv:
 		xtitle = float(sys.argv[sys.argv.index("-xtitle")+1])
 
-	# Plotting settings
-	Markers = ["-", '--', 'dotted', 'dashdotdotted', 'densely dashed']
-
-	linestyle_str = [
-		'solid',	 # Same as (0, ()) or '-'
-		'dotted',    # Same as (0, (1, 1)) or ':'
-		'dashed',    # Same as '--'
-		'dashdot',
-		'solid',	 # Same as (0, ()) or '-'
-		'dotted',    # Same as (0, (1, 1)) or ':'
-		'dashed',    # Same as '--'
-		'dashdot',
-		(0, (3,10,1,10))
-		] 
 	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]  # Get colors used in the actual cycle
 
 	#######################################################################
@@ -252,7 +176,7 @@ def analysis(conf):
 			plt.title(titles[i])
 
 			# Standard deviation
-			std = _std_dev(_get_attribute(data,att[i]),_get_attribute(syn, att[i]))
+			std = _std_dev(data.get_attribute(att[i])[:,0,:],syn.get_attribute(att[i])[:,0,:])
 
 			ax1.plot(log_tau, std, label=r"$\sigma$" + labels[i], color='#FF2C00')
 			

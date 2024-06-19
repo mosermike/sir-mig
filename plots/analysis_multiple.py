@@ -43,45 +43,9 @@ def _help():
 	print()
 	print("Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.")
 	sys.exit()
-
-
-def _get_attribute(model, att):
-	'''
-	Returns a model parameter depending on a string
-
-	Parameter
-	---------
-	model : class Model
-	att : str
-
-	'''
-	if att == "tau":
-		return model.tau
-	elif att == "T":
-		return model.T[:,0,:]
-	elif att == "Pe":
-		return model.Pe[:,0,:]
-	elif att == "vmicro":
-		return model.vmicro[:,0,:]
-	elif att == "B":
-		return model.B[:,0,:]
-	elif att == "vlos":
-		return model.vlos[:,0,:]
-	elif att == "gamma":
-		return model.gamma[:,0,:]
-	elif att == "phi":
-		return model.phi[:,0,:]
-	elif att == "z":
-		return model.z[:,0,:]
-	elif att == "Pg":
-		return model.Pg[:,0,:]
-	elif att == "rho":
-		return model.rho[:,0,:]
-	else:
-		return 0
 	
 	
-def analysis_multiple(confs, labels):
+def analysis_multiple(confs : list, labels : list):
 	"""
 	Analysis multiple simulations and puts it in one plot
 
@@ -131,30 +95,7 @@ def analysis_multiple(confs, labels):
 
 	"""
 	# Import library
-	dirname = os.path.split(os.path.abspath(__file__))[0]
-	plt.rcParams["savefig.format"] = "pdf"
-	if d.plt_lib != "":
-		plt.style.use(d.plt_lib)
-	else:
-		if exists(dirname + '/mml.mplstyle'):
-			plt.style.use(dirname + '/mml.mplstyle')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-		elif "mml" in plt.style.available:
-			plt.style.use('mml')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-
-
-	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]  # Get colors used in the actual cycle
+	sir.mpl_library()
 	
 	limitT = (None,None)
 	if "-limitT" in sys.argv:
@@ -274,7 +215,7 @@ def analysis_multiple(confs, labels):
 
 			for n in range(len(log_taus)):
 				# Standard deviation
-				std = np.sqrt(np.sum((_get_attribute(fits[n],att[i]) - _get_attribute(syns[n], att[i]))**2, axis=0)/(nums[n]-1))	 
+				std = np.sqrt(np.sum((fits[n].get_attribute(att[i])[:,0,:] - _syns[n].get_attribute(att[i])[:,0,:])**2, axis=0)/(nums[n]-1))	 
 				ax1.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 				stds.append(std)
 			# Set limits

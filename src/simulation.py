@@ -126,25 +126,8 @@ def create_models(conf: dict) -> None:
 	None
 
 	"""
-	dirname = os.path.split(os.path.abspath(__file__))[0]
-	plt.rcParams["savefig.format"] = "pdf"
-	if d.plt_lib != "":
-		plt.style.use(d.plt_lib)
-	else:
-		if exists(dirname + '/plots/mml.mplstyle'):
-			plt.style.use(dirname + '/plots/mml.mplstyle')
-			# if dvipng is not installed, dont use latex
-			if which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-		elif "mml" in plt.style.available:
-			plt.style.use('mml')
-			# if dvipng is not installed, dont use latex
-			if which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	sir.mpl_library()
+	
 	###############################
 	# Define variables from input #
 	###############################

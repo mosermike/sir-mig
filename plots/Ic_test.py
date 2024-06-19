@@ -27,7 +27,7 @@ def _help():
 
 	sys.exit()
 
-def Ic_test(conf, num):
+def Ic_test(conf : dict):
 	"""
 	Plots Ic fit vs I obs in a plot. It uses the first element in the wavelength range as continuum
 
@@ -35,8 +35,6 @@ def Ic_test(conf, num):
 	----------
 	config : dict
 		Dict. with all the information from the config
-	num : int
-		determines which range is used (1 = 1st line in grid, etc.)
 	
 	Returns
 	-------
@@ -63,7 +61,7 @@ def Ic_test(conf, num):
 	#			READ INPUT AND LOAD DATA					#
 	#############################################################
 	path = conf["path"]
-	stokes_inv = p.read_profile(os.path.join(path,conf['inv_out']))
+	stokes_inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
 	
 	Map = conf['map']
 
@@ -79,28 +77,8 @@ def Ic_test(conf, num):
 		filename = sys.argv[sys.argv.index("-stokes")+1]
 		stokes_inv = p.read_profile(filename)
 	
-	dirname = os.path.split(os.path.abspath(__file__))[0]
-	
-	plt.rcParams["savefig.format"] = "pdf"
-	if d.plt_lib != "":
-		plt.style.use(d.plt_lib)
-	else:
-		if exists(dirname + '/mml.mplstyle'):
-			plt.style.use(dirname + '/mml.mplstyle')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-		elif "mml" in plt.style.available:
-			plt.style.use('mml')
-			# if dvipng is not installed, dont use latex
-			import shutil
-			if shutil.which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	# Import library
+	sir.mpl_library()
 
 		
 	# Additional savepath
@@ -169,11 +147,8 @@ if __name__ == "__main__":
 		_help()
 	conf = sir.read_config(sys.argv[1])
 
-	num = 0
-	if '-num' in sys.argv:
-		num = sys.argv[sys.argv.index("-num")+1]-1
 	if conf['mode'] == "1C" or "2C":
-		Ic_test(conf, int(num))
+		Ic_test(conf)
 	else:
 		print("[Ic_test] Mode unknown or not defined")
 

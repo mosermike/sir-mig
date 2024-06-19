@@ -87,6 +87,35 @@ def initial(mode):
 	print("╰───────────────────────────────────────────────────╯")	
 	print()
 
+def mpl_library():
+	"""
+	Adjust the matplotlib settings to the defined library in the definitions file or to the default one
+	"""
+	import matplotlib.pyplot as plt
+	import definitions as d
+	
+	dirname = os.path.dirname(os.path.realpath(__file__))
+	plt.rcParams["savefig.format"] = "pdf"
+	if d.plt_lib != "":
+		plt.style.use(d.plt_lib)
+	else:
+		if os.path.exists(dirname + '/mml.mplstyle'):
+			plt.style.use(dirname + '/mml.mplstyle')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+		elif "mml" in plt.style.available:
+			plt.style.use('mml')
+			# if dvipng is not installed, dont use latex
+			import shutil
+			if shutil.which('dvipng') is None:
+				plt.rcParams["text.usetex"] = "False"
+				plt.rcParams["font.family"] = 'sans-serif'
+				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	return
 
 def read_config(filename, check = True, change_config = False):
 	"""
