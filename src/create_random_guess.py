@@ -73,14 +73,31 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 		cPe = True
 	if 'vmicro' in random_pars:
 		cvmicro = True
+	
 	if 'B' in random_pars:
 		cB = True
+		if "lim_B" is None:
+			print("[create_guess] Did you define lim_B in the config file?")
+			sys.exit()
+	
 	if 'vlos' in random_pars:
 		cvlos = True
+		if "lim_vlos" is None:
+			print("[create_guess] Did you define lim_vlos in the config file?")
+			sys.exit()
+	
 	if 'gamma' in random_pars:
 		cinc = True
+		if "lim_gamma" is None:
+			print("[create_guess] Did you define lim_gamma in the config file?")
+			sys.exit()
+	
 	if 'phi' in random_pars:
 		cazi = True
+		if "lim_phi" is None:
+			print("[create_guess] Did you define lim_phi in the config file?")
+			sys.exit()
+
 	if 'z' in random_pars:
 		cz = True
 	if 'Pg' in random_pars:
@@ -371,11 +388,22 @@ def create_guesses_1c(conf, output = "./", number = 0):
 	###################################################################################
 	#					Define variables from input					    #
 	###################################################################################
-	lim_B = __split_to_float(conf["lim_B"])
-	lim_vlos = __split_to_float(conf[f"lim_vlos"])
-	lim_gamma = __split_to_float(conf[f"lim_gamma"])
-	lim_phi = __split_to_float(conf[f"lim_phi"])
-
+	if "lim_B" in conf:
+		lim_B = __split_to_float(conf["lim_B"])
+	else:
+		lim_B = None
+	if "lim_vlos" in conf:
+		lim_vlos = __split_to_float(conf["lim_vlos"])
+	else:
+		lim_vlos = None
+	if "lim_gamma" in conf:
+		lim_gamma = __split_to_float(conf["lim_gamma"])
+	else:
+		lim_gamma = None
+	if "lim_phi" in conf:
+		lim_phi = __split_to_float(conf[f"lim_phi"])
+	else:
+		lim_phi = None
 	mod = create_guess(conf["model"], conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
 	# Macroturbulence velocity
 	mod.vmacro[0,0] = conf["vmacro"]
@@ -405,10 +433,23 @@ def create_guesses_2c(conf, output = "./", number = 0):
 
 	for j in [1,2]:
 		model = conf[f"model{j}"] + str(j)		# Base Model
-		lim_B		= __split_to_float(conf[f"lim_B{j}"])
-		lim_vlos		= __split_to_float(conf[f"lim_vlos{j}"])
-		lim_gamma		= __split_to_float(conf[f"lim_gamma{j}"])
-		lim_phi			= __split_to_float(conf[f"lim_phi{j}"])
+
+		if f"lim_B{j}" in conf:
+			lim_B = __split_to_float(conf[f"lim_B{j}"])
+		else:
+			lim_B = None
+		if f"lim_vlos{j}" in conf:
+			lim_vlos = __split_to_float(conf[f"lim_vlos{j}"])
+		else:
+			lim_vlos = None
+		if f"lim_gamma{j}" in conf:
+			lim_gamma = __split_to_float(conf[f"lim_gamma{j}"])
+		else:
+			lim_gamma = None
+		if f"lim_phi{j}" in conf:
+			lim_phi = __split_to_float(conf[f"lim_phi{j}"])
+		else:
+			lim_phi = None
 
 		mod = create_guess(model, conf["random_pars"], lim_B, lim_vlos, lim_gamma, lim_phi)
 		mod.fill[0,0] = conf['fill'].split(',')[j-1] # Assign filling factor from config
