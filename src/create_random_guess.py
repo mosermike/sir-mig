@@ -76,25 +76,25 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 	
 	if 'B' in random_pars:
 		cB = True
-		if "lim_B" is None:
+		if lim_B is None:
 			print("[create_guess] Did you define lim_B in the config file?")
 			sys.exit()
 	
 	if 'vlos' in random_pars:
 		cvlos = True
-		if "lim_vlos" is None:
+		if lim_vlos is None:
 			print("[create_guess] Did you define lim_vlos in the config file?")
 			sys.exit()
 	
 	if 'gamma' in random_pars:
 		cinc = True
-		if "lim_gamma" is None:
+		if lim_gamma is None:
 			print("[create_guess] Did you define lim_gamma in the config file?")
 			sys.exit()
 	
 	if 'phi' in random_pars:
 		cazi = True
-		if "lim_phi" is None:
+		if lim_phi is None:
 			print("[create_guess] Did you define lim_phi in the config file?")
 			sys.exit()
 
