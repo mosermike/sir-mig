@@ -735,7 +735,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 	# Read inversion stuff
 	Map = conf['map']
 	if rank == 0:
-		print("-------> Selected Map ({Map[0]},{Map[1]},{Map[2]},{Map[3]})")
+		print(f"-------> Selected Map ({Map[0]},{Map[1]},{Map[2]},{Map[3]})")
 
 	abundance_file = conf['abundance']  # Abundance file
 	
@@ -1278,7 +1278,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 	# Read inversion stuff
 	Map = conf['map']
 	if rank == 0:
-		print("-------> Selected Map ({Map[0]},{Map[1]},{Map[2]},{Map[3]})")
+		print(f"-------> Selected Map ({Map[0]},{Map[1]},{Map[2]},{Map[3]})")
 	
 
 	abundance_file = conf['abundance'] # Abundance file	
