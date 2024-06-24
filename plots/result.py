@@ -848,8 +848,8 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
 		stokes = p.read_profile(filename)
-		stokes = stokes.cut_to_map(conf["map"])
-		stokes = stokes.cut_to_wave(conf["range_wave"])
+	stokes = stokes.cut_to_map(conf["map"])
+	stokes = stokes.cut_to_wave(conf["range_wave"])
 
 	if "-stokes" not in sys.argv:
 		stokes_inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
