@@ -180,6 +180,8 @@ def merge(conf, dir, ending):
 	if conf['shift_wave'] != '0' or conf['shift_wave'] != "":
 		print(f"Wavelength Grid shifted by {conf['shift_wave']} mA.")
 		llambda = llambda + float(conf['shift_wave']) * 1e-3
+	llambda = np.float32(llambda)
+	print(f"Wavelength step is {llambda[1]-llambda[0]}.")
 	
 	print("-------> Assign data ...")
 	pro = p.profile_stk(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])

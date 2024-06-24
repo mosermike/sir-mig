@@ -198,11 +198,11 @@ def read_config(filename, check = True, change_config = False):
 		
 		# Convert the ranges into integers or floats
 		temp = [i. split(',') for i in Dict["range_wave"].split(';')]
-		Dict["range_wave"] = np.zeros((len(temp),3))
+		Dict["range_wave"] = np.zeros((len(temp),3), dtype=np.float32)
 		for i in range(0,len(temp)):
-			Dict["range_wave"][i,0] = float(temp[i][0])
-			Dict["range_wave"][i,1] = float(temp[i][1])
-			Dict["range_wave"][i,2] = float(temp[i][2])
+			Dict["range_wave"][i,0] = np.float32(temp[i][0])
+			Dict["range_wave"][i,1] = np.float32(temp[i][1])
+			Dict["range_wave"][i,2] = np.float32(temp[i][2])
 		
 
 	if Dict['mode'] == "MC":
@@ -958,9 +958,9 @@ def _write_grid(conf, filename, waves):
 	atoms = conf["atoms"]
 
 	# Define minimum, step and maximum
-	Line_min = np.zeros(0)
-	Line_max = np.zeros(0)
-	Line_step = conf["range_wave"][:,1] # in mA
+	Line_min = np.zeros(0, dtype=np.float32)
+	Line_max = np.zeros(0, dtype=np.float32)
+	Line_step = np.float32(conf["range_wave"][:,1]) # in mA
 	
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
@@ -970,7 +970,7 @@ def _write_grid(conf, filename, waves):
 	with open(filename, 'w') as f:
 		for i in range(len(atoms)):
 			ind = np.where(line['Line'] == int(atoms[i].split(',')[0]))[0][0] # Which index in line file corresponds to the atom
-			llambdas = (np.array([Line_min[i],Line_max[i]]) - line['wavelength'][ind])*1e3 # in mA ; Determine relative wavelengths
+			llambdas = (np.array([Line_min[i],Line_max[i]], dtype=np.float32) - line['wavelength'][ind])*1e3 # in mA ; Determine relative wavelengths
 			f.write(f"{atoms[i]}: {'%6.4f' % llambdas[0]},     {'%2.6f' % Line_step[i]},     {'%6.4f' % llambdas[-1]}\n")
 	
 

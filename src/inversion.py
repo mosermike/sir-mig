@@ -64,6 +64,15 @@ def scatter_data(conf, comm, rank, size, return_stk=False):
 			tasks = sir.create_task_folder_list(conf["map"])
 			stk1 = p.read_profile(os.path.join(path,conf["cube"]))
 			
+			if(conf["map"][1] > (stk1.nx-1)) or (conf["map"][3] > (stk1.ny-1)):
+				if(conf["map"][1] > (stk1.nx-1)):
+					print(f"[scatter_data] Warning: Chosen Map is too big in x! ({conf['map'][1]} > {stk1.nx-1})")
+				if(conf["map"][3] > (stk1.ny-1)):
+					print(f"[scatter_data] Warning: Chosen Map is too big in y! ({conf['map'][3]} > {stk1.ny-1})")
+				print("               Undefined Behaviour! Abort ...")
+				sys.exit()
+
+
 			# Cut data to the wavelength range and to the map
 			stk1.cut_to_wave(conf["range_wave"]) # Cut wavelength file to the wished area
 			stk1.cut_to_map(conf["map"]) # Cut to the map
@@ -196,6 +205,11 @@ def scatter_data_mc(conf, comm, rank, size, return_stk=False):
 			stk1 = p.read_profile(os.path.join(path,conf["noise_out"] + d.end_stokes))
 
 		tasks = sir.create_task_folder_list(conf["num"])
+
+		if(conf["num"] > (stk1.nx-1)):
+			print(f"[scatter_data] Warning: Number of Models is too big! ({conf['num']} > {stk1.nx-1})")
+			print("               Undefined Behaviour! Abort ...")
+			sys.exit()
 
 		# Create one data cube
 		stki = stk1.stki
@@ -753,8 +767,8 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 	if conf["guess"] != '':
 		guess = None
 		if rank == 0:
-			guess = m.read_model(os.path.join(path, conf["guess"].split(" ")[0]))
 			print(f"-------> File {conf['guess'].split(' ')[0]} used as initial guess/base model")
+			guess = m.read_model(os.path.join(path, conf["guess"].split(" ")[0]))
 			if guess.nx > Map[1]-Map[0]+1 or guess.ny > Map[3]-Map[2]+1:
 					print("[Warn]   The shapes of the initial guess/base model are bigger than the map in the config.")
 			if guess.nx < Map[1]-Map[0]+1 or guess.ny < Map[3]-Map[2]+1:
