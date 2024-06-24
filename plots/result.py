@@ -1025,8 +1025,8 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		
 		# Account for the angle between (x,y) and the center
 		alpha = np.arctan((y+Map_plot[3]/2)/(x+Map_plot[1]/2)) # Angle at the center of the image
-		sign1 = sign1*np.cos(np.arctan(y/x))
-		sign2 = sign2*np.sin(np.arctan(y/x))
+		sign1 = sign1*np.cos(np.arctan(abs(y/x))) # abs because direction is handled before
+		sign2 = sign2*np.sin(np.arctan(abs(y/x))) # abs because direction is handled before
 
 		n = np.min([stokes.nx,stokes.ny])*0.2
 	else:
