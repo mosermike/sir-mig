@@ -848,6 +848,8 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
 		stokes = p.read_profile(filename)
+		stokes = stokes.cut_to_map(conf["map"])
+		stokes = stokes.cut_to_wave(conf["range_wave"])
 
 	if "-stokes" not in sys.argv:
 		stokes_inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
@@ -926,6 +928,7 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 
 		# Cut data to the new range:
 		stokes_inv = stokes_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
+		stokes = stokes.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 		models_inv = models_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 		#errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
 
