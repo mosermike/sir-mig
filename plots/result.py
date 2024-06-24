@@ -75,6 +75,7 @@ def _help():
 	sir.option("-limitchi2:","Set the limit for the colorbar in chi2.")
 	sir.option("-limitI:","Set the limit for the colorbar in Stokes I.")
 	sir.option("-arc:","Print x and y axis in arcseconds")
+	sir.option("-kG:","Plot in kG (Kilogauss)")
 	sir.option("-flipy:","Flip image along y axis as sometimes the orientation is wrong in GRIS with the location on the sun")
 	sir.option("-f [float]","Factor for the fontsizes")
 	sir.option("-symv","Symmetric limits for vlos")
@@ -298,7 +299,10 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	models_inv.Pe = np.log(models_inv.Pe)
 	models_inv.Pg = np.log(models_inv.Pg)
 
-	
+	# in kG
+	if "-kG" in sys.argv:
+		models_inv.B /= 1e3
+
 
 	# Define labels and get from arguments which parameter should be plot
 	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz","-fill"]
@@ -308,7 +312,8 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
 		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi))),np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi)))], [0,1]]
 	i = 0
-	
+	if "-kG" in sys.argv:
+		labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [kG]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B$ [kG]",r"$\alpha$"]
 	if "-symv" in sys.argv:
 		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
 
@@ -809,6 +814,8 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		Set the limit for the colorbar in chi2.
 	-limitI [float,float]
 		Set the limit for the colorbar in Stokes I.
+	-kG
+		Plot in kG (Kilogauss)
 	-arc
 		Print x and y axis in arcseconds
 	-flipy
