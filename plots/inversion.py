@@ -298,7 +298,7 @@ def inversion(conf : dict, x : int, y : int):
 			 r"Inclination $\gamma$", r"Azimuth $\phi$", r"Height $z$", r"Gas Pressure $P_g$", r"Density $\rho$"]
 
 	i = 0
-
+	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"] # Get colors used in the actual cycle
 	for i in range(len(inputs)):
 		if inputs[i] in sys.argv:
 			fig, ax1 = plt.subplots(figsize=(8,7))
@@ -314,24 +314,24 @@ def inversion(conf : dict, x : int, y : int):
 					llabel = "Best Fit M. 1"
 				else:
 					llabel = "Syn Model"
-				ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color='#0C5DA5')
+				ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color=colors[0])
 			if conf1['mode'] == "2C":
 				llabel = "Best Fit M. 2"
 			else:
 				llabel = "Best Fit"
 			
-			ax1.plot(fit1.tau, fit1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color = '#FF2C00')
+			ax1.plot(fit1.tau, fit1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color = colors[1])
 
 			if conf1['mode'] == "2C":
 				# Error of fit
 				ax1.fill_between(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y] - err11.get_attribute(inputs[i][1:])[x,y],
 							syn1.get_attribute(inputs[i][1:])[x,y] + err11.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
-							color='#0C5DA5', lw=0)
+							color=colors[0], lw=0)
 			
 			# Error of fit
 			ax1.fill_between(fit1.tau, fit1.get_attribute(inputs[i][1:])[x,y] - err1.get_attribute(inputs[i][1:])[x,y],
 						 fit1.get_attribute(inputs[i][1:])[x,y] + err1.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
-						 color='#FF2C00', lw=0)
+						 color=colors[1], lw=0)
 
 
 

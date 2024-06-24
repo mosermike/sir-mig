@@ -182,7 +182,7 @@ def merge(conf, dir, ending):
 		llambda = llambda + float(conf['shift_wave']) * 1e-3
 	llambda = np.float32(llambda)
 	print(f"Wavelength step is {llambda[1]-llambda[0]}.")
-	
+
 	print("-------> Assign data ...")
 	pro = p.profile_stk(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
 	pro.wave = llambda
@@ -560,44 +560,18 @@ def correct_spectral_veil(conf, pro):
 	##########################
 	#	Plot settings		#
 	########################## 
-	dirname = os.path.split(os.path.abspath(__file__))[0]
-	plt.rcParams["savefig.format"] = "pdf"
-	if d.plt_lib != "":
-		plt.style.use(d.plt_lib)
-	else:
-		if exists(dirname + '/plots/mml.mplstyle'):
-			plt.style.use(dirname + '/plots/mml.mplstyle')
-			# if dvipng is not installed, dont use latex
-			if which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
-		elif "mml" in plt.style.available:
-			plt.style.use('mml')
-			# if dvipng is not installed, dont use latex
-			if which('dvipng') is None:
-				plt.rcParams["text.usetex"] = "False"
-				plt.rcParams["font.family"] = 'sans-serif'
-				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
+	sir.mpl_library()
 
-	######################################################################################
-	#						    DEFINE VARIABLES						    #
-	######################################################################################
+	#################################################################
+	#						    DEFINE VARIABLES					#
+	#################################################################
 	b = 1.5 # For the used range in the plotted spectrum in A
 	sigma = np.arange(d.sigma_range[0],d.sigma_range[1]) * 1e-3 # from mA to A
 	nu    = np.arange(d.nu_range[0],d.nu_range[1],1) * 1e-2 # from percent to 1
 
-	######################################################################################
-	#						    INITIALIZATION							 #
-	######################################################################################
-	# Load data
-	#if len(conf['quiet_sun']) > 1:
-	#	print("-------> Load normalised data ...")
-	#	stokes = p.read_profile(os.path.join(conf["path"],conf["cube"].replace(".bin","")+d.end_norm))
-	#		
-	#else:
-	#	print("-------> Load merged data ...")
-	#	stokes = p.read_profile(os.path.join(conf["path"],conf["cube"]))
+	#################################################################
+	#						    INITIALIZATION						#
+	#################################################################
 	stokes = pro	
 			
 	filename_fts  = conf['fts_file']
@@ -618,13 +592,14 @@ def correct_spectral_veil(conf, pro):
 	# GRIS
 	ll_gris = np.copy(stokes.wave)
 
-	######################################################################################
-	#						   SHIFT OF SPECTRUM						    #
-	######################################################################################
+	####################################################################
+	#						   SHIFT OF SPECTRUM					   #
+	####################################################################
 	print('-------> Shift spectrum ...')
-	###########
-	#    FTS  #
-	###########
+	
+	#########
+	#  FTS  #
+	#########
 	# Literature wavelength in air where the line core is expected in air
 	if conf['instrument'] in d.ll_lit:
 		ll_lit = d.ll_lit[conf['instrument']]
