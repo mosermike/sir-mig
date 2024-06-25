@@ -181,7 +181,7 @@ def merge(conf, dir, ending):
 		print(f"Wavelength Grid shifted by {conf['shift_wave']} mA.")
 		llambda = llambda + float(conf['shift_wave']) * 1e-3
 	llambda = np.float32(llambda)
-	print(f"Wavelength step is {llambda[1]-llambda[0]}.")
+	print(f"Wavelength step is {'%.3f' % ((llambda[1]-llambda[0])/1e3)} mA.")
 
 	print("-------> Assign data ...")
 	pro = p.profile_stk(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])

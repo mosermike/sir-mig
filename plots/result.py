@@ -434,18 +434,18 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	############
 	# Colorbar #
 	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-	cbar1.set_label(label = labels[1], loc = 'center', labelpad=20)
+	cbar1.set_label(label = labels[1], loc = 'center', labelpad=15)
 	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-	cbar2.set_label(label = labels[4], loc = 'center', labelpad=20)
+	cbar2.set_label(label = labels[4], loc = 'center', labelpad=15)
 	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-	cbar3.set_label(label = labels[5], loc = 'center', labelpad=20)
+	cbar3.set_label(label = labels[5], loc = 'center', labelpad=15)
 	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
 	if "-plot_chi2" in sys.argv:
-		cbar4.set_label(label = labels[11], loc = 'center', labelpad=20)
+		cbar4.set_label(label = labels[11], loc = 'center', labelpad=15)
 	elif "-plot_fill" in sys.argv:
-		cbar4.set_label(label = r"$\alpha$", loc = 'center', labelpad=20)	
+		cbar4.set_label(label = r"$\alpha$", loc = 'center', labelpad=15)	
 	else:
-		cbar4.set_label(label = labels[6], loc = 'center', labelpad=20)
+		cbar4.set_label(label = labels[6], loc = 'center', labelpad=15)
 	############
 	# Set title position depending on the chosen plot and consider the flags hinode and gris
 	if Type != "2":
@@ -563,7 +563,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 			fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2,figsize=figsize,
 										layout="compressed",
 									)
-		#fig.subplots_adjust(hspace=0.0)
+
 	############################
 	# Plot the Stokes profiles #
 	############################

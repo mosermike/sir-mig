@@ -135,6 +135,34 @@ def option(text1, text2):
 	print(f"{text1}")
 	print(f"\t{text2}")
 
+def read_chi2(filename, task = ''):
+	"""
+	Reads the last chi value in a inv.chi file
+	
+	Parameters
+	----------
+	filename : string
+		Path of the chi file
+	task : string, optional
+		Prints out in which folder the chi2 file does not exist. Default: ''
+
+	
+	Returns
+	-------
+	out : float
+		Best chi2 value of the fit
+	
+	
+	"""
+	if not exists(filename):
+		print("[read_chi2] " + filename + " does not exist in " + task + ".")
+		sys.exit(1)
+
+	# Load data
+	data = np.genfromtxt(filename)
+	return data[-1][1]
+
+
 def read_config(filename, check = True, change_config = False):
 	"""
 	Reads a config file for the inversion
