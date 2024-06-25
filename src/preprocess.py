@@ -33,12 +33,12 @@ import numpy as np
 from astropy.io import fits
 import os
 import sys
-import shutil
 import matplotlib.pyplot as plt
 from os.path import exists
 from astropy.convolution import convolve_fft
-from shutil import which
 from tqdm import tqdm
+
+import sir
 import definitions as d
 import profile_stk as p
 

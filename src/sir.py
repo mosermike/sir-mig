@@ -117,6 +117,24 @@ def mpl_library():
 				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 	return
 
+def option(text1, text2):
+	"""
+	Print an option in a help page
+
+	Parameters
+	----------
+	text1 : str
+		First text
+	text2 : str
+		Second text
+	
+	Returns
+	-------
+	None
+	"""
+	print(f"{text1}")
+	print(f"\t{text2}")
+
 def read_config(filename, check = True, change_config = False):
 	"""
 	Reads a config file for the inversion
@@ -145,28 +163,28 @@ def read_config(filename, check = True, change_config = False):
 	data = np.genfromtxt(filename, delimiter=':', comments='#', dtype=str)
 
 	# Remove spaces in first column
-	for i in data:
+	for i in range(len(data)):
 		# Check if the value is empty
-		if len(i[0].replace(' ','')) == 0:
-			i[0] = ''
+		if len(data[i][0].replace(' ','')) == 0:
+			data[i][0] = ''
 			continue
-		while i[0][0] == ' ':
-			i[0] = i[0][1:]
-		while i[0][-1] == ' ':
-			i[0] = i[0][:-1]
+		while data[i][0][0] == ' ':
+			data[i][0] = data[i][0][1:]
+		while data[i][0][-1] == ' ':
+			data[i][0] = data[i][0][:-1]
 
 	# Remove spaces in second column
-	for i in data:
+	for i in range(len(data)):
 		# Check if the value is empty
-		if len(i[1].replace(' ','')) == 0:
-			i[1] = ''
+		if len(data[i][1].replace(' ','')) == 0:
+			data[i][1] = ''
 			continue
-		while i[1][0] == ' ':
-			i[1] = i[1][1:]
-		while i[1][-1] == ' ':
-			i[1] = i[1][:-1]
+		while data[i][1][0] == ' ':
+			data[i][1] = data[i][1][1:]
+		while data[i][1][-1] == ' ':
+			data[i][1] = data[i][1][:-1]
 
-		i[0] = i[0].replace('  ','')   # replace double spaces
+		data[i][0] = data[i][0].replace('  ','')   # replace double spaces
 
 	# Create dictionary
 	Dict = {
@@ -1340,106 +1358,6 @@ def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth
 		for n1,n2,n3,n4,n5,n6,n7,n8 in zip(log_tau, T, Pe, v_micro, B, vlos, inc, azimuth):
 			f.write(f" {n1:>7.4f} {n2:>7.1f} {n3:>12.5E} {n4:>10.3E} {n5:>11.4E} {n6:>11.4E} {n7:>11.4E} {n8:>11.4E}\n")
 
-def option(text1, text2):
-	"""
-	Print an option in a help page
-
-	Parameters
-	----------
-	text1 : str
-		First text
-	text2 : str
-		Second text
-	
-	Returns
-	-------
-	None
-	"""
-	print(f"{text1}")
-	print(f"\t{text2}")
-	
-def read_chi2s(conf, tasks):
-	"""
-	Reads all the chi2 from the inversion
-	
-	Parameters
-	----------
-	config : dict
-		Config parameters
-	tasks : dict
-		Dictionary with the used folders
-	
-	Returns
-	-------
-	out : numpy array
-		Numpy array with all chi2 values
-	
-	"""
-	import definitions as d
-	if conf['mode'] != "MC":
-		print("[ERROR] This function 'read_chi2s' is only defined for the mode MC")
-		return np.empty()
-	
-	filename = d.inv_trol_file[:d.inv_trol_file.rfind('.')] + ".chi"
-	path = conf['path']
-	num = conf['num']
-	
-
-	chi2 = np.zeros(shape=(num))
-	for i in range(num):
-		chi2[i] = read_chi2(f"{os.path.join(path,tasks['folders'][i])}/{filename}")
-
-	return chi2
-
-def option(text1, text2):
-	"""
-	Print an option in a help page
-
-	Parameters
-	----------
-	text1 : str
-		First text
-	text2 : str
-		Second text
-	
-	Returns
-	-------
-	None
-	"""
-	print(f"{text1}")
-	print(f"\t{text2}")
-
-
-######################################################################################################################### 2 components
-
-
-
-def read_chi2(filename, task = ''):
-	"""
-	Reads the last chi value in a inv.chi file
-	
-	Parameters
-	----------
-	filename : string
-		Path of the chi file
-	task : string, optional
-		Prints out in which folder the chi2 file does not exist. Default: ''
-
-	
-	Returns
-	-------
-	out : float
-		Best chi2 value of the fit
-	
-	
-	"""
-	if not exists(filename):
-		print("[read_chi2] " + filename + " does not exist in " + task + ".")
-		sys.exit(1)
-
-	# Load data
-	data = np.genfromtxt(filename)
-	return data[-1][1]
 
 def x_y_add_zeros(x, y):
 	"""

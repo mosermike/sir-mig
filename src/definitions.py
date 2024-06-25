@@ -27,7 +27,7 @@ header_infos = 'infos.txt'  # Information about the observations from the Header
 best_guess_file = '_best_guess.bin'  # Name of the best guess model (best model is saved under this name) KEEP
 best_guess1_file = '_best_guess1.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
 best_guess2_file = '_best_guess2.bin'  # Name of the best guess model (best model is saved under this name) for 2C KEEP
-cube = 'data.bin' # Data cube from the fits files
+cube = 'data_unnorm.bin' # Data cube from the fits files
 cube_norm = 'data_norm.bin' # Normalised data cube
 
 #####################
