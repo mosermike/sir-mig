@@ -61,15 +61,15 @@ def Ic_test(conf : dict):
 	#			READ INPUT AND LOAD DATA					#
 	#############################################################
 	path = conf["path"]
-	stokes_inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
-	
-	Map = conf['map']
 
 	if "-data" not in sys.argv:
 		stokes = p.read_profile(os.path.join(conf["path"],conf['cube']))
 	else:
 		filename = sys.argv[sys.argv.index("-data")+1]
 		stokes = p.read_profile(filename)
+	
+	stokes.cut_to_map(conf["map"])
+	stokes.cut_to_wave(conf["range_wave"])
 
 	if "-data" not in sys.argv:
 		stokes_inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
@@ -98,11 +98,6 @@ def Ic_test(conf : dict):
 	if '-title' in sys.argv:
 		title = sys.argv[sys.argv.index("-title")+1]
 
-
-	# Determine the index to be plotted as continuum
-	wave_ind1 = 0 # Index for inversion stokes
-	wave_ind2 = np.argmin(np.abs(stokes.wave - stokes_inv.wave[0])) # Index for observations
-
 	#############################################################
 	#					PLOTTING STUFF					#
 	#############################################################
@@ -111,7 +106,7 @@ def Ic_test(conf : dict):
 	############################
 	# Plot the Stokes profiles #
 	############################
-	ax.plot(stokes.stki[Map[0]:Map[1]+1,Map[2]:Map[3]+1,wave_ind2].flatten(),stokes_inv.stki[:,:,wave_ind1].flatten(), '.', label="")
+	ax.plot(stokes.stki[:,:,0].flatten(),stokes_inv.stki[:,:,0].flatten(), '.', label="")
 	xlim = ax.get_xlim()
 	ylim = ax.get_ylim()
 	ax.plot([0,10],[0,10], '--', label="Expected Relation")
@@ -147,7 +142,7 @@ if __name__ == "__main__":
 		_help()
 	conf = sir.read_config(sys.argv[1])
 
-	if conf['mode'] == "1C" or "2C":
+	if conf['mode'] == "1C" or conf['mode'] == "2C":
 		Ic_test(conf)
 	else:
 		print("[Ic_test] Mode unknown or not defined")
