@@ -1,4 +1,4 @@
-# Config file
+# SIR MIG config file
 mode : MC # Determimes which code is executed
 path : ./ # Path location where all the data is stored and will be saved
 # 

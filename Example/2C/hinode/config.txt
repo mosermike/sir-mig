@@ -1,4 +1,4 @@
-# This is the config file, generated with create_config.py
+# SIR MIG config file
 mode : 2C # Determimes which code is executed
 path : Path to the data # Path location where all the data is stored and will be saved
 # 

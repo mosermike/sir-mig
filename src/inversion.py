@@ -206,8 +206,8 @@ def scatter_data_mc(conf, comm, rank, size, return_stk=False):
 
 		tasks = sir.create_task_folder_list(conf["num"])
 
-		if(conf["num"] > (stk1.nx-1)):
-			print(f"[scatter_data] Warning: Number of Models is too big! ({conf['num']} > {stk1.nx-1})")
+		if(conf["num"] > (stk1.nx)):
+			raise Exception(f"[scatter_data] Warning: Number of Models is too big! ({conf['num']} > {stk1.nx-1})\n               Undefined Behaviour! Abort ...")
 			print("               Undefined Behaviour! Abort ...")
 			sys.exit()
 

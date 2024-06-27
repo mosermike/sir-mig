@@ -192,8 +192,8 @@ def create_models(conf: dict) -> None:
 	create_vlos = np.array([__split_to_float(i, letter=",") for i in conf['create_vlos'].split(';')])
 	create_gamma = np.array([__split_to_float(i, letter=",") for i in conf['create_gamma'].split(';')])
 	create_phi = np.array([__split_to_float(i, letter=",") for i in conf['create_phi'].split(';')])
-	create_points = np.flip(__split_to_float(conf['create_points']))
-
+	create_points = np.flip(__split_to_float(conf['create_points']))	
+	
 	model = m.model_atm(int(num), 1, len(log_tau0))
 	for i in range(num):
 		model.vmacro[i,0] = float(conf["vmacro"])
@@ -344,7 +344,10 @@ def create_models(conf: dict) -> None:
 	elif model_nodes == 2:
 		print("-------> Create models with 2 nodes")
 		if len(create_points) != 2:
-			print("[create_models] The parameter 'create_points' in the config does not have exactly two elements!")
+			raise Exception(f"Option 'create_points' does not have exactly two elements ({conf['create_points']})")
+			#print("[create_models] The parameter 'create_points' in the config does not have exactly two elements!")
+		if create_points[1] > create_points[0]:
+			raise Exception("Option 'create_points' must be strictly decreasing")
 		# Perform 'num' times
 		B_0 = np.zeros(num)
 		inc_0 = np.zeros(num)
@@ -484,7 +487,10 @@ def create_models(conf: dict) -> None:
 	elif model_nodes == 3:
 		print("-------> Create models with three nodes")
 		if len(create_points) != 3:
-			print("[create_models] The parameter 'create_points' in the config does not have exactly three elements!")
+			raise Exception(f"Option 'create_points' does not have exactly three elements ({conf['create_points']})")
+			#print("[create_models] The parameter 'create_points' in the config does not have exactly two elements!")
+		if create_points[1] > create_points[0]:
+			raise Exception("Option 'create_points' must be strictly decreasing")
 		B_p1 = np.zeros(num)
 		B_m1 = np.zeros(num)
 		B_m5 = np.zeros(num)
@@ -702,7 +708,7 @@ def create_temperature(tau, B = 0):
 	#   the range for the factor is smaller														#
 	#############################################################################################
 	# Values from HSRA and cool11
-	log_taus = d.log_taus
+	log_taus = np.copy(d.log_taus)
 	HSRA_T = np.copy(d.upper_T)
 	cool11_T = np.copy(d.lower_T)
 
