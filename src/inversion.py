@@ -951,7 +951,17 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			print("-------> Compute χ² (this might take a while) ...")
 			
 			# Number of Nodes in the last step
-			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
+			num_of_nodes = 0
+			if conf['nodes_temp'] != "":
+				num_of_nodes+= int(conf['nodes_temp'].split(",")[-1])
+			if conf['nodes_magn'] != "":
+				num_of_nodes+= int(conf['nodes_magn'].split(",")[-1])
+			if conf['nodes_vlos'] != "":
+				num_of_nodes+= int(conf['nodes_vlos'].split(",")[-1])
+			if conf['nodes_gamma'] != "":
+				num_of_nodes+= int(conf['nodes_gamma'].split(",")[-1])
+			if conf['nodes_phi'] != "":
+				num_of_nodes+= int(conf['nodes_phi'].split(",")[-1])
 			
 			# Compute chi2
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
@@ -1207,7 +1217,17 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 			chi2 = c.chi2_stk(0,0)
 
 			# Number of Nodes in the last step
-			num_of_nodes = int(conf['nodes_temp'].split(",")[-1])+ int(conf['nodes_magn'].split(",")[-1])+ int(conf['nodes_vlos'].split(",")[-1])+ int(conf['nodes_gamma'].split(",")[-1])+ int(conf['nodes_phi'].split(",")[-1])
+			num_of_nodes = 0
+			if conf['nodes_temp'] != "":
+				num_of_nodes+= int(conf['nodes_temp'].split(",")[-1])
+			if conf['nodes_magn'] != "":
+				num_of_nodes+= int(conf['nodes_magn'].split(",")[-1])
+			if conf['nodes_vlos'] != "":
+				num_of_nodes+= int(conf['nodes_vlos'].split(",")[-1])
+			if conf['nodes_gamma'] != "":
+				num_of_nodes+= int(conf['nodes_gamma'].split(",")[-1])
+			if conf['nodes_phi'] != "":
+				num_of_nodes+= int(conf['nodes_phi'].split(",")[-1])
 			
 			# Compute chi2
 			chi2.compute(obs, stokes, [float(i) for i in conf["weights"]], num_of_nodes)
@@ -1531,7 +1551,18 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			chi2 = c.chi2_stk(0,0)
 
 			# Number of Nodes in the last step
-			num_of_nodes = int(conf['nodes_temp1'].split(",")[-1])+ int(conf['nodes_magn1'].split(",")[-1])+ int(conf['nodes_vlos1'].split(",")[-1])+ int(conf['nodes_gamma1'].split(",")[-1])+ int(conf['nodes_phi1'].split(",")[-1])
+			num_of_nodes = 0
+			if conf['nodes_temp1'] != "":
+				num_of_nodes+= int(conf['nodes_temp1'].split(",")[-1])
+			if conf['nodes_magn1'] != "":
+				num_of_nodes+= int(conf['nodes_magn1'].split(",")[-1])
+			if conf['nodes_vlos1'] != "":
+				num_of_nodes+= int(conf['nodes_vlos1'].split(",")[-1])
+			if conf['nodes_gamma1'] != "":
+				num_of_nodes+= int(conf['nodes_gamma1'].split(",")[-1])
+			if conf['nodes_phi1'] != "":
+				num_of_nodes+= int(conf['nodes_phi1'].split(",")[-1])
+			
 			
 			# Compute chi2
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)

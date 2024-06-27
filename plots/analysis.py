@@ -111,8 +111,8 @@ def analysis(conf : dict):
 	#	    READ INPUT, WRITE DEFINITIONS AND LOAD DATA				  #
 	#########################################################################
 	path = conf["path"]
-	data = read_model(os.path.join(path,conf["inv_out"]) + d.end_models) # Data from fit
-	syn  = read_model(os.path.join(path,conf["syn_out"]+ d.end_models)) # Data
+	data = read_model(os.path.join(path,conf["inv_out"] + d.end_models)) # Data from fit
+	syn  = read_model(os.path.join(path,conf["syn_out"] + d.end_models)) # Data
 
 	# Correct phi range
 	syn.correct_phi()
