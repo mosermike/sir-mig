@@ -781,7 +781,7 @@ def _write_config_2c(File, conf, verbose = True):
 		f.write(f"invert_fill : {conf['invert_fill']} # Invert filling factor (1 or 0)")
 		f.write(f"mu_cos : {conf['mu_cos']} # mu = cos theta\n")
 		f.write(f"abundance : {conf['abundance']} # Abundance file\n")
-		f.write(f"gas_pressure : {conf['gas_pressure']} # Gas Pressure Boundary condition\n")
+		f.write(f"gas_pressure : {conf['gas_pressure']} # Gas Pressure Boundary condition (two entries separated with ' ')\n")
 
 		f.write(f"# \n")
 		f.write(f"# Radomisation Settings\n")
@@ -921,6 +921,296 @@ def write_config(File, conf):
 	else:
 		print("[write_config] Mode is not defined and config file cannot be written.")
 
+def write_control(filename, conf, Type = 'inv'):
+	"""
+	Writes a control file in the scheme SIR expects it.
+	
+	Parameters
+	----------
+	filename : string
+		Save filename of the control file. Typically it is inv.trol
+	config : dict
+		Dictionary with the information from the config file
+	Type : string, optional
+		Mode for the sir control file. Options are
+		- 'syn': Synthesis
+		- 'inv': Inversion (default)
+		Only used for mode 'MC'
+
+	Returns
+	-------
+	None
+
+	"""
+	if conf['mode'] == 'MC':
+		_write_control_mc(filename,conf,Type)
+	elif conf['mode'] == '1C':
+		_write_control_1c(filename,conf)
+	elif conf['mode'] == '2C':
+		_write_control_2c(filename,conf)
+	else:
+		print('[write_control] Unknown mode')
+
+def _write_control_1c(filename, conf):
+	"""
+	Writes a control file in the scheme SIR expects it.
+	
+	Parameters
+	----------
+	filename : string
+		Save filename of the control file. Typically it is inv.trol
+	config : dict
+		Dictionary with the information from the config file
+	
+	Returns
+	-------
+	None
+
+	"""
+	import definitions as d
+	cycles		= conf['cycles']		# Number of cycles
+	weights		= conf['weights']		# Weights in the control file
+	nodes_temp	= conf['nodes_temp']	# Nodes in T
+	nodes_magn	= conf['nodes_magn']	# Nodes in B
+	nodes_vlos	= conf['nodes_vlos']	# Nodes in vlos
+	nodes_gamma	= conf['nodes_gamma']	# Nodes in gamma
+	nodes_phi		= conf['nodes_phi']		# Nodes in phi
+	mu_cos		= conf['mu_cos']		# mu = cos theta
+	abundance		= conf['abundance']		# Abundance file
+	line			= conf['line']			# Name of the line file
+	gas_pressure   = conf['gas_pressure']	# Gas Pressure
+	
+	# Write lines
+	with open(filename, 'w') as f:
+		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
+		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
+		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
+		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
+		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
+		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
+		f.write('Abundances file               :'    + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
+		f.write('Initial guess model 1      (*):'+ d.model_inv + '      !\n')
+		f.write('Initial guess model 2         :\n')
+		f.write('Weight for Stokes I           :'   + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes Q           :'   + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes U           :'   + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes V           :'   + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('AUTOMATIC SELECT. OF NODES?   :                   ! (DEFAULT=0=no; 1=yes)\n')
+		f.write('Nodes for temperature 1       :'  + nodes_temp + '\n')
+		f.write('Nodes for electr. press. 1    :                         \n')
+		f.write('Nodes for microturb. 1        :                         \n')
+		f.write('Nodes for magnetic field 1    :'+ nodes_magn + '\n')
+		f.write('Nodes for LOS velocity 1      :'+ nodes_vlos + '\n')
+		f.write('Nodes for gamma 1             :'+ nodes_gamma + '\n')
+		f.write('Nodes for phi 1               :'    + nodes_phi + '\n')
+		f.write('Invert macroturbulence 1?     :                   ! (0 or blank=no, 1=yes)\n')
+		f.write('Nodes for temperature 2       :                   \n')
+		f.write('Nodes for electr. press. 2    :                   \n')
+		f.write('Nodes for microturb. 2        :                   \n')   
+		f.write('Nodes for magnetic field 2    :                   \n')
+		f.write('Nodes for LOS velocity 2      :                   \n')
+		f.write('Nodes for gamma 2             :                   \n')
+		f.write('Nodes for phi 2               :                   \n')
+		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert filling factor?        :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
+		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
+		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')
+		f.write('Continuum contrast            :                    ! (DEFAULT: not used)\n')
+		f.write('Tolerance for SVD             :' + d.SVD + '              ! (DEFAULT value: 1e-4)\n')
+		f.write('Initial diagonal element      :                    ! (DEFAULT value: 1.e-3)\n')
+		f.write('Splines/Linear Interpolation  :                    ! (0 or blank=splines, 1=linear)\n')
+		f.write('Gas pressure at surface 1     :' + gas_pressure + '              ! (0 or blank=Pe boundary cond.)\n')
+		f.write('Gas pressure at surface 2     :                    ! (0 or blank=Pe boundary cond.\n')
+		f.write('Magnetic pressure term?       :                    ! (0 or blank=no, 1=yes\n')
+		f.write("NLTE Departures filename      :                    ! blanck= LTE (Ej.) depart_6494.dat'\n")
+
+
+	f.close()
+
+def _write_control_2c(filename, conf):
+	"""
+	Writes a control file in the scheme SIR expects it.
+	
+	Parameters
+	----------
+	filename : string
+		Save filename of the control file. Typically it is inv.trol
+	conf : dict
+		Dictionary with the information from the config file
+	
+	Returns
+	-------
+	None
+	"""
+	import definitions as d
+	model1		= d.guess1			# Base Model 1
+	model2		= d.guess2			# Base Model 2
+	cycles		= conf['cycles']		# Number of cycles
+	weights		= conf['weights']		# Weights in the control file
+	nodes_temp1	= conf['nodes_temp1']	# Nodes in T
+	nodes_magn1	= conf['nodes_magn1']	# Nodes in B
+	nodes_vlos1	= conf['nodes_vlos1']	# Nodes in vlos
+	nodes_gamma1	= conf['nodes_gamma1']	# Nodes in gamma
+	nodes_phi1	= conf['nodes_phi1']		# Nodes in phi
+	nodes_temp2	= conf['nodes_temp2']	# Nodes in T
+	nodes_magn2	= conf['nodes_magn2']	# Nodes in B
+	nodes_vlos2	= conf['nodes_vlos2']	# Nodes in vlos
+	nodes_gamma2	= conf['nodes_gamma2']	# Nodes in gamma
+	nodes_phi2	= conf['nodes_phi2']		# Nodes in phi
+
+	mu_cos		= conf['mu_cos']		# mu = cos theta
+	abundance		= conf['abundance']		# Abundance file
+	line			= conf['line']			# Name of the line file
+	gas_pressure   = conf['gas_pressure']	# Gas Pressure
+
+	if " " in gas_pressure:
+		gas_pressure1, gas_pressure2 = gas_pressure.split(" ")
+	else:
+		gas_pressure1  = gas_pressure2 = gas_pressure
+		
+	fill = conf["invert_fill"] # invert filling factor
+	
+	# Write lines
+	with open(filename, 'w') as f:
+		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
+		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
+		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
+		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
+		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
+		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
+		f.write('Abundances file               :' + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
+		f.write('Initial guess model 1      (*):' + model1 + ' \n')
+		f.write('Initial guess model 2         :' + model2 + ' \n')
+		f.write('Weight for Stokes I           :' + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes Q           :' + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes U           :' + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes V           :' + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('AUTOMATIC SELECT. OF NODES?   :                   ! (DEFAULT=0=no; 1=yes)\n')
+		f.write('Nodes for temperature 1       :' + nodes_temp1 + '\n')
+		f.write('Nodes for electr. press. 1    :                         \n')
+		f.write('Nodes for microturb. 1        :                         \n')
+		f.write('Nodes for magnetic field 1    :' + nodes_magn1 + '\n')
+		f.write('Nodes for LOS velocity 1      :' + nodes_vlos1 + '\n')
+		f.write('Nodes for gamma 1             :' + nodes_gamma1 + '\n')
+		f.write('Nodes for phi 1               :' + nodes_phi1 + '\n')
+		f.write('Invert macroturbulence 1?     :                   ! (0 or blank=no, 1=yes)\n')
+		f.write('Nodes for temperature 2       :'  + nodes_temp2 + ' \n')
+		f.write('Nodes for electr. press. 2    :                   \n')
+		f.write('Nodes for microturb. 2        :                   \n')
+		f.write('Nodes for magnetic field 2    :' + nodes_magn2 + '\n')
+		f.write('Nodes for LOS velocity 2      :' + nodes_vlos2 + '\n')
+		f.write('Nodes for gamma 2             :' + nodes_gamma2 + '\n')
+		f.write('Nodes for phi 2               :' + nodes_phi2 + '\n')
+		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert filling factor?        :' + fill  + '                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
+		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
+		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')
+		f.write('Continuum contrast            :                    ! (DEFAULT: not used)\n')
+		f.write('Tolerance for SVD             :' + d.SVD + '              ! (DEFAULT value: 1e-4)\n')
+		f.write('Initial diagonal element      :                    ! (DEFAULT value: 1.e-3)\n')
+		f.write('Splines/Linear Interpolation  :                    ! (0 or blank=splines, 1=linear)\n')
+		f.write('Gas pressure at surface 1     :' + gas_pressure1 + '              ! (0 or blank=Pe boundary cond.)\n')
+		f.write('Gas pressure at surface 2     :' + gas_pressure2 + '              ! (0 or blank=Pe boundary cond.\n')
+		f.write('Magnetic pressure term?       :                    ! (0 or blank=no, 1=yes\n')
+		f.write("NLTE Departures filename      :                    ! blanck= LTE (Ej.) depart_6494.dat'\n")
+
+
+	f.close()
+
+
+def _write_control_mc(filename, conf, Type = 'inv'):
+	"""
+	Writes a control file in the scheme SIR expects it.
+	
+	Parameters
+	----------
+	filename : string
+		Save filename of the control file. Typically it is inv.trol
+	config : dict
+		Dictionary with the information from the config file
+	Type : string
+		which type of control file is created ('syn' for synthesis, 'inv' for inversion)
+	
+	Returns
+	-------
+	None
+	"""
+	import definitions as d
+	if Type == 'syn':
+		model = d.model_syn
+	elif Type == 'inv':
+		model = d.model_inv
+	if Type == 'inv':
+		cycles	= conf['cycles']		# Number of cycles
+	else:
+		cycles 	= 0
+	weights		= conf['weights']		# Weights in the control file
+	if Type == 'inv':
+		nodes_temp	= conf['nodes_temp']	# Nodes in T
+		nodes_magn	= conf['nodes_magn']	# Nodes in B
+		nodes_vlos	= conf['nodes_vlos']	# Nodes in vlos
+		nodes_gamma	= conf['nodes_gamma']	# Nodes in gamma
+		nodes_phi		= conf['nodes_phi']		# Nodes in phi
+	else:
+		nodes_temp	= ''	# Nodes in T
+		nodes_magn	= ''	# Nodes in B
+		nodes_vlos	= ''	# Nodes in vlos
+		nodes_gamma	= ''	# Nodes in gamma
+		nodes_phi		= ''		# Nodes in phi
+
+	abundance		= conf['abundance']		# Abundance file
+	gas_pressure   = conf['gas_pressure']	# Gas Pressure
+
+	# Write lines
+	with open(filename, 'w') as f:
+		f.write(f'Number of cycles           (*):{cycles}               ! (0=synthesis)\n')
+		f.write('Observed profiles          (*):' + d.profile + '      ! \n')
+		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
+		f.write('PSF file                      :                   ! (none=no convolution with PSF)\n')
+		f.write('Wavelength grid file       (s):' + d.Grid + '     ! (none=automatic selection)\n')
+		f.write('Atomic parameters file        :' + conf['line'] + '    ! (none=DEFAULT LINES file)\n')
+		f.write('Abundances file               :' + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
+		f.write('Initial guess model 1      (*):' + model + '      !\n')
+		f.write('Initial guess model 2         :\n')
+		f.write('Weight for Stokes I           :'   + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes Q           :'   + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes U           :'   + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes V           :'   + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('AUTOMATIC SELECT. OF NODES?   :                    ! (DEFAULT=0=no; 1=yes)\n')
+		f.write(f'Nodes for temperature 1       :{nodes_temp}\n')
+		f.write('Nodes for electr. press. 1    :                         \n')
+		f.write('Nodes for microturb. 1        :                         \n')
+		f.write(f'Nodes for magnetic field 1    :{nodes_magn}\n')
+		f.write(f'Nodes for LOS velocity 1      :{nodes_vlos}\n')
+		f.write(f'Nodes for gamma 1             :{nodes_gamma}\n')
+		f.write(f'Nodes for phi 1               :{nodes_phi}\n')
+		f.write('Invert macroturbulence 1?     :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Nodes for temperature 2       :                    \n')
+		f.write('Nodes for electr. press. 2    :                    \n')
+		f.write('Nodes for microturb. 2        :                    \n')   
+		f.write('Nodes for magnetic field 2    :                    \n')
+		f.write('Nodes for LOS velocity 2      :                    \n')
+		f.write('Nodes for gamma 2             :                    \n')
+		f.write('Nodes for phi 2               :                    \n')
+		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert filling factor?        :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('Invert stray light factor?    :                    ! (0 or blank=no, 1=yes)\n')
+		f.write('mu=cos (theta)                :                    ! (DEFAULT: mu=1)\n')
+		f.write('Estimated S/N for I           :200                 ! (DEFAULT: 1000) \n')
+		f.write('Continuum contrast            :                    ! (DEFAULT: not used)\n')
+		f.write('Tolerance for SVD             :' + d.SVD + '               ! (DEFAULT value: 1e-4)\n')
+		f.write('Initial diagonal element      :                    ! (DEFAULT value: 1.e-3)\n')
+		f.write('Splines/Linear Interpolation  :                    ! (0 or blank=splines, 1=linear)\n')
+		f.write('Gas pressure at surface 1     :' + gas_pressure + '          ! (0 or blank=Pe boundary cond.)\n')
+		f.write('Gas pressure at surface 2     :                    ! (0 or blank=Pe boundary cond.\n')
+		f.write('Magnetic pressure term?       :                    ! (0 or blank=no, 1=yes\n')
+		f.write("NLTE Departures filename      :                    ! blanck= LTE (Ej.) depart_6494.dat'\n")
+
+
+	f.close()
+
 def write_gauss_psf(sigma, filename):
 	"""
 	Writes the spectral point spread function with the given sigma. This function is used when the field psf in the config
@@ -1051,290 +1341,6 @@ def _write_grid_mc(conf, filename):
 	with open(filename, 'w') as f:
 		for i in range(len(atoms)):
 			f.write(f"{atoms[i]}: {'%6.4f' % Line_min[i]},     {'%2.4f' % Line_step[i]},     {'%6.4f' % Line_max[i]}\n")
-
-def write_control(filename, conf, Type = 'inv'):
-	"""
-	Writes a control file in the scheme SIR expects it.
-	
-	Parameters
-	----------
-	filename : string
-		Save filename of the control file. Typically it is inv.trol
-	config : dict
-		Dictionary with the information from the config file
-	Type : string, optional
-		Mode for the sir control file. Options are
-		- 'syn': Synthesis
-		- 'inv': Inversion (default)
-		Only used for mode 'MC'
-
-	Returns
-	-------
-	None
-
-	"""
-	if conf['mode'] == 'MC':
-		_write_control_mc(filename,conf,Type)
-	elif conf['mode'] == '1C':
-		_write_control_1c(filename,conf)
-	elif conf['mode'] == '2C':
-		_write_control_2c(filename,conf)
-	else:
-		print('[write_control] Unknown mode')
-
-def _write_control_1c(filename, conf):
-	"""
-	Writes a control file in the scheme SIR expects it.
-	
-	Parameters
-	----------
-	filename : string
-		Save filename of the control file. Typically it is inv.trol
-	config : dict
-		Dictionary with the information from the config file
-	
-	Returns
-	-------
-	None
-
-	"""
-	import definitions as d
-	cycles		= conf['cycles']		# Number of cycles
-	weights		= conf['weights']		# Weights in the control file
-	nodes_temp	= conf['nodes_temp']	# Nodes in T
-	nodes_magn	= conf['nodes_magn']	# Nodes in B
-	nodes_vlos	= conf['nodes_vlos']	# Nodes in vlos
-	nodes_gamma	= conf['nodes_gamma']	# Nodes in gamma
-	nodes_phi		= conf['nodes_phi']		# Nodes in phi
-	mu_cos		= conf['mu_cos']		# mu = cos theta
-	abundance		= conf['abundance']		# Abundance file
-	line			= conf['line']			# Name of the line file
-	gas_pressure   = conf['gas_pressure']	# Gas Pressure
-	
-	# Write lines
-	with open(filename, 'w') as f:
-		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
-		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
-		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
-		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
-		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
-		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
-		f.write('Abundances file               :'    + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
-		f.write('Initial guess model 1      (*):'+ d.model_inv + '      !\n')
-		f.write('Initial guess model 2         :\n')
-		f.write('Weight for Stokes I           :'   + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes Q           :'   + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes U           :'   + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes V           :'   + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('AUTOMATIC SELECT. OF NODES?   :                   ! (DEFAULT=0=no; 1=yes)\n')
-		f.write('Nodes for temperature 1       :'  + nodes_temp + '\n')
-		f.write('Nodes for electr. press. 1    :                         \n')
-		f.write('Nodes for microturb. 1        :                         \n')
-		f.write('Nodes for magnetic field 1    :'+ nodes_magn + '\n')
-		f.write('Nodes for LOS velocity 1      :'+ nodes_vlos + '\n')
-		f.write('Nodes for gamma 1             :'+ nodes_gamma + '\n')
-		f.write('Nodes for phi 1               :'    + nodes_phi + '\n')
-		f.write('Invert macroturbulence 1?     :                   ! (0 or blank=no, 1=yes)\n')
-		f.write('Nodes for temperature 2       :                   \n')
-		f.write('Nodes for electr. press. 2    :                   \n')
-		f.write('Nodes for microturb. 2        :                   \n')   
-		f.write('Nodes for magnetic field 2    :                   \n')
-		f.write('Nodes for LOS velocity 2      :                   \n')
-		f.write('Nodes for gamma 2             :                   \n')
-		f.write('Nodes for phi 2               :                   \n')
-		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert filling factor?        :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
-		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
-		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')
-		f.write('Continuum contrast            :                    ! (DEFAULT: not used)\n')
-		f.write('Tolerance for SVD             :1.e-4              ! (DEFAULT value: 1e-4)\n')
-		f.write('Initial diagonal element      :                    ! (DEFAULT value: 1.e-3)\n')
-		f.write('Splines/Linear Interpolation  :                    ! (0 or blank=splines, 1=linear)\n')
-		f.write('Gas pressure at surface 1     :' + gas_pressure + '              ! (0 or blank=Pe boundary cond.)\n')
-		f.write('Gas pressure at surface 2     :                    ! (0 or blank=Pe boundary cond.\n')
-		f.write('Magnetic pressure term?       :                    ! (0 or blank=no, 1=yes\n')
-		f.write("NLTE Departures filename      :                    ! blanck= LTE (Ej.) depart_6494.dat'\n")
-
-
-	f.close()
-
-def _write_control_2c(filename, conf):
-	"""
-	Writes a control file in the scheme SIR expects it.
-	
-	Parameters
-	----------
-	filename : string
-		Save filename of the control file. Typically it is inv.trol
-	conf : dict
-		Dictionary with the information from the config file
-	
-	Returns
-	-------
-	None
-	"""
-	import definitions as d
-	model1		= d.guess1			# Base Model 1
-	model2		= d.guess2			# Base Model 2
-	cycles		= conf['cycles']		# Number of cycles
-	weights		= conf['weights']		# Weights in the control file
-	nodes_temp1	= conf['nodes_temp1']	# Nodes in T
-	nodes_magn1	= conf['nodes_magn1']	# Nodes in B
-	nodes_vlos1	= conf['nodes_vlos1']	# Nodes in vlos
-	nodes_gamma1	= conf['nodes_gamma1']	# Nodes in gamma
-	nodes_phi1	= conf['nodes_phi1']		# Nodes in phi
-	nodes_temp2	= conf['nodes_temp2']	# Nodes in T
-	nodes_magn2	= conf['nodes_magn2']	# Nodes in B
-	nodes_vlos2	= conf['nodes_vlos2']	# Nodes in vlos
-	nodes_gamma2	= conf['nodes_gamma2']	# Nodes in gamma
-	nodes_phi2	= conf['nodes_phi2']		# Nodes in phi
-
-	mu_cos		= conf['mu_cos']		# mu = cos theta
-	abundance		= conf['abundance']		# Abundance file
-	line			= conf['line']			# Name of the line file
-	gas_pressure   = conf['gas_pressure']	# Gas Pressure
-	fill = conf["invert_fill"] # invert filling factor
-	
-	# Write lines
-	with open(filename, 'w') as f:
-		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
-		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
-		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
-		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
-		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
-		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
-		f.write('Abundances file               :' + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
-		f.write('Initial guess model 1      (*):' + model1 + ' \n')
-		f.write('Initial guess model 2         :' + model2 + ' \n')
-		f.write('Weight for Stokes I           :' + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes Q           :' + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes U           :' + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes V           :' + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('AUTOMATIC SELECT. OF NODES?   :                   ! (DEFAULT=0=no; 1=yes)\n')
-		f.write('Nodes for temperature 1       :' + nodes_temp1 + '\n')
-		f.write('Nodes for electr. press. 1    :                         \n')
-		f.write('Nodes for microturb. 1        :                         \n')
-		f.write('Nodes for magnetic field 1    :' + nodes_magn1 + '\n')
-		f.write('Nodes for LOS velocity 1      :' + nodes_vlos1 + '\n')
-		f.write('Nodes for gamma 1             :' + nodes_gamma1 + '\n')
-		f.write('Nodes for phi 1               :' + nodes_phi1 + '\n')
-		f.write('Invert macroturbulence 1?     :                   ! (0 or blank=no, 1=yes)\n')
-		f.write('Nodes for temperature 2       :'  + nodes_temp2 + ' \n')
-		f.write('Nodes for electr. press. 2    :                   \n')
-		f.write('Nodes for microturb. 2        :                   \n')
-		f.write('Nodes for magnetic field 2    :' + nodes_magn2 + '\n')
-		f.write('Nodes for LOS velocity 2      :' + nodes_vlos2 + '\n')
-		f.write('Nodes for gamma 2             :' + nodes_gamma2 + '\n')
-		f.write('Nodes for phi 2               :' + nodes_phi2 + '\n')
-		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert filling factor?        :' + fill  + '                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
-		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
-		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')
-		f.write('Continuum contrast            :                    ! (DEFAULT: not used)\n')
-		f.write('Tolerance for SVD             :1.e-4              ! (DEFAULT value: 1e-4)\n')
-		f.write('Initial diagonal element      :                    ! (DEFAULT value: 1.e-3)\n')
-		f.write('Splines/Linear Interpolation  :                    ! (0 or blank=splines, 1=linear)\n')
-		f.write('Gas pressure at surface 1     :' + gas_pressure + '              ! (0 or blank=Pe boundary cond.)\n')
-		f.write('Gas pressure at surface 2     :                    ! (0 or blank=Pe boundary cond.\n')
-		f.write('Magnetic pressure term?       :                    ! (0 or blank=no, 1=yes\n')
-		f.write("NLTE Departures filename      :                    ! blanck= LTE (Ej.) depart_6494.dat'\n")
-
-
-	f.close()
-
-
-def _write_control_mc(filename, conf, Type = 'inv'):
-	"""
-	Writes a control file in the scheme SIR expects it.
-	
-	Parameters
-	----------
-	filename : string
-		Save filename of the control file. Typically it is inv.trol
-	config : dict
-		Dictionary with the information from the config file
-	Type : string
-		which type of control file is created ('syn' for synthesis, 'inv' for inversion)
-	
-	Returns
-	-------
-	None
-	"""
-	import definitions as d
-	if Type == 'syn':
-		model = d.model_syn
-	elif Type == 'inv':
-		model = d.model_inv
-	if Type == 'inv':
-		cycles	= conf['cycles']		# Number of cycles
-	else:
-		cycles 	= 0
-	weights		= conf['weights']		# Weights in the control file
-	if Type == 'inv':
-		nodes_temp	= conf['nodes_temp']	# Nodes in T
-		nodes_magn	= conf['nodes_magn']	# Nodes in B
-		nodes_vlos	= conf['nodes_vlos']	# Nodes in vlos
-		nodes_gamma	= conf['nodes_gamma']	# Nodes in gamma
-		nodes_phi		= conf['nodes_phi']		# Nodes in phi
-	else:
-		nodes_temp	= ''	# Nodes in T
-		nodes_magn	= ''	# Nodes in B
-		nodes_vlos	= ''	# Nodes in vlos
-		nodes_gamma	= ''	# Nodes in gamma
-		nodes_phi		= ''		# Nodes in phi
-
-	abundance		= conf['abundance']		# Abundance file
-	gas_pressure   = conf['gas_pressure']	# Gas Pressure
-
-	# Write lines
-	with open(filename, 'w') as f:
-		f.write(f'Number of cycles           (*):{cycles}               ! (0=synthesis)\n')
-		f.write('Observed profiles          (*):' + d.profile + '      ! \n')
-		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
-		f.write('PSF file                      :                   ! (none=no convolution with PSF)\n')
-		f.write('Wavelength grid file       (s):' + d.Grid + '     ! (none=automatic selection)\n')
-		f.write('Atomic parameters file        :' + conf['line'] + '    ! (none=DEFAULT LINES file)\n')
-		f.write('Abundances file               :' + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
-		f.write('Initial guess model 1      (*):' + model + '      !\n')
-		f.write('Initial guess model 2         :\n')
-		f.write('Weight for Stokes I           :'   + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes Q           :'   + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes U           :'   + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes V           :'   + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('AUTOMATIC SELECT. OF NODES?   :                    ! (DEFAULT=0=no; 1=yes)\n')
-		f.write(f'Nodes for temperature 1       :{nodes_temp}\n')
-		f.write('Nodes for electr. press. 1    :                         \n')
-		f.write('Nodes for microturb. 1        :                         \n')
-		f.write(f'Nodes for magnetic field 1    :{nodes_magn}\n')
-		f.write(f'Nodes for LOS velocity 1      :{nodes_vlos}\n')
-		f.write(f'Nodes for gamma 1             :{nodes_gamma}\n')
-		f.write(f'Nodes for phi 1               :{nodes_phi}\n')
-		f.write('Invert macroturbulence 1?     :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Nodes for temperature 2       :                    \n')
-		f.write('Nodes for electr. press. 2    :                    \n')
-		f.write('Nodes for microturb. 2        :                    \n')   
-		f.write('Nodes for magnetic field 2    :                    \n')
-		f.write('Nodes for LOS velocity 2      :                    \n')
-		f.write('Nodes for gamma 2             :                    \n')
-		f.write('Nodes for phi 2               :                    \n')
-		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert filling factor?        :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('Invert stray light factor?    :                    ! (0 or blank=no, 1=yes)\n')
-		f.write('mu=cos (theta)                :                    ! (DEFAULT: mu=1)\n')
-		f.write('Estimated S/N for I           :200                 ! (DEFAULT: 1000) \n')
-		f.write('Continuum contrast            :                    ! (DEFAULT: not used)\n')
-		f.write('Tolerance for SVD             :1.e-6               ! (DEFAULT value: 1e-4)\n')
-		f.write('Initial diagonal element      :                    ! (DEFAULT value: 1.e-3)\n')
-		f.write('Splines/Linear Interpolation  :                    ! (0 or blank=splines, 1=linear)\n')
-		f.write('Gas pressure at surface 1     :' + gas_pressure + '          ! (0 or blank=Pe boundary cond.)\n')
-		f.write('Gas pressure at surface 2     :                    ! (0 or blank=Pe boundary cond.\n')
-		f.write('Magnetic pressure term?       :                    ! (0 or blank=no, 1=yes\n')
-		f.write("NLTE Departures filename      :                    ! blanck= LTE (Ej.) depart_6494.dat'\n")
-
-
-	f.close()
 
 def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth, z = None, Pg = None, rho = None):
 	"""

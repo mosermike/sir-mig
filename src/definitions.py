@@ -59,6 +59,8 @@ header_2C = "   0.10000000      0.50000	   0.00000" # Header used for writing a 
 fill_2C = 0.5 # Filling factor for the first model when mode 2C is used
 psf = ".psf.dat" # PSF file for the inversion
 
+SVD = "1e-4" # SVD TOL value
+
 #############################
 # Spectral Veil Correction	#
 #############################

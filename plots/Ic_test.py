@@ -109,10 +109,11 @@ def Ic_test(conf : dict):
 	ax.plot(stokes.stki[:,:,0].flatten(),stokes_inv.stki[:,:,0].flatten(), '.', label="")
 	xlim = ax.get_xlim()
 	ylim = ax.get_ylim()
+	lims = [np.min([xlim,ylim]), np.max([xlim,ylim])]
 	ax.plot([0,10],[0,10], '--', label="Expected Relation")
-	ax.text(xlim[0]+0.05+0.01,xlim[0]+0.05, "Expected Relation",color='#FF2C00', rotation = 37.5)
-	ax.set_xlim(xlim)
-	ax.set_ylim(ylim)
+	ax.text(lims[0]+0.05+0.01,lims[0]+0.05, "Expected Relation",color='#FF2C00', rotation = 37.5)
+	ax.set_xlim(lims)
+	ax.set_ylim(lims)
 
 	#####################
 	#	Set labels	#

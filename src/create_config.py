@@ -419,7 +419,7 @@ def _config_2C():
 	mu_cos		= input ("mu = cos theta                         : ")
 	abundance		= input ("Abundance file               [THEVENIN]: ")
 	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
-	gas_pressure   = input ("Gas Pressure Boundary condition  [-1 => 3.944e+3]: ")
+	gas_pressure   = input ("Gas Pressure Boundary condition  (two values separated with ' ') [-1 => 3.944e+3]: ")
 
 	random_guess	= input ("Number of random guess models (0 = use base model or provided guess model): ")
 	random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")

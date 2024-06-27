@@ -130,7 +130,8 @@ Control file
 +--------------+-------------------------------------------------------------------------------+
 
 Notes:
-- For mode `2C`, the options nodes_* appear twice and each with a number (1 or 2) for each model
+- For mode `2C`, the options `nodes_*` appear twice and each with a number (1 or 2) for each model at the end
+- For mode `2C`, the option `gas_pressure` contains two values separated with a space. If there is no space, the code will take the value for both models
 
 Radomisation Settings
 =====================
