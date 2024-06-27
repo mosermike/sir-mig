@@ -344,10 +344,10 @@ def create_models(conf: dict) -> None:
 	elif model_nodes == 2:
 		print("-------> Create models with 2 nodes")
 		if len(create_points) != 2:
-			raise Exception(f"Option 'create_points' does not have exactly two elements ({conf['create_points']})")
+			raise SystemExit(f"Option 'create_points' does not have exactly two elements ({conf['create_points']})")
 			#print("[create_models] The parameter 'create_points' in the config does not have exactly two elements!")
 		if create_points[1] < create_points[0]:
-			raise Exception("Option 'create_points' must be strictly decreasing")
+			raise SystemExit("Option 'create_points' must be strictly decreasing")
 		# Perform 'num' times
 		B_0 = np.zeros(num)
 		inc_0 = np.zeros(num)
@@ -490,7 +490,7 @@ def create_models(conf: dict) -> None:
 			raise Exception(f"Option 'create_points' does not have exactly three elements ({conf['create_points']})")
 			#print("[create_models] The parameter 'create_points' in the config does not have exactly two elements!")
 		if create_points[1] < create_points[0]:
-			raise Exception("Option 'create_points' must be strictly decreasing")
+			raise SystemExit("Option 'create_points' must be strictly decreasing")
 		B_p1 = np.zeros(num)
 		B_m1 = np.zeros(num)
 		B_m5 = np.zeros(num)
