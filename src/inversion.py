@@ -955,7 +955,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			
 			# Compute chi2
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
-			
+			print("-------> Total χ² = %.3f" % chi2.total)
 			del obs
 			del num_of_nodes
 
@@ -1211,7 +1211,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 			
 			# Compute chi2
 			chi2.compute(obs, stokes, [float(i) for i in conf["weights"]], num_of_nodes)
-			
+			print("-------> Total χ² = %.3f" % chi2.total)
 			del obs
 			del num_of_nodes
 
@@ -1535,7 +1535,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			
 			# Compute chi2
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
-			
+			print("-------> Total χ² = %.3f" % chi2.total)
 			del obs
 			del num_of_nodes
 		
