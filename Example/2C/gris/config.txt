@@ -47,7 +47,7 @@ nodes_gamma2 :  # Nodes 2 in gamma
 nodes_phi2 :  # Nodes 2 in phi
 mu_cos :  # mu = cos theta
 abundance : THEVENIN # Abundance file
-gas_pressure :  # Gas Pressure Boundary condition
+gas_pressure : 3000 3000 # Gas Pressure Boundary condition (two values separated with a space)
 # 
 # Radomisation Settings
 # 
