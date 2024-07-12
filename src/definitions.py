@@ -147,6 +147,10 @@ lower_T = np.array([6780.3, 6536. , 6291.9, 6048.5, 5806.5, 5569.5, 5340.7, 5117
 					  3225.9, 3207.5, 3188.5, 3170.5, 3155.7, 3142.8, 3129.7]
 					)
 
-# Multiplicative random factor (the cool model is multiplied with a number between 1-f and 1+f)
-multiplicative_T = 0.05
-
+# Factors for the randomisation
+multiplicative_T = 0.05 # Multiplicative random factor (the cool model is multiplied with a number between 1-f and 1+f)
+lower_f = 0.5 # Minimum factor for the upper model (typically for the QS)
+upper_f = 1.1 # Maximum factor for the upper model (typically for the QS)
+temp_B = [5000,4000,3000,2000]
+temp_f = [[0.0,0.5],[0.0,0.6],[0.0,0.7],[0.0,0.8]]
+rot_point = -1 # Point where the temperature is rotated (Only for simulation used not in inversion)

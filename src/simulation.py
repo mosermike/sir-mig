@@ -714,26 +714,24 @@ def create_temperature(tau, B = 0):
 	cool11_T = np.copy(d.lower_T)
 
 	HSRA_T -= cool11_T  # Make it relative to cool11 so that with a fac of 1, I get the HSRA model
-	# Factor for adding HSRA depending on the magnetic field
-	if B > 5000:
-		factor = np.random.uniform(0.0, 0.6)
-	elif B > 4000:
-		factor = np.random.uniform(0.0, 0.7)
-	elif B > 3000:
-		factor = np.random.uniform(0.0, 0.8)
-	elif B > 2000:
-		factor = np.random.uniform(0.0, 0.9)
-	else:
-		factor = np.random.uniform(0.6, 1.1)
+	
+	# Factor for adding hsra depending on the magnetic field
+	factor = np.random.uniform(d.lower_T,d.upper_T)
+	# Apply restrictions for stronger magnetic fields
+	for i in range(len(d.temp_B)):
+		if B > d.temp_B[i]:
+			factor = np.random.uniform(d.temp_f[i][0], d.temp_f[i][1])
+			break
 		
 	# Little perturbation for cool11 model
 	cool11_T = cool11_T * np.random.uniform(1-d.multiplicative_T, 1+d.multiplicative_T)
 	# Add the values
 	Ts = cool11_T + factor * HSRA_T
+	
 	# Add (only in creating models) additional perturbation in a resulting rotation around log tau -1
-	factor = np.random.uniform(0.9, 1.1)
-	Ts[Ts > -1] = Ts[Ts > -1] * factor
-	Ts[Ts <= -1] = Ts[Ts <= -1] / factor
+	factor = np.random.uniform(0.95, 1.05)
+	Ts[Ts > d.rot_point] = Ts[Ts > d.rot_point] * factor
+	Ts[Ts <= d.rot_point] = Ts[Ts <= d.rot_point] / factor
 
 	return np.interp(tau, np.flip(log_taus), np.flip(Ts))
 
