@@ -171,7 +171,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 		HSRA_T -= cool_T # Make it relative to cool11 so that with a fac of 1, I get the HSRA model
 
 		# Factor for adding hsra depending on the magnetic field
-		factor = np.random.uniform(d.lower_T,d.upper_T)
+		factor = np.random.uniform(d.lower_f,d.upper_f)
 		# Apply restrictions for stronger magnetic fields
 		for i in range(len(d.temp_B)):
 			if B0 > d.temp_B[i]:

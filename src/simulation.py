@@ -716,7 +716,7 @@ def create_temperature(tau, B = 0):
 	HSRA_T -= cool11_T  # Make it relative to cool11 so that with a fac of 1, I get the HSRA model
 	
 	# Factor for adding hsra depending on the magnetic field
-	factor = np.random.uniform(d.lower_T,d.upper_T)
+	factor = np.random.uniform(d.lower_f,d.upper_f)
 	# Apply restrictions for stronger magnetic fields
 	for i in range(len(d.temp_B)):
 		if B > d.temp_B[i]:
@@ -729,11 +729,57 @@ def create_temperature(tau, B = 0):
 	Ts = cool11_T + factor * HSRA_T
 	
 	# Add (only in creating models) additional perturbation in a resulting rotation around log tau -1
-	factor = np.random.uniform(0.95, 1.05)
-	Ts[Ts > d.rot_point] = Ts[Ts > d.rot_point] * factor
-	Ts[Ts <= d.rot_point] = Ts[Ts <= d.rot_point] / factor
+	#factor = np.random.uniform(0.95, 1.05)
+	#Ts[Ts > d.rot_point] = Ts[Ts > d.rot_point] * factor
+	#Ts[Ts <= d.rot_point] = Ts[Ts <= d.rot_point] / factor
+	
+	# Rotate the temperature
+	deg = np.random.uniform(-d.rot_deg,d.rot_deg)
+	Ts = _rot(log_taus,Ts,d.rot_point,deg)
 
 	return np.interp(tau, np.flip(log_taus), np.flip(Ts))
+
+def _rot(x,y,origin,deg):
+	'''
+	Rotates a curve around a specific origin in x. Note that only y is changed!
+
+	Parameters
+	----------
+	x : np.array
+		x-values
+	y : np.array
+		y-values
+	origin : float
+		Origin in x
+	deg : float
+		degree of the rotation
+
+	Return
+	------
+	out : np.array
+		Rotated array in y-direction
+	'''
+	# Change the origin to the selected rotation point
+	x_ = x - origin
+	y_ = y - y[np.argmin(abs(x-origin))]
+
+	# Normalise the functions
+	x_max = np.max(np.abs(x_))
+	y_max = np.max(np.abs(y_))
+	x_ /= x_max
+	y_ /= y_max
+
+	# Rotate it by use of the rotation matrix
+	rad = deg/180*np.pi
+	x_rot =  x_*np.cos(rad)+y_*np.sin(rad)
+	y_rot = -x_*np.sin(rad)+y_*np.cos(rad)
+
+	# "Unormalise"
+	x_rot *= x_max
+	y_rot *= y_max
+
+	# Interpolate in the selected temperature
+	return y_rot+y[np.argmin(abs(x-origin))]
 
 def synthesis(conf, comm, rank, size, MPI, progress = True):
 	"""
