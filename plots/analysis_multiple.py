@@ -215,7 +215,7 @@ def analysis_multiple(confs : list, labels : list):
 
 			for n in range(len(log_taus)):
 				# Standard deviation
-				std = np.sqrt(np.sum((fits[n].get_attribute(att[i])[:,0,:] - _syns[n].get_attribute(att[i])[:,0,:])**2, axis=0)/(nums[n]-1))	 
+				std = np.sqrt(np.sum((fits[n].get_attribute(att[i])[:,0,:] - syns[n].get_attribute(att[i])[:,0,:])**2, axis=0)/(nums[n]-1))	 
 				ax1.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 				stds.append(std)
 			# Set limits
