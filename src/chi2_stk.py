@@ -239,10 +239,10 @@ class chi2_stk:
 		# Compute total chi2
 		self.total = _compute_total_chi2(obs, syn, x, y, self.noise, self.noise, self.noise, self.noise, weights[0], weights[1], weights[2], weights[3], num_of_nodes)
 		
-		self.Itot = np.sum(self.stki) / (self.nx * self.ny * obs.nw - num_of_nodes)
-		self.Qtot = np.sum(self.stkq) / (self.nx * self.ny * obs.nw - num_of_nodes)
-		self.Utot = np.sum(self.stku) / (self.nx * self.ny * obs.nw - num_of_nodes)
-		self.Vtot = np.sum(self.stkv) / (self.nx * self.ny * obs.nw - num_of_nodes)
+		self.Itot = np.sum(self.stki) / (np.float64(self.nx) * np.float64(self.ny) * np.float64(obs.nw) - np.float64(num_of_nodes))
+		self.Qtot = np.sum(self.stkq) / (np.float64(self.nx) * np.float64(self.ny) * np.float64(obs.nw) - np.float64(num_of_nodes))
+		self.Utot = np.sum(self.stku) / (np.float64(self.nx) * np.float64(self.ny) * np.float64(obs.nw) - np.float64(num_of_nodes))
+		self.Vtot = np.sum(self.stkv) / (np.float64(self.nx) * np.float64(self.ny) * np.float64(obs.nw) - np.float64(num_of_nodes))
 
 		return
 
