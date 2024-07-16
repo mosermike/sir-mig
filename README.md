@@ -90,50 +90,18 @@ In the directory `example`, several files are put. An examplary config file for 
 
 ```bash
 .
+├── chi2_stk.py                       - Class for computing chi2
 ├── create_config.py                  - Create config file as expected from the code
-├── create_models.py                  - Create models with 2 or 3 nodes and T based on HSRA.
-├── create_profiles.py                - Performs the MC synthesis and adds noise to the created, random profiles
 ├── create_random_guess.py            - Creates random guesses for the inversion
 ├── definitions.py                    - Global definitions
 ├── inversion.py                      - Performs the inversion
 ├── main.py                           - Main script to be executed
+├── mml.mplstyle                      - Matplotlib Style Sheet
 ├── model_atm.py                      - Class for the model
 ├── preprocess.py                     - Scripts for data preprocessing (merge, normalise, spectral veil correction)
 ├── profile_stk.py                    - Class profile 
-├── sir.py                            - Script containing import functions related to SIR and the code (reading config, writing control files, etc.)
-├── plots                             - Directory with several plots for the different modes 
-│   ├── _1C
-│   │   ├── inversion.py              - Plots one single inversion and saves it by using the config file
-│   │   └── inversion_single.py       - Plots one single inversion and saves it
-│   ├── _2C
-│   │   ├── inversion.py              - Plots one single inversion and saves it by using the config file
-│   │   └── inversion_single.py       - Plots one single inversion and saves it
-│   ├── _MC
-│   │   ├── chi2.py                   - Plots the chi2 values of multiple MC simulations 
-│   │   ├── inversion.py              - Plots the Stokes profiles and the fit plus the physical parameters of one model.
-│   │   ├── inversion_2.py            - Does the same as the script before but for two inversions.
-│   │   ├── inversion_single.py       - Plots a single inversion result without any config file for testing purposes.
-│   │   ├── synthesis_blend.py        - Blends two profiles with specified values alpha. It is also possible to add noise to the profiles.
-│   │   └── synthesis.py              - Plots the results of the synthesis for multiple profiles and models.
-│   ├── analysis_compare_chi2.py  - Compares the chi^2 value for different MC simulations. Needs to be revised.
-│   ├── analysis_multiple.py	  - Does the same as the script below but plots the results of multiple different MC simulations.
-│   ├── analysis.py               - Analysis the MC simulation by plotting the standard deviations and printing out the values at some log tau values.
-│   ├── gris_sketch.py                - Sketches data of gris to get an overview
-│   ├── Ic_test.py                    - Plots the intensity of the obs. and the fit in a diagramm to test the inversion
-│   ├── initial_vs_result.py          - Plots the initial starting point vs the resulting point for different inversions
-│   ├── mml.mplstyle                  - Matplotlib stylesheet
-│   ├── one_model.py                  - Plots one model
-│   ├── response.py                   - Plots the response function of a model created with SIR
-│   ├── result.py                     - Plots the results of the inversion
-│   └── visualizer.py                 - Visualises the Stokes Profiles and the fits as well as the model for selectable pixels.
-└── tools                             - Useful scripts
-    ├── change_config_path.py         - Changes the path of a config file by providing the new path in the command line
-    ├── change_model.py               - Changes a parameter of a model. Verify that it worked as wanted.
-    ├── clean.py                      - Cleans the inversion files
-    ├── convert_MC.py                 - A script to convert old MC files to the new version (separated profiles saved for different lines)
-    ├── convert_MC_models.py          - A script to convert old MC model files to the new version
-    ├── distclean.py                  - Removes all created files
-    └── extract_profile_model.py      - Extract the data from the npy files and stores it in a directory to run a single inversion again
+├── simulation.py                     - Performs the simulation which creates models and stokes profiles.
+└── sir.py                            - Script containing import functions related to SIR and the code (reading config, writing control files, etc.)
 
 
 ```
