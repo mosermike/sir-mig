@@ -24,7 +24,7 @@ def _compute_chi2(obs, syn, noise, weight, num_of_nodes, mul=1.):
 	
 	result = result * weight/noise * weight/noise
 	
-	result /= (mul*len(obs)-num_of_nodes)
+	result /= (np.float64(mul)*np.float64(len(obs))-np.float64(num_of_nodes))
 
 	return result
 
