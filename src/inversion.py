@@ -379,6 +379,9 @@ def execute_inversion_1c(conf, task_folder, rank):
 							lines.append(line)
 						print("[LAST LOG ENTRIES]: ")
 						print("------------------------------ ")
+						print(lines[-6])
+						print(lines[-5])
+						print(lines[-4])
 						print(lines[-3])
 						print(lines[-2])
 						print(lines[-1])
@@ -471,12 +474,28 @@ def execute_inversion_1c(conf, task_folder, rank):
 		shutil.copy(conf["model"], d.model_inv)
 
 		# Perform inversion once and read chi2 value
-		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
+		os.system(f"echo {d.inv_trol_file} | ./sir.x > inv.log")
 		
 		# Check if chi2 file exists and inversion finished successfully
 		if not exists(chi_file):
 			print("[read_chi2] " + chi_file + " does not exist in " + task_folder + ".")
+			print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
+			with open('inv.log') as f:
+				lines = []
+				for line in f:
+					lines.append(line)
+				print("[LAST LOG ENTRIES]: ")
+				print("------------------------------ ")
+				print(lines[-6])
+				print(lines[-5])
+				print(lines[-4])
+				print(lines[-3])
+				print(lines[-2])
+				print(lines[-1])
+				print("------------------------------ ")
+			del lines
 			sys.exit(1)
+			
 
 		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.mod", f"best.mod")
 		shutil.move(f"{d.guess.replace('.mod','')}_{cycles}.err", f"best.err")
@@ -675,11 +694,27 @@ def execute_inversion_2c(conf, task_folder, rank):
 		# Perform inversion once and read chi2 value
 		shutil.copy(model1,d.guess1)
 		shutil.copy(model2,d.guess2)
-		os.system(f"echo {d.inv_trol_file} | ./sir.x > /dev/null")
+		os.system(f"echo {d.inv_trol_file} | ./sir.x > inv.log")
 		# Check if inversion was successful
 		if not exists(chi_file):
 			print("[read_chi2] " + chi_file + " does not exist in " + task_folder + ".")
+			print(f"[ERROR] Check your sir.x file and the log file in the {d.task_start} folders. There might be a problem with sir.x")
+			with open('inv.log') as f:
+				lines = []
+				for line in f:
+					lines.append(line)
+				print("[LAST LOG ENTRIES]: ")
+				print("------------------------------ ")
+				print(lines[-6])
+				print(lines[-5])
+				print(lines[-4])
+				print(lines[-3])
+				print(lines[-2])
+				print(lines[-1])
+				print("------------------------------ ")
+			del lines
 			sys.exit(1)
+		
 		shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.mod", f"best1.mod")
 		shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.err", f"best1.err")
 		shutil.move(f"{d.guess2.replace('.mod','')}_{cycles}.mod", f"best2.mod")

@@ -156,7 +156,7 @@ def read_chi2(filename, task = ''):
 	"""
 	if not exists(filename):
 		print("[read_chi2] " + filename + " does not exist in " + task + ".")
-		sys.exit(1)
+		return -1
 
 	# Load data
 	data = np.genfromtxt(filename)
