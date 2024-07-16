@@ -212,10 +212,10 @@ def scatter_data_mc(conf, comm, rank, size, return_stk=False):
 			sys.exit()
 
 		# Create one data cube
-		stki = stk1.stki
-		stkq = stk1.stkq
-		stku = stk1.stku
-		stkv = stk1.stkv
+		stki = stk1.stki[:,0,:]
+		stkq = stk1.stkq[:,0,:]
+		stku = stk1.stku[:,0,:]
+		stkv = stk1.stkv[:,0,:]
 		lines = stk1.indx
 		waves = stk1.wave
 
@@ -274,13 +274,13 @@ def scatter_data_mc(conf, comm, rank, size, return_stk=False):
 	waves = comm.bcast(waves, root=0)
 
 	# Put the data together
-	stk = p.profile_stk(stki_chunk.shape[0],stki_chunk.shape[1],stki_chunk.shape[2])
+	stk = p.profile_stk(stki_chunk.shape[0],1,stki_chunk.shape[1])
 	stk.data_cut = True # Already cut before
 	stk.indx = lines
-	stk.stki[:,:] = stki_chunk
-	stk.stkq[:,:] = stkq_chunk
-	stk.stku[:,:] = stku_chunk
-	stk.stkv[:,:] = stkv_chunk
+	stk.stki[:,0] = stki_chunk
+	stk.stkq[:,0] = stkq_chunk
+	stk.stku[:,0] = stku_chunk
+	stk.stkv[:,0] = stkv_chunk
 	stk.wave = waves
 	tasks = {
 		'folders' : task_chunk,
@@ -965,23 +965,41 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 		# Redefine tasks as now all the tasks are read
 		tasks = sir.create_task_folder_list(Map) # Structure tasks
 
-		# Create shapes of the arrays which are filled and saved later
+		# Create directory if / exists in inv_out in config
+		if '/' in conf['inv_out']:
+			temp = os.path.join(path, conf["inv_out"])
+			if not exists(temp[:temp.rfind('/')]):
+				os.mkdir(temp[:temp.rfind('/')])		
+		
+
+		print("-------> Read and Write Profiles ...")
 		stokes_inv = p.profile_stk(0,0,0)
 		stokes_inv.wave = wave # Copy wavelength positions
+		stokes_inv.read_results(tasks, "best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
+		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
+
+		if conf["chi2"] == "":
+			del stokes_inv
+			
+		print("-------> Read and Write Models ...")
 		models_inv = m.model_atm(0,0,0)
 		errors_inv = m.model_atm(0,0,0)
 		best_guesses = m.model_atm(0,0,0)
-		chi2 = c.chi2_stk(0,0)
 
-		print("-------> Read Models ...")
 		models_inv.read_results(tasks, 'best.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		errors_inv.read_results(tasks, 'best.err', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses.read_results(tasks, d.best_guess, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
-		print("-------> Read Profiles ...")
-		stokes_inv.read_results(tasks, "best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
+		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
+		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
+		best_guesses.write(os.path.join(path,conf['inv_out'] + d.best_guess_file))
+
+		del models_inv
+		del errors_inv
+		del best_guesses
 
 		if conf['chi2'] != "":
+			chi2 = c.chi2_stk(0,0)
 			print("-------> Compute χ² (this might take a while) ...")
 			
 			# Number of Nodes in the last step
@@ -1000,25 +1018,11 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			# Compute chi2
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
 			print("-------> Total χ² = %.3f" % chi2.total)
-			del obs
-			del num_of_nodes
-
-
-		# Create directory if / exists in inv_out in config
-		if '/' in conf['inv_out']:
-			temp = os.path.join(path, conf["inv_out"])
-			if not exists(temp[:temp.rfind('/')]):
-				os.mkdir(temp[:temp.rfind('/')])		
-		
-		# Save data
-		print("-------> Write Data ...")
-		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
-		models_inv.write(os.path.join(path,conf['inv_out']) + d.end_models)
-		errors_inv.write(os.path.join(path,conf['inv_out']) + d.end_errors)
-		best_guesses.write(os.path.join(path,conf['inv_out'] + d.best_guess_file))
-		
-		if conf['chi2'] != "":
+			print("-------> Write χ² ...")
 			chi2.write(os.path.join(path, conf['chi2']))
+			del obs
+			del stokes_inv
+			del num_of_nodes
 			del chi2
 
 		if not debug:
@@ -1230,14 +1234,23 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 		print("[STATUS] Gathering results...")
 
 		tasks = sir.create_task_folder_list(conf["num"])
+
+		# Create directory if / exists in inv_out in config
+		if '/' in conf['inv_out']:
+			temp = os.path.join(path, conf["inv_out"])
+			if not exists(temp[:temp.rfind('/')]):
+				os.mkdir(temp[:temp.rfind('/')])
 		
 		# Read the profiles and models
-		print("-------> Read Profiles ...")
+		print("-------> Read and Write Profiles ...")
 		stokes = p.profile_stk(0,0,0)
 		stokes.read_results_MC(path, tasks, "best.per")
 		stokes.write(f"{os.path.join(path,conf['inv_out'])}{d.end_stokes}")
 
-		print("-------> Read Models ...")
+		if conf['chi2'] == "":
+			del stokes
+
+		print("-------> Read and Write Models ...")
 		models = m.model_atm(conf["num"],1,0)	# Model
 		errors = m.model_atm(conf["num"],1,0)	# Error
 		guess  = m.model_atm(conf["num"],1,0)   # Best guess model
@@ -1246,6 +1259,14 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 		errors.read_results(tasks, "best.err", path, int(conf['num']), 1)
 		guess.read_results(tasks, d.best_guess, path, int(conf['num']), 1)
 		
+		models.write(f"{os.path.join(path,conf['inv_out']+d.end_models)}")
+		errors.write(f"{os.path.join(path,conf['inv_out']+d.end_errors)}")
+		guess. write(f"{os.path.join(path,conf['inv_out']+d.best_guess_file)}")
+
+		del models
+		del errors
+		del guess
+
 		if conf['chi2'] != "":
 			print("-------> Compute χ² (this might take a while) ...")
 			chi2 = c.chi2_stk(0,0)
@@ -1266,24 +1287,13 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 			# Compute chi2
 			chi2.compute(obs, stokes, [float(i) for i in conf["weights"]], num_of_nodes)
 			print("-------> Total χ² = %.3f" % chi2.total)
+			chi2.write(os.path.join(path, conf['chi2']))
+
 			del obs
 			del num_of_nodes
-
-		# Create directory if / exists in inv_out in config
-		if '/' in conf['inv_out']:
-			temp = os.path.join(path, conf["inv_out"])
-			if not exists(temp[:temp.rfind('/')]):
-				os.mkdir(temp[:temp.rfind('/')])
-
-		print("-------> Write Data ...")
-		models.write(f"{os.path.join(path,conf['inv_out']+d.end_models)}")
-		errors.write(f"{os.path.join(path,conf['inv_out']+d.end_errors)}")
-		guess. write(f"{os.path.join(path,conf['inv_out']+d.best_guess_file)}")
-
-
-		if conf['chi2'] != "":
-			chi2.write(os.path.join(path, conf['chi2']))
+			del stokes			
 			del chi2
+
 
 		if not debug:
 			for i in range(conf['num']):
@@ -1555,23 +1565,35 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		# Redefine tasks as now all the tasks are read
 		tasks = sir.create_task_folder_list(Map) # Structure tasks
 
-		# Create shapes of the arrays which are filled and saved later
-		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
+		#  Create directory if / exists in inv_out in config
+		if '/' in conf['inv_out']:
+			temp = os.path.join(path, conf["inv_out"])
+			if not exists(temp[:temp.rfind('/')]):
+				os.mkdir(temp[:temp.rfind('/')])
 
-		print("-------> Read Profiles ...")
+		print("-------> Read and Write Profiles ...")
 		stokes_inv = p.profile_stk(stk.nx, stk.ny, stk.nw)
 
 		stokes_inv.wave = stk.wave # Copy wavelength positions
 		stokes_inv.read_results(tasks, f"best.per", path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 
+		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
 
-		print("-------> Read Models ...")
+		if conf["chi2"] == "":
+			del stokes_inv
+
+		print("-------> Read and Write Models ...")
+		# Create shapes of the arrays which are filled and saved later
+		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
+
 		models_inv1		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		models_inv2		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		errors_inv1		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		errors_inv2		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		best_guesses1	= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		best_guesses2	= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
+
+		del log_tau
 
 		models_inv1.read_results(tasks, 'best1.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		models_inv2.read_results(tasks, 'best2.mod', path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
@@ -1580,6 +1602,20 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		best_guesses1.read_results(tasks, d.best_guess1, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		best_guesses2.read_results(tasks, d.best_guess2, path, Map[1]-Map[0]+1, Map[3]-Map[2]+1)
 		
+		models_inv1.write(os.path.join(path,conf['inv_out'] + d.end_models1))
+		models_inv2.write(os.path.join(path,conf['inv_out'] + d.end_models2))
+		errors_inv1.write(os.path.join(path,conf['inv_out'] + d.end_errors1))
+		errors_inv2.write(os.path.join(path,conf['inv_out'] + d.end_errors2))
+		best_guesses1.write(os.path.join(path,conf['inv_out'] + d.best_guess1_file))
+		best_guesses2.write(os.path.join(path,conf['inv_out'] + d.best_guess2_file))
+
+		del models_inv1
+		del models_inv2
+		del errors_inv1
+		del errors_inv2
+		del best_guesses1
+		del best_guesses2
+
 		if conf['chi2'] != "":
 			print("-------> Compute χ² (this might take a while) ...")
 			chi2 = c.chi2_stk(0,0)
@@ -1601,36 +1637,14 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			# Compute chi2
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
 			print("-------> Total χ² = %.3f" % chi2.total)
-			del obs
-			del num_of_nodes
-		
-		# Create directory if / exists in inv_out in config
-		if '/' in conf['inv_out']:
-			temp = os.path.join(path, conf["inv_out"])
-			if not exists(temp[:temp.rfind('/')]):
-				os.mkdir(temp[:temp.rfind('/')])
-
-		print("-------> Write Data ...")
-		stokes_inv.write(os.path.join(path,conf['inv_out']) + d.end_stokes)
-		models_inv1.write(os.path.join(path,conf['inv_out'] + d.end_models1))
-		models_inv2.write(os.path.join(path,conf['inv_out'] + d.end_models2))
-		errors_inv1.write(os.path.join(path,conf['inv_out'] + d.end_errors1))
-		errors_inv2.write(os.path.join(path,conf['inv_out'] + d.end_errors2))
-		best_guesses1.write(os.path.join(path,conf['inv_out'] + d.best_guess1_file))
-		best_guesses2.write(os.path.join(path,conf['inv_out'] + d.best_guess2_file))
-		
-		if conf['chi2'] != "":
+			print("-------> Write χ²")
+			
 			chi2.write(os.path.join(path, conf['chi2']))
 			del chi2
-	
+			del obs
+			del num_of_nodes
+			del stokes_inv
 
-		del stokes_inv
-		del models_inv1
-		del models_inv2
-		del errors_inv1
-		del errors_inv2
-		del best_guesses1
-		del best_guesses2
 		
 		if not debug:
 			# Delete the folder
