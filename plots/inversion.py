@@ -280,7 +280,8 @@ def inversion(conf : dict, x : int, y : int):
 		ax2.set_ylim(-1.1*np.max(np.abs(np.append(Q1,Q_fit1))), 1.1*np.max(np.abs(np.append(Q1,Q_fit1))))
 		ax3.set_ylim(-1.1*np.max(np.abs(np.append(U1,U_fit1))), 1.1*np.max(np.abs(np.append(U1,U_fit1))))
 		ax4.set_ylim(-1.1*np.max(np.abs(np.append(V1,V_fit1))), 1.1*np.max(np.abs(np.append(V1,V_fit1))))
-		ax1.legend(bbox_to_anchor=(1.01,0.95))
+		#ax1.legend(bbox_to_anchor=(1.01,0.95))
+		ax1.legend()
 		# set the spacing between subplots
 		plt.tight_layout(pad=2,h_pad=0.0)
 	else:
@@ -288,7 +289,7 @@ def inversion(conf : dict, x : int, y : int):
 		# set the spacing between subplots	
 		plt.tight_layout(pad=2.5)
 
-	plt.savefig(savepath + "inversion2_stokes_x" + str(x) + "_y" + str(y) + add)
+	plt.savefig(savepath + "inversion_stokes_x" + str(x) + "_y" + str(y) + add)
 
 	###################################################
 	#			Plot physical parameters			#
@@ -319,12 +320,13 @@ def inversion(conf : dict, x : int, y : int):
 				else:
 					llabel = "Syn Model"
 				ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color=colors[0])
+
 			if conf1['mode'] == "2C":
 				llabel = "Best Fit M. 2"
 			else:
 				llabel = "Best Fit"
 			
-			ax1.plot(fit1.tau, fit1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color = colors[1])
+			ax1.plot(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color = colors[1])
 
 			if conf1['mode'] == "2C":
 				# Error of fit
@@ -333,14 +335,14 @@ def inversion(conf : dict, x : int, y : int):
 							color=colors[0], lw=0)
 			
 			# Error of fit
-			ax1.fill_between(fit1.tau, fit1.get_attribute(inputs[i][1:])[x,y] - err1.get_attribute(inputs[i][1:])[x,y],
-						 fit1.get_attribute(inputs[i][1:])[x,y] + err1.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
+			ax1.fill_between(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y] - err1.get_attribute(inputs[i][1:])[x,y],
+						 phy1.get_attribute(inputs[i][1:])[x,y] + err1.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
 						 color=colors[1], lw=0)
 
 
 
 			# Set xlimits
-			ax1.set_xlim(fit1.tau[0], fit1.tau[-1])
+			ax1.set_xlim(phy1.tau[0], phy1.tau[-1])
 
 			# Set labels
 			ax1.set_xlabel(r"$\log \tau_{c}$")
@@ -435,6 +437,8 @@ def inversion(conf : dict, x : int, y : int):
 	#	Set labels	#
 	#####################
 	if "-vertical" not in sys.argv:
+		ax1.set_xlabel(r"$\log \tau_{c}$")
+		ax2.set_xlabel(r"$\log \tau_{c}$")
 		ax3.set_xlabel(r"$\log \tau_{c}$")
 	ax4.set_xlabel(r"$\log \tau_{c}$")
 
@@ -452,10 +456,11 @@ def inversion(conf : dict, x : int, y : int):
 		ax3.set_title(titles[4])
 		ax4.set_title(titles[5])
 
-	ax1.legend(loc='upper right')
-	ax2.legend(loc='upper right')
-	ax3.legend(loc='upper right')
-	ax4.legend(loc='upper right')
+	if conf1["mode"] == "MC" or conf1['mode'] == "2C":
+		ax1.legend(loc='upper right')
+		#ax2.legend(loc='upper right')
+		#ax3.legend(loc='upper right')
+		#ax4.legend(loc='upper right')
 
 	# Set title position depending on the chosen plot and consider the flags hinode and gris
 	if title != "-1":
