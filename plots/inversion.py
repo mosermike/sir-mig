@@ -138,6 +138,7 @@ def inversion(conf : dict, x : int, y : int):
 		num = phy1.indx[0]
 		if "-num" in sys.argv:
 			num = int(sys.argv[sys.argv.index("-num")+1])
+		# Cut the wave to the line number
 		ll1 = np.where(phy1.indx==num)[0][0]
 		ll2 = np.where(phy1.indx==num)[0][-1]
 		obs1.cut_to_wave([obs1.wave[ll1],obs1.wave[ll2]])
@@ -152,7 +153,7 @@ def inversion(conf : dict, x : int, y : int):
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x,y],obs1.stkq[x,y],obs1.stku[x,y],obs1.stkv[x,y]
 	
 	# Load fit data
-	I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.stki[x,y],fit1.stkq[x,y],fit1.stku[x,y],fit1.stkv[x,y]
+	ll2, I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.wave, fit1.stki[x,y],fit1.stkq[x,y],fit1.stku[x,y],fit1.stkv[x,y]
 
 	# Additional savepath
 	savepath = ''
@@ -184,25 +185,21 @@ def inversion(conf : dict, x : int, y : int):
 	# Change to abs. wavelength to the line core of the first number
 	if conf1['mode'] == "MC":
 		ll0 = input("Put wavelength of the line core: ")
-		ll += ll0
-		ll_fit += ll0
+		ll1 += ll0
+		ll2 += ll0
 
-	label_x = 0
+	label_x = "0"
 
 	temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
 	if temp != '0':
 		ll1 -= float(temp)
 		ll2 -= float(temp)
-		ll1_fit -= float(temp)
-		ll2_fit -= float(temp)
 		label_x = temp
-	else:
+	elif conf["mode"] == "MC":
 		# Keep the same wavelengths as in the Grid file
 		label_x = str(ll0)
 		ll1 -= ll0
 		ll2 -= ll0
-		ll1_fit -= ll0
-		ll2_fit -= ll0
 
 
 	########################
@@ -252,11 +249,14 @@ def inversion(conf : dict, x : int, y : int):
 	ax3.set_ylabel(r'$U / I_c$')
 	ax4.set_ylabel(r'$V / I_c$')
 	
-	
-	if "-vertical" not in sys.argv:
-		ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
-	ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
-
+	if label_x != "0":
+		if "-vertical" not in sys.argv:
+			ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
+		ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
+	else:
+		if "-vertical" not in sys.argv:
+			ax3.set_xlabel(r'$\lambda$' + r' [\AA]', loc='center')
+		ax4.set_xlabel(r'$\lambda$' + r' [\AA]', loc='center')
 	##################################################################
 	# Set title											#
 	# The position is relative to the chosen plot (vertical or not)  #
