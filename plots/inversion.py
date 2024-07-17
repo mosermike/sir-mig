@@ -352,12 +352,13 @@ def inversion(conf : dict, x : int, y : int):
 				ax1.semilogy()
 
 			# Legend
-			ax1.legend()
+			if conf1['mode'] != "1C":
+				ax1.legend()
 		
 			ax1.set_title(titles[i])
 			# set the spacing between subplots
 			plt.tight_layout(pad=2)
-			plt.savefig(savepath + "inversion_x" + str(x) + "_y"  + str(y)+ str(inputs[i][1:]) + add)
+			plt.savefig(savepath + "inversion_x" + str(x) + "_y"  + str(y)+ "_" + str(inputs[i][1:]) + add)
 		
 	# Plot T,B,vlos, inc in one figure
 	lim_max = phy1.tau[-1]
@@ -373,7 +374,7 @@ def inversion(conf : dict, x : int, y : int):
 			 gridspec_kw=dict(hspace=0))
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
-		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), sharex=True)
+		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12))#, sharex=True)
 
 	if conf1["mode"] == "MC":
 		llabel = "Syn. Model"
@@ -381,12 +382,30 @@ def inversion(conf : dict, x : int, y : int):
 		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color='#0C5DA5')
 		ax3.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
 		ax4.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
-
-	llabel = "Best Fit"
-	ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
-	ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
-	ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#FF2C00')
-	ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#FF2C00')
+		llabel = "Best Fit"
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#FF2C00')
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#FF2C00')
+	
+	elif conf1["mode"] == "2C":
+		llabel = "Best Fit Model 1"
+		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax3.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax4.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
+		llabel = "Best Fit Model 2"
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#FF2C00')
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#FF2C00')
+	
+	else:
+		llabel = "Best Fit"
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#FF2C00')
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#FF2C00')
 
 
 	if conf1['mode'] == "2C":
