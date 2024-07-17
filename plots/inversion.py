@@ -51,11 +51,11 @@ def inversion(conf : dict, x : int, y : int):
 	Parameters
 	----------
 	conf : dict
-		Config infos for 1st inversion
+		Config. infos
 	x : int
-		x position of 1st inversion
+		Absolute x position inversion
 	y : int
-		y position of 1st inversion
+		Absolute y position inversion
 
 	
 	Returns
@@ -143,6 +143,10 @@ def inversion(conf : dict, x : int, y : int):
 		obs1.cut_to_wave([obs1.wave[ll1],obs1.wave[ll2]])
 		fit1.cut_to_wave([fit1.wave[ll1],fit1.wave[ll2]])
 
+	# Change to relative x and y for mode 1C and 2C
+	if conf["mode"] == "1C" or conf["mode"] == "2C":
+		x = x - conf["map"][0]
+		y = y - conf["map"][2]
 
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x,y],obs1.stkq[x,y],obs1.stku[x,y],obs1.stkv[x,y]
