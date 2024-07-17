@@ -14,14 +14,14 @@ import definitions as d
 import model_atm as m
 import profile_stk as p
 
-def help():
+def _help():
 	"""
 	Help Page
 	"""
 	print("inversion - Plots the result of one inversion")
 	print("Usage: python inversion.py [OPTION]")
 	print()
-	sir.option("[1. Pos]","Config Model")
+	sir.option("[1. Pos]","Config File")
 	sir.option("[2. Pos]","x position")
 	sir.option("[3. Pos]","y position (choose '0' for mode 'MC')")
 	
@@ -132,7 +132,7 @@ def inversion(conf : dict, x : int, y : int):
 	# Cut wave
 	if conf['mode'] == "1C" or conf["mode"] == "2C":
 		obs1.cut_to_wave(conf["range_wave"])
-		obs1.cut_to_map(conf["Map"])
+		obs1.cut_to_map(conf["map"])
 
 	else:
 		num = phy1.indx[0]
@@ -475,7 +475,7 @@ def inversion(conf : dict, x : int, y : int):
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
-		help()
+		_help()
 	conf1 = sir.read_config(sys.argv[1])
 	inversion(conf1, int(sys.argv[2]),int(sys.argv[3]))
 

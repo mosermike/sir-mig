@@ -217,7 +217,9 @@ def extract_profile_model_2C(conf, x, y):
 	# Cut observation
 	obs1.cut_to_map(Map)
 	obs1.cut_to_wave(conf["range_wave"]) # Cut the values to data used in the inversion
-
+	inv.data_cut_wave = True
+	inv._data_cut_map = True
+	
 	# Change to the reduced Map
 	x = x - Map[0]
 	y = y - Map[2]
