@@ -159,8 +159,8 @@ def inversion(conf : dict, x : int, y : int):
 	savepath = ''
 	if '-save' in sys.argv:
 		savepath = sys.argv[sys.argv.index("-save")+1]
-		if not exists(savepath):
-			os.mkdir(savepath)
+		if "/" in savepath:
+			os.mkdir(savepath[:savepath.rfind("/")])
 	
 	# Additional text
 	add = ''
@@ -316,13 +316,13 @@ def inversion(conf : dict, x : int, y : int):
 			# Synthesised model = Real model
 			if conf1["mode"] == "MC" or conf1['mode'] == "2C":
 				if conf1['mode'] == "2C":
-					llabel = "Best Fit M. 1"
+					llabel = "Best Fit Model 1"
 				else:
 					llabel = "Syn Model"
 				ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color=colors[0])
 
 			if conf1['mode'] == "2C":
-				llabel = "Best Fit M. 2"
+				llabel = "Best Fit Model 2"
 			else:
 				llabel = "Best Fit"
 			
@@ -380,8 +380,8 @@ def inversion(conf : dict, x : int, y : int):
 		llabel = "Syn. Model"
 		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color='#0C5DA5')
 		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax3.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax4.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
 		llabel = "Best Fit"
 		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
 		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
@@ -392,8 +392,8 @@ def inversion(conf : dict, x : int, y : int):
 		llabel = "Best Fit Model 1"
 		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color='#0C5DA5')
 		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax3.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax4.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
 		llabel = "Best Fit Model 2"
 		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
 		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')

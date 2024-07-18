@@ -1560,7 +1560,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 	os.chdir(path)
 	if rank == 0:
 		
-		print("[STATUS] Gathering results...", end='', flush=False)
+		print("[STATUS] Gathering results...")
 
 		# Redefine tasks as now all the tasks are read
 		tasks = sir.create_task_folder_list(Map) # Structure tasks
