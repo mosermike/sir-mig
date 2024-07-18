@@ -137,11 +137,13 @@ def create_models(conf: dict) -> None:
 	num = conf["num"]  # Number of random models
 	model_nodes = int(conf["model_nodes"])  # If cubic or linear is used
 
+	# Savepath for the histograms
 	savepath = path + "/"
 	if "-save" in sys.argv:
 		savepath = os.path.join(path, sys.argv[sys.argv.index("-save") + 1])
 		if not exists(savepath):
 			os.makedirs(savepath, exist_ok=True)
+
 	model_pars = conf['model_pars']  # Parameters which should be randomized
 	bT = bPe = bvmicro = bB = bvlos = binc = bazi = bz = bPg = brho = False
 	if 'T' in model_pars:
@@ -194,6 +196,8 @@ def create_models(conf: dict) -> None:
 	create_phi = np.array([__split_to_float(i, letter=",") for i in conf['create_phi'].split(';')])
 	create_points = np.flip(__split_to_float(conf['create_points']))	
 	
+	if create_points[0] < log_tau0[0]:
+		print(f"[create_models] The point {create_points[0]} ")
 	model = m.model_atm(int(num), 1, len(log_tau0))
 	for i in range(num):
 		model.vmacro[i,0] = float(conf["vmacro"])
@@ -299,44 +303,44 @@ def create_models(conf: dict) -> None:
 		#######################
 		if bB:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated magnetic fields",
+			plt.title(r"Histogram of randomly generated magnetic Fields",
 						fontsize=20)
 			ax.hist(B_0, bins=20)
 			ax.set_xlabel("B [G]")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_B")
+			plt.savefig(savepath + "hist_B.pdf")
 
 		if bvlos:
 			fig, ax = plt.subplots()
 			plt.title(
-				r"Histogram of randomly generated line of sight velocities",
+				r"Histogram of randomly generated Line of Sight Velocities",
 				fontsize=20)
 			ax.hist(vlos_0 / 1e5, bins=20)
 			ax.set_xlabel(r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}} \right]$")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_vlos")
+			plt.savefig(savepath + "hist_vlos.pdf")
 
 		if binc:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated inclination",
+			plt.title(r"Histogram of randomly generated Inclinations",
 					fontsize=20)
 			ax.hist(inc_0, bins=20)
 			ax.set_xlabel(r"$\gamma$ [deg]")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_inc")
+			plt.savefig(savepath + "hist_gamma.pdf")
 
 		if bazi:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated azimuths",
+			plt.title(r"Histogram of randomly generated Azimuths",
 					fontsize=20)
 			ax.hist(azi_0, bins=20)
 			ax.set_xlabel(r"$\phi$ [deg]")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_azi")
+			plt.savefig(savepath + "hist_phi.pdf")
 
 	#################
 	# LINEAR MODELS #
@@ -445,44 +449,44 @@ def create_models(conf: dict) -> None:
 		#######################
 		if bB:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated magnetic fields @ $\log \tau = $" + str(d.create_points2[0]),
+			plt.title(r"Histogram of randomly generated magnetic Fields @ $\log \tau = $" + str(d.create_points2[0]),
 						fontsize=20)
 			ax.hist(B_0, bins=20)
 			ax.set_xlabel("B [G]")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_B")
+			plt.savefig(savepath + "hist_B.pdf")
 
 		if bvlos:
 			fig, ax = plt.subplots()
 			plt.title(
-				r"Histogram of randomly generated line of sight velocities @ $\log \tau = $" + str(d.create_points2[0]),
+				r"Histogram of randomly generated Line of Sight Velocities @ $\log \tau = $" + str(d.create_points2[0]),
 				fontsize=20)
 			ax.hist(vlos_0 / 1e5, bins=20)
 			ax.set_xlabel(r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}} \right]$")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_vlos")
+			plt.savefig(savepath + "hist_vlos.pdf")
 
 		if binc:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated inclinations @ $\log \tau = $" + str(d.create_points2[0]),
+			plt.title(r"Histogram of randomly generated Inclinations @ $\log \tau = $" + str(d.create_points2[0]),
 					fontsize=20)
 			ax.hist(inc_0, bins=20)
 			ax.set_xlabel(r"$\gamma$ [deg]")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_inc")
+			plt.savefig(savepath + "hist_gamma.pdf")
 
 		if bazi:
 			fig, ax = plt.subplots()
-			plt.title(r"Histogram of randomly generated azimuths @ $\log \tau = $" + str(d.create_points2[0]),
+			plt.title(r"Histogram of randomly generated Azimuths @ $\log \tau = $" + str(d.create_points2[0]),
 					fontsize=20)
 			ax.hist(azi_0, bins=20)
 			ax.set_xlabel(r"$\phi$ [deg]")
 			ax.set_ylabel("Entries")
 
-			plt.savefig(savepath + "hist_azi")
+			plt.savefig(savepath + "hist_phi.pdf")
 
 	elif model_nodes == 3:
 		print("-------> Create models with three nodes")
@@ -626,7 +630,7 @@ def create_models(conf: dict) -> None:
 		#######################
 		if bB:
 			fig, ax = plt.subplots()
-			plt.title(r"Generated Magnetic Fields", fontsize=20)
+			plt.title(r"Generated magnetic Fields", fontsize=20)
 
 			ax.hist(B_p1, bins=20, histtype='step', label=r"@ $\log \tau =  $" + str(create_points[2]))
 			ax.hist(B_m1, bins=20, histtype='step', label=r"@ $\log \tau = $" + str(create_points[1]))
@@ -635,7 +639,7 @@ def create_models(conf: dict) -> None:
 			ax.set_xlabel("B [G]")
 			ax.set_ylabel("Entries")
 			ax.legend(loc='upper right')
-			plt.savefig(savepath + "hist_B")
+			plt.savefig(savepath + "hist_B.pdf")
 
 		if bvlos:
 			fig, ax = plt.subplots()
@@ -647,7 +651,7 @@ def create_models(conf: dict) -> None:
 			ax.set_ylabel("Entries")
 			ax.legend(loc='upper right')
 
-			plt.savefig(savepath + "hist_vlos")
+			plt.savefig(savepath + "hist_vlos.pdf")
 
 		if binc:
 			fig, ax = plt.subplots()
@@ -660,7 +664,7 @@ def create_models(conf: dict) -> None:
 			ax.set_ylabel("Entries")
 			ax.legend(loc='upper right')
 
-			plt.savefig(savepath + "hist_inc")
+			plt.savefig(savepath + "hist_gamma.pdf")
 
 		if bazi:
 			fig, ax = plt.subplots()
@@ -673,7 +677,7 @@ def create_models(conf: dict) -> None:
 			ax.set_ylabel("Entries")
 			ax.legend(loc='upper right')
 
-			plt.savefig(savepath + "hist_azi")
+			plt.savefig(savepath + "hist_phi.pdf")
 	else:
 		print(f"[ERROR] Number of nodes {model_nodes} not implemented!")
 

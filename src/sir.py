@@ -682,10 +682,10 @@ def _write_config_1c(File, conf, verbose = True):
 		f.write(f"# \n")
 		f.write(f"random_guess : {conf['random_guess']} # Create random guesses, 0 = use model as guess\n")
 		f.write(f"random_pars  : {random_pars} # Randomise these parameters in the file(s) below\n")
-		f.write(f"lim_B        : {conf['lim_B']} # Limits for the randomisation in B in G\n")
-		f.write(f"lim_vlos     : {conf['lim_vlos']} # Limits for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation in the inclination in deg\n")
-		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation in the azimuth in deg")
+		f.write(f"lim_B        : {conf['lim_B']} # Limits for the randomisation of B in G\n")
+		f.write(f"lim_vlos     : {conf['lim_vlos']} # Limits for the randomisation of vlos in cm/s\n")
+		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation of the inclination in deg\n")
+		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation of the azimuth in deg")
 
 def _write_config_2c(File, conf, verbose = True):
 	"""
@@ -787,14 +787,14 @@ def _write_config_2c(File, conf, verbose = True):
 		f.write(f"# \n")
 		f.write(f"random_guess : {conf['random_guess']} # Create random guesses, 0 = use model as guess\n")
 		f.write(f"random_pars  : {random_pars} # Randomise these parameters in the file(s) below\n")
-		f.write(f"lim_B1       : {conf['lim_B1']} # Limits 1 for the randomisation in B in G\n")
-		f.write(f"lim_vlos1    : {conf['lim_vlos1']} # Limits 1 for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma1   : {conf['lim_gamma1']} # Limits 1 for the randomisation in the inclination in deg\n")
-		f.write(f"lim_phi1     : {conf['lim_phi1']} # Limits 1 for the randomisation in the azimuth in deg\n")
-		f.write(f"lim_B2       : {conf['lim_B2']} # Limits 1 for the randomisation in B in G\n")
-		f.write(f"lim_vlos2    : {conf['lim_vlos2']} # Limits 2 for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma2   : {conf['lim_gamma2']} # Limits 2 for the randomisation in the inclination in deg\n")
-		f.write(f"lim_phi2     : {conf['lim_phi2']} # Limits 2 for the randomisation in the azimuth in deg")
+		f.write(f"lim_B1       : {conf['lim_B1']} # Limits 1 for the randomisation of B in G\n")
+		f.write(f"lim_vlos1    : {conf['lim_vlos1']} # Limits 1 for the randomisation of vlos in cm/s\n")
+		f.write(f"lim_gamma1   : {conf['lim_gamma1']} # Limits 1 for the randomisation of the inclination in deg\n")
+		f.write(f"lim_phi1     : {conf['lim_phi1']} # Limits 1 for the randomisation of the azimuth in deg\n")
+		f.write(f"lim_B2       : {conf['lim_B2']} # Limits 2 for the randomisation of B in G\n")
+		f.write(f"lim_vlos2    : {conf['lim_vlos2']} # Limits 2 for the randomisation of vlos in cm/s\n")
+		f.write(f"lim_gamma2   : {conf['lim_gamma2']} # Limits 2 for the randomisation of the inclination in deg\n")
+		f.write(f"lim_phi2     : {conf['lim_phi2']} # Limits 2 for the randomisation of the azimuth in deg")
 
 def _write_config_mc(File, conf, verbose=True):
 	"""
@@ -891,10 +891,10 @@ def _write_config_mc(File, conf, verbose=True):
 		f.write(f"# \n")
 		f.write(f"random_guess : {conf['random_guess']} # Create random guesses, 0 = use model as guess\n")
 		f.write(f"random_pars  : {random_pars} # Randomise these parameters for the guess\n")
-		f.write(f"lim_B        : {conf['lim_B']} # Limits for the randomisation in B in G\n")
-		f.write(f"lim_vlos     : {conf['lim_vlos']} # Limits for the randomisation in vlos in cm/s\n")
-		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation in the inclination in deg\n")
-		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation in the azimuth in deg")
+		f.write(f"lim_B        : {conf['lim_B']} # Limits for the randomisation of B in G\n")
+		f.write(f"lim_vlos     : {conf['lim_vlos']} # Limits for the randomisation of vlos in cm/s\n")
+		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation of the inclination in deg\n")
+		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation of the azimuth in deg")
 
 def write_config(File, conf):
 	"""

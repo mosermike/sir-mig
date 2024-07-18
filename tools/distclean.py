@@ -86,7 +86,11 @@ elif conf['mode'] == "MC":
 	os.system(f"rm -rf {inv_out + d.end_stokes}")
 	os.system(f"rm -rf {inv_out + d.end_models}")
 	os.system(f"rm -rf {inv_out + d.end_errors}")
-	os.system(f"rm -rf	{os.path.join(path,d.best_guess_file)}")
-
+	os.system(f"rm -rf	{os.path.join(path,inv_out + d.best_guess_file)}")
+	os.system(f"rm -rf hist_phi.pdf")
+	os.system(f"rm -rf hist_gamma.pdf")
+	os.system(f"rm -rf hist_vlos.pdf")
+	os.system(f"rm -rf hist_B.pdf")
+	
 else:
 	print("[distclean] Mode unknown")

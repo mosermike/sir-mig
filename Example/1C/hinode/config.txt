@@ -5,47 +5,48 @@ path : ./ # Path location where all the data is stored and will be saved
 # Stuff from the data
 # 
 cube_inv : Data Cube # Data cube name used for the inversion (bin)
-map : xmin,xmax,ymin,ymax # Pixels to be considered as a list
+map      : xmin,xmax,ymin,ymax # Pixels to be considered as a list
 #
 # Data Preprocessing
 #
 preprocess : 1 # Preprocess data (1 = True, 0 = False)
-cube : Data Cube # Data cube name (bin) used for preprocessing data if 'preprocess' is 1
+cube       : Data Cube # Data cube name (bin) used for preprocessing data if 'preprocess' is 1
 instrument : Hinode # Instrument used (GRIS, Hinode or empty)
-quiet_sun : xmin,xmax,ymin,ymax # Quiet sun region for normalization as a list (0 => already normalised)
-fts_file : # Absolute path to fts file, blank = do not correct spectral veil
+quiet_sun  : xmin,xmax,ymin,ymax # Quiet sun region for normalization as a list (0 => already normalised)
+fts_file   : # Absolute path to fts file, blank = do not correct spectral veil
 shift_wave : 0 # Shift the wavelength grid when waves file is created in mA
-save_cube : 0 # Save preprocessed data (merged and normalised) (1=True,0=False)
+save_cube  : 0 # Save preprocessed data (merged and normalised) (1=True,0=False)
 # 
 # Inversion configuration
 # 
-model : model.mod # Base Model for guess
+model      : hsra_35.mod # Base Model for guess
 range_wave : start1,step1,num1;start2,step1,num2;... # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.
-inv_out : out # Prefix of output of the inversion files
-chi2 :  # Compute chi2 and save it under this name
-line : Lines # Line file
-atoms : line1,line2;line3 # Atoms used, ; defines a new line
-guess :  # Use a bin file as initial guesses, blank use base model
-psf :  # Spectral PSF .dat file, 'gauss 1.0' or blank=not used
+inv_out    : out # Prefix of output of the inversion files
+chi2       :  # Compute chi2 and save it under this name
+line       : Lines # Line file
+atoms      : line1,line2;line3 # Atoms used, ; defines a new line
+guess      :  # Use a bin file as initial guesses, blank use base model
+psf        :  # Spectral PSF .dat file, 'gauss 1.0' or blank=not used
 # 
 # Control file
 # 
-cycles : 2 # Number of cycles
-weights : 1,1,1,1 # Weights in the control file
-nodes_temp : 1 # Nodes in T
-nodes_magn : 1 # Nodes in B
-nodes_vlos : 1 # Nodes in vlos
-nodes_gamma : 1 # Nodes in gamma
-nodes_phi : 0 # Nodes in phi
-vmacro : 0.1000 # Macroturbulence velocity
-mu_cos : 1 # mu = cos theta
-abundance : THEVENIN # Abundance file
+cycles       : 2 # Number of cycles
+weights      : 1,1,1,1 # Weights in the control file
+nodes_temp   : 1 # Nodes in T
+nodes_magn   : 1 # Nodes in B
+nodes_vlos   : 1 # Nodes in vlos
+nodes_gamma  : 1 # Nodes in gamma
+nodes_phi    : 0 # Nodes in phi
+vmacro       : 0.1000 # Macroturbulence velocity
+mu_cos       : 1 # mu = cos theta
+abundance    : THEVENIN # Abundance file
 gas_pressure :  # Gas Pressure Boundary condition
 # 
 # Radomisation Settings
 # 
 random_guess : 10 # Create random guesses, 0 = use model as guess
-random_pars : B,T,vlos,gamma # Randomise these parameters in the file(s) below
-lim_B : 0,5000 # Limits for the randomisation in B in G
-lim_vlos : -1e5,1e5 # Limits for the randomisation in vlos in cm/s
-lim_gamma : 0,180 # Limits for the randomisation in the inclination in deg
+random_pars  : B,T,vlos,gamma # Randomise these parameters in the file(s) below
+lim_B        : 0,5000 # Limits for the randomisation of B in G
+lim_vlos     : -1e5,1e5 # Limits for the randomisation of vlos in cm/s
+lim_gamma    : 0,180 # Limits for the randomisation of the inclination in deg
+lim_phi      : 0,180 # Limits for the randomisation of the azimuth in deg
