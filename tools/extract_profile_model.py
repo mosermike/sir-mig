@@ -80,6 +80,9 @@ def extract_profile_model_1C(conf, x, y):
 	guess = m.read_model(os.path.join(path,conf['inv_out'] + d.best_guess_file))
 	err   = m.read_model(os.path.join(path,conf['inv_out'] + d.end_errors))
 
+	inv.data_cut_wave = True
+	inv._data_cut_map = True
+	
 	# Change to the reduced Map
 	x = x - Map[0]
 	y = y - Map[2]
@@ -143,6 +146,13 @@ def extract_profile_model_MC(conf, num):
 	syn = p.read_profile(os.path.join(path,conf["syn_out"]+ d.end_models))
 	inv = p.read_profile(os.path.join(path,f"{conf['inv_out']}{d.end_stokes}"))
 
+	noise.data_cut_wave = True
+	noise._data_cut_map = True
+	syn.data_cut_wave = True
+	syn._data_cut_map = True
+	inv.data_cut_wave = True
+	inv._data_cut_map = True
+
 	noise.write_profile_mc(os.path.join(savepath,'noise.per' + add), num-1)
 	syn.write_profile_mc(os.path.join(savepath,'syn.per' + add), num-1)
 	inv.write_profile_mc(os.path.join(savepath,'inv.per' + add), num-1)
@@ -204,7 +214,7 @@ def extract_profile_model_2C(conf, x, y):
 	Map = conf['map']
 	
 	# Load data
-	obs1 = p.read_profile(conf, filename=conf['cube'])	
+	obs1 = p.read_profile(os.path.join(path,conf['cube']))
 	inv = p.read_profile(os.path.join(path,conf['inv_out'] + d.end_stokes))
 	guess1 = m.read_model(os.path.join(path,conf['inv_out'] + d.best_guess1_file))
 	guess2 = m.read_model(os.path.join(path,conf['inv_out'] + d.best_guess2_file))

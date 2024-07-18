@@ -402,10 +402,10 @@ def inversion(conf : dict, x : int, y : int):
 	
 	else:
 		llabel = "Best Fit"
-		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
-		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
-		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#FF2C00')
-		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#FF2C00')
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
 
 
 	if conf1['mode'] == "2C":
@@ -421,21 +421,32 @@ def inversion(conf : dict, x : int, y : int):
 		ax4.fill_between(syn1.tau, syn1.gamma[x,y] - err11.gamma[x,y],
 					syn1.gamma[x,y] + err11.gamma[x,y], alpha = 0.5,
 					color='#0C5DA5', lw=0)
-		
-
-
-	ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
+	if conf1['mode'] == "2C" or conf["mode"] == "MC":
+		ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
 				 phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
 				 color='#FF2C00', lw=0)
-	ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
+		ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
 				 phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
-				 color='#FF2C00', lw=0)
-	ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
+				color='#FF2C00', lw=0)
+		ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
 				 phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
 				 color='#FF2C00', lw=0)
-	ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
+		ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
 				 phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
 				 color='#FF2C00', lw=0)
+	else:
+		ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
+				 phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
+				 color='#0C5DA5', lw=0)
+		ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
+				 phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
+				color='#0C5DA5', lw=0)
+		ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
+				 phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
+				 color='#0C5DA5', lw=0)
+		ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
+				 phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
+				 color='#0C5DA5 ', lw=0)
 
 	#####################
 	#	Set limits	#
