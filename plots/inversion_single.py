@@ -21,7 +21,7 @@ def _help():
 	sir.option("[2. Pos]","Best Fit Profile")
 	sir.option("[3. Pos]","Synthesis Profile")
 	sir.option("[4. Pos]","Best Fit Model")
-	sir.option("[5. Pos]","Synthesis Model")
+	sir.option("[5. Pos]","Synthesis Model or Best Fit Model 2C (Modes: MC, 2C)")
 	print()
 	sir.option("-save","Additional save path (optional, default './')")
 	sir.option("-add","Additional text in filenames (optional)")
@@ -504,7 +504,7 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 		which instrument is used (GRIS 15648A line or Hinode) for relative wavelength, otherwise asked
 	
 	"""
-
+	sir.mpl_library()
 	num = 0
 	if '-num' in sys.argv:
 		num = int(sys.argv[sys.argv.index("-num")+1])

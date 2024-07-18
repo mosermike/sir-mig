@@ -107,6 +107,13 @@ def inversion(conf : dict, x : int, y : int):
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#
 	#############################################################
+	# Check range
+	if conf["mode"] == "1C" or conf["mode"] == "2C":
+		if x < conf["map"][0] or x > conf["map"][1]:
+			raise Exception("[inversion] x out of range!")
+		if y < conf["map"][2] or y > conf["map"][3]:
+			raise Exception("[inversion] y out of range!")
+		
 
 	path1 = conf["path"]
 	if conf['mode'] == "MC":
@@ -127,7 +134,10 @@ def inversion(conf : dict, x : int, y : int):
 		obs1 = p.read_profile(os.path.join(path1,conf["cube"]))
 	fit1 = p.read_profile(os.path.join(path1,conf["inv_out"] + d.end_stokes))	# Inversion Profiles 1
 
-
+	# Change to relative x and y for mode 1C and 2C
+	if conf["mode"] == "1C" or conf["mode"] == "2C":
+		x = x - conf["map"][0]
+		y = y - conf["map"][2]
 
 	# Cut wave
 	if conf['mode'] == "1C" or conf["mode"] == "2C":
@@ -144,10 +154,7 @@ def inversion(conf : dict, x : int, y : int):
 		obs1.cut_to_wave([obs1.wave[ll1],obs1.wave[ll2]])
 		fit1.cut_to_wave([fit1.wave[ll1],fit1.wave[ll2]])
 
-	# Change to relative x and y for mode 1C and 2C
-	if conf["mode"] == "1C" or conf["mode"] == "2C":
-		x = x - conf["map"][0]
-		y = y - conf["map"][2]
+	
 
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x,y],obs1.stkq[x,y],obs1.stku[x,y],obs1.stkv[x,y]
@@ -289,7 +296,7 @@ def inversion(conf : dict, x : int, y : int):
 		# set the spacing between subplots	
 		plt.tight_layout(pad=2.5)
 
-	plt.savefig(savepath + "inversion_stokes_x" + str(x) + "_y" + str(y) + add)
+	plt.savefig(savepath + "inversion_stokes_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
 
 	###################################################
 	#			Plot physical parameters			#
@@ -358,7 +365,7 @@ def inversion(conf : dict, x : int, y : int):
 			ax1.set_title(titles[i])
 			# set the spacing between subplots
 			plt.tight_layout(pad=2)
-			plt.savefig(savepath + "inversion_x" + str(x) + "_y"  + str(y)+ "_" + str(inputs[i][1:]) + add)
+			plt.savefig(savepath + "inversion_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + "_" + str(inputs[i][1:]) + add)
 		
 	# Plot T,B,vlos, inc in one figure
 	lim_max = phy1.tau[-1]
@@ -508,7 +515,7 @@ def inversion(conf : dict, x : int, y : int):
 		plt.tight_layout(pad=2)
 
 	  
-	plt.savefig(savepath + "inversion_result_x" + str(x) + "_y"  + str(y) + add)
+	plt.savefig(savepath + "inversion_result_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
 
 
 # Used if executed directly
