@@ -82,7 +82,7 @@ def extract_profile_model_1C(conf, x, y):
 
 	inv.data_cut_wave = True
 	inv._data_cut_map = True
-	
+
 	# Change to the reduced Map
 	x = x - Map[0]
 	y = y - Map[2]
@@ -236,7 +236,7 @@ def extract_profile_model_2C(conf, x, y):
 	
 	# Save data in formats for SIR
 	obs1.write_profile(savepath + "profile" + add + ".per", x, y,d.Grid)
-	inv.write_profile(savepath + "profile_result" + add + ".per", x, y)
+	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, d.Grid)
 	guess1.write_model(savepath + "guess1" + add + ".mod",x,y)
 	guess2.write_model(savepath + "guess2" + add + ".mod",x,y)
 	mod1.write_model(savepath + "model_result1" + add + ".mod", x,y)
