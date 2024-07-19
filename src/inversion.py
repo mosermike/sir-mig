@@ -1447,7 +1447,10 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			else:
 				print(f"-------> Create {conf['random_guess']} random guesses per pixel.")
 		else:
-			print(f"-------> Use Base Model '{conf['model']}' as initial guess.")
+			if conf["guess1"] == '':
+				print(f"-------> Use Model '{conf['model1']}' as initial guess 1.")
+			if conf["guess2"] == '':
+				print(f"-------> Use Model '{conf['model2']}' as initial guess 2.")
 
 	if rank == 0:
 		# Check if there are old task folders and delete them => can result to errors
