@@ -826,7 +826,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 	
 	if rank == 0:
 		# Write which parameters are randomised
-		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) != 1):
+		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) > 1):
 			random_pars = conf["random_pars"]
 			print("-------> Parameters to be randomised: ", end='')
 			print_out = ''
@@ -1119,7 +1119,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 		# Write Grid file based on the chosen wavelength ranges in the config file
 		sir.write_grid(conf, os.path.join(path, d.Grid))
 		# Write which parameters are randomised
-		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) == 1):
+		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) > 1):
 			random_pars = conf["random_pars"]
 			print("-------> Parameters to be randomised: ", end='')
 			print_out = ''
@@ -1417,7 +1417,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 	# Print out randomisation setting
 	if rank == 0:
 		# Write which parameters are randomised
-		if conf["random_guess"] > 0 or (conf["guess"] != '' and len(conf["guess"].split(" ")) == 1):
+		if conf["random_guess"] > 0 or (conf["guess1"] != '' and len(conf["guess1"].split(" ")) > 1) or (conf["guess2"] != '' and len(conf["guess2"].split(" ")) > 1):
 			random_pars = conf["random_pars"]
 			print("-------> Parameters to be randomised: ", end = '')
 			print_out = ''
