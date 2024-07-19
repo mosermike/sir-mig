@@ -52,9 +52,9 @@ def _config_MC():
 	instrument = input("Instrument (GRIS, Hinode or blank) for predefined noise levels: ")
 	if instrument == "GRIS":
 		noise_I=0
-		noise_Q=76.80e-5 # Computed by using many different quiet sun observations from GRIS
-		noise_U=76.77e-5 # Computed by using many different quiet sun observations from GRIS
-		noise_V=74.49e-5 # Computed by using many different quiet sun observations from GRIS
+		noise_Q=77e-5 # Computed by using many different quiet sun observations from GRIS
+		noise_U=77e-5 # Computed by using many different quiet sun observations from GRIS
+		noise_V=75e-5 # Computed by using many different quiet sun observations from GRIS
 	elif instrument == "Hinode":
 		noise_I=0
 		noise_Q=1e-3
@@ -370,8 +370,8 @@ def _config_2C():
 	else:
 		path		= input ("Path: ")
 	cube_inv		= input ("Location of the Data cube used for the inversion (format is nx,ny,ns,nwave) in the path as a fits or npy file: ")
-	Map			= input ("Map in pixels (format xmin,xmax,ymin,ymax, 0 => all pixels): ")
-	instrument	= input ("Instrument          (GRIS, Hinode or blank): ")
+	Map			    = input ("Map in pixels (format xmin,xmax,ymin,ymax, 0 => all pixels): ")
+	instrument	    = input ("Instrument          (GRIS, Hinode or blank): ")
 	preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
 
 	if preprocess == '1':
@@ -393,14 +393,14 @@ def _config_2C():
 	model1		= input ("Base model 1: ")
 	model2		= input ("Base model 2: ")
 	inv_out		= input ("Inversion output prefix [out]: ")
-	line			= input ("Line file                       [Lines]: ")
-	atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
+	line		= input ("Line file                       [Lines]: ")
+	atoms		= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	range_wave  = input("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file:")
 	
 	fill		= input ("Filling factor for the two models? Seperated by a ',': ")
 	guess1		= input ("Take bin file as initial guess for model 1? Write name of the file, if used [if additional number, create small guess around it with this factor]: ")
 	guess2		= input ("Take bin file as initial guess for model 2? Write name of the file, if used [if additional number, create small guess around it with this factor]: ")
-	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used: ")
+	psf			= input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used: ")
 	fill		= input ("Filling factor for the two models? Seperated by a ',': ")
 
 	weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")

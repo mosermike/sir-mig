@@ -81,8 +81,8 @@ nu_range    = (0,31) # in %
 # If you want another instrument to be implemented, add it here.
 # The script merge might need to be adapted manually.
 ll_lit_norm = {
-			"GRIS": [15640.5, 15643],
-			"Hinode": [6301, 6301.072]
+			"GRIS": [15640.500, 15643.000],
+			"Hinode": [6301.000, 6301.072]
 			}
 
 ################
