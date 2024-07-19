@@ -488,7 +488,7 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 
 <dl class="py function">
 <dt class="sig sig-object py" id="preprocess.correct_spectral_veil">
-<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">correct_spectral_veil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pro</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.correct_spectral_veil" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">correct_spectral_veil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instrument</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fts_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet_sun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.correct_spectral_veil" title="Link to this definition">#</a></dt>
 <dd><dl class="simple">
 <dt>Correct the spectral veil in the data. This function calls the following functions:</dt><dd><ul class="simple">
 <li><p>argmin()</p></li>
@@ -506,6 +506,45 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 <dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the information from the config file</p>
 </dd>
 <dt><strong>pro</strong><span class="classifier">profile_stk</span></dt><dd><p>Class with the normalised Stokes Profiles</p>
+</dd>
+<dt><strong>instrument</strong><span class="classifier">str</span></dt><dd><p>Used instrument (Implemented Instruments: GRIS or Hinode)</p>
+</dd>
+<dt><strong>fts_file</strong><span class="classifier">str</span></dt><dd><p>File to the FTS file</p>
+</dd>
+<dt><strong>quiet_sun</strong><span class="classifier">list</span></dt><dd><p>List with the pixel for the quiet sun as xmin,xmax,ymin,ymax</p>
+</dd>
+<dt><strong>cube</strong><span class="classifier">str</span></dt><dd><p>Name of the stored data cube</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="preprocess.correct_spectral_veil_conf">
+<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">correct_spectral_veil_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.correct_spectral_veil_conf" title="Link to this definition">#</a></dt>
+<dd><dl class="simple">
+<dt>Correct the spectral veil in the data with a config file. This function calls the following functions:</dt><dd><ul class="simple">
+<li><p>argmin()</p></li>
+<li><p>chi2()</p></li>
+<li><p>gaussian()</p></li>
+<li><p>convective_blueshift()</p></li>
+<li><p>optimise_chi()</p></li>
+<li><p>vac_to_air()</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pro</strong><span class="classifier">profile_stk</span></dt><dd><p>Class with the normalised Stokes Profiles</p>
+</dd>
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the information from the config file</p>
 </dd>
 </dl>
 </dd>
@@ -545,21 +584,25 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 
 <dl class="py function">
 <dt class="sig sig-object py" id="preprocess.merge">
-<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.merge" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instrument</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.merge" title="Link to this definition">#</a></dt>
 <dd><p>Merges data to a cube</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
-</dd>
 <dt><strong>dir</strong><span class="classifier">str</span></dt><dd><p>Directory of the fits</p>
 </dd>
 <dt><strong>ending</strong><span class="classifier">str</span></dt><dd><p>Ending of the dataset (for GRIS data)</p>
 </dd>
-</dl>
+<dt><strong>instrument</strong><span class="classifier">str</span></dt><dd><p>Used instrument (Implemented Instruments: GRIS or Hinode)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>Path where files are written</p>
+</dd>
+<dt><strong>shift</strong><span class="classifier">str</span></dt><dd><p>Shift the wavelengths by this value in mA</p>
+</dd>
+<dt><strong>save</strong><span class="classifier">bool</span></dt><dd><p>Save the merged data cube</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——-</strong></dt><dd></dd>
 <dt><strong>merge</strong><span class="classifier">profile_stk</span></dt><dd><p>Class with the merged profiles</p>
 </dd>
 </dl>
@@ -568,15 +611,55 @@ function as shown in <a class="reference external" href="https://stackoverflow.c
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="preprocess.merge_conf">
+<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">merge_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.merge_conf" title="Link to this definition">#</a></dt>
+<dd><p>Merges data to a cube with the config file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dir</strong><span class="classifier">str</span></dt><dd><p>Directory of the fits</p>
+</dd>
+<dt><strong>ending</strong><span class="classifier">str</span></dt><dd><p>Ending of the dataset (for GRIS data)</p>
+</dd>
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the information from the config file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="preprocess.normalise">
-<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pro</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.normalise" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instrument</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet_sun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.normalise" title="Link to this definition">#</a></dt>
 <dd><p>Normalise the data cube by the given quiet sun range</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
-</dd>
 <dt><strong>pro</strong><span class="classifier">profile_stk</span></dt><dd><p>Data cube with the Stokes Profiles</p>
+</dd>
+<dt><strong>instrument</strong><span class="classifier">str</span></dt><dd><p>Used instrument (Implemented Instruments: GRIS or Hinode)</p>
+</dd>
+<dt><strong>quiet_sun</strong><span class="classifier">list</span></dt><dd><p>List with the pixel for the quiet sun as xmin,xmax,ymin,ymax</p>
+</dd>
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>Path where files are written</p>
+</dd>
+<dt><strong>save</strong><span class="classifier">bool</span></dt><dd><p>Save the merged data cube</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="preprocess.normalise_conf">
+<span class="sig-prename descclassname"><span class="pre">preprocess.</span></span><span class="sig-name descname"><span class="pre">normalise_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/preprocess.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#preprocess.normalise_conf" title="Link to this definition">#</a></dt>
+<dd><p>Normalise the data cube by the given quiet sun range with the config file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>pro</strong><span class="classifier">profile_stk</span></dt><dd><p>Data cube with the Stokes Profiles</p>
+</dd>
+<dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the information from the config file</p>
 </dd>
 </dl>
 </dd>
@@ -644,7 +727,7 @@ it should be better in the infrared than Edlen.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Corresponding wavelength in air in Angstrom</p>
+<dt><strong>vac_to_air</strong><span class="classifier">float</span></dt><dd><p>Corresponding wavelength in air in Angstrom</p>
 </dd>
 </dl>
 </dd>
@@ -709,9 +792,12 @@ it should be better in the infrared than Edlen.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.chi2"><code class="docutils literal notranslate"><span class="pre">chi2()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.convective_blueshift"><code class="docutils literal notranslate"><span class="pre">convective_blueshift()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.correct_spectral_veil"><code class="docutils literal notranslate"><span class="pre">correct_spectral_veil()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.correct_spectral_veil_conf"><code class="docutils literal notranslate"><span class="pre">correct_spectral_veil_conf()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.merge"><code class="docutils literal notranslate"><span class="pre">merge()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.merge_conf"><code class="docutils literal notranslate"><span class="pre">merge_conf()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.normalise"><code class="docutils literal notranslate"><span class="pre">normalise()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.normalise_conf"><code class="docutils literal notranslate"><span class="pre">normalise_conf()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.optimise_chi"><code class="docutils literal notranslate"><span class="pre">optimise_chi()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess.vac_to_air"><code class="docutils literal notranslate"><span class="pre">vac_to_air()</span></code></a></li>
 </ul>

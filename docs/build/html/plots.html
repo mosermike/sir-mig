@@ -541,23 +541,17 @@ document.write(`
 <p>Plots a single inversion</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.inversion.</span></span><span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Help Page</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">plots.inversion.</span></span><span class="sig-name descname"><span class="pre">inversion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>”
 Plots the result of one inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Config infos for 1st inversion</p>
+<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Config. infos</p>
 </dd>
-<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>x position of 1st inversion</p>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>Absolute x position inversion</p>
 </dd>
-<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>y position of 1st inversion</p>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>Absolute y position inversion</p>
 </dd>
 </dl>
 </dd>
@@ -1023,6 +1017,8 @@ Plots the result of one inversion</p>
 <dt><strong>-limitchi2 [float,float]</strong></dt><dd><p>Set the limit for the colorbar in chi2.</p>
 </dd>
 <dt><strong>-limitI [float,float]</strong></dt><dd><p>Set the limit for the colorbar in Stokes I.</p>
+</dd>
+<dt><strong>-kG</strong></dt><dd><p>Plot in kG (Kilogauss)</p>
 </dd>
 <dt><strong>-arc</strong></dt><dd><p>Print x and y axis in arcseconds</p>
 </dd>
