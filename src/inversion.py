@@ -534,8 +534,8 @@ def execute_inversion_2c(conf, task_folder, rank):
 	os.chdir(task_folder)
 
 	# Define parameters for simplicity reasons
-	model1 = conf['model1'] + "1"
-	model2 = conf['model2'] + "2"
+	model1 = conf['model1'] + "1" # Adding 1 in case models have the same name
+	model2 = conf['model2'] + "2" # Adding 2 in case models have the same name
 	cycles = conf["cycles"]
 	chi_file = d.inv_trol_file[:d.inv_trol_file.rfind('.')] + ".chi"
 
@@ -676,20 +676,20 @@ def execute_inversion_2c(conf, task_folder, rank):
 
 	else:
 		# Correct for vmacro
-		header = np.loadtxt(conf['model1'], max_rows=1)
+		header = np.loadtxt(model1, max_rows=1)
 		if header[0] != round(float(conf['vmacro']),4) or header[1] != round(float(conf['fill'].split(",")[0]),4):
-			temp_mod = m.read_model(conf['model1'])
+			temp_mod = m.read_model(model1)
 			temp_mod.vmacro[0,0] = float(conf['vmacro'])
 			temp_mod.fill[0,0] = float(conf['fill'].split(",")[0])
-			temp_mod.write_model(conf['model1'], 0, 0)
+			temp_mod.write_model(model1, 0, 0)
 		
 		# Correct of different vmacro
-		header = np.loadtxt(conf['model2'], max_rows=1)
+		header = np.loadtxt(model2, max_rows=1)
 		if header[0] != round(float(conf['vmacro']),4) or header[1] != round(float(conf['fill'].split(",")[1]),4):
-			temp_mod = m.read_model(conf['model2'])
+			temp_mod = m.read_model(model2)
 			temp_mod.vmacro[0,0] = float(conf['vmacro'])
 			temp_mod.fill[0,0] = float(conf['fill'].split(",")[1])
-			temp_mod.write_model(conf['model2'], 0, 0)
+			temp_mod.write_model(model2, 0, 0)
 
 		# Perform inversion once and read chi2 value
 		shutil.copy(model1,d.guess1)
