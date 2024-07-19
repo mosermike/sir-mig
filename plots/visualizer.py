@@ -893,12 +893,13 @@ def visualizer_2C(conf, wave):
 	if "-models1" not in sys.argv:
 			models1_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models1))
 	else:
-			filename = sys.argv[sys.argv.index("-models")+1]
+			filename = sys.argv[sys.argv.index("-models1")+1]
 			models1_inv = m.read_model(filename)
+			
 	if "-models2" not in sys.argv:
 			models2_inv = m.read_model(os.path.join(path,conf['inv_out'] + d.end_models2))
 	else:
-			filename = sys.argv[sys.argv.index("-models")+1]
+			filename = sys.argv[sys.argv.index("-models2")+1]
 			models2_inv = m.read_model(filename)
 
 	waves = stokes_inv.wave
