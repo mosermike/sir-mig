@@ -92,13 +92,13 @@ def sir_mig():
 				######################
 				# NORMALISE THE DATA #
 				######################
-				pro = preprocess.normalise(conf, pro)
+				pro = preprocess.normalise(pro, conf["instrument"], conf["quiet_sun"], conf["path"], conf["save_cube"] == "1")
 				
 				#########################
 				# CORRECT SPECTRAL VEIL #
 				#########################
 				if conf['fts_file'] != '':
-					preprocess.correct_spectral_veil(conf, pro)
+					preprocess.correct_spectral_veil_conf(pro, conf)
 				elif not exists(os.path.join(conf['path'],conf['cube'])):
 					print("-------> Saving data (this might take a while) ...")
 					pro.write(os.path.join(conf['path'],conf['cube']))

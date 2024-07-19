@@ -42,8 +42,7 @@ import sir
 import definitions as d
 import profile_stk as p
 
-
-def merge(dir, ending, instrument, path, shift, save):
+def merge(dir, ending, instrument, path = "./", shift = "0", save = False):
 	"""
 	
 	Merges data to a cube
@@ -74,7 +73,7 @@ def merge(dir, ending, instrument, path, shift, save):
 		print(f"-------> The code will try to make it work and will ask you for some inputs.")
 		print(f"-------> Consider adapting the script yourself or make an issue in the corresponding git website.")
 
-	output = os.path.join(path, d.cube)  # where it is saved
+	output = os.path.join(path, d.cube_merge)  # where it is saved
 
 	# Files in the folders from different measurements
 	filenames = []
@@ -186,7 +185,7 @@ def merge(dir, ending, instrument, path, shift, save):
 		print(f"Wavelength Grid shifted by {shift} mA.")
 		llambda = llambda + float(shift) * 1e-3
 	llambda = np.float32(llambda)
-	print(f"Wavelength step is {'%.3f' % ((llambda[1]-llambda[0])/1e3)} mA.")
+	print(f"Wavelength step is {'%.3f' % ((llambda[1]-llambda[0])*1e3)} mA.")
 
 	print("-------> Assign data ...")
 	pro = p.profile_stk(nx=data.shape[0],ny=data.shape[1],nw=data.shape[3])
@@ -216,27 +215,56 @@ def merge(dir, ending, instrument, path, shift, save):
 
 	return pro
 
+def merge_conf(dir, ending, conf):
+	"""
+	Merges data to a cube with the config file
+
+	Parameters
+	----------
+	dir : str
+		Directory of the fits
+	ending : str
+		Ending of the dataset (for GRIS data)
+	config : dict
+		Dictionary with all the information from the config file
+	
+	Return
+	------
+	merge : profile_stk
+		Class with the merged profiles
+	
+		
+	"""
+	return merge(dir, ending, conf["instrument"], conf["path"], conf["shift_wave"], conf["save_cube"] == "1")
+
 #################
 #	NORMALISE	#
 #################
 
-def normalise(conf, pro):
+
+def normalise(pro, instrument, quiet_sun, path = "./", save=False):
 	"""
 	Normalise the data cube by the given quiet sun range
 
 	Parameters
 	----------
-	conf : dict
-		Dictionary with the information from the config file
 	pro : profile_stk
 		Data cube with the Stokes Profiles
+	instrument : str
+		Used instrument (Implemented Instruments: GRIS or Hinode)
+	quiet_sun : list
+		List with the pixel for the quiet sun as xmin,xmax,ymin,ymax
+	path : str
+		Path where files are written
+	save : bool
+		Save the merged data cube
 
 	Return
 	------
 	normalise : profile_stk
 		Normalised data cube
 	"""
-	if len(conf['quiet_sun']) > 1:
+	if len(quiet_sun) > 1:
 		print("[STATUS] Normalise data ...")
 		# Check if data needs to be normalised
 		if np.mean(pro.stki) < 10:
@@ -245,20 +273,20 @@ def normalise(conf, pro):
 
 		ll = np.copy(pro.wave)
 
-		if conf['instrument'] in d.ll_lit_norm:
-			ll1      = np.argmin(abs(ll-d.ll_lit_norm[conf['instrument']][0]))	 # Find lower limit of wavelength for continuum
-			ll2      = np.argmin(abs(ll-d.ll_lit_norm[conf['instrument']][1]))	 # Find upper limit of wavelength for continuum
+		if instrument in d.ll_lit_norm:
+			ll1      = np.argmin(abs(ll-d.ll_lit_norm[instrument][0]))	 # Find lower limit of wavelength for continuum
+			ll2      = np.argmin(abs(ll-d.ll_lit_norm[instrument][1]))	 # Find upper limit of wavelength for continuum
 		else:
 			print("[WARN] No instrument defined/Instrument not implemented for Normalisation")
 			ll1		= input("Lower Limit of wavelength for continuum in Angstrom: ")
 			ll1		= input("Upper Limit of wavelength for continuum in Angstrom: ")
 
 		# Read quiet sun file
-		x1	  = conf['quiet_sun'][0]		# Lower limit for region in x
-		x2	  = conf['quiet_sun'][1]+1	# Upper limit for region in x
-		y1	  = conf['quiet_sun'][2]		# Lower limit for region in y
-		y2	  = conf['quiet_sun'][3]+1	# Upper limit for region in y
-		
+		x1	  = quiet_sun[0]	# Lower limit for region in x
+		x2	  = quiet_sun[1]+1	# Upper limit for region in x
+		y1	  = quiet_sun[2]	# Lower limit for region in y
+		y2	  = quiet_sun[3]+1	# Upper limit for region in y
+
 		# Compute continuum intensity in quiet sun region
 		Ic  = np.mean(pro.stki[x1:x2,y1:y2,ll1:ll2])  # Average continuum intensity in quiet sun
 
@@ -270,11 +298,31 @@ def normalise(conf, pro):
 	else:
 		print("-------> Skipping normalisation")
 
-	if conf['save_cube'] == "1" :
+	if save:
 		print("-------> Saving data (this might take a while) ...")
-		pro.write(os.path.join(conf['path'],d.cube_norm))
+		pro.write(os.path.join(path,d.cube_norm))
 
 	return pro
+
+def normalise_conf(pro, conf):
+	"""
+	Normalise the data cube by the given quiet sun range with the config file
+
+	Parameters
+	----------
+	pro : profile_stk
+		Data cube with the Stokes Profiles
+	config : dict
+		Dictionary with all the information from the config file
+
+	Return
+	------
+	normalise : profile_stk
+		Normalised data cube
+	
+
+	"""
+	return normalise(pro, conf["instrument"], conf["quiet_sun"], conf["path"], conf["save_cube"] == "1")
 
 #################################
 #	SPECTRAL VEIL CORRECTION	#
@@ -479,7 +527,7 @@ def vac_to_air(wavelength, method = "Ciddor1996"):
 
 	Returns
 	-------
-	out : float
+	vac_to_air : float
 		Corresponding wavelength in air in Angstrom
 
 	"""
@@ -493,8 +541,30 @@ def vac_to_air(wavelength, method = "Ciddor1996"):
 
 
 #################################################################################################3
+def correct_spectral_veil_conf(pro, conf):
+	"""
+	Correct the spectral veil in the data with a config file. This function calls the following functions:
+	 - argmin()
+	 - chi2()
+	 - gaussian()
+	 - convective_blueshift()
+	 - optimise_chi()
+	 - vac_to_air()
 
-def correct_spectral_veil(conf, pro):
+	Parameters
+	----------
+	pro : profile_stk
+		Class with the normalised Stokes Profiles
+	config : dict
+		Dictionary with all the information from the config file
+
+	Returns
+	-------
+	None
+	"""
+	return correct_spectral_veil(pro, conf["instrument"], conf["fts_file"], conf["quiet_sun"], conf["cube"], conf["path"])
+	
+def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 	"""
 	Correct the spectral veil in the data. This function calls the following functions:
 	 - argmin()
@@ -510,6 +580,14 @@ def correct_spectral_veil(conf, pro):
 		Dictionary with all the information from the config file
 	pro : profile_stk
 		Class with the normalised Stokes Profiles
+	instrument : str
+		Used instrument (Implemented Instruments: GRIS or Hinode)
+	fts_file : str
+		File to the FTS file
+	quiet_sun : list
+		List with the pixel for the quiet sun as xmin,xmax,ymin,ymax
+	cube : str
+		Name of the stored data cube
 
 	Returns
 	-------
@@ -520,12 +598,12 @@ def correct_spectral_veil(conf, pro):
 	# Additional savepath
 	savepath = ''
 	if '-save' in sys.argv:
-		savepath = os.path.join(conf["path"],sys.argv[sys.argv.index("-save")+1])
+		savepath = os.path.join(path,sys.argv[sys.argv.index("-save")+1])
 		if not exists(savepath[:savepath.rfind('/')]):
 			os.mkdir(savepath[:savepath.rfind('/')])
 
 	# Do not do anything
-	if conf['fts_file'] == '':
+	if fts_file == '':
 		print("-------> No spectral veil correction, write the merged or normalised data cube")
 		#if not exists(os.path.join(conf["path"], conf["cube_inv"])):
 			#if len(conf['quiet_sun']) < 2 and exists(os.path.join(conf["path"], conf["cube"])):
@@ -538,13 +616,13 @@ def correct_spectral_veil(conf, pro):
 			#	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
 			#else:
 			#	print(f"[ERROR] File {conf['cube_inv']} is not created. Are there data in the selected path?")
-		pro.write(os.path.join(conf["path"], conf["cube"]))
+		pro.write(os.path.join(path, cube))
 		
 		del pro
 		return
 	
 	print("[STATUS] Correct spectral veil ...")
-	if exists(os.path.join(conf['path'],conf['cube'])):
+	if exists(os.path.join(path,cube)):
 		temp = ''
 		print("[WARN] The data cube used for the inversion already exists and spectral veil correction is selected.")
 		while temp != 'y' and temp != 'n':
@@ -553,11 +631,11 @@ def correct_spectral_veil(conf, pro):
 			print("Abort (Consider changing the config file)")
 			return
 
-	if(conf["instrument"] != d.instruments[0]):
+	if(instrument != d.instruments[0]):
 		print("| Note that the script was only tested for GRIS data in the infrared range.")
 		print("| Take a look at the plotted plots and if they do not look good, consider changing the ranges or the borders")
 	
-	if abs(pro.wave[0] - 15600) > 100 and conf["instrument"] == d.instruments[0]: # GRIS instrument
+	if abs(pro.wave[0] - 15600) > 100 and instrument == d.instruments[0]: # GRIS instrument
 		print("| Note that the script was only tested for GRIS data in the infrared range (15600 A).")
 		print("| Take a look at the plotted plots and if they do not look good, consider changing the ranges or the borders")
 		print("| Eventually add another instrument named e.g. 'GRIS1' for the different wavelength range")
@@ -579,14 +657,13 @@ def correct_spectral_veil(conf, pro):
 	#################################################################
 	stokes = pro	
 			
-	filename_fts  = conf['fts_file']
-	path = conf['path']
+	filename_fts  = fts_file
 
 	# Read quiet sun file
-	x1	  = conf['quiet_sun'][0]		# Lower limit for region in x
-	x2	  = conf['quiet_sun'][1]+1	# Upper limit for region in x
-	y1	  = conf['quiet_sun'][2]		# Lower limit for region in y
-	y2	  = conf['quiet_sun'][3]+1	# Upper limit for region in y
+	x1	  = quiet_sun[0]		# Lower limit for region in x
+	x2	  = quiet_sun[1]+1	# Upper limit for region in x
+	y1	  = quiet_sun[2]		# Lower limit for region in y
+	y2	  = quiet_sun[3]+1	# Upper limit for region in y
 
 	# FTS
 	data = np.loadtxt(filename_fts)
@@ -606,8 +683,8 @@ def correct_spectral_veil(conf, pro):
 	#  FTS  #
 	#########
 	# Literature wavelength in air where the line core is expected in air
-	if conf['instrument'] in d.ll_lit:
-		ll_lit = d.ll_lit[conf['instrument']]
+	if instrument in d.ll_lit:
+		ll_lit = d.ll_lit[instrument]
 	else:
 		ll_lit = float(input("Used instrument not defined in definitions. Type the literature wavelength in air, used for the spectral veil correction: "))
 	#ll_lit = 15648.515 # From A new Multiplet table for Fe I; imported from definitions
@@ -690,7 +767,7 @@ def correct_spectral_veil(conf, pro):
 	print("σ_min = (%.2f ± %.2f) mÅ" % (sigma_min/1e-3, usigma_min / 1e-3))
 
 	# Save the parameters for later use
-	np.save(os.path.join(conf['path'],d.veil_parameters), [[nu_min, unu_min],[sigma_min,usigma_min]]) # sigma in Angstrom
+	np.save(os.path.join(path,d.veil_parameters), [[nu_min, unu_min],[sigma_min,usigma_min]]) # sigma in Angstrom
 
 	# Compute the convolved values with the best fit
 	I_conv_best = (1-nu_min)*convolve_fft(i_conv, gaussian(ll_conv, sigma = sigma_min), fill_value = Ic) + nu_min*Ic
@@ -730,7 +807,7 @@ def correct_spectral_veil(conf, pro):
 	######################################################################################
 	fig, ax = plt.subplots()
 	ax.plot(ll_conv, i_conv, "x", label = r'$I^{FTS}$')
-	if conf['instrument'] == 'GRIS':
+	if instrument == 'GRIS':
 		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{qs}}^{\mathrm{GRIS}}$')
 	else:
 		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{qs}}^{\mathrm{data}}$')
@@ -754,6 +831,8 @@ def correct_spectral_veil(conf, pro):
 	
 
 	print("-------> Saving data (this might take a while) ...")
-	stokes.write(os.path.join(conf['path'],conf['cube']))
+	stokes.write(os.path.join(path,cube))
 
 	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
+	
+	return
