@@ -531,14 +531,14 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	V2 = stokes_inv.stkv
 
 	limits_stokes1 = [  [np.min(I1[:,:,wave_ind1]), np.max(I1[:,:,wave_ind1])],
-					[-np.max(np.abs(Q1[:,:,wave_ind1])), np.max(np.abs(Q1[:,:,wave_ind1]))],
-					[-np.max(np.abs(U1[:,:,wave_ind1])), np.max(np.abs(U1[:,:,wave_ind1]))],
-					[-np.max(np.abs(V1[:,:,wave_ind1])), np.max(np.abs(V1[:,:,waveV_ind1]))]
+					[-np.max(np.abs(Q1[:,:,waveQ_ind1])), np.max(np.abs(Q1[:,:,waveQ_ind1]))],
+					[-np.max(np.abs(U1[:,:,waveU_ind1])), np.max(np.abs(U1[:,:,waveU_ind1]))],
+					[-np.max(np.abs(V1[:,:,waveV_ind1])), np.max(np.abs(V1[:,:,waveV_ind1]))]
 		]
 	limits_stokes2 = [  [np.min(I2[:,:,wave_ind2]), np.max(I2[:,:,wave_ind2])],
-					[-np.max(np.abs(Q2[:,:,wave_ind2])), np.max(np.abs(Q2[:,:,wave_ind2]))],
-					[-np.max(np.abs(U2[:,:,wave_ind2])), np.max(np.abs(U2[:,:,wave_ind2]))],
-					[-np.max(np.abs(V2[:,:,wave_ind2])), np.max(np.abs(V2[:,:,waveV_ind2]))]
+					[-np.max(np.abs(Q2[:,:,waveQ_ind2])), np.max(np.abs(Q2[:,:,waveQ_ind2]))],
+					[-np.max(np.abs(U2[:,:,waveU_ind2])), np.max(np.abs(U2[:,:,waveU_ind2]))],
+					[-np.max(np.abs(V2[:,:,waveV_ind2])), np.max(np.abs(V2[:,:,waveV_ind2]))]
 		]
 
 

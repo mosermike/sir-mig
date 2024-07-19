@@ -52,7 +52,12 @@ def sir_mig():
 	size = comm.Get_size()
 
 	# Read the config file from the input
-	conf = sir.read_config(sys.argv[1])
+	if rank == 0:
+		conf = sir.read_config(sys.argv[1])
+	else:
+		conf = None
+	conf = comm.bcast(conf, root=0)
+
 	if rank == 0:
 		sir.initial(conf['mode'])
 		if("--debug" in sys.argv):
