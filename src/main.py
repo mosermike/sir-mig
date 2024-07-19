@@ -87,7 +87,7 @@ def sir_mig():
 						ends = "001"
 					else:
 						ends = ''
-					pro = preprocess.merge(conf, Dir, ends)
+					pro = preprocess.merge(Dir, ends, conf["instrument"], conf["path"], conf["shift_wave"], conf["save_cube"] == "1")
 
 				######################
 				# NORMALISE THE DATA #

@@ -175,14 +175,15 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 		# Apply restrictions for stronger magnetic fields
 		for i in range(len(d.temp_B)):
 			if B0 > d.temp_B[i]:
-				factor = np.random.uniform(d.temp_f[i][0], d.temp_f[i][1])
+				f2 = np.random.uniform(d.temp_f[i][0], d.temp_f[i][1])
 				break
 		
 		
 		# Little perturbation for cool model
-		cool_T = cool_T * np.random.uniform(1-d.multiplicative_T, 1+d.multiplicative_T)
+		f1 = np.random.uniform(1-d.multiplicative_T, 1+d.multiplicative_T)
+		cool_T = cool_T * f1
 		
-		Ts = cool_T + factor * HSRA_T
+		Ts = cool_T + f2 * HSRA_T
 		mod.T[0,0] = np.interp(mod.tau, np.flip(log_taus), np.flip(Ts))
 		
 		

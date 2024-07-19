@@ -43,44 +43,49 @@ import definitions as d
 import profile_stk as p
 
 
-def merge(conf, dir, ending):
+def merge(dir, ending, instrument, path, shift, save):
 	"""
 	
 	Merges data to a cube
 
 	Parameters
 	----------
-	conf : dict
-		Dictionary with the information from the config file
 	dir : str
 		Directory of the fits
 	ending : str
 		Ending of the dataset (for GRIS data)
-
+	instrument : str
+		Used instrument (Implemented Instruments: GRIS or Hinode)
+	path : str
+		Path where files are written
+	shift : str
+		Shift the wavelengths by this value in mA
+	save : bool
+		Save the merged data cube
 	Returns
 	-------
 	merge : profile_stk
 		Class with the merged profiles
 
 	"""
-	if conf['instrument'] not in d.instruments:
-		print(f"-------> Instrument {conf['instrument']} is not known. Consider adding it to the definitions.py script.")
+	if instrument not in d.instruments:
+		print(f"-------> Instrument {instrument} is not known. Consider adding it to the definitions.py script.")
 		print(f"-------> The code assumes that all files in {dir} ending with '.fits' belong to the data.")
 		print(f"-------> The code will try to make it work and will ask you for some inputs.")
 		print(f"-------> Consider adapting the script yourself or make an issue in the corresponding git website.")
 
-	output = os.path.join(conf['path'], d.cube)  # where it is saved
+	output = os.path.join(path, d.cube)  # where it is saved
 
 	# Files in the folders from different measurements
 	filenames = []
 
-	if conf['instrument'] == 'GRIS':
+	if instrument == 'GRIS':
 		print(f"-------> Use files containing _{ending}_0 in the file name")
 
 	# Add all fits files in a list
 	for File in sorted(os.listdir(dir)):
 		if File.endswith(".fits"):
-			if ("_" + ending + "_0" in File and conf['instrument'] == 'GRIS') or (conf['instrument'] != 'GRIS'):
+			if ("_" + ending + "_0" in File and instrument == 'GRIS') or (instrument != 'GRIS'):
 				filenames.append(os.path.join(dir,File))
 
 	####################
@@ -96,11 +101,11 @@ def merge(conf, dir, ending):
 	#########################################
 	# Get no. of wavelengths and pixels ; Reshape the array in a different order
 	# ADAPT for another instrument here for the structure
-	if conf['instrument'] == 'Hinode':
+	if instrument == 'Hinode':
 		nw = stokes.shape[2]
 		nx = len(filenames)
 		ny = stokes.shape[1]
-	elif conf['instrument'] == 'GRIS':
+	elif instrument == 'GRIS':
 		nw = stokes.shape[1]
 		nx = len(filenames)
 		ny = stokes.shape[2]
@@ -123,7 +128,7 @@ def merge(conf, dir, ending):
 		example = fits.open(filenames[i])
 
 		stokes = example[0].data
-		if conf['instrument'] == d.instruments[1]:
+		if instrument == d.instruments[1]:
 			spbshft = header['SPBSHFT']
 			stokes = example[0].data.astype(np.float32)
 			stokes = np.transpose(stokes, axes=(1, 0, 2))
@@ -142,7 +147,7 @@ def merge(conf, dir, ending):
 
 			data[i] = stokes[:, :, :]
 
-		elif conf['instrument'] == d.instruments[0]:
+		elif instrument == d.instruments[0]:
 			stokes = np.transpose(stokes, axes=(3, 2, 0, 1))  # Structure of GRIS stokes, nw, ny, nx
 			data[i] = stokes[0, :, :, :]
 		else:  # ADAPT for another instrument here for the structure
@@ -163,23 +168,23 @@ def merge(conf, dir, ending):
 	##############################
 	# Determine real wavelengths #
 	##############################
-	if conf['instrument'] == 'GRIS':
+	if instrument == 'GRIS':
 		print("[STATUS] Create wavelength arrays assuming the header as for GRIS data")
 		ll_a = header["CRVAL3"]
 		ll_b = header["CDELT3"]
 		llambda = ll_a + ll_b * np.arange(0, header["NAXIS3"])  # Measured wavelength for each pixel
-	elif conf['instrument'] == 'Hinode':
+	elif instrument == 'Hinode':
 		llambda = np.linspace(6300.87730065, 6303.25996109, 112)
 	else:
-		print(f"Instrument {conf['instrument']} not known. Define wavelength grid manually:")
+		print(f"Instrument {instrument} not known. Define wavelength grid manually:")
 		mins = input("Lower wavelength in A: ")
 		maxs = input("Upper wavelength in A: ")
 		values = input("Number of spectral points: ")
 		llambda = np.linspace(float(mins), float(maxs), int(values))
 
-	if conf['shift_wave'] != '0' or conf['shift_wave'] != "":
-		print(f"Wavelength Grid shifted by {conf['shift_wave']} mA.")
-		llambda = llambda + float(conf['shift_wave']) * 1e-3
+	if shift!= '0' or shift != "":
+		print(f"Wavelength Grid shifted by {shift} mA.")
+		llambda = llambda + float(shift) * 1e-3
 	llambda = np.float32(llambda)
 	print(f"Wavelength step is {'%.3f' % ((llambda[1]-llambda[0])/1e3)} mA.")
 
@@ -192,20 +197,20 @@ def merge(conf, dir, ending):
 	pro.stkv = data[:,:,3,:]
 	pro.load = True # Data is loaded (no warning when saved)
 
-	if conf['save_cube'] == "1" :
+	if save:
 		print("-------> Saving data (this might take a while) ...")
 		pro.write(output)
 		print("Saved as \"%s\"" % output)
 
 	# Save header
-	filename = os.path.join(conf['path'], d.header_infos)
+	filename = os.path.join(path, d.header_infos)
 	with open(filename, 'w') as f:
-		f.write(f"instrument={conf['instrument']}\n")
+		f.write(f"instrument={instrument}\n")
 		for card in header.cards:
 			if card.keyword != 'COMMENT':
 				f.write(f"{card.keyword}={card.value}\n")
-		f.write(f"SHIFT={conf['shift_wave']}\n")
-		if conf['instrument'] == 'GRIS':
+		f.write(f"SHIFT={shift}\n")
+		if instrument == 'GRIS':
 			f.write(f"END={ending}") # Ending of the used files
 		#elif conf['instrument'] == 'Hinode':
 
