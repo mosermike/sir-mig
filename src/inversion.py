@@ -527,8 +527,7 @@ def execute_inversion_2c(conf, task_folder, rank):
 
 	Returns
 	-------
-	out : float
-		Best chi2 value of the inversion(s)
+	None
 	"""
 	old_pw = os.path.abspath(os.getcwd())
 	os.chdir(task_folder)
@@ -721,7 +720,7 @@ def execute_inversion_2c(conf, task_folder, rank):
 		shutil.move(f"{d.guess1.replace('.mod','')}_{cycles}.per", f"best.per")
 		shutil.copy(f"{model1}", f"{d.best_guess1}") # Copy best guess model 1
 		shutil.copy(f"{model2}", f"{d.best_guess2}") # Copy best guess model 2
-
+		
 		# This for loop might be removed in a future release to save computing time => model.py needs to be adjusted then
 		for i in range(int(cycles)-1):
 			os.remove(f"{d.guess1.replace('.mod','')}_{i+1}.mod")
@@ -733,7 +732,7 @@ def execute_inversion_2c(conf, task_folder, rank):
 	# Change to old path
 	os.chdir(old_pw)
 
-	return chi2_best
+	return 
 
 
 
