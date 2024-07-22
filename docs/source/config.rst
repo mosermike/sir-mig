@@ -47,6 +47,8 @@ Data Preprocessing
 +------------+-------------------------------------------------------------------------------+
 | instrument | Name of the instrument used (GRIS,Hinode or empty) to use predefined range    |
 +------------+-------------------------------------------------------------------------------+
+| ending     | Ending of GRIS file used for merging                                          |
++------------+-------------------------------------------------------------------------------+
 | quiet_sun  | Rectangle area used for normalisation and spectral veil correction            |
 +------------+-------------------------------------------------------------------------------+
 | fts_file   | File with FTS data to correct for spectral veil in the defined wavelengths    |
@@ -61,7 +63,7 @@ Notes:
 - When you use the instrument `Hinode`, the normalisation is done in the range [6301, 6301.072]. This can be changed in the script 'definitions.py
 - When `fts_file` does not have an entry, no spectral veil correction is used.
 - To select the fits files, use the flag '-dir [path to fits files]'  when you execute the main script.
-
+- For `ending`: If the files have the name "gris-sp_l1_20150510T101725_009_wl1565_001_0XXX_v1", then `ending` = `001`.
 
 Inversion configuration
 =======================

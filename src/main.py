@@ -81,13 +81,8 @@ def sir_mig():
 				if "-dir" in sys.argv and conf['preprocess'] == "1":
 					print("[STATUS] Merge the data")
 					Dir = sys.argv[sys.argv.index("-dir")+1]
-					if "-end" in sys.argv:
-						ends = sys.argv[sys.argv.index("-end")+1]
-					elif conf['instrument'] == 'GRIS':
-						ends = "001"
-					else:
-						ends = ''
-					pro = preprocess.merge(Dir, ends, conf["instrument"], conf["path"], conf["shift_wave"], conf["save_cube"] == "1")
+					
+					pro = preprocess.merge(Dir, conf["ending"], conf["instrument"], conf["path"], conf["shift_wave"], conf["save_cube"] == "1")
 
 				######################
 				# NORMALISE THE DATA #

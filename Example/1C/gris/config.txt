@@ -12,6 +12,7 @@ map      : xmin,xmax,ymin,ymax # Pixels to be considered as a list
 preprocess : 1 # Preprocess data (1 = True, 0 = False)
 cube       : Data Cube # Data cube name (bin) used for preprocessing data if 'preprocess' is 1
 instrument : GRIS # Instrument used (GRIS, Hinode or empty)
+ending     : 001 # Ending of GRIS file used for merging
 quiet_sun  : xmin,xmax,ymin,ymax # Quiet sun region for normalization as a list (0 => already normalised)
 fts_file   : path to fts file # Absolute path to fts file, blank = do not correct spectral veil
 shift_wave : 0 # Shift the wavelength grid when waves file is created in mA

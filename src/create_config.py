@@ -233,6 +233,12 @@ def _config_1C():
 			fts_file = ''
 		else:
 			fts_file	= input ("Absolute path to fts file (if not blank => correct spectral veil): ")
+		if instrument == "GRIS":
+			ending = input("Instrument GRIS chosen. Which ending of the files [001]: ")
+			if ending == "":
+				ending = "001"
+		else:
+			ending = ""
 		shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
 		save_cube	= input ("Save preprocessed data? (1 = True, 0 = False): ")
 		quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
@@ -241,6 +247,7 @@ def _config_1C():
 		shift_wave = "0"
 		save_cube = "0"
 		quiet_sun = "0,0,0,0"
+		ending = ""
 		
 	
 	cycles		= input ("Cycles: ")
@@ -317,6 +324,7 @@ def _config_1C():
 		"save_cube" : save_cube,
 		"preprocess" : preprocess,
 		"quiet_sun" : quiet_sun,
+		"ending" : ending,
 		"fts_file" : fts_file,
 		"model" : model,
 		"range_wave" : range_wave,
@@ -375,6 +383,12 @@ def _config_2C():
 	preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
 
 	if preprocess == '1':
+		if instrument == "GRIS":
+			ending = input("Instrument GRIS chosen. Which ending of the files [001]: ")
+			if ending == "":
+				ending = "001"
+		else:
+			ending = ""
 		# Ask for spectral veil for Gris:
 		if instrument == 'Hinode':
 			fts_file = ''
@@ -388,6 +402,7 @@ def _config_2C():
 		shift_wave = "0"
 		save_cube = "0"
 		quiet_sun = "0,0,0,0"
+		ending = ""
 
 	cycles		= input ("Cycles: ")
 	model1		= input ("Base model 1: ")
@@ -490,6 +505,7 @@ def _config_2C():
 		"shift_wave" : shift_wave,
 		"preprocess" : preprocess,
 		"quiet_sun" : quiet_sun,
+		"ending" : ending,
 		"fts_file" : fts_file,
 		"save_cube" : save_cube,
 		"model1" : model1,
