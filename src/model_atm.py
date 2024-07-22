@@ -649,7 +649,7 @@ class model_atm:
 		"""
 		if x > self.nx:
 			print(f"[write] Error in writing the model in model.py. x = {x} is bigger than the dimension {self.nx} of the array")
-		elif x > self.nx:
+		elif y > self.ny:
 			print(f"[write] Error in writing the model in model.py. y = {y} is bigger than the dimension {self.ny} of the array")
 		if x > self.nx or y > self.ny:
 			return self
@@ -673,7 +673,7 @@ class model_atm:
 														self.phi[x, y]
 													):
 				f.write(f" {n1:>7.4f} {n2:>7.1f} {n3:>12.5E} {n4:>10.3E} {n5:>11.4E} {n6:>11.4E} {n7:>11.4E} {n8:>11.4E}\n")
-
+		f.close()
 		return self
 
 def read_model(filename):

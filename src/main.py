@@ -17,12 +17,11 @@ def help():
 	None
 	"""
 	print("main - Executes all the scripts (merging, normalisation, spectral veil correction, inversion)")
-	print("       Normalisation and spectral veil correciton is only performed if preprocess is active in the config file!")
-	print("Usage: mpirun -np X python inversion.py [OPTION]")
+	print("       Normalisation and spectral veil correction is only performed if preprocess is active in the config file!")
+	print("Usage: mpirun -np X python main.py [OPTION]")
 	print()
 	sir.option("1:","Config file")
 	sir.option("-dir:","Merge data with the files in this directory (if not set, data is not merged) [Only in mode 1C and 2C]")
-	sir.option("-end:","Ending for GRIS data (001,002,...) [Only in mode 1C and 2C]")
 	sir.option("-save:","Additional savepath for plots from spectral veil correction, ending with / [Only in mode 1C and 2C]")
 	sir.option("--no-create","Do not create models [Only in mode MC]")
 	sir.option("--no-syn","Do not perform the synthesis [Only in mode MC]")
