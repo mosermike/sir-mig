@@ -479,9 +479,9 @@ def optimise_chi(nu, sigma, I, I_obs):
 	sigma_min = sigma[chi_min[1]]
 
 	if chi_min[0]+5 > len(nu):
-		raise Exception("[optimise_chi] The found minimum " + str(chi_min[0]) + "is at the border of the selected ranges. Consider increasing the ranges of nu in definitions.py!")
+		raise Exception("[optimise_chi] The found minimum " + str(nu_min) + "is at the border of the selected ranges. Consider increasing the ranges of nu in definitions.py!")
 	if chi_min[1]+5 > len(sigma):
-		raise Exception("[optimise_chi] The found minimum " + str(chi_min[1]) " is at the border of the selected ranges. Consider increasing the ranges of sigma in definitions.py!")
+		raise Exception("[optimise_chi] The found minimum " + str(sigma_min) + " is at the border of the selected ranges. Consider increasing the ranges of sigma in definitions.py!")
 
 	
 	##################
