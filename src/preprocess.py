@@ -819,7 +819,7 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{qs}}^{\mathrm{data}}$')
 	ax.plot(LL_conv, I_conv_best, label = r"$I^{\mathrm{fit}}$")
 
-	ax.set_xlabel(r"$\Delta \lambda^{\mathrm{air}}$" + f"- {d.ll_lit[instrument]}" + r" \AA")
+	ax.set_xlabel(r"$\Delta \lambda^{\mathrm{air}}$" + f" - {d.ll_lit[instrument]}" + r" \AA")
 	ax.set_ylabel(r"Intensity $I/I_c$")
 	ax.set_xlim(-b,b)
 
