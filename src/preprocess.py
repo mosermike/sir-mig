@@ -479,9 +479,9 @@ def optimise_chi(nu, sigma, I, I_obs):
 	sigma_min = sigma[chi_min[1]]
 
 	if chi_min[0]+5 > len(nu):
-		raise Exception("[optimise_chi] The found minimum is at the border of the selected ranges. Consider increasing the ranges of nu!")
+		raise Exception(f"[optimise_chi] The found minimum {chi_min[0]} is at the border of the selected ranges. Consider increasing the ranges of nu in definitions.py!")
 	if chi_min[1]+5 > len(sigma):
-		raise Exception("[optimise_chi] The found minimum is at the border of the selected ranges. Consider increasing the ranges of sigma!")
+		raise Exception(f"[optimise_chi] The found minimum {chi_min[1]} is at the border of the selected ranges. Consider increasing the ranges of sigma in definitions.py!")
 	
 	##################
 	# Optimise sigma #
@@ -818,7 +818,7 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{qs}}^{\mathrm{data}}$')
 	ax.plot(LL_conv, I_conv_best, label = r"$I^{\mathrm{fit}}$")
 
-	ax.set_xlabel(r"$\Delta \lambda^{\mathrm{air}}$ [\AA]")
+	ax.set_xlabel(r"$\Delta \lambda^{\mathrm{air}}$" + f"- {ll_lit[instrument]} \AA")
 	ax.set_ylabel(r"Intensity $I/I_c$")
 	ax.set_xlim(-b,b)
 
