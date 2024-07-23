@@ -188,13 +188,17 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
 	############
 
@@ -237,7 +241,8 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 	ax.set_ylabel(f"y [{units}]")
 	############
 	# Colorbar #
-	cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar)
+	cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	cbar.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar.set_label(label = r"$\chi^2$", loc = 'center')
 	############
 	plt.savefig(savepath + "chi2_total" + add)
@@ -363,7 +368,8 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 			ax.set_ylabel(f"y [{units}]")
 			############
 			# Colorbar #
-			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04)
+			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, aspect=30)
+			cbar.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 			cbar.set_label(label = labels[i], loc = 'center')
 			############
 			# set the spacing between subplots
@@ -433,13 +439,18 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
+	import matplotlib as mpl
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar1.set_label(label = labels[1], loc = 'center', labelpad=15)
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar2.set_label(label = labels[4], loc = 'center', labelpad=15)
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar3.set_label(label = labels[5], loc = 'center', labelpad=15)
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	if "-plot_chi2" in sys.argv:
 		cbar4.set_label(label = labels[11], loc = 'center', labelpad=15)
 	elif "-plot_fill" in sys.argv:
@@ -585,13 +596,18 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
+	import matplotlib as mpl
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
 	############
 
@@ -671,10 +687,14 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04)
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04)
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04)
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04)
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	############
 
 	#####################
