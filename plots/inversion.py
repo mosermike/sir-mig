@@ -231,10 +231,10 @@ def inversion(conf : dict, x : int, y : int):
 		llabel = "Syn. Profile"
 	else:
 		llabel = "Obs. Profile"
-	ax1.plot(ll1, I1, "x", label=llabel)
-	ax2.plot(ll1, Q1, "x", label=llabel)
-	ax3.plot(ll1, U1, "x", label=llabel)
-	ax4.plot(ll1, V1, "x", label=llabel)
+	ax1.plot(ll1, I1, "-", label=llabel)
+	ax2.plot(ll1, Q1, "-", label=llabel)
+	ax3.plot(ll1, U1, "-", label=llabel)
+	ax4.plot(ll1, V1, "-", label=llabel)
 
 	ax1.plot(ll1, I_fit1, "-", label = "Best Fit")
 	ax2.plot(ll1, Q_fit1, "-", label = "Best Fit")
