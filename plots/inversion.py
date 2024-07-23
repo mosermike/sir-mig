@@ -454,7 +454,7 @@ def inversion(conf : dict, x : int, y : int):
 				 color='#0C5DA5', lw=0)
 		ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
 				 phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
-				 color='#0C5DA5 ', lw=0)
+				 color='#0C5DA5', lw=0)
 
 	#####################
 	#	Set limits	#
