@@ -796,7 +796,7 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 	ax.set_xlabel(r"$\sigma$ [m\AA]")
 	cbar = fig.colorbar(c,ticks=np.arange(vmin, vmax+0.2, 0.2), location = 'top')
 	cbar.set_label(label=r"$\log(\chi^2)$", loc = 'center', labelpad = 15)
-	plt.text((d.sigma_range[1]-d.sigma_range[0])*0.8, d.nu_range[1]*25/31,
+	plt.text((d.sigma_range[1]-d.sigma_range[0])*120/140, (d.nu_range[1]-d.nu_range[0])*25/31,
 		  		r"$\hat{\sigma} =$ " + "(%.1f ± %.1f)"
 					% (round(sigma_min/1e-3,1), round(usigma_min / 1e-3 + 0.05,1)) + r" m\AA"
 				+ '\n' +
