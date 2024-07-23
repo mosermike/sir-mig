@@ -167,7 +167,8 @@ def inversion(conf : dict, x : int, y : int):
 	if '-save' in sys.argv:
 		savepath = sys.argv[sys.argv.index("-save")+1]
 		if "/" in savepath:
-			os.mkdir(savepath[:savepath.rfind("/")])
+			if not exists(savepath[:savepath.rfind("/")]):
+				os.mkdir(savepath[:savepath.rfind("/")])
 	
 	# Additional text
 	add = ''
