@@ -4,13 +4,13 @@ path : ./ # Path location where all the data is stored and will be saved
 # 
 # General Stuff
 # 
-num        : 1024 # Number of Models
-instrument : Hinode # Instrument used (GRIS, Hinode or empty)
-model      : hsra.mod # Base Model for guess
-atoms      : 3,4 # Atoms to be used in Grid file
-range_wave : -750.0,22.5,1750.0 # Ranges of wavelengths in mA to be considered min1,step1,max1;min2,step2,max2;... First pair belongs to first line in Grid file, etc.
+num          : 1024 # Number of Models
+instrument   : Hinode # Instrument used (GRIS, Hinode or empty)
+model        : hsra.mod # Base Model for guess
+atoms        : 3,4 # Atoms to be used in Grid file
+range_wave   : -750.0,21.5,112 # Ranges of wavelengths in mA to be considered start1,step1,num1;start2,step2,num2;... First pair belongs to first line in Grid file, etc.
 random_guess : 5 # Create random guesses, 0 = use model as guess
-random_pars : B,T,vlos,gamma,phi # Randomise these parameters for the guess
+random_pars  : B,T,vlos,gamma,phi # Randomise these parameters for the guess
 #
 # Creating Models and Synthesis
 #

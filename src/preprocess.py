@@ -173,7 +173,8 @@ def merge(dir, ending, instrument, path = "./", shift = "0", save = False):
 		ll_b = header["CDELT3"]
 		llambda = ll_a + ll_b * np.arange(0, header["NAXIS3"])  # Measured wavelength for each pixel
 	elif instrument == 'Hinode':
-		llambda = np.linspace(6300.87730065, 6303.25996109, 112)
+		#llambda = np.linspace(6300.87730065, 6303.25996109, 112)
+		llambda = np.float32((np.arange(112)-np.float(header['CRPIX1']))*abs(header["CDELT1"]) + header["CRVAL1"])
 	else:
 		print(f"Instrument {instrument} not known. Define wavelength grid manually:")
 		mins = input("Lower wavelength in A: ")

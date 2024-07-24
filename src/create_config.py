@@ -70,7 +70,7 @@ def _config_MC():
 	if instrument != 'Hinode':
 		range_wave = input("Ranges in the wavelengths (in relative mA) to be considered (as 'min1,step1,max1;min2,step2,max2;...', ;=newline):" )
 	else:
-		range_wave = '-750.0,22.5,1750.0'
+		range_wave = '-750.0,21.5,112'
 	random_guess = input("Number of random guess models (0 = use base model): ")
 	if random_guess != '0':
 		random_pars = input("Randomize these parameters [B,T,vlos,gamma]: ")

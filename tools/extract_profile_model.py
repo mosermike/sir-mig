@@ -142,8 +142,8 @@ def extract_profile_model_MC(conf, num):
 		add = sys.argv[sys.argv.index("-add")+1]
 
 	# Load data
-	noise = p.read_profile(os.path.join(path,conf['noise_out']+ d.end_models))
-	syn = p.read_profile(os.path.join(path,conf["syn_out"]+ d.end_models))
+	noise = p.read_profile(os.path.join(path,conf['noise_out']+ d.end_stokes))
+	syn = p.read_profile(os.path.join(path,conf["syn_out"]+ d.end_stokes))
 	inv = p.read_profile(os.path.join(path,f"{conf['inv_out']}{d.end_stokes}"))
 
 	noise.data_cut_wave = True

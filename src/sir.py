@@ -847,7 +847,7 @@ def _write_config_mc(File, conf, verbose=True):
 		f.write(f"num        : {conf['num']} # Number of Models\n")
 		f.write(f"model      : {conf['model']} # Base Model for guess\n")
 		f.write(f"atoms      : {atoms} # Atoms to be used in Grid file\n")	
-		f.write(f"range_wave : {range_wave} # Ranges of wavelengths in mA to be considered min1,step1,max1;min2,step2,max2;... First pair belongs to first line in Grid file, etc.\n")
+		f.write(f"range_wave : {range_wave} # Ranges of wavelengths in mA to be considered start1,step1,num1;start2,step2,num2;... First pair belongs to first line in Grid file, etc.\n")
 		
 		f.write(f"# \n")
 		f.write(f"# Data Stuff\n")
@@ -1337,8 +1337,8 @@ def _write_grid_mc(conf, filename):
 	# Define minimum, step and maximum
 	Line_min  = np.array(range_wave[:,0]).astype(np.float64)
 	Line_step = np.array(range_wave[:,1]).astype(np.float64)
-	Line_max  = np.array(range_wave[:,2]).astype(np.float64)
-	
+	Line_max  = Line_min + Line_step*(np.array(range_wave[:,2]).astype(np.float64)-1)
+
 	# Define wavelength grid to be saved
 	with open(filename, 'w') as f:
 		for i in range(len(atoms)):
