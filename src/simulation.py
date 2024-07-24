@@ -196,8 +196,8 @@ def create_models(conf: dict) -> None:
 	create_phi = np.array([__split_to_float(i, letter=",") for i in conf['create_phi'].split(';')])
 	create_points = np.flip(__split_to_float(conf['create_points']))	
 	
-	if create_points[0] < log_tau0[0]:
-		print(f"[create_models] The point {create_points[0]} ")
+	if create_points[0] < log_tau0[-1]:
+		print(f"[create_models] The point {create_points[0]} exceeds the model!")
 	model = m.model_atm(int(num), 1, len(log_tau0))
 	for i in range(num):
 		model.vmacro[i,0] = float(conf["vmacro"])
