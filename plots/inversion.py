@@ -156,6 +156,8 @@ def inversion(conf : dict, x : int, y : int):
 		obs1.cut_to_wave(np.array([conf["range_wave"][ind]]))
 		fit1.cut_to_wave(np.array([conf["range_wave"][ind]]))
 
+		# Determine line core
+		ll0 = sir.determine_line_core(os.path.join(conf["path"],conf["line"]),num)
 	
 
 	# Observation from synthesis

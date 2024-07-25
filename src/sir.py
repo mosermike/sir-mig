@@ -62,6 +62,29 @@ def create_task_folder_list(arg):
 
 	return Dict
 
+def determine_line_core(linefile : str, num : int) -> float:
+	"""
+	Determines the spectral line core value from a number in the line file
+
+	Parameters
+	----------
+	linefile : str
+		Path to the linefile
+	num : int
+		Number of the line core
+
+	Returns
+	-------
+	determine_line_core : float
+		Spectral Core Number of the desired number
+	"""
+
+	line = read_line(linefile)
+	for i in range(len(line["Line"])):
+		if line["Line"][i] == num:
+			return line["wavelength"][i]
+	print(f"[determine_line_core] The number {num} does not exist in the provided lines file {linefile}")
+	return 0
 
 def initial(mode):
 	"""
@@ -504,7 +527,7 @@ def read_line(filename):
 	
 	Returns
 	-------
-	out : dict
+	read_line : dict
 		Dict. with 'Line', 'Ion', 'wavelength', 'factor', 'Exc_Pot', log_gf',
 		'Transition', 'alpha' and 'sigma' in it
 
