@@ -215,7 +215,7 @@ def analysis_multiple(confs : list, labels : list):
 
 			for n in range(len(log_taus)):
 				# Standard deviation
-				std = np.sqrt(np.sum((fits[n].get_attribute(att[i])[:,0,:] - syns[n].get_attribute(att[i])[:,0,:])**2, axis=0)/(nums[n]-1))	 
+				std = np.sqrt(np.sum((fits[n].get_attribute(att[i])[:,0,:] - syns[n].get_attribute(att[i])[:,0,:])**2, axis=0)/(nums[n]-1))
 				ax1.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
 				stds.append(std)
 			# Set limits
@@ -251,7 +251,12 @@ def analysis_multiple(confs : list, labels : list):
 				print()
 				for j in range(len(fits)):
 					temp1 = np.argmin(stds[j])
-					print(f"Minima 1 at {fits[j].tau[0][temp1]} with {'%1.2f' % (stds[j][temp1])}")
+					p,cov = np.polyfit(fits[j].tau[temp1-3:temp1+4],stds[j][temp1-3:temp1+4],2, cov=True)
+					x_min = -p[1]/(2*p[0])
+					Delta_x = np.sqrt((np.sqrt(cov[1,1])/(2*p[0]))**2 + ((np.sqrt(cov[0,0])*p[1])/(2*p[0]**2))**2 )
+					y_min = x_min**2*p[0]+x_min*p[1]+p[2]
+					print(f"Minima {j+1} at {'%1.3f' % x_min} ± {'%1.3f' % Delta_x} with {'%1.3f' % (y_min)}")
+					#print(f"Minima {j+1} at {fits[j].tau[temp1]} with {'%1.2f' % (stds[j][temp1])}")
 				print()
 				print()		
 
@@ -379,7 +384,12 @@ def analysis_multiple(confs : list, labels : list):
 
 		for j in range(len(labels)):
 			temp1 = np.argmin(stdBs[j])
-			print(f"Minima {j+1} at {'%.2f' %fits[j].tau[temp1]} with {'%.3f' % stdBs[j][temp1]} G")
+			p,cov = np.polyfit(fits[j].tau[temp1-3:temp1+4],stdBs[j][temp1-3:temp1+4],2, cov=True)
+			x_min = -p[1]/(2*p[0])
+			Delta_x = np.sqrt((np.sqrt(cov[1,1])/(2*p[0]))**2 + ((np.sqrt(cov[0,0])*p[1])/(2*p[0]**2))**2 )
+			y_min = x_min**2*p[0]+x_min*p[1]+p[2]
+			print(f"Minima {j+1} at {'%1.3f' % x_min} ± {'%1.3f' % Delta_x} with {'%1.3f' % (y_min)}")
+			#print(f"Minima {j+1} at {'%.2f' %fits[j].tau[temp1]} with {'%.3f' % stdBs[j][temp1]} G")
 
 	return
 ##################################################################
