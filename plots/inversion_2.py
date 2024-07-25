@@ -46,7 +46,9 @@ def help():
 	sir.option("-rho","Plot density")
 	sir.option("-syn","Synthesised model .mod file")
 	sir.option("-vertical","Plot spectra vertically")
-	sir.option("-num:","Number of the line considered (Default: take first one) (for Mode 'MC')")
+	sir.option("-num","Number of the line considered (Default: take first one) (for Mode 'MC')")
+	sir.option("-one","Plot observations only once")
+	sir.option("-err","Plot errorbars")
 	sys.exit()
 
 def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : int):
@@ -112,7 +114,10 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		Plot it vertically
 	-num [int]
 		which line number is used (only for mode `MC`)
-
+	-one
+		Observations are the same and therefore only plotted once
+	-err
+		Plot errorbars
 	"""
 	# Import library
 	sir.mpl_library()
@@ -166,7 +171,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		obs2.cut_to_wave(conf2["range_wave"])
 		obs2.cut_to_map(conf2["Map"])
 	else:
-		num = phy1.indx[0]
+		num = fit1.indx[0]
 		if "-num" in sys.argv:
 			num = int(sys.argv[sys.argv.index("-num")+1])
 		ind1 = 0
@@ -193,8 +198,8 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	ll2, I2, Q2, U2, V2 = obs2.wave, obs2.stki[x2,y2],obs2.stkq[x2,y2],obs2.stku[x2,y2],obs2.stkv[x2,y2]
 	
 	# Load fit data
-	I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.stki[x1,y1],fit1.stkq[x1,y1],fit1.stku[x1,y1],fit1.stkv[x1,y2]
-	I_fit2, Q_fit2, U_fit2, V_fit2 = fit2.stki[x2,y2],fit2.stkq[x2,y2],fit2.stku[x2,y2],fit2.stkv[x1,y2]
+	ll1_fit, I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.wave, fit1.stki[x1,y1],fit1.stkq[x1,y1],fit1.stku[x1,y1],fit1.stkv[x1,y2]
+	ll2_fit, I_fit2, Q_fit2, U_fit2, V_fit2 = fit2.wave, fit2.stki[x2,y2],fit2.stkq[x2,y2],fit2.stku[x2,y2],fit2.stkv[x1,y2]
 
 	# Additional savepath
 	savepath = ''
@@ -232,9 +237,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	#############################################################
 	# Change to abs. wavelength to the line core of the first number
 	if conf1['mode'] == "MC":
-		ll0 = input("Put wavelength of the line core: ")
-		ll += ll0
-		ll_fit += ll0
+		ll0 = sir.determine_line_core(os.path.join(conf1["path"],conf1["line"]),num)
 
 	label_x = 0
 
@@ -272,17 +275,29 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	# Plot the Stokes profiles #
 	############################
 	if conf1["mode"] == "MC":
-		llabel = "Syn. Profile ("
+		if "-one" not in sys.argv:
+			llabel = "Syn. Profile ("
+		else:
+			llabel = "Syn. Profile"
 	else:
-		llabel = "Obs. Profile ("
-	ax1.plot(ll1, I1, "x", label=llabel + label1 + ")")
-	ax1.plot(ll2, I2, "x", label=llabel + label2 + ")")
-	ax2.plot(ll1, Q1, "x", label=llabel + label1 + ")")
-	ax2.plot(ll2, Q2, "x", label=llabel + label2 + ")")
-	ax3.plot(ll1, U1, "x", label=llabel + label1 + ")")
-	ax3.plot(ll2, U2, "x", label=llabel + label2 + ")")
-	ax4.plot(ll1, V1, "x", label=llabel + label1 + ")")
-	ax4.plot(ll2, V2, "x", label=llabel + label2 + ")")
+		if "-one" not in sys.argv:
+			llabel = "Obs. Profile ("
+		else:
+			llabel = "Obs. Profile"
+	if "-one" in sys.argv:
+		ax1.plot(ll1, I1, "x", label=llabel)
+		ax2.plot(ll1, Q1, "x", label=llabel)
+		ax3.plot(ll1, U1, "x", label=llabel)
+		ax4.plot(ll1, V1, "x", label=llabel)
+	else:
+		ax1.plot(ll1, I1, "x", label=llabel + label1 + ")")
+		ax1.plot(ll2, I2, "x", label=llabel + label2 + ")")
+		ax2.plot(ll1, Q1, "x", label=llabel + label1 + ")")
+		ax2.plot(ll2, Q2, "x", label=llabel + label2 + ")")
+		ax3.plot(ll1, U1, "x", label=llabel + label1 + ")")
+		ax3.plot(ll2, U2, "x", label=llabel + label2 + ")")
+		ax4.plot(ll1, V1, "x", label=llabel + label1 + ")")
+		ax4.plot(ll2, V2, "x", label=llabel + label2 + ")")
 
 	ax1.plot(ll1, I_fit1, "-", label = "Best Fit (" + label1 + ")")
 	ax1.plot(ll2, I_fit2, "-", label = "Best Fit (" + label2 + ")")
@@ -375,8 +390,12 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 					llabel = "Best Fit M. 1 ("
 				else:
 					llabel = "Syn Model ("
-				ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x1,y1], label=f"{llabel}{label1})",color='#0C5DA5')
-				ax1.plot(syn2.tau, syn2.get_attribute(inputs[i][1:])[x2,y2], label=f"{llabel}{label2})",color='#845B97')
+
+				if "-one" not in sys.argv:
+					ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x1,y1], label=f"{llabel}{label1})",color='#0C5DA5')
+					ax1.plot(syn2.tau, syn2.get_attribute(inputs[i][1:])[x2,y2], label=f"{llabel}{label2})",color='#845B97')
+				else:
+					ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x1,y1], label=f"{llabel[:-2]})",color='#0C5DA5')
 			if conf1['mode'] == "2C":
 					llabel = "Best Fit M. 2 ("
 			else:
@@ -385,22 +404,23 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 			ax1.plot(fit1.tau, fit1.get_attribute(inputs[i][1:])[x1,y1], label=f"{llabel}{label1})",color = '#FF2C00')
 			ax1.plot(fit2.tau, fit2.get_attribute(inputs[i][1:])[x2,y2], label=f"{llabel}{label2})",color='#00B945')
 
-			if conf1['mode'] == "2C":
+			if "-err" in sys.argv:
+				if conf1['mode'] == "2C":
+					# Error of fit
+					ax1.fill_between(syn1.tau, syn1.get_attribute(inputs[i][1:])[x1,y1] - err11.get_attribute(inputs[i][1:])[x1,y1],
+								syn1.get_attribute(inputs[i][1:])[x1,y1] + err11.get_attribute(inputs[i][1:])[x1,y1], alpha = 0.5,
+								color='#0C5DA5', lw=0)
+					ax1.fill_between(syn2.tau, syn2.get_attribute(inputs[i][1:])[x2,y2] - err22.get_attribute(inputs[i][1:])[x2,y2],
+								syn2.get_attribute(inputs[i][1:])[x2,y2] + err22.get_attribute(inputs[i][1:])[x2,y2], alpha = 0.5,
+								color='#845B97', lw=0)
+				
 				# Error of fit
-				ax1.fill_between(syn1.tau, syn1.get_attribute(inputs[i][1:])[x1,y1] - err11.get_attribute(inputs[i][1:])[x1,y1],
-							syn1.get_attribute(inputs[i][1:])[x1,y1] + err11.get_attribute(inputs[i][1:])[x1,y1], alpha = 0.5,
-							color='#0C5DA5', lw=0)
-				ax1.fill_between(syn2.tau, syn2.get_attribute(inputs[i][1:])[x2,y2] - err22.get_attribute(inputs[i][1:])[x2,y2],
-							syn2.get_attribute(inputs[i][1:])[x2,y2] + err22.get_attribute(inputs[i][1:])[x2,y2], alpha = 0.5,
-							color='#845B97', lw=0)
-			
-			# Error of fit
-			ax1.fill_between(fit1.tau, fit1.get_attribute(inputs[i][1:])[x1,y1] - err1.get_attribute(inputs[i][1:])[x1,y1],
-						 fit1.get_attribute(inputs[i][1:])[x1,y1] + err1.get_attribute(inputs[i][1:])[x1,y1], alpha = 0.5,
-						 color='#FF2C00', lw=0)
-			ax1.fill_between(fit2.tau, fit2.get_attribute(inputs[i][1:])[x2,y2] - err2.get_attribute(inputs[i][1:])[x2,y2],
-						 fit2.get_attribute(inputs[i][1:])[x2,y2] + err2.get_attribute(inputs[i][1:])[x2,y2], alpha = 0.5,
-						 color='#00B945', lw=0)
+				ax1.fill_between(fit1.tau, fit1.get_attribute(inputs[i][1:])[x1,y1] - err1.get_attribute(inputs[i][1:])[x1,y1],
+							 fit1.get_attribute(inputs[i][1:])[x1,y1] + err1.get_attribute(inputs[i][1:])[x1,y1], alpha = 0.5,
+							 color='#FF2C00', lw=0)
+				ax1.fill_between(fit2.tau, fit2.get_attribute(inputs[i][1:])[x2,y2] - err2.get_attribute(inputs[i][1:])[x2,y2],
+							 fit2.get_attribute(inputs[i][1:])[x2,y2] + err2.get_attribute(inputs[i][1:])[x2,y2], alpha = 0.5,
+							 color='#00B945', lw=0)
 
 
 			# Set xlimits
@@ -443,10 +463,17 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 			llabel = "Best Fit M. 1"
 		else:
 			llabel = "Syn. Model"
-		ax1.plot(syn1.tau, syn1.T[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
-		ax2.plot(syn1.tau, syn1.B[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
-		ax3.plot(syn1.tau, syn1.gamma[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
-		ax4.plot(syn1.tau, syn1.vlos[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
+		if "-one" not in sys.argv:
+			ax1.plot(syn1.tau, syn1.T[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
+			ax2.plot(syn1.tau, syn1.B[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
+			ax3.plot(syn1.tau, syn1.vlos[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
+			ax4.plot(syn1.tau, syn1.gamma[x1,y1], label=f"{llabel} ({label1})", color='#0C5DA5')
+
+		else:
+			ax1.plot(syn1.tau, syn1.T[x1,y1], label=f"{llabel}", color='#0C5DA5')
+			ax2.plot(syn1.tau, syn1.B[x1,y1], label=f"{llabel}", color='#0C5DA5')
+			ax3.plot(syn1.tau, syn1.vlos[x1,y1], label=f"{llabel}", color='#0C5DA5')
+			ax4.plot(syn1.tau, syn1.gamma[x1,y1], label=f"{llabel}", color='#0C5DA5')
 
 	if conf1['mode'] == "2C":
 		llabel = "Best Fit M. 2"
@@ -459,13 +486,14 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 
 	if conf1["mode"] == "MC" or conf1['mode'] == "2C":
 		if conf1["mode"] == "2C":
-			llabel = "Best Fit M. 1"
+			llabel = "Best Fit M. 2"
 		else:
 			llabel = "Syn. Model"
-		ax1.plot(syn2.tau, syn2.T[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
-		ax2.plot(syn2.tau, syn2.B[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
-		ax3.plot(syn2.tau, syn2.vlos[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
-		ax4.plot(syn2.tau, syn2.gamma[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
+		if "-one" not in sys.argv:
+			ax1.plot(syn2.tau, syn2.T[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
+			ax2.plot(syn2.tau, syn2.B[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
+			ax3.plot(syn2.tau, syn2.vlos[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
+			ax4.plot(syn2.tau, syn2.gamma[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
 
 	if conf1['mode'] == "2C":
 		llabel = "Best Fit M. 2"
@@ -476,59 +504,60 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	ax3.plot(phy2.tau, phy2.vlos[x2,y2], label=f"{llabel} ({label2})", color='#FF9500')
 	ax4.plot(phy2.tau, phy2.gamma[x2,y2], label=f"{llabel} ({label2})", color='#FF9500')
 
-	if conf1['mode'] == "2C":
-		ax1.fill_between(syn1.tau, syn1.T[x1,y1] - err11.T[x1,y1],
-				 syn1.T[x1,y1] + err11.T[x1,y1], alpha = 0.5,
-				 color='#0C5DA5', lw=0)
-		ax2.fill_between(syn1.tau, syn1.B[x1,y1] - err11.B[x1,y1],
-					syn1.B[x1,y1] + err11.B[x1,y1], alpha = 0.5,
-					color='#0C5DA5', lw=0)
-		ax3.fill_between(syn1.tau, syn1.vlos[x1,y1] - err11.vlos[x1,y1],
-					syn1.vlos[x1,y1] + err11.vlos[x1,y1], alpha = 0.5,
-					color='#0C5DA5', lw=0)
-		ax4.fill_between(syn1.tau, syn1.gamma[x1,y1] - err11.gamma[x1,y1],
-					syn1.gamma[x1,y1] + err11.gamma[x1,y1], alpha = 0.5,
-					color='#0C5DA5', lw=0)
-		
-		ax1.fill_between(syn2.tau, syn2.T[x2,y2] - err22.T[x2,y2],
-				 syn2.T[x2,y2] + err22.T[x2,y2], alpha = 0.5,
-				 color='#00B945', lw=0)
-		ax2.fill_between(syn2.tau, syn2.B[x2,y2] - err22.B[x2,y2],
-				syn2.B[x2,y2] + err22.B[x2,y2], alpha = 0.5,
-				color='#00B945', lw=0)
-		ax3.fill_between(syn2.tau, syn2.vlos[x2,y2] - err22.vlos[x2,y2],
-				syn2.vlos[x2,y1] + err22.vlos[x2,y2], alpha = 0.5,
-				color='#00B945', lw=0)
-		ax4.fill_between(syn2.tau, syn2.gamma[x2,y2] - err22.gamma[x2,y2],
-				syn2.gamma[x2,y2] + err22.gamma[x2,y2], alpha = 0.5,
-				color='#00B945', lw=0)
-		
-
-
-	ax1.fill_between(phy1.tau, phy1.T[x1,y1] - err1.T[x1,y1],
-				 phy1.T[x1,y1] + err1.T[x1,y1], alpha = 0.5,
-				 color='#FF2C00', lw=0)
-	ax2.fill_between(phy1.tau, phy1.B[x1,y1] - err1.B[x1,y1],
-				 phy1.B[x1,y1] + err1.B[x1,y1], alpha = 0.5,
-				 color='#FF2C00', lw=0)
-	ax3.fill_between(phy1.tau, phy1.vlos[x1,y1] - err1.vlos[x1,y1],
-				 phy1.vlos[x1,y1] + err1.vlos[x1,y1], alpha = 0.5,
-				 color='#FF2C00', lw=0)
-	ax4.fill_between(phy1.tau, phy1.gamma[x1,y1] - err1.gamma[x1,y1],
-				 phy1.gamma[x1,y1] + err1.gamma[x1,y1], alpha = 0.5,
-				 color='#FF2C00', lw=0)
-	ax1.fill_between(phy2.tau, phy2.T[x2,y2] - err2.T[x2,y2],
-				 phy2.T[x2,y2] + err2.T[x2,y2], alpha = 0.5,
-				 color='#FF9500', lw=0)
-	ax2.fill_between(phy2.tau, phy2.B[x2,y2] - err2.B[x2,y2],
-				 phy2.B[x2,y2] + err2.B[x2,y2], alpha = 0.5,
-				 color='#FF9500', lw=0)
-	ax3.fill_between(phy2.tau, phy2.vlos[x2,y2] - err2.vlos[x2,y2],
-				 phy2.vlos[x2,y2] + err2.vlos[x2,y2], alpha = 0.5,
-				 color='#FF9500', lw=0)
-	ax4.fill_between(phy2.tau, phy2.gamma[x2,y2] - err2.gamma[x2,y2],
-				 phy2.gamma[x2,y2] + err2.gamma[x2,y2], alpha = 0.5,
-				 color='#FF9500', lw=0)
+	if "-err" in sys.argv:
+		if conf1['mode'] == "2C":
+			ax1.fill_between(syn1.tau, syn1.T[x1,y1] - err11.T[x1,y1],
+					 syn1.T[x1,y1] + err11.T[x1,y1], alpha = 0.5,
+					 color='#0C5DA5', lw=0)
+			ax2.fill_between(syn1.tau, syn1.B[x1,y1] - err11.B[x1,y1],
+						syn1.B[x1,y1] + err11.B[x1,y1], alpha = 0.5,
+						color='#0C5DA5', lw=0)
+			ax3.fill_between(syn1.tau, syn1.vlos[x1,y1] - err11.vlos[x1,y1],
+						syn1.vlos[x1,y1] + err11.vlos[x1,y1], alpha = 0.5,
+						color='#0C5DA5', lw=0)
+			ax4.fill_between(syn1.tau, syn1.gamma[x1,y1] - err11.gamma[x1,y1],
+						syn1.gamma[x1,y1] + err11.gamma[x1,y1], alpha = 0.5,
+						color='#0C5DA5', lw=0)
+			
+			ax1.fill_between(syn2.tau, syn2.T[x2,y2] - err22.T[x2,y2],
+					 syn2.T[x2,y2] + err22.T[x2,y2], alpha = 0.5,
+					 color='#00B945', lw=0)
+			ax2.fill_between(syn2.tau, syn2.B[x2,y2] - err22.B[x2,y2],
+					syn2.B[x2,y2] + err22.B[x2,y2], alpha = 0.5,
+					color='#00B945', lw=0)
+			ax3.fill_between(syn2.tau, syn2.vlos[x2,y2] - err22.vlos[x2,y2],
+					syn2.vlos[x2,y1] + err22.vlos[x2,y2], alpha = 0.5,
+					color='#00B945', lw=0)
+			ax4.fill_between(syn2.tau, syn2.gamma[x2,y2] - err22.gamma[x2,y2],
+					syn2.gamma[x2,y2] + err22.gamma[x2,y2], alpha = 0.5,
+					color='#00B945', lw=0)
+			
+	
+	
+		ax1.fill_between(phy1.tau, phy1.T[x1,y1] - err1.T[x1,y1],
+					 phy1.T[x1,y1] + err1.T[x1,y1], alpha = 0.5,
+					 color='#FF2C00', lw=0)
+		ax2.fill_between(phy1.tau, phy1.B[x1,y1] - err1.B[x1,y1],
+					 phy1.B[x1,y1] + err1.B[x1,y1], alpha = 0.5,
+					 color='#FF2C00', lw=0)
+		ax3.fill_between(phy1.tau, phy1.vlos[x1,y1] - err1.vlos[x1,y1],
+					 phy1.vlos[x1,y1] + err1.vlos[x1,y1], alpha = 0.5,
+					 color='#FF2C00', lw=0)
+		ax4.fill_between(phy1.tau, phy1.gamma[x1,y1] - err1.gamma[x1,y1],
+					 phy1.gamma[x1,y1] + err1.gamma[x1,y1], alpha = 0.5,
+					 color='#FF2C00', lw=0)
+		ax1.fill_between(phy2.tau, phy2.T[x2,y2] - err2.T[x2,y2],
+					 phy2.T[x2,y2] + err2.T[x2,y2], alpha = 0.5,
+					 color='#FF9500', lw=0)
+		ax2.fill_between(phy2.tau, phy2.B[x2,y2] - err2.B[x2,y2],
+					 phy2.B[x2,y2] + err2.B[x2,y2], alpha = 0.5,
+					 color='#FF9500', lw=0)
+		ax3.fill_between(phy2.tau, phy2.vlos[x2,y2] - err2.vlos[x2,y2],
+					 phy2.vlos[x2,y2] + err2.vlos[x2,y2], alpha = 0.5,
+					 color='#FF9500', lw=0)
+		ax4.fill_between(phy2.tau, phy2.gamma[x2,y2] - err2.gamma[x2,y2],
+					 phy2.gamma[x2,y2] + err2.gamma[x2,y2], alpha = 0.5,
+					 color='#FF9500', lw=0)
 	#####################
 	#	Set limits	#
 	#####################	
@@ -593,8 +622,13 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
-	conf1 = sir.read_config(sys.argv[1])
-	conf2 = sir.read_config(sys.argv[3])
+	conf1 = sir.read_config(sys.argv[1], check=False)
+	conf2 = sir.read_config(sys.argv[4], check=False)
+
+	if conf1['path'][:2] == "./":
+		conf1['path'] = sys.argv[1][:sys.argv[1].rfind('/')+1] + conf1['path'][2:]
+	if conf2['path'][:2] == "./":
+		conf2['path'] = sys.argv[4][:sys.argv[4].rfind('/')+1] + conf2['path'][2:]
 	inversion_2(conf1, int(sys.argv[2]),int(sys.argv[3]),conf2, int(sys.argv[5]),int(sys.argv[6]))
 
 
