@@ -33,8 +33,8 @@ def _help():
 	sir.option("-T","Compare temperature in K")
 	sir.option("-B","Compare magentic field strength in Gauss")
 	sir.option("-vlos","Compare line of sight velocity in km/s")
-	sir.option("-inc","Compare inclination by subtracting in deg")
-	sir.option("-azi","Compare azimuth by adding in deg")
+	sir.option("-gamma","Compare inclination by subtracting in deg")
+	sir.option("-phi","Compare azimuth by adding in deg")
 	sir.option("-title","Title of the 4 figures plot")
 	sir.option("-xtitle","x position of title in Stokes plot (optional)")
 	sir.option("-limitT","Set y limits in T as 'ymin,ymax'")
@@ -74,9 +74,9 @@ def analysis_multiple(confs : list, labels : list):
 		Compare magentic field strength in Gauss
 	-vlos
 		Compare line of sight velocity in km/s
-	-inc
+	-gamma
 		Compare inclination by subtracting in deg
-	-azi
+	-phi
 		Compare azimuth by adding in deg
 	-title [str]
 		Title of the 4 figures plot
@@ -143,7 +143,7 @@ def analysis_multiple(confs : list, labels : list):
 	#######################################################################
 	#		    DETERMINE WHAT PARAMETER ARE CHOSEN				#
 	#######################################################################
-	inputs = ["__", "-T", "-Pe", "-vmicro", "-B", "-vlos", "-inc", "-azi", "-z", "-Pg", "-rho"]
+	inputs = ["__", "-T", "-Pe", "-vmicro", "-B", "-vlos", "-gamma", "-phi", "-z", "-Pg", "-rho"]
 	att = ["tau", "T", "Pe", "vmicro", "B", "vlos", "gamma", "phi", "z", "Pg", "rho"]  # For getting the value from the class
 	labels_y = ["__", r"$_T$ [K]", "", "", r"$_B$ [G]",
 					r"$_{\mathrm{v}_{\mathrm{los}}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$",
@@ -229,7 +229,7 @@ def analysis_multiple(confs : list, labels : list):
 			ax1.set_ylabel(r"$\sigma$" + labels_y[i])
 			
 			if len(labels) > 5:
-				ax1.legend(loc='center right', bbox_to_anchor=(1.25+np.max([len(i) for i in labels])/85, 0.5), frameon=False)
+				ax1.legend(loc='center right', bbox_to_anchor=(1.1+np.max([len(i) for i in labels])/85, 0.5), frameon=False)
 			else:
 				ax1.legend()
 			#plt.tight_layout()
@@ -397,8 +397,8 @@ if __name__ == "__main__":
 		temp = sys.argv[1].split(",")
 		for i in range(len(temp)):
 			# Correct for ./ paths
-			if confs[i]['path'] == "./":
-				confs[i]['path'] = temp[i][:temp[i].rfind('/')+1]
+			if confs[i]['path'][:2] == "./":
+				confs[i]['path'] = temp[i][:temp[i].rfind('/')+1] + confs[i]['path'][2:]
 	else:
 		confs  = [sir.read_config(sys.argv[1])]
 

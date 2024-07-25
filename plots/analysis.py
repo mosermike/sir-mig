@@ -45,8 +45,8 @@ def _help():
 	sir.option("-T","Compare temperature in K")
 	sir.option("-B","Compare magentic field strength in Gauss")
 	sir.option("-vlos","Compare line of sight velocity in cm/s")
-	sir.option("-inc","Compare inclination by subtracting in deg")
-	sir.option("-azi","Compare azimuth by adding in deg")
+	sir.option("-gamma","Compare inclination by subtracting in deg")
+	sir.option("-phi","Compare azimuth by adding in deg")
 	sir.option("-title","Title of the 4 figures plot")
 	sir.option("-xtitle","x position of title in Stokes plot (optional)")
 	sir.option("-max","Plot the maximum differences")
@@ -80,9 +80,9 @@ def analysis(conf : dict):
 		Compare magentic field strength in Gauss
 	-vlos
 		Compare line of sight velocity in cm/s
-	-inc
+	-gamma
 		Compare inclination by subtracting in deg
-	-azi
+	-phi
 		Compare azimuth by adding in deg
 	-title : [str]
 		Title of the 4 figures plot
@@ -144,7 +144,7 @@ def analysis(conf : dict):
 	#		    DETERMINE WHAT PARAMETER ARE CHOSEN				#
 	#######################################################################
 
-	inputs = ["__","-T", "-Pe", "-vmicro", "-B", "-vlos", "-inc", "-azi", "-z", "-Pg", "-rho"]
+	inputs = ["__","-T", "-Pe", "-vmicro", "-B", "-vlos", "-gamma", "-phi", "-z", "-Pg", "-rho"]
 	# Labels and titles for the saved plot
 	att = ["tau","T", "Pe", "vmicro", "B", "vlos", "gamma", "phi", "z", "Pg", "rho"] # For getting the value from the class
 	labels_y = ["",r"$_T$", "", "", r"$_B$", r"$_{\mathrm{v}_{\mathrm{los}}}$", r"$_\gamma$", r"$_\phi$", r"$_z$", r"$_{P_g}$", r"$_{rho}$"]
