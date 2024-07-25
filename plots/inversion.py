@@ -149,10 +149,12 @@ def inversion(conf : dict, x : int, y : int):
 		if "-num" in sys.argv:
 			num = int(sys.argv[sys.argv.index("-num")+1])
 		# Cut the wave to the line number
-		ll1 = np.where(obs1.indx==num)[0][0]
-		ll2 = np.where(obs1.indx==num)[0][-1]
-		obs1.cut_to_wave([obs1.wave[ll1],obs1.wave[ll2]])
-		fit1.cut_to_wave([fit1.wave[ll1],fit1.wave[ll2]])
+		ind = 0
+		for i in range(len(conf["atoms"])):
+			if str(num) in conf["atoms"][i]:
+				ind = i
+		obs1.cut_to_wave(np.array([conf["range_wave"][ind]]))
+		fit1.cut_to_wave(np.array([conf["range_wave"][ind]]))
 
 	
 
@@ -192,7 +194,7 @@ def inversion(conf : dict, x : int, y : int):
 	#############################################################
 	# Change to abs. wavelength to the line core of the first number
 	if conf1['mode'] == "MC":
-		ll0 = input("Put wavelength of the line core: ")
+		ll0 = float(input("Put wavelength of the line core: "))
 		ll1 += ll0
 		ll2 += ll0
 
@@ -297,6 +299,8 @@ def inversion(conf : dict, x : int, y : int):
 		# set the spacing between subplots	
 		plt.tight_layout(pad=2.5)
 
+	if conf["mode"] == "MC":
+		conf["map"] = [0,0,0,0]
 	plt.savefig(savepath + "inversion_stokes_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
 
 	###################################################
@@ -515,7 +519,6 @@ def inversion(conf : dict, x : int, y : int):
 		# set the spacing between subplots
 		plt.tight_layout(pad=2)
 
-	  
 	plt.savefig(savepath + "inversion_result_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
 
 
