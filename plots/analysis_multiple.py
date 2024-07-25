@@ -229,7 +229,7 @@ def analysis_multiple(confs : list, labels : list):
 			ax1.set_ylabel(r"$\sigma$" + labels_y[i])
 			
 			if len(labels) > 5:
-				ax1.legend(loc='center right', bbox_to_anchor=(1.1+np.max([len(i) for i in labels])/85, 0.5), frameon=False)
+				ax1.legend(loc='center right', bbox_to_anchor=(1.18+np.max([len(i) for i in labels])/85, 0.5), frameon=False)
 			else:
 				ax1.legend()
 			#plt.tight_layout()
@@ -325,7 +325,7 @@ def analysis_multiple(confs : list, labels : list):
 	# Plot legend #
 	###############
 	if len(labels) > 5:
-		ax2.legend(loc='center right', bbox_to_anchor=(1.4 + len(labels[0])/100, 0.5), frameon=False)
+		ax2.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
 	else:
 		ax1.legend()
 
