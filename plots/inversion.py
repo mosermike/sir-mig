@@ -145,12 +145,12 @@ def inversion(conf : dict, x : int, y : int):
 		obs1.cut_to_map(conf["map"])
 
 	else:
-		num = phy1.indx[0]
+		num = obs1.indx[0]
 		if "-num" in sys.argv:
 			num = int(sys.argv[sys.argv.index("-num")+1])
 		# Cut the wave to the line number
-		ll1 = np.where(phy1.indx==num)[0][0]
-		ll2 = np.where(phy1.indx==num)[0][-1]
+		ll1 = np.where(obs1.indx==num)[0][0]
+		ll2 = np.where(obs1.indx==num)[0][-1]
 		obs1.cut_to_wave([obs1.wave[ll1],obs1.wave[ll2]])
 		fit1.cut_to_wave([fit1.wave[ll1],fit1.wave[ll2]])
 
