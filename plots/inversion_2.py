@@ -169,14 +169,24 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		num = phy1.indx[0]
 		if "-num" in sys.argv:
 			num = int(sys.argv[sys.argv.index("-num")+1])
-		ll11 = np.where(phy1.indx==num)[0][0]
-		ll21 = np.where(phy1.indx==num)[0][-1]
-		ll12 = np.where(phy2.indx==num)[0][0]
-		ll22 = np.where(phy2.indx==num)[0][-1]
-		obs1.cut_to_wave([obs1.wave[ll11],obs1.wave[ll21]])
-		obs2.cut_to_wave([obs2.wave[ll12],obs2.wave[ll22]])
-		fit1.cut_to_wave([fit1.wave[ll11],fit1.wave[ll21]])
-		fit2.cut_to_wave([fit2.wave[ll12],fit2.wave[ll22]])
+		ind1 = 0
+		ind2 = 0
+
+		for i in range(len(conf1["atoms"])):
+			if str(num) in conf1["atoms"][i]:
+				ind1 = i
+		for i in range(len(conf2["atoms"])):
+			if str(num) in conf2["atoms"][i]:
+				ind2 = i
+
+		# define map as it is used later for saving
+		conf1["map"] = [0,0,0,0]
+		conf2["map"] = [0,0,0,0]
+		
+		obs1.cut_to_wave(np.array([conf1["range_wave"][ind1]]))
+		obs2.cut_to_wave(np.array([conf2["range_wave"][ind2]]))
+		fit1.cut_to_wave(np.array([conf1["range_wave"][ind1]]))
+		fit2.cut_to_wave(np.array([conf2["range_wave"][ind2]]))
 
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x1,y1],obs1.stkq[x1,y1],obs1.stku[x1,y1],obs1.stkv[x1,y1]
