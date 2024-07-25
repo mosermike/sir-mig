@@ -267,7 +267,7 @@ class profile_stk:
 		lstku = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
 		lstkv = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
 		
-		ind = [np.argmin(np.abs(self.wave-range_wave[i][0])) for i in range(len(range_wave))]
+		ind = [np.argmin(np.abs(self.wave-np.float32(range_wave[i][0]))) for i in range(len(range_wave))]
 		for i in range(len(range_wave)):
 			lwave[nws[i]:nws[i+1]] = self.wave[ind[i]:ind[i]+int(range_wave[i][2])]
 			lstki[:,:,nws[i]:nws[i+1]] = self.stki[:,:,ind[i]:ind[i]+int(range_wave[i][2])]

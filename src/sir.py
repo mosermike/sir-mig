@@ -247,18 +247,18 @@ def read_config(filename, check = True, change_config = False):
 		for i in range(0,len(temp)):
 			Dict["range_wave"][i,0] = np.float64(temp[i][0])
 			Dict["range_wave"][i,1] = np.float64(temp[i][1])
-			Dict["range_wave"][i,2] = np.float64(temp[i][2])
+			Dict["range_wave"][i,2] = int(temp[i][2])
 		
 
 	if Dict['mode'] == "MC":
 		Dict['num'] = int(Dict['num'])
 
-		# Convert the ranges into integers or floats
 		temp = [i. split(',') for i in Dict["range_wave"].split(';')]
+		Dict["range_wave"] = np.zeros((len(temp),3), dtype=np.float64)
 		for i in range(0,len(temp)):
-			temp[i][0] = float(temp[i][0])
-			temp[i][1] = float(temp[i][1])
-		Dict["range_wave"] = np.array(temp)
+			Dict["range_wave"][i,0] = np.float64(temp[i][0])
+			Dict["range_wave"][i,1] = np.float64(temp[i][1])
+			Dict["range_wave"][i,2] = int(temp[i][2])
 
 	Dict['atoms'] = Dict["atoms"].split(';')	# Atoms
 
