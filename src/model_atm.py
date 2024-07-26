@@ -475,7 +475,53 @@ class model_atm:
 		
 		return self
 
-	
+	def reinterpolate(self, tau : np.array):
+		"""
+		Reinterpolate to a different tau scale
+		
+		Note
+		----
+		If tau has bigger or smaller numbers than in the range, the numbers are wrong
+
+		Parameters
+		---------
+		tau : numpy array
+			Array with the new log tau scale
+
+		Returns
+		-------
+		New reinterpolated model
+		"""
+		
+		mod = model_atm(self.nx,self.ny,len(tau))
+		mod.tau = tau
+		mod.full = np.copy(self.full)
+		mod.fill = np.copy(self.fill)
+		mod.stray_light = np.copy(self.stray_light)
+		mod.vmacro = np.copy(self.vmacro)
+
+		if(tau[0] > np.min(self.tau[0])):
+			print("Note that the chosen range as it exceeds the range sometimes will lead to wrong numbers in the start!")
+		if(tau[-1] < np.max(self.tau[-1])):
+			print("Note that the chosen range as it exceeds the range sometimes will lead to wrong numbers in the end!")
+		
+		for x in range(self.nx):
+			for y in range(self.ny):
+				mod.T[x,y]      = np.interp(tau, np.flip(self.tau),np.flip(self.T[x,y]))
+				mod.Pe[x,y]     = np.interp(tau, np.flip(self.tau),np.flip(self.Pe[x,y]))
+				mod.vmicro[x,y] = np.interp(tau, np.flip(self.tau),np.flip(self.vmicro[x,y]))
+				mod.B[x,y]      = np.interp(tau, np.flip(self.tau),np.flip(self.B[x,y]))
+				mod.vlos[x,y]   = np.interp(tau, np.flip(self.tau),np.flip(self.vlos[x,y]))
+				mod.gamma[x,y]  = np.interp(tau, np.flip(self.tau),np.flip(self.gamma[x,y]))
+				mod.phi[x,y]    = np.interp(tau, np.flip(self.tau),np.flip(self.phi[x,y]))
+				if self.full:
+					mod.z[x,y]   = np.interp(tau, np.flip(self.tau),np.flip(self.z[x,y]))
+					mod.rho[x,y] = np.interp(tau, np.flip(self.tau),np.flip(self.rho[x,y]))
+					mod.Pg[x,y]  = np.interp(tau, np.flip(self.tau),np.flip(self.Pg[x,y]))
+
+		mod.load = self.load
+		return mod
+
 	def set_dim(self, nx, ny, nval):
 		"""
 		Sets the dimensions if no data is loaded yet
