@@ -250,7 +250,7 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 
 def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath, add, chi2, Map_plot, origin, sign1, sign2, n, dx, dy, Type=""):
 
-
+	
 	if "-logT" not in sys.argv:
 		logT = tau
 	else:
@@ -313,7 +313,7 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	inputs = ["_____","-T", '-Pe', '-vmicro', '-B', "-vlos", "-gamma", "-phi", "-z", "-Pg","-rho","-Bz","-fill"]
 	labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [G]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B$ [G]",r"$\alpha$"]
 	titles   = ["",r"Temperature", r"Electron Pressure",r"Microturbulence Velocity", r"Magnetic Field",	r"Line-of-Sight Velocity", r"Inclination", r"Azimuth", r"Height", r"Gas Pressure", r"Density$", r"Magnetic Field $B_{\text{los}}$","Filling Factor"]
-	cmap = [None,None,None,None,'cividis','seismic','jet','hsv',None,None,None,None, "gist_gray"]
+	cmap = ['viridis','viridis','viridis','viridis','cividis','seismic','jet','hsv','viridis','viridis','viridis','viridis', "gist_gray"]
 	limits = [[None,None],[np.min(models_inv.T),np.max(models_inv.T)],[None,None],[None,None],
 		   [None,None],[None,None],[0,180],[0,180],[None, None],[None, None],[None, None],[-np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi))),np.max(np.abs(models_inv.B*np.cos(models_inv.gamma/180*np.pi)))], [0,1]]
 	i = 0
@@ -321,20 +321,45 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 		labels = ["", r"$T$ [K]", r"$\log P_e$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\mathrm{v}_{\mathrm{micro}}$ $\left[\frac{\mathrm{cm}}{\mathrm{s}}\right]$", r"$B$ [kG]", r"$\mathrm{v}_{\mathrm{los}}$ $\left[\frac{\mathrm{km}}{\mathrm{s}}\right]$", r"$\gamma$ [deg]", r"$\phi$ [deg]", r"$z$ [km]", r"$\log P_g$ $\left[\frac{\mathrm{dyn}}{\mathrm{cm}^2}\right]$", r"$\rho$ $\left[\mathrm{dyn}\mathrm{cm}^{-3}\right]$", r"$B$ [kG]",r"$\alpha$"]
 	if "-symv" in sys.argv:
 		limits[5] = [-np.max(np.abs(models_inv.vlos)),np.max(np.abs(models_inv.vlos))]
+	extend = ['neither' for i in cmap]
 
 	if "-limitT" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
 		limits[1] = [int(i) for i in temp ]
+		import matplotlib as mpl
+		cmap[0] = mpl.colormaps[cmap[0]]
+		cmap[0].set_extremes(under='red', over='orange')
+		extend[0] = "both"
 	
 	if "-limitB" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
 		limits[4] = [int(i) for i in temp ]
+		import matplotlib as mpl
+		cmap[4] = mpl.colormaps[cmap[4]]
+		cmap[4].set_extremes(under='red', over='green')
+		if limits[4][0] > 0:
+			extend[4] = "both"
+		else:
+			extend[4] = "max"
 	if "-limitv" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
 		limits[5] = [int(i) for i in temp ]
+		import matplotlib as mpl
+		cmap[5] = mpl.colormaps[cmap[5]]
+		cmap[5].set_extremes(under='green', over='yellow')
+		extend[5] = "both"
+
 	if "-limitchi2" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
 		limits[11] = [int(i) for i in temp ]
+		import matplotlib as mpl
+		import matplotlib as mpl
+		cmap[11] = mpl.colormaps[cmap[11]]
+		cmap[11].set_extremes(under='red', over='blue')
+		if limits[11][0] > 0:
+			extend[11] = "both"
+		else:
+			extend[11] = "max"
 	if Type != "":
 		add_str =  f" for Model {Type} "
 	else:
@@ -368,7 +393,7 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 			ax.set_ylabel(f"y [{units}]")
 			############
 			# Colorbar #
-			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, aspect=30)
+			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[i])
 			cbar.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 			cbar.set_label(label = labels[i], loc = 'center')
 			############
@@ -440,22 +465,27 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	############
 	# Colorbar #
 	import matplotlib as mpl
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[1])
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar1.set_label(label = labels[1], loc = 'center', labelpad=15)
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[4])
 	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar2.set_label(label = labels[4], loc = 'center', labelpad=15)
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[5])
 	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar3.set_label(label = labels[5], loc = 'center', labelpad=15)
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
-	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	
 	if "-plot_chi2" in sys.argv:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[11])
+		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 		cbar4.set_label(label = labels[11], loc = 'center', labelpad=15)
 	elif "-plot_fill" in sys.argv:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
+		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 		cbar4.set_label(label = r"$\alpha$", loc = 'center', labelpad=15)	
 	else:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[6])
+		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 		cbar4.set_label(label = labels[6], loc = 'center', labelpad=15)
 	############
 	# Set title position depending on the chosen plot and consider the flags hinode and gris
@@ -557,8 +587,12 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 		temp = sys.argv[sys.argv.index("-limitI")+1].split(',')
 		limits_stokes1[0] = [int(i) for i in temp ]
 		limits_stokes2[0] = [int(i) for i in temp ]
-	
-		
+		cmap = mpl.colormaps['viridis']
+		cmap.set_extremes(under='red', over='orange')
+		extend = "both"
+	else:
+		cmap = "viridis"
+		extend = "neither"
 
 	if "-vertical" in sys.argv:
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, sharex=True,
@@ -578,7 +612,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	############################
 	# Plot the Stokes profiles #
 	############################
-	im1 = ax1.imshow(I1[:,:,wave_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
+	im1 = ax1.imshow(I1[:,:,wave_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot, cmap=cmap)
 	im2 = ax2.imshow(Q1[:,:,waveQ_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
 	im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 	im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
@@ -597,7 +631,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	############
 	# Colorbar #
 	import matplotlib as mpl
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
 	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
@@ -666,7 +700,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	############################
 	# Plot the Stokes profiles #
 	############################
-	im1 = ax1.imshow(I2[:,:,wave_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot)
+	im1 = ax1.imshow(I2[:,:,wave_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[0][0], vmax = limits_stokes1[0][1], extent=Map_plot, cmap=cmap)
 	im2 = ax2.imshow(Q2[:,:,waveQ_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
 	im3 = ax3.imshow(U2[:,:,waveU_ind2]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
@@ -687,7 +721,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30)
+	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
 	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
