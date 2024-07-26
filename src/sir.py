@@ -640,7 +640,11 @@ def _write_config_1c(File, conf, verbose = True):
 	temp = conf["range_wave"]
 	for i in range(len(temp)):
 		for j in range(len(temp[i])):
-			range_wave += str(temp[i][j])
+			# Last entry is an integer
+			if j == len(temp[i]):
+				range_wave += str(int(temp[i][j]))
+			else:
+				range_wave += str(temp[i][j])
 			if j +1 < len(temp[i]):
 				range_wave += ','
 		if i < len(temp)-1:
@@ -738,7 +742,11 @@ def _write_config_2c(File, conf, verbose = True):
 	temp = conf["range_wave"]
 	for i in range(len(temp)):
 		for j in range(len(temp[i])):
-			range_wave += str(temp[i][j])
+			# Last entry is an integer
+			if j == len(temp[i]):
+				range_wave += str(int(temp[i][j]))
+			else:
+				range_wave += str(temp[i][j])
 			if j +1 < len(temp[i]):
 				range_wave += ','
 		if i < len(temp)-1:
@@ -849,7 +857,11 @@ def _write_config_mc(File, conf, verbose=True):
 	temp = conf["range_wave"]
 	for i in range(len(temp)):
 		for j in range(len(temp[i])):
-			range_wave += str(temp[i][j])
+			# Last entry is an integer
+			if j == len(temp[i]):
+				range_wave += str(int(temp[i][j]))
+			else:
+				range_wave += str(temp[i][j])
 			if j +1 < len(temp[i]):
 				range_wave += ','
 		if i < len(temp)-1:

@@ -1063,7 +1063,7 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 			x = float(infos['XCEN'])
 			y = float(infos['YCEN'])
 			
-		Map_plot = [0,stokes_inv.nx*abs(dx),0,stokes_inv.ny*abs(dy)]
+		Map_plot = [0,(stokes_inv.nx-1)*abs(dx),0,(stokes_inv.ny-1)*abs(dy)]
 		if x > 0 and y > 0:
 			sign1 = -1
 			sign2 = -1
