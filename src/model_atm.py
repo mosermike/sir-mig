@@ -558,7 +558,7 @@ class model_atm:
 		self.fill = np.zeros(shape=(nx, ny), dtype=np.float64)
 		self.stray_light = np.zeros(shape=(nx, ny), dtype=np.float64)
 		self.nx = nx * 1
-		self.nx = ny * 1
+		self.ny = ny * 1
 		self.nval = nval * 1
 
 		return self
