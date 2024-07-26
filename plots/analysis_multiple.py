@@ -112,9 +112,12 @@ def analysis_multiple(confs : list, labels : list):
 		'dashdot',
 		(0, (3,10,1,10))
 	]
+	
+	linestyle_str = ['-', '--', ':', '-.', (0, (3, 5, 1, 5)), (0, (5, 10)),
+              (0, (5, 10, 1, 10)), (0, (5, 2)), (0, (1, 1)), (0, (3, 5, 1, 5, 1, 5))]
 
 	#######################################################################
-	#	    READ INPUT, WRITE DEFINITIONS AND LOAD DATA			  	#
+	#	    READ INPUT, WRITE DEFINITIONS AND LOAD DATA		      #
 	#######################################################################
 
 	# Additional labels
