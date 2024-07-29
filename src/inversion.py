@@ -943,7 +943,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 		if rank == 0 and progress:
 			pbar.n = total_jobs
 			pbar.refresh()
-		else:
+		elif rank == 0:
 			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}", end="")
 	
 	comm.barrier()
@@ -1223,7 +1223,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 		if rank == 0 and progress:
 			pbar.n = total_jobs
 			pbar.refresh()
-		else:
+		elif rank == 0:
 			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}", end="")
 
 	comm.barrier()
@@ -1556,7 +1556,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		if rank == 0 and progress:
 			pbar.n = total_jobs
 			pbar.refresh()
-		else:
+		elif rank == 0:
 			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}", end="")
 
 	comm.barrier()
