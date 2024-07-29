@@ -472,7 +472,7 @@ def optimise_chi(nu, sigma, I, I_obs):
 	chis = np.zeros(shape=(len(nu), len(sigma)))
 	for n in range(len(nu)):
 		for s in range(len(sigma)):
-			chis[n,s] = np.log10(np.sum((I[n,s,:]-I_obs)**2))
+			chis[n,s] = np.sum((I[n,s,:]-I_obs)**2)
 
 	# Find the simple minima
 	chi_min = argmin(chis)
@@ -745,7 +745,7 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 
 	# Shorten data to the peak from -(-1.5) to 1.5
 	ll_conv	= ll_ciddor[np.argmin(abs(ll_ciddor + b)) : np.argmin(abs(ll_ciddor - b))]
-	i_conv	= i1		 [np.argmin(abs(ll_ciddor + b)) : np.argmin(abs(ll_ciddor - b))]
+	i_conv	= i1	   [np.argmin(abs(ll_ciddor + b)) : np.argmin(abs(ll_ciddor - b))]
 
 	# Interpolate the GRIS data to be comparable with the FTS data
 	I_obs = np.interp(ll_conv, ll_gris, i_gris)
@@ -795,7 +795,7 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 	fig, ax = plt.subplots()
 	vmin = round(np.log10(chi_min)-0.05,1)
 	vmax = round(np.log10(chi_min)-0.05,1) + 0.8
-	c = ax.contourf(sigma*1e3, nu*100, chis, levels = np.linspace(vmin, vmax, 40), cmap = 'ocean', vmin = vmin, vmax = vmax)
+	c = ax.contourf(sigma*1e3, nu*100, np.log10(chis), levels = np.linspace(vmin, vmax, 40), cmap = 'ocean', vmin = vmin, vmax = vmax)
 	ax.set_ylabel(r"$\nu$ $[\%]$")
 	ax.set_xlabel(r"$\sigma$ [m\AA]")
 	cbar = fig.colorbar(c,ticks=np.arange(vmin, vmax+0.2, 0.2), location = 'top')
