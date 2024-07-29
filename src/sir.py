@@ -647,7 +647,7 @@ def _write_config_1c(File, conf, verbose = True):
 	for i in range(len(temp)):
 		for j in range(len(temp[i])):
 			# Last entry is an integer
-			if j == len(temp[i]):
+			if j == len(temp[i])-1:
 				range_wave += str(int(temp[i][j]))
 			else:
 				range_wave += str(temp[i][j])
@@ -749,7 +749,7 @@ def _write_config_2c(File, conf, verbose = True):
 	for i in range(len(temp)):
 		for j in range(len(temp[i])):
 			# Last entry is an integer
-			if j == len(temp[i]):
+			if j == len(temp[i])-1:
 				range_wave += str(int(temp[i][j]))
 			else:
 				range_wave += str(temp[i][j])
@@ -864,7 +864,7 @@ def _write_config_mc(File, conf, verbose=True):
 	for i in range(len(temp)):
 		for j in range(len(temp[i])):
 			# Last entry is an integer
-			if j == len(temp[i]):
+			if j == len(temp[i])-1:
 				range_wave += str(int(temp[i][j]))
 			else:
 				range_wave += str(temp[i][j])

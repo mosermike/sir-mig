@@ -479,9 +479,9 @@ def optimise_chi(nu, sigma, I, I_obs):
 	nu_min = nu[chi_min[0]]
 	sigma_min = sigma[chi_min[1]]
 
-	if chi_min[0]+5 > len(nu):
+	if chi_min[0]+5 > len(nu) or chi_min[0] < 4:
 		raise Exception("[optimise_chi] The found minimum " + str(nu_min) + "is at the border of the selected ranges. Consider increasing the ranges of nu in definitions.py!")
-	if chi_min[1]+5 > len(sigma):
+	if chi_min[1]+5 > len(sigma) or chi_min[1] < 4:
 		raise Exception("[optimise_chi] The found minimum " + str(sigma_min) + " is at the border of the selected ranges. Consider increasing the ranges of sigma in definitions.py!")
 
 	
@@ -565,9 +565,11 @@ def correct_spectral_veil_conf(pro, conf):
 	config : dict
 		Dictionary with all the information from the config file
 
-	Returns
-	-------
-	None
+	Return
+	------
+	correct_spectral_veil_conf : profile_stk
+		Corrected profiles
+
 	"""
 	return correct_spectral_veil(pro, conf["instrument"], conf["fts_file"], conf["quiet_sun"], conf["cube"], conf["path"])
 	
@@ -596,8 +598,8 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 	cube : str
 		Name of the stored data cube
 
-	Returns
-	-------
+	Return
+	------
 	correct_spectral_veil : profile_stk
 		Profiles with the corrected spectal veil
 
