@@ -98,13 +98,14 @@ def extract_profile_model_1C(conf, x, y):
 	if savepath != '':
 		if conf['psf'] != '':
 			if "gauss" in conf['psf']:
-				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
+				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
 			else:
-				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
+				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
 		else:
 			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance']]
 		for sir_file in sir_files:
 			shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
+		sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
 
 def extract_profile_model_MC(conf, num):
 	"""
@@ -174,9 +175,12 @@ def extract_profile_model_MC(conf, num):
 
 	# Copy stuff for the inversion
 	if savepath != '':
-		sir_files = [d.inv_trol_file, model, "sir.x", line_file, d.Grid, abundance_file]
+		sir_files = [model, "sir.x", line_file, d.Grid, abundance_file]
 		for sir_file in sir_files:
 			shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
+
+		sir.write_control(os.path.join(savepath, d.syn_trol_file), conf, "syn")
+		sir.write_control(os.path.join(savepath, d.inv_trol_file), conf, "inv")
 
 def extract_profile_model_2C(conf, x, y):
 	"""
@@ -248,13 +252,15 @@ def extract_profile_model_2C(conf, x, y):
 	if savepath != '':
 		if conf['psf'] != '':
 			if "gauss" in conf['psf']:
-				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
+				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
 			else:
-				sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
+				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
 		else:
 			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance']]
 		for sir_file in sir_files:
 			shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
+	
+		sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
 
 # Used if executed directly
 if __name__ == "__main__":
