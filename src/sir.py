@@ -277,9 +277,8 @@ def read_config(filename, check = True, change_config = False):
 		for i in range(0,len(temp)):
 			Dict["range_wave"][i,0] = np.float64(temp[i][0])
 			Dict["range_wave"][i,1] = np.float64(temp[i][1])
-			Dict["range_wave"][i,2] = int(temp[i][2])
-		
-
+			Dict["range_wave"][i,2] = int(temp[i][2].replace(".0",""))
+	
 	if Dict['mode'] == "MC":
 		Dict['num'] = int(Dict['num'])
 
@@ -288,7 +287,7 @@ def read_config(filename, check = True, change_config = False):
 		for i in range(0,len(temp)):
 			Dict["range_wave"][i,0] = np.float64(temp[i][0])
 			Dict["range_wave"][i,1] = np.float64(temp[i][1])
-			Dict["range_wave"][i,2] = int(temp[i][2])
+			Dict["range_wave"][i,2] = int(temp[i][2].replace(".0",""))
 
 	Dict['atoms'] = Dict["atoms"].split(';')	# Atoms
 
@@ -679,7 +678,7 @@ def _write_config_1c(File, conf, verbose = True):
 		f.write("#\n")
 		f.write(f"preprocess : {conf['preprocess']} # Preprocess data (1 = True, 0 = False)\n")
 		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
-		f.write(f"ending     : {conf['ending']} # Ending of GRIS file used for merging")
+		f.write(f"ending     : {conf['ending']} # Ending of GRIS file used for merging\n")
 		f.write(f"quiet_sun  : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")
 		f.write(f"fts_file   : {conf['fts_file']} # Absolute path to fts file, blank = do not correct spectral veil\n")
 		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")
@@ -781,7 +780,7 @@ def _write_config_2c(File, conf, verbose = True):
 		f.write("#\n")
 		f.write(f"preprocess : {conf['preprocess']} # Preprocess data (1 = True, 0 = False)\n")
 		f.write(f"instrument : {conf['instrument']} # Instrument used (GRIS, Hinode or empty)\n")
-		f.write(f"ending     : {conf['ending']} # Ending of GRIS file used for merging")
+		f.write(f"ending     : {conf['ending']} # Ending of GRIS file used for merging\n")
 		f.write(f"quiet_sun  : {quiet_sun} # Quiet sun region for normalization as a list (0 => already normalised)\n")
 		f.write(f"fts_file   : {conf['fts_file']} # Absolute path to fts file, blank = do not correct spectral veil\n")
 		f.write(f"shift_wave : {conf['shift_wave']} # Shift the wavelength grid when waves file is created in mA\n")

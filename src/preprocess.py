@@ -598,7 +598,8 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 
 	Returns
 	-------
-	None
+	correct_spectral_veil : profile_stk
+		Profiles with the corrected spectal veil
 
 	"""
 	
@@ -842,4 +843,4 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 
 	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
 	
-	return
+	return stokes
