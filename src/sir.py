@@ -50,7 +50,7 @@ def create_task_folder_list(arg):
 		Map = arg
 		if Map[1] < Map[0]:
 			raise Exception(f"xmax in the map argument is smaller than xmin")
-		if Map[2] < Map[3]:
+		if Map[3] < Map[2]:
 			raise Exception(f"ymax in the map argument is smaller than ymin")
 		# Determine task folder names
 		for x in range(Map[0], Map[1]+1):
