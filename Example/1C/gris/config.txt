@@ -23,7 +23,7 @@ save_cube  : 0 # Save preprocessed data (merged and normalised) (1=True,0=False)
 model      : hsra_35.mod # Base Model for guess
 range_wave : start1,step1,num1;start2,step1,num2;... # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.
 inv_out    : out # Prefix of output of the inversion files
-chi2       :  # Compute chi2 and save it under this name
+chi2       :  # Compute chi2 (0 or 1)
 line       : Lines # Line file
 atoms      : line1,line2;line3 # Atoms used, ; defines a new line
 guess      :  # Use a bin file as initial guesses, blank use base model

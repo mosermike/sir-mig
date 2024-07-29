@@ -25,7 +25,7 @@ model2      : model2.mod # Base Model 2 for guess
 range_wave  : startt1,step1,num1;start2,step2,num2;... # Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelenghts) for each line in the grid file.
 fill        : 0.5,0.5 # Filling factors for both models separated by a ',' (if random_guess > 0)
 inv_out     : inversion.npy # Prefix of output of the inversion files
-chi2        :  # Compute chi2 and save it under this name
+chi2        : # Compute chi2 (0 or 1)
 line        : Lines # Line file
 atoms       : atom1,atom2;atom3 # Atoms used, ; defines a new line
 guess1      :  # Use a bin file as initial guesses, blank use base model 1

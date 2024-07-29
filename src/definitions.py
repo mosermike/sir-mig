@@ -17,6 +17,7 @@ import numpy as np
 ##############
 end_stokes = '_stokes.bin' # Ending inversion result stokes  KEEP
 end_models = '_models.bin' # Ending inversion result models  KEEP
+end_chi2 = '_chi2.bin'		  # Ending chi2 file KEEP
 end_models1 = '_models1.bin'  # Ending inversion result models 1 for 2C KEEP
 end_models2 = '_models2.bin'  # Ending inversion result models 2 for 2C KEEP 
 end_errors = '_errors.bin'  # Ending inversion result error KEEP

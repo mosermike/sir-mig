@@ -31,7 +31,7 @@ create_points : 1,-1,-4 # At this log tau points the models are interpolated wit
 # Inversion configuration
 # 
 inv_out : out # Prefix of the output of the inversion files
-chi2    : out_chi2.bin # Compute chi2 and save it under this name
+chi2    : 1 # Compute chi2 (0 or 1)
 line    : Lines # Line file
 guess   :  # Use a bin file as initial guesses, blank use base model
 # 

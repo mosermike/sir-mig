@@ -924,9 +924,9 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-model")+1]
 			models_inv = m.read_model(filename)
 
-	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv and conf["chi2"] != ""):
+	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
 		if "-chi" not in sys.argv:
-			chi2 = c.read_chi2(os.path.join(path,conf['inv_out']+conf['chi2']))
+			chi2 = c.read_chi2(os.path.join(path,conf['inv_out'] + d.end_chi2))
 		else:
 			filename = sys.argv[sys.argv.index("-chi")+1]
 			chi2 = c.read_chi2(filename)

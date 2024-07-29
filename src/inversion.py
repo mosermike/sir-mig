@@ -871,7 +871,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 	# SCATTER AND LOAD DATA #
 	#########################
 	# Load and scatter data => Saving memory and time
-	if conf['chi2'] != "":
+	if conf['chi2'] == "1":
 		stk, tasks, obs = scatter_data(conf, comm, rank, size, True)
 	else:
 		stk, tasks = scatter_data(conf, comm, rank, size, False)
@@ -1001,7 +1001,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 		del errors_inv
 		del best_guesses
 
-		if conf['chi2'] != "":
+		if conf['chi2'] == "1":
 			chi2 = c.chi2_stk(0,0)
 			print("-------> Compute χ² (this might take a while) ...")
 			
@@ -1022,7 +1022,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
 			print("-------> Total χ² = %.3f" % chi2.total)
 			print("-------> Write χ² ...")
-			chi2.write(os.path.join(path, conf['inv_out']+conf['chi2']))
+			chi2.write(os.path.join(path, conf['inv_out'] + d.end_chi2))
 			del obs
 			del stokes_inv
 			del num_of_nodes
@@ -1175,7 +1175,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 	total_jobs = 1  # Total performed jobs across all processes
 	max_jobs = conf['num']  # For comm.allreduce function
 
-	if conf['chi2'] != "":
+	if conf['chi2'] == "1":
 		stk, tasks, obs = scatter_data_mc(conf, comm, rank, size, True)
 	else:
 		stk, tasks = scatter_data_mc(conf, comm, rank, size, False)
@@ -1274,7 +1274,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 		del errors
 		del guess
 
-		if conf['chi2'] != "":
+		if conf['chi2'] == "1":
 			print("-------> Compute χ² (this might take a while) ...")
 			chi2 = c.chi2_stk(0,0)
 
@@ -1294,7 +1294,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 			# Compute chi2
 			chi2.compute(obs, stokes, [float(i) for i in conf["weights"]], num_of_nodes)
 			print("-------> Total χ² = %.3f" % chi2.total)
-			chi2.write(os.path.join(path, conf['inv_out']+conf['chi2']))
+			chi2.write(os.path.join(path, conf['inv_out'] + d.end_chi2))
 
 			del obs
 			del num_of_nodes
@@ -1629,7 +1629,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		del best_guesses1
 		del best_guesses2
 
-		if conf['chi2'] != "":
+		if conf['chi2'] == "1":
 			print("-------> Compute χ² (this might take a while) ...")
 			chi2 = c.chi2_stk(0,0)
 
@@ -1652,7 +1652,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			print("-------> Total χ² = %.3f" % chi2.total)
 			print("-------> Write χ²")
 			
-			chi2.write(os.path.join(path, conf['inv_out']+conf['chi2']))
+			chi2.write(os.path.join(path, conf['inv_out'] + d.end_chi2))
 			del chi2
 			del obs
 			del num_of_nodes

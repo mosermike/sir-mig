@@ -564,7 +564,7 @@ def visualizer_1C(conf, wave):
 	if use_model:
 		if '-chi2' in sys.argv:
 			if "-chi" not in sys.argv:
-				chi2_inv = c.read_chi2(os.path.join(path,conf['chi2']))
+				chi2_inv = c.read_chi2(os.path.join(path,conf['inv_out']+d.end_chi2))
 			else:
 				filename = sys.argv[sys.argv.index("-chi")+1]
 				chi2_inv = c.read_chi2(filename)

@@ -78,17 +78,17 @@ def _config_MC():
 		random_pars = ''
 	guess = input ("Take bin file as initial guess? Write name of the file, if used [with add. number, create guess around the provided value with this factor]: ")
 
-	weights = input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
-	nodes_temp = input("Nodes in temperature  (as list)        : ")
-	nodes_magn = input("Nodes in magn. field  (as list)        : ")
-	nodes_vlos = input("Nodes in velocity los (as list)        : ")
-	nodes_gamma = input("Nodes in inclination/gamma (as list)   : ")
-	nodes_phi = input("Nodes in azimuth/phi (as list)         : ")
-	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
-	abundance = input("Abundance file               [THEVENIN]: ")
-	chi2 = input("Compute chi2 and save it under this file [chi2.bin]: ")
-	line = input("Lines file                      [Lines]: ")
-	gas_pressure = input("Gas Pressure Boundary condition  [-1 => 3.944e+3]: ")
+	weights		 = input ("Weights as a list (I,Q,U,V)  [1,1,1,1]: ")
+	nodes_temp	 = input("Nodes in temperature  (as list)        : ")
+	nodes_magn	 = input("Nodes in magn. field  (as list)        : ")
+	nodes_vlos	 = input("Nodes in velocity los (as list)        : ")
+	nodes_gamma	 = input("Nodes in inclination/gamma (as list)   : ")
+	nodes_phi	 = input("Nodes in azimuth/phi (as list)         : ")
+	vmacro		 = input ("Value for the macroturbulence [0.1000]: ")
+	abundance	 = input("Abundance file               [THEVENIN]: ")
+	chi2		 = input("Compute chi2?                     0/[1]: ")
+	line		 = input("Lines file                      [Lines]: ")
+	gas_pressure = input("Gas Pressure Boundary condition        : ")
 
 
 	lim_B = input("Limits for randomising the magn. field in G             [0,4000]: ")
@@ -137,7 +137,7 @@ def _config_MC():
 	if vmacro == '':
 		vmacro = '0.1000'
 	if chi2 == '':
-		chi2 = 'chi2.bin'
+		chi2 = '1'
 	if line == '':
 		line = 'Lines'
 	if weights == '':
@@ -146,8 +146,6 @@ def _config_MC():
 		random_pars = "B,T,vlos,gamma"
 	if model_pars == '':
 		model_pars = "B,T,vlos,gamma"
-	if gas_pressure == "-1":
-		gas_pressure = "3.944e+3"
 
 
 
@@ -220,7 +218,6 @@ def _config_1C():
 		path = sys.argv[sys.argv.index("-path")+1]
 	else:
 		path		= input ("Path, where the files are: ")
-	#cube			= input ("Location of the Data cube for preprocessing (format is nx,ny,ns,nwave) as a .bin file (can be left empty if no preprocessing): ")
 	cube_inv		= input ("Location of the Data cube used for the inversion (format is nx,ny,ns,nwave) in the path as a bin file: ")
 	preprocess		= input ("Preprocess data? (Normalisation and/or spectral veil correction? (yes -> 1, no -> 0, perform directly inversion): ")
 	Map			= input ("Map in pixels to be used for the inversion (format xmin,xmax,ymin,ymax): ")
@@ -241,7 +238,7 @@ def _config_1C():
 			ending = ""
 		shift_wave	= input ("Shift the wavelength grid in mA: [0]: ")
 		save_cube	= input ("Save preprocessed data? (1 = True, 0 = False): ")
-		quiet_sun		= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
+		quiet_sun	= input ("Quiet sun region as a list (format x1,x2,y1,y2; 0 = already normalised): ")
 	else:
 		fts_file = ""
 		shift_wave = "0"
@@ -252,24 +249,24 @@ def _config_1C():
 	
 	cycles		= input ("Cycles: ")
 	model		= input ("Base model: ")
-	inv_out		= input ("Inversion Prefix [out]: ")
-	line			= input ("Line file                       [Lines]: ")
-	atoms			= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
-	range_wave		= input ("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelengths) for each line in the grid file:" )
+	inv_out		= input ("Inversion Prefix                [out]: ")
+	line		= input ("Line file                     [Lines]: ")
+	atoms		= input ("Atoms (e.g. 8,9;3,4   ';' == newline): ")
+	range_wave	= input ("Range for the grid file as (Start wavelength in abs. wavelength, Step in mA, Number of wavelengths) for each line in the grid file:" )
 	guess		= input ("Take bin file as initial guess? Write name of the file, if used [additional number to create new guess around value with this factor]: ")
-	psf			 = input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used): ")
+	psf			= input ("Filename of psf (.dat file) or 'gauss xx.xx' with sigma=xx.xx in mA, blank = not used): ")
 
 	weights		= input ("Weights as a list (I,Q,U,V)   [1,1,1,1]: ")
 	nodes_temp	= input ("Nodes in temperature  (as list)        : ")
 	nodes_magn	= input ("Nodes in magn. field  (as list)        : ")
 	nodes_vlos	= input ("Nodes in velocity los (as list)        : ")
 	nodes_gamma	= input ("Nodes in inclination/gamma (as list)   : ")
-	nodes_phi		= input ("Nodes in azimuth/phi (as list)    	 : ")
-	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
+	nodes_phi	= input ("Nodes in azimuth/phi (as list)    	 : ")
+	vmacro		= input ("Value for the macroturbulence  [0.1000]: ")
 	mu_cos		= input ("mu = cos theta                         : ")
-	abundance		= input ("Abundance file               [THEVENIN]: ")
-	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
-	gas_pressure   = input ("Gas Pressure Boundary condition  [-1 => 3944]: ")
+	abundance	= input ("Abundance file               [THEVENIN]: ")
+	chi2		= input("Compute chi2?                      0/[1]: ")
+	gas_pressure= input ("Gas Pressure Boundary condition        : ")
 
 	random_guess	= input ("Number of random guess models (0 = use base model or provided guess): ")
 	random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
@@ -306,13 +303,11 @@ def _config_1C():
 	if abundance == '':
 		abundance = 'THEVENIN'
 	if chi2 == '':
-		chi2 = 'out_chi2.bin'
+		chi2 = '1'
 	if weights == '':
 		weights = '1,1,1,1'
 	if random_pars == '':
 		random_pars = "B,T,vlos,gamma"
-	if gas_pressure == "-1":
-		gas_pressure = "3.944"
 
 	conf = {
 		"mode" : mode,
@@ -422,30 +417,30 @@ def _config_2C():
 	nodes_temp1	= input ("Nodes 1 in temperature  (as list)		: ")
 	nodes_magn1	= input ("Nodes 1 in magn. field  (as list)        : ")
 	nodes_vlos1	= input ("Nodes 1 in velocity los (as list)        : ")
-	nodes_gamma1	= input ("Nodes 1 in inclination/gamma (as list)   : ")
+	nodes_gamma1= input ("Nodes 1 in inclination/gamma (as list)   : ")
 	nodes_phi1	= input ("Nodes 1 in azimuth/phi (as list)         : ")
 	nodes_temp2	= input ("Nodes 2 in temperature  (as list)        : ")
 	nodes_magn2	= input ("Nodes 2 in magn. field  (as list)        : ")
 	nodes_vlos2	= input ("Nodes 2 in velocity los (as list)        : ")
-	nodes_gamma2	= input ("Nodes 2 in inclination/gamma (as list)   : ")
+	nodes_gamma2= input ("Nodes 2 in inclination/gamma (as list)   : ")
 	nodes_phi2	= input ("Nodes 2 in azimuth/phi (as list)         : ")
-	vmacro		= input ("Value for the macroturbulence [0.1000]: ")
-	fill		= input ("Invert filling factor? [0/1]: ")
-	mu_cos		= input ("mu = cos theta                         : ")
-	abundance		= input ("Abundance file               [THEVENIN]: ")
-	chi2 = input("Compute chi2 and save it under this file [out_chi2.bin]: ")
-	gas_pressure   = input ("Gas Pressure Boundary condition  (two values separated with ' ') [-1 => 3.944e+3]: ")
+	vmacro		= input ("Value for the macroturbulence    [0.1000]: ")
+	fill		= input ("Invert filling factor?              [0/1]: ")
+	mu_cos		= input ("mu = cos theta                           : ")
+	abundance	= input ("Abundance file                 [THEVENIN]: ")
+	chi2		= input("Compute chi2?                        0/[1]: ")
+	gas_pressure   = input ("Gas Pressure Boundary condition  (two values separated with ' '): ")
 
 	random_guess	= input ("Number of random guess models (0 = use base model or provided guess model): ")
 	random_pars	= input ("Randomize these parameters [B,T,vlos,gamma]: ")
 	if random_guess != '0':
-		lim_B1		= input ("Limits 1 for randomising the magn. field in G             [0,5000]: ")
+		lim_B1			= input ("Limits 1 for randomising the magn. field in G             [0,5000]: ")
 		lim_vlos1		= input ("Limits 1 for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
-		lim_gamma1	= input ("Limits 1 for randomising the inclination in deg            [0,180]: ")
+		lim_gamma1		= input ("Limits 1 for randomising the inclination in deg            [0,180]: ")
 		lim_azimuth1	= input ("Limits 1 for randomising the azimuth in deg                [0,180]: ")
-		lim_B2		= input ("Limits 2 for randomising the magn. field in G             [0,5000]: ")
+		lim_B2			= input ("Limits 2 for randomising the magn. field in G             [0,5000]: ")
 		lim_vlos2		= input ("Limits 2 for randomising the line-of-sight vel. in cm/s [-1e5,1e5]: ")
-		lim_gamma2	= input ("Limits 2 for randomising the inclination in deg            [0,180]: ")
+		lim_gamma2		= input ("Limits 2 for randomising the inclination in deg            [0,180]: ")
 		lim_azimuth2	= input ("Limits 2 for randomising the azimuth in deg                [0,180]: ")
 	else:
 		lim_B1 = "0,0"
@@ -486,15 +481,13 @@ def _config_2C():
 	if abundance == '':
 		abundance = 'THEVENIN'
 	if chi2 == '':
-		chi2 = 'out_chi2.bin'
+		chi2 = '1'
 	if weights == '':
 		weights = '1,1,1,1'
 	if vmacro == '':
 		vmacro = '0.1000'
 	if random_pars == '':
 		random_pars = "B,T,vlos,gamma"
-	if gas_pressure == "-1":
-		gas_pressure = "3.944e+3"
 
 	conf = {
 		"mode" : mode,
