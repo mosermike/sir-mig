@@ -15,6 +15,7 @@ import definitions as d
 import model_atm as m
 import profile_stk as p
 import chi2_stk as c
+import matplotlib as mpl
 
 # TODO do the figure size as in gris_firtez
 
@@ -164,7 +165,6 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 	ext_cbar = 'neither'
 	if "-limitchi2" in sys.argv:
 		vmaxs = [ float(i) for i in sys.argv[sys.argv.index("-limitchi2")+1].split(',')]
-		import matplotlib as mpl
 		cmap = mpl.colormaps[cmap]
 		cmap.set_extremes(over='yellow')
 		ext_cbar='max'
@@ -326,7 +326,6 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	if "-limitT" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
 		limits[1] = [int(i) for i in temp ]
-		import matplotlib as mpl
 		cmap[0] = mpl.colormaps[cmap[0]]
 		cmap[0].set_extremes(under='red', over='orange')
 		extend[0] = "both"
@@ -334,7 +333,6 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	if "-limitB" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
 		limits[4] = [int(i) for i in temp ]
-		import matplotlib as mpl
 		cmap[4] = mpl.colormaps[cmap[4]]
 		cmap[4].set_extremes(under='red', over='green')
 		if limits[4][0] > 0:
@@ -344,7 +342,6 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	if "-limitv" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
 		limits[5] = [int(i) for i in temp ]
-		import matplotlib as mpl
 		cmap[5] = mpl.colormaps[cmap[5]]
 		cmap[5].set_extremes(under='green', over='yellow')
 		extend[5] = "both"
@@ -352,8 +349,6 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	if "-limitchi2" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
 		limits[11] = [int(i) for i in temp ]
-		import matplotlib as mpl
-		import matplotlib as mpl
 		cmap[11] = mpl.colormaps[cmap[11]]
 		cmap[11].set_extremes(under='red', over='blue')
 		if limits[11][0] > 0:
@@ -464,7 +459,6 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 
 	############
 	# Colorbar #
-	import matplotlib as mpl
 	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[1])
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar1.set_label(label = labels[1], loc = 'center', labelpad=15)
@@ -630,7 +624,6 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 
 	############
 	# Colorbar #
-	import matplotlib as mpl
 	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
@@ -931,7 +924,7 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 			filename = sys.argv[sys.argv.index("-model")+1]
 			models_inv = m.read_model(filename)
 
-	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
+	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv and conf["chi2"] != ""):
 		if "-chi" not in sys.argv:
 			chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
 		else:
@@ -966,7 +959,7 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		stokes_inv.stku = np.moveaxis(stokes_inv.stku,(0,1,2),(1,0,2))
 		stokes_inv.stkv = np.moveaxis(stokes_inv.stkv,(0,1,2),(1,0,2))
 		stokes_inv.nx, stokes_inv.ny = stokes_inv.ny, stokes_inv.nx
-		if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv):
+		if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv and conf["chi2"] != ""):
 			chi2.stki = np.moveaxis(chi2.stki,(0,1,2),(1,0,2))
 			chi2.stkq = np.moveaxis(chi2.stkq,(0,1,2),(1,0,2))
 			chi2.stku = np.moveaxis(chi2.stku,(0,1,2),(1,0,2))
@@ -1037,7 +1030,6 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		else:
 			f = 0.65
 	
-	import matplotlib as mpl
 	mpl.rcParams["xtick.labelsize"] = 18*f
 	mpl.rcParams["ytick.labelsize"] = 18*f
 	mpl.rcParams["legend.fontsize"] = 16*f
