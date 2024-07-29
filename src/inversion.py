@@ -943,6 +943,8 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 		if rank == 0 and progress:
 			pbar.n = total_jobs
 			pbar.refresh()
+		else:
+			print(f"\rTotal Jobs: {total_jobs}", end="")
 	
 	comm.barrier()
 		
