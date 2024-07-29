@@ -789,12 +789,14 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 	# Write psf function, if needed
 	if rank == 0:
 		if conf['psf'] != '':
-			print("-------> Spectral PSF is used")
-			if "gauss" in conf['psf']:
+			#print("-------> Spectral PSF is used")
+			if conf['psf'].split(" ")[0] == "gauss":
 				print(r"-------> Create Gaussian spectral PSF with σ = " + conf['psf'].replace("gauss ","") + " mÅ")
 				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")), os.path.join(path,d.psf))
 			else:
-				shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
+				print(r"-------> Use spectral PSF file {conf['psf']}")
+				if(conf['psf'] != d.psf):
+					shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 	
 	# Create guess from bin file if wanted
 	if conf["guess"] != '':
@@ -1030,6 +1032,8 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 				# Remove folder
 				shutil.rmtree(tasks['folders'][i])
 
+			if conf['psf'] != '' and conf['psf'] != d.psf:
+				shutil.rmtree(d.psf)
 		
 		# Print needed time
 		end = time.time()
@@ -1364,11 +1368,12 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 	# Write psf function, if needed
 	if rank == 0:
 		if conf['psf'] != '':
-			print("-------> Spectral PSF is used")
-			if "gauss" in conf['psf']:
+			#print("-------> Spectral PSF is used")
+			if conf['psf'].split(" ")[0] == "gauss":
 				print(r"-------> Create Gaussian spectral PSF with σ = " + conf['psf'].replace("gauss ","") + " mÅ")
 				sir.write_gauss_psf(float(conf['psf'].replace("gauss ","")), os.path.join(path,d.psf))
 			else:
+				print(r"-------> Use spectral PSF file {conf['psf']}")
 				if(conf['psf'] != d.psf):
 					shutil.copy(os.path.join(conf['path'],conf['psf']),os.path.join(conf['path'],d.psf))
 
@@ -1652,6 +1657,8 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			# Delete the folder
 			for i in range(len(tasks['x'])):
 				shutil.rmtree(tasks['folders'][i])
+			if conf['psf'] != '' and conf['psf'] != d.psf:
+				shutil.rmtree(d.psf)
 
 		# Print needed time
 		end = time.time()

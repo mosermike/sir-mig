@@ -28,6 +28,7 @@ def create_task_folder_list(arg):
 	xs = []
 	ys = []
 	
+	# Task folder list for mode MC
 	if isinstance(arg,int):
 		y = 0
 		# Determine task folder names
@@ -43,8 +44,14 @@ def create_task_folder_list(arg):
 				'y' : np.array(ys),
 		
 		}
+
+	# Task List for mode 1C and 2C
 	else:
 		Map = arg
+		if Map[1] < Map[0]:
+			raise Exception(f"xmax in the map argument is smaller than xmin")
+		if Map[2] < Map[3]:
+			raise Exception(f"ymax in the map argument is smaller than ymin")
 		# Determine task folder names
 		for x in range(Map[0], Map[1]+1):
 			for y in range(Map[2], Map[3]+1):
