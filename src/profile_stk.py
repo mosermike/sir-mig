@@ -206,6 +206,35 @@ class profile_stk:
 
 		return line, np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
 
+	def copy(self):
+		"""
+		Copy the class to a new instance
+
+		Parameters
+		----------
+		None
+
+		Return
+		------
+		copy : profile_stk
+			Copy of this instance
+		"""
+
+		pro = profile_stk(self.x, self.ny, self.nw)
+
+		pro.stki = np.copy(self.stki)
+		pro.stkq = np.copy(self.stkq)
+		pro.stku = np.copy(self.stku)
+		pro.stkv = np.copy(self.stkv)
+
+		pro.wave = np.copy(self.wave)
+		pro.indx = np.copy(self.indx)
+
+		pro._data_cut_map = self._data_cut_map 
+		pro.data_cut_wave = self.data_cut_wave
+		pro.load = self.load
+
+		return pro
 
 	def cut_to_map(self, Map):
 		"""
