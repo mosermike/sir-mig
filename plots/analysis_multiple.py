@@ -38,7 +38,7 @@ def _help():
 	sir.option("-title","Title of the 4 figures plot")
 	sir.option("-xtitle","x position of title in Stokes plot (optional)")
 	sir.option("-limitT","Set y limits in T as 'ymin,ymax'")
-	sir.option("-vertical","Plot the last plot vertical")
+	sir.option("-vertical","Plot the last plot vertical (beta)")
 	sir.option("-v","print out tables with values at different log taus.")
 	print()
 	print("Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.")

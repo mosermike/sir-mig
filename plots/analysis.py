@@ -50,7 +50,7 @@ def _help():
 	sir.option("-title","Title of the 4 figures plot")
 	sir.option("-xtitle","x position of title in Stokes plot (optional)")
 	sir.option("-max","Plot the maximum differences")
-	sir.option("-vertical","Plot the last plot vertical")
+	sir.option("-vertical","Plot the last plot vertical (beta)")
 	sir.option("-v:","Print out tables with values at different log taus.")
 	
 	sys.exit()

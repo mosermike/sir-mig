@@ -1020,7 +1020,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)
 			print("-------> Total χ² = %.3f" % chi2.total)
 			print("-------> Write χ² ...")
-			chi2.write(os.path.join(path, conf['chi2']))
+			chi2.write(os.path.join(path, conf['inv_out']+conf['chi2']))
 			del obs
 			del stokes_inv
 			del num_of_nodes
@@ -1033,7 +1033,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 				shutil.rmtree(tasks['folders'][i])
 
 			if conf['psf'] != '' and conf['psf'] != d.psf:
-				shutil.rmtree(d.psf)
+				os.remove(d.psf)
 		
 		# Print needed time
 		end = time.time()
@@ -1290,7 +1290,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 			# Compute chi2
 			chi2.compute(obs, stokes, [float(i) for i in conf["weights"]], num_of_nodes)
 			print("-------> Total χ² = %.3f" % chi2.total)
-			chi2.write(os.path.join(path, conf['chi2']))
+			chi2.write(os.path.join(path, conf['inv_out']+conf['chi2']))
 
 			del obs
 			del num_of_nodes
@@ -1646,7 +1646,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			print("-------> Total χ² = %.3f" % chi2.total)
 			print("-------> Write χ²")
 			
-			chi2.write(os.path.join(path, conf['chi2']))
+			chi2.write(os.path.join(path, conf['inv_out']+conf['chi2']))
 			del chi2
 			del obs
 			del num_of_nodes
@@ -1658,7 +1658,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			for i in range(len(tasks['x'])):
 				shutil.rmtree(tasks['folders'][i])
 			if conf['psf'] != '' and conf['psf'] != d.psf:
-				shutil.rmtree(d.psf)
+				os.remove(d.psf)
 
 		# Print needed time
 		end = time.time()

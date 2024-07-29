@@ -926,7 +926,7 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 
 	if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv and conf["chi2"] != ""):
 		if "-chi" not in sys.argv:
-			chi2 = c.read_chi2(os.path.join(path,conf['chi2']))
+			chi2 = c.read_chi2(os.path.join(path,conf['inv_out']+conf['chi2']))
 		else:
 			filename = sys.argv[sys.argv.index("-chi")+1]
 			chi2 = c.read_chi2(filename)
