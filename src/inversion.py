@@ -935,7 +935,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 		performed_models += 1
 
 		# Do not do allreduce for the last step as the code does not move on from here
-		if total_jobs < (max_jobs - max_jobs % size) and progress:
+		if total_jobs < (max_jobs - max_jobs % size):
 			# Root process updates the progress bar
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
 		
@@ -944,7 +944,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			pbar.n = total_jobs
 			pbar.refresh()
 		else:
-			print(f"Total Jobs: {total_jobs}/{max_jobs}")
+			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}", ends="")
 	
 	comm.barrier()
 		
@@ -1215,7 +1215,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 		performed_models += 1
 	
 		# Do not do allreduce for the last step as the code does not move on from here
-		if total_jobs < (max_jobs - max_jobs % size) and progress:
+		if total_jobs < (max_jobs - max_jobs % size):
 			# Root process updates the progress bar
 			total_jobs = comm.allreduce(performed_models, op=MPI.SUM)
 		
@@ -1224,7 +1224,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 			pbar.n = total_jobs
 			pbar.refresh()
 		else:
-			print(f"Total Jobs: {total_jobs}/{max_jobs}")
+			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}", ends="")
 
 	comm.barrier()
 		
@@ -1557,7 +1557,7 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 			pbar.n = total_jobs
 			pbar.refresh()
 		else:
-			print(f"Total Jobs: {total_jobs}/{max_jobs}")
+			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}", ends="")
 
 	comm.barrier()
 		
