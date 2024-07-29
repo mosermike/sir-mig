@@ -40,6 +40,7 @@ def _help():
 	sir.option("-limitT","Set y limits in T as 'ymin,ymax'")
 	sir.option("-vertical","Plot the last plot vertical (beta)")
 	sir.option("-v","print out tables with values at different log taus.")
+	sir.option("-hor", "Plot horizontally")
 	print()
 	print("Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.")
 	sys.exit()
@@ -86,6 +87,8 @@ def analysis_multiple(confs : list, labels : list):
 		Set y limits in T as 'ymin,ymax'
 	-vertical
 		Plot the last plot vertical
+	-hor
+		Plot the last plot horizontally
 	-v
 		print out tables with values at different log taus.
 	
@@ -269,13 +272,18 @@ def analysis_multiple(confs : list, labels : list):
 	###############################
 	if "-vertical" in sys.argv:
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots( 4, 1, figsize=(12,16), sharex=True,
-												gridspec_kw=dict(hspace=0))
+												gridspec_kw=dict(hspace=0), layout="compressed")
 		fig.subplots_adjust(hspace=0, wspace=0)
+	elif "-hor" in sys.argv:
+		if len(labels) > 5:
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17, 4), layout="compressed")
+		else:
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(19, 4), layout="compressed")
 	else:
 		if len(labels) > 5:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), layout="compressed")
 		else:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 12))
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 12), layout="compressed")
 
 	######################
 	# Standard deviation #
@@ -332,10 +340,21 @@ def analysis_multiple(confs : list, labels : list):
 	###############
 	# Plot legend #
 	###############
-	if len(labels) > 5:
-		ax2.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
+	if "vertical" in sys.argv:
+		if len(labels) > 5:
+			ax1.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
+		else:
+			ax1.legend()
+	elif "-hor" in sys.argv:
+		if len(labels) > 5:
+			ax4.legend(loc='center right', bbox_to_anchor=(1.5 + len(labels[0])/100, 0.5), frameon=False)
+		else:
+			ax1.legend()
 	else:
-		ax1.legend()
+		if len(labels) > 5:
+			ax2.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
+		else:
+			ax1.legend()
 
 	#########################
 	# Title and positioning #
@@ -345,6 +364,14 @@ def analysis_multiple(confs : list, labels : list):
 		xtitle = 0.41
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle)
+	elif "-hor" in sys.argv:
+		if len(title) < 50:
+			xtitle = 0.55
+		else:
+			xtitle = 0.45
+		xtitle = 0.5
+		if title != '':
+			fig.suptitle(title, x=xtitle)
 	else:
 		if len(title) < 50:
 			xtitle = 0.55
@@ -354,10 +381,10 @@ def analysis_multiple(confs : list, labels : list):
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle)	    
 
-	if "-vertical" in sys.argv:	
-		plt.tight_layout(pad=2.5,h_pad=0.0)
-	else:
-		plt.tight_layout(pad=1.5)
+	#if "-vertical" in sys.argv:	
+		#plt.tight_layout(pad=2.5,h_pad=0.0)
+	#else:
+	#	plt.tight_layout(pad=1.5)
 
 	plt.savefig(save + "analysis_multiple" + add)
 
