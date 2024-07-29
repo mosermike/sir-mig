@@ -220,7 +220,7 @@ class profile_stk:
 			Copy of this instance
 		"""
 
-		pro = profile_stk(self.x, self.ny, self.nw)
+		pro = profile_stk(self.nx, self.ny, self.nw)
 
 		pro.stki = np.copy(self.stki)
 		pro.stkq = np.copy(self.stkq)
