@@ -216,7 +216,7 @@ def merge(dir, ending, instrument, path = "./", shift = "0", save = False):
 
 	return pro
 
-def merge_conf(dir, ending, conf):
+def merge_conf(dir, conf):
 	"""
 	Merges data to a cube with the config file
 
@@ -224,8 +224,6 @@ def merge_conf(dir, ending, conf):
 	----------
 	dir : str
 		Directory of the fits
-	ending : str
-		Ending of the dataset (for GRIS data)
 	config : dict
 		Dictionary with all the information from the config file
 	
@@ -236,7 +234,7 @@ def merge_conf(dir, ending, conf):
 	
 		
 	"""
-	return merge(dir, ending, conf["instrument"], conf["path"], conf["shift_wave"], conf["save_cube"] == "1")
+	return merge(dir, conf["ending"], conf["instrument"], conf["path"], conf["shift_wave"], conf["save_cube"] == "1")
 
 #################
 #	NORMALISE	#
@@ -292,18 +290,19 @@ def normalise(pro, instrument, quiet_sun, path = "./", save=False):
 		Ic  = np.mean(pro.stki[x1:x2,y1:y2,ll1:ll2])  # Average continuum intensity in quiet sun
 
 		# Divide through the mean
-		pro.stki /= Ic
-		pro.stkq /= Ic
-		pro.stku /= Ic
-		pro.stkv /= Ic
+		pro1 = pro.copy()
+		pro1.stki /= Ic
+		pro1.stkq /= Ic
+		pro1.stku /= Ic
+		pro1.stkv /= Ic
 	else:
 		print("-------> Skipping normalisation")
 
 	if save:
 		print("-------> Saving data (this might take a while) ...")
-		pro.write(os.path.join(path,d.cube_norm))
+		pro1.write(os.path.join(path,d.cube_norm))
 
-	return pro
+	return pro1
 
 def normalise_conf(pro, conf):
 	"""
@@ -478,6 +477,11 @@ def optimise_chi(nu, sigma, I, I_obs):
 	chi_min = argmin(chis)
 	nu_min = nu[chi_min[0]]
 	sigma_min = sigma[chi_min[1]]
+
+	fig, ax = plt.subplots()
+	ax.imshow(chis.transpose())
+	fig.savefig("test.png")
+
 
 	if chi_min[0]+5 > len(nu) or chi_min[0] < 4:
 		raise Exception("[optimise_chi] The found minimum (" + str(chi_min[0]) + "," + str(nu_min) + ") is at the border of the selected ranges. Consider increasing the ranges of nu in definitions.py!")
@@ -835,14 +839,14 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 	#					START OF THE ACTUAL CORRECTION					    #
 	######################################################################################
 	print('[STATUS] Correct data ...')
-
+	pro1 = stokes.copy()
 	# Correct for spectral veil
-	stokes.veil_correction(nu_min)
+	pro1.veil_correction(nu_min)
 	
 
 	print("-------> Saving data (this might take a while) ...")
-	stokes.write(os.path.join(path,cube))
+	pro1.write(os.path.join(path,cube))
 
 	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
 	
-	return stokes
+	return pro1
