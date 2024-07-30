@@ -38,6 +38,9 @@ def _help():
 	sir.option("-title","Title of the 4 figures plot")
 	sir.option("-xtitle","x position of title in Stokes plot (optional)")
 	sir.option("-limitT","Set y limits in T as 'ymin,ymax'")
+	sir.option("-limitB","Set y limits in B as 'ymin,ymax'")
+	sir.option("-limitv","Set y limits in vlos as 'ymin,ymax'")
+	sir.option("-limitg","Set y limits in gamma as 'ymin,ymax'")
 	sir.option("-vertical","Plot the last plot vertical (beta)")
 	sir.option("-v","print out tables with values at different log taus.")
 	sir.option("-hor", "Plot horizontally")
@@ -103,6 +106,15 @@ def analysis_multiple(confs : list, labels : list):
 	limitT = (None,None)
 	if "-limitT" in sys.argv:
 		limitT = [float(i) for i in sys.argv[sys.argv.index("-limitT")+1].split(",")]
+	limitB = (None,None)
+	if "-limitB" in sys.argv:
+		limitB = [float(i) for i in sys.argv[sys.argv.index("-limitB")+1].split(",")]
+	limitv = (None,None)
+	if "-limitv" in sys.argv:
+		limitv = [float(i) for i in sys.argv[sys.argv.index("-limitv")+1].split(",")]
+	limitg = (None,None)
+	if "-limitg" in sys.argv:
+		limitg = [float(i) for i in sys.argv[sys.argv.index("-limitg")+1].split(",")]
 
 	linestyle_str = [
 		'solid',      # Same as (0, ()) or '-'
@@ -229,6 +241,12 @@ def analysis_multiple(confs : list, labels : list):
 
 			if inputs[i] == "-T":
 				ax1.set_ylim(limitT)
+			if inputs[i] == "-B":
+				ax1.set_ylim(limitB)
+			if inputs[i] == "-vlos":
+				ax1.set_ylim(limitv)
+			if inputs[i] == "-gamma":
+				ax1.set_ylim(limitg)
 
 			# Set labels
 			ax1.set_xlabel(r"$\log \tau_{c}$")
@@ -278,7 +296,7 @@ def analysis_multiple(confs : list, labels : list):
 		if len(labels) > 5:
 			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17, 4), layout="compressed")
 		else:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(19, 4), layout="compressed")
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(13, 4), layout="compressed")
 	else:
 		if len(labels) > 5:
 			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), layout="compressed")
@@ -315,7 +333,13 @@ def analysis_multiple(confs : list, labels : list):
 
 	if "-limitT" in sys.argv:
 		ax1.set_ylim(limitT)
-
+	if "-limitB" in sys.argv:
+		ax2.set_ylim(limitB)
+	if "-limitv" in sys.argv:
+		ax3.set_ylim(limitv)
+	if "-limitg" in sys.argv:
+		ax4.set_ylim(limitg)
+		
 	##############
 	# Set labels #
 	##############
@@ -363,23 +387,15 @@ def analysis_multiple(confs : list, labels : list):
 	if "-vertical" in sys.argv:
 		xtitle = 0.41
 		if title != '':
-			fig.suptitle(title, y=0.98, x=xtitle)
+			fig.suptitle(title, x=xtitle)
 	elif "-hor" in sys.argv:
-		if len(title) < 50:
-			xtitle = 0.55
-		else:
-			xtitle = 0.45
 		xtitle = 0.5
 		if title != '':
 			fig.suptitle(title, x=xtitle)
 	else:
-		if len(title) < 50:
-			xtitle = 0.55
-		else:
-			xtitle = 0.45
 		xtitle = 0.5
 		if title != '':
-			fig.suptitle(title, y=0.98, x=xtitle)	    
+			fig.suptitle(title, x=xtitle)	    
 
 	#if "-vertical" in sys.argv:	
 		#plt.tight_layout(pad=2.5,h_pad=0.0)
