@@ -317,7 +317,7 @@ def read_config(filename, check = True, change_config = False):
 		if Dict['mode'] == "1C" or Dict['mode'] == "2C":
 			if Dict['preprocess'] == "1" and not exists(os.path.join(Dict['path'],Dict['fts_file'])):
 				print(f"[read_config] {Dict['fts_file']} does not exist.")
-		if (Dict['chi2'] != "" or Dict['chi2'] != "0" or Dict['chi2'] != "1"):
+		if (Dict['chi2'] != "" and Dict['chi2'] != "0" and Dict['chi2'] != "1"):
 			print(f"[read_config] Unknown option '{Dict['chi2']}'. chi2 is not computed.")
 	
 
