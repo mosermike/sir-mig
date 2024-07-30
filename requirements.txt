@@ -2,13 +2,14 @@
 # pip install pipreqs
 # conda install --yes --file requirements.txt -c conda-forge
 
-python==3.11.9
-numpy==1.26.4
-astropy==6.0.1
-matplotlib==3.7.1
-scipy==1.13.0
-mpi4py==3.1.6
-tqdm==4.66.4
+astropy=6.1.0=py311hf4808d0_0
+matplotlib=3.8.4=py311h06a4308_0
+mpi4py=3.1.4
+numpy=1.26.4=py311h24aa872_0
+openmpi=4.0.5=h9b22176_4
+python=3.11.9
+scipy=1.13.1=py311h24aa872_0
+tqdm=4.66.4=py311h92b7b1e_0
 
 # For the documentation
 #sphinx==7.3.7
