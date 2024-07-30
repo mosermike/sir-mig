@@ -418,9 +418,9 @@ document.write(`
 </dd>
 <dt><strong>-vlos</strong></dt><dd><p>Compare line of sight velocity in cm/s</p>
 </dd>
-<dt><strong>-inc</strong></dt><dd><p>Compare inclination by subtracting in deg</p>
+<dt><strong>-gamma</strong></dt><dd><p>Compare inclination by subtracting in deg</p>
 </dd>
-<dt><strong>-azi</strong></dt><dd><p>Compare azimuth by adding in deg</p>
+<dt><strong>-phi</strong></dt><dd><p>Compare azimuth by adding in deg</p>
 </dd>
 <dt><strong>-title</strong><span class="classifier">[str]</span></dt><dd><p>Title of the 4 figures plot</p>
 </dd>
@@ -517,9 +517,9 @@ document.write(`
 </dd>
 <dt><strong>-vlos</strong></dt><dd><p>Compare line of sight velocity in km/s</p>
 </dd>
-<dt><strong>-inc</strong></dt><dd><p>Compare inclination by subtracting in deg</p>
+<dt><strong>-gamma</strong></dt><dd><p>Compare inclination by subtracting in deg</p>
 </dd>
-<dt><strong>-azi</strong></dt><dd><p>Compare azimuth by adding in deg</p>
+<dt><strong>-phi</strong></dt><dd><p>Compare azimuth by adding in deg</p>
 </dd>
 <dt><strong>-title [str]</strong></dt><dd><p>Title of the 4 figures plot</p>
 </dd>
@@ -528,6 +528,8 @@ document.write(`
 <dt><strong>-limitT</strong></dt><dd><p>Set y limits in T as ‘ymin,ymax’</p>
 </dd>
 <dt><strong>-vertical</strong></dt><dd><p>Plot the last plot vertical</p>
+</dd>
+<dt><strong>-hor</strong></dt><dd><p>Plot the last plot horizontally</p>
 </dd>
 <dt><strong>-v</strong></dt><dd><p>print out tables with values at different log taus.</p>
 </dd>
@@ -833,6 +835,10 @@ Plots the result of one inversion</p>
 <dt><strong>-vertical</strong></dt><dd><p>Plot it vertically</p>
 </dd>
 <dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>)</p>
+</dd>
+<dt><strong>-one</strong></dt><dd><p>Observations are the same and therefore only plotted once</p>
+</dd>
+<dt><strong>-err</strong></dt><dd><p>Plot errorbars</p>
 </dd>
 </dl>
 </dd>
