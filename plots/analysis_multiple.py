@@ -379,7 +379,7 @@ def analysis_multiple(confs : list, labels : list):
 		if len(labels) > 5:
 			ax4.legend(loc='center right', bbox_to_anchor=(1.5 + len(labels[0])/100, 0.5), frameon=False)
 		else:
-			ax1.legend()
+			ax1.legend(fontsize=10)
 	else:
 		if len(labels) > 5:
 			ax2.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
