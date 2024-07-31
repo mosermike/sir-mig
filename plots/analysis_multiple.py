@@ -44,6 +44,7 @@ def _help():
 	sir.option("-vertical","Plot the last plot vertical (beta)")
 	sir.option("-v","print out tables with values at different log taus.")
 	sir.option("-hor", "Plot horizontally")
+	sir.option("-f [float]","Factor the figure siz is multiplied with")
 	print()
 	print("Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.")
 	sys.exit()
@@ -92,6 +93,8 @@ def analysis_multiple(confs : list, labels : list):
 		Plot the last plot vertical
 	-hor
 		Plot the last plot horizontally
+	-f [float]
+		Factor the figure siz is multiplied with
 	-v
 		print out tables with values at different log taus.
 	
@@ -284,24 +287,27 @@ def analysis_multiple(confs : list, labels : list):
 				print()
 				print()		
 
-
+	if "-f" in sys.argv:
+		f = float(sys.argv[sys.argv.index("-f")+1])
+	else:
+		f = 1
 	###############################
 	#	Plot uncertainties		#
 	###############################
 	if "-vertical" in sys.argv:
-		fig, (ax1,ax2,ax3,ax4) = plt.subplots( 4, 1, figsize=(12,16), sharex=True,
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots( 4, 1, figsize=(12*f,16*f), sharex=True,
 												gridspec_kw=dict(hspace=0), layout="compressed")
 		fig.subplots_adjust(hspace=0, wspace=0)
 	elif "-hor" in sys.argv:
 		if len(labels) > 5:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17, 4), layout="compressed")
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17*f, 4*f), layout="compressed")
 		else:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(13, 4), layout="compressed")
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(13*f, 4*f), layout="compressed")
 	else:
 		if len(labels) > 5:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), layout="compressed")
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16*f, 12*f), layout="compressed")
 		else:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 12), layout="compressed")
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14*f, 12*f), layout="compressed")
 
 	######################
 	# Standard deviation #
