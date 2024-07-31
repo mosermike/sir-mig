@@ -44,7 +44,7 @@ def _help():
 	sir.option("-vertical","Plot the last plot vertical (beta)")
 	sir.option("-v","print out tables with values at different log taus.")
 	sir.option("-hor", "Plot horizontally")
-	sir.option("-f [float]","Factor the figure siz is multiplied with")
+	sir.option("-f [float]","Linewidth in the four plot figures (Default: 2.0)")
 	print()
 	print("Note: B, vlos, inc and T is always compared but not plotted alone if the flags are not used.")
 	sys.exit()
@@ -94,7 +94,7 @@ def analysis_multiple(confs : list, labels : list):
 	-hor
 		Plot the last plot horizontally
 	-f [float]
-		Factor the figure siz is multiplied with
+		Linewidth of the 4 plot figure (Default: 2.0)
 	-v
 		print out tables with values at different log taus.
 	
@@ -290,24 +290,24 @@ def analysis_multiple(confs : list, labels : list):
 	if "-f" in sys.argv:
 		f = float(sys.argv[sys.argv.index("-f")+1])
 	else:
-		f = 1
+		f = 2
 	###############################
 	#	Plot uncertainties		#
 	###############################
 	if "-vertical" in sys.argv:
-		fig, (ax1,ax2,ax3,ax4) = plt.subplots( 4, 1, figsize=(12*f,16*f), sharex=True,
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots( 4, 1, figsize=(12,16), sharex=True,
 												gridspec_kw=dict(hspace=0), layout="compressed")
 		fig.subplots_adjust(hspace=0, wspace=0)
 	elif "-hor" in sys.argv:
 		if len(labels) > 5:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17*f, 4*f), layout="compressed")
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17, 4), layout="compressed")
 		else:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(13*f, 4*f), layout="compressed")
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(13, 4), layout="compressed")
 	else:
 		if len(labels) > 5:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16*f, 12*f), layout="compressed")
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), layout="compressed")
 		else:
-			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14*f, 12*f), layout="compressed")
+			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 12), layout="compressed")
 
 	######################
 	# Standard deviation #
@@ -317,17 +317,17 @@ def analysis_multiple(confs : list, labels : list):
 	for n in range(len(log_taus)):	
 		std = np.sqrt(np.sum((fits[n].T[:,0,:] - syns[n].T[:,0,:])**2, axis=0)/(nums[n]-1))
 		stdTs.append(std)
-		ax1.plot(fits[n].tau, stdTs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax1.plot(fits[n].tau, stdTs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)], linewidth=f)
 
 		std = np.sqrt(np.sum((fits[n].B[:,0,:] - syns[n].B[:,0,:])**2, axis=0)/(nums[n]-1))
 		stdBs.append(std)
-		ax2.plot(fits[n].tau, stdBs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax2.plot(fits[n].tau, stdBs[n], label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)], linewidth=f)
 
 		std = np.sqrt(np.sum((fits[n].vlos[:,0,:] - syns[n].vlos[:,0,:])**2, axis=0)/(nums[n]-1))
-		ax3.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax3.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)], linewidth=f)
 
 		std = np.sqrt(np.sum((fits[n].gamma[:,0,:] - syns[n].gamma[:,0,:])**2, axis=0)/(nums[n]-1))
-		ax4.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)])
+		ax4.plot(fits[n].tau, std, label=labels[n], linestyle=linestyle_str[n % len(linestyle_str)], linewidth=f)
 
 	##############
 	# Set limits #
