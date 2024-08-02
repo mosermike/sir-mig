@@ -745,7 +745,7 @@ def create_temperature(tau : np.array, B : float = 0.0) -> np.array:
 
 def _rot(x : np.array, y : np.array, origin : float, deg : float) -> np.array:
 	'''
-	Rotates a curve around a specific origin in x. Note that only y is changed!
+	Rotates a curve around a specific origin in x. Note that only y is changed and interpolated to x with CubicSpline!
 
 	Parameters
 	----------
@@ -775,15 +775,17 @@ def _rot(x : np.array, y : np.array, origin : float, deg : float) -> np.array:
 
 	# Rotate it by use of the rotation matrix
 	rad = deg/180*np.pi
-	#x_rot =  x_*np.cos(rad)+y_*np.sin(rad)
+	x_rot =  x_*np.cos(rad)+y_*np.sin(rad)
 	y_rot = -x_*np.sin(rad)+y_*np.cos(rad)
 
 	# "Unormalise"
-	#x_rot *= x_max
+	x_rot *= x_max
 	y_rot *= y_max
 
 	# Interpolate in the selected temperature
+	return inter.CubicSpline(np.flip(x_rot+origin),np.flip(y_rot+y[np.argmin(abs(x-origin))]), bc_type='natural')(x)
 	return y_rot+y[np.argmin(abs(x-origin))]
+	
 
 def synthesis(conf : dict, comm, rank : int, size : int, MPI, debug : bool=False, progress : bool = True):
 	"""
