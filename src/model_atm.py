@@ -119,7 +119,7 @@ class model_atm:
 		# Note that negative values are also correctly transformed (e.g. -175 % 180 = 5)
 		self.phi = self.phi % 180
 
-	def cut_to_map(self, Map):
+	def cut_to_map(self, Map : list):
 		"""
 		Cut the data to a map [xmin, xmax, ymin, ymax]
 
@@ -205,7 +205,7 @@ class model_atm:
 			return self.fill
 		return None
 
-	def interp(self, new_tau):
+	def interp(self, new_tau : np.array):
 		"""
 		Interpolate the model to a new log tau scale.
 
@@ -247,7 +247,7 @@ class model_atm:
 
 		return self
 
-	def read(self, fname, fmt_type=np.float64):
+	def read(self, fname : str, fmt_type=np.float64):
 		"""
 		Reads a binary model file.
 
@@ -344,7 +344,7 @@ class model_atm:
 
 		return self
 	
-	def read_mod(self, fname, fmt_type=np.float64):
+	def read_mod(self, fname : str, fmt_type=np.float64):
 		"""
 		Reads a model file from SIR and assigns the value to the class.
 		This class will then create the class with nx = ny = 1. 
@@ -399,7 +399,7 @@ class model_atm:
 		return self
 
 
-	def read_results(self, task, filename, path, nx, ny):
+	def read_results(self, task : dict, filename : str, path : str, nx : int, ny : int):
 		"""
 		Reads all the errors from the inversion
 		
@@ -522,7 +522,7 @@ class model_atm:
 		mod.load = self.load
 		return mod
 
-	def set_dim(self, nx, ny, nval):
+	def set_dim(self, nx : int, ny : int, nval : int):
 		"""
 		Sets the dimensions if no data is loaded yet
 

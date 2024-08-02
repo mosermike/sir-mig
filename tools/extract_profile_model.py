@@ -27,21 +27,23 @@ def help():
 	sys.exit()
 
 
-def extract_profile_model_1C(conf, x, y):
+def extract_profile_model_1C(conf : dict, x : int, y : int, savepath : str):
 	"""
 	Extract the profiles and the models from a specific pixel position.
 	It saves and copies all the necessary files to rerun the inversion.
 	
-	Parameter
-	---------
+	Parameters
+	----------
 	config : dict
 		Dictionary containing all the information from the config
 	x : int
 		x-position of the pixel in absolute position (taking into account the full observed map) 
 	y : int
 		y-position of the pixel in absolute position (taking into account the full observed map)
+	savepath : str
+		Where the files are stored
 
-	Return
+			Return
 	------
 	None
 
@@ -50,11 +52,8 @@ def extract_profile_model_1C(conf, x, y):
 	path = conf["path"]
 
 	# Additional savepath
-	savepath = ''
-	if '-save' in sys.argv:
-		savepath = sys.argv[sys.argv.index("-save")+1]
-		if not exists(savepath):
-			os.mkdir(savepath)
+	if not exists(savepath):
+		os.mkdir(savepath)
 
 	# Additional text
 	add = ''
@@ -95,19 +94,20 @@ def extract_profile_model_1C(conf, x, y):
 	err.write_model(savepath + "model_result" + add + ".err", x, y)
 	
 	# Copy stuff for the inversion
-	if savepath != '':
-		if conf['psf'] != '':
-			if "gauss" in conf['psf']:
-				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
-			else:
-				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
+	if conf['psf'] != '':
+		if "gauss" in conf['psf']:
+			sir.write_gauss_psf(float(conf['psf'].split(" ")[1]), os.path.join(savepath, d.psf))
 		else:
-			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance']]
-		for sir_file in sir_files:
-			shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
-		sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
+			shutil.copy(os.path.join(path, conf['psf']), os.path.join(savepath, d.psf))
+	
+	sir_files = ["sir.x", conf['line'], conf['abundance']]
+	for sir_file in sir_files:
+		shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
+	
+	sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
+	sir.write_grid(conf, os.path.join(savepath, d.Grid))
 
-def extract_profile_model_MC(conf, num):
+def extract_profile_model_MC(conf : dict, num : int, savepath : str):
 	"""
 	Extract the profiles and the models from a specific pixel position.
 	It saves and copies all the necessary files to rerun the inversion.
@@ -118,6 +118,8 @@ def extract_profile_model_MC(conf, num):
 		Dictionary containing all the information from the config
 	num : int
 		Model number
+	savepath : str
+		Where the files are stored
 
 	Returns
 	-------
@@ -174,15 +176,15 @@ def extract_profile_model_MC(conf, num):
 
 
 	# Copy stuff for the inversion
-	if savepath != '':
-		sir_files = [model, "sir.x", line_file, d.Grid, abundance_file]
-		for sir_file in sir_files:
-			shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
+	sir_files = [model, "sir.x", line_file, abundance_file]
+	for sir_file in sir_files:
+		shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
 
-		sir.write_control(os.path.join(savepath, d.syn_trol_file), conf, "syn")
-		sir.write_control(os.path.join(savepath, d.inv_trol_file), conf, "inv")
+	sir.write_control(os.path.join(savepath, d.syn_trol_file), conf, "syn")
+	sir.write_control(os.path.join(savepath, d.inv_trol_file), conf, "inv")
+	sir.write_grid(conf, os.path.join(savepath, d.Grid))
 
-def extract_profile_model_2C(conf, x, y):
+def extract_profile_model_2C(conf : dict, x : int, y : int, savepath : str):
 	"""
 	Extract the profiles and the models from a specific pixel position.
 	It saves and copies all the necessary files to rerun the inversion.
@@ -195,6 +197,8 @@ def extract_profile_model_2C(conf, x, y):
 		x-position of the pixel in absolute position (taking into account the full observed map) 
 	y : int
 		y-position of the pixel in absolute position (taking into account the full observed map)
+	savepath : str
+		Where the files are stored
 
 	Return
 	------
@@ -205,10 +209,8 @@ def extract_profile_model_2C(conf, x, y):
 
 	# Additional savepath
 	savepath = ''
-	if '-save' in sys.argv:
-		savepath = sys.argv[sys.argv.index("-save")+1]
-		if not exists(savepath):
-			os.mkdir(savepath)
+	if not exists(savepath):
+		os.mkdir(savepath)
 
 	# Additional text
 	add = ''
@@ -249,31 +251,40 @@ def extract_profile_model_2C(conf, x, y):
 	err2.write_model(savepath + "model_result2" + add + ".err", x,y)
 
 	# Copy stuff for the inversion
-	if savepath != '':
-		if conf['psf'] != '':
-			if "gauss" in conf['psf']:
-				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],d.psf]
-			else:
-				sir_files = ["sir.x", conf['line'], d.Grid, conf['abundance'],conf['psf']]
+	if conf['psf'] != '':
+		if "gauss" in conf['psf']:
+			sir.write_gauss_psf(float(conf['psf'].split(" ")[1]), os.path.join(savepath, d.psf))
 		else:
-			sir_files = [d.inv_trol_file, "sir.x", conf['line'], d.Grid, conf['abundance']]
-		for sir_file in sir_files:
-			shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
+			shutil.copy(os.path.join(path, conf['psf']), os.path.join(savepath, d.psf))
+
+	sir_files = ["sir.x", conf['line'], conf['abundance']]
 	
-		sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
+	for sir_file in sir_files:
+		shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
+	
+	sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
+	sir.write_grid(conf, os.path.join(savepath, d.Grid))
 
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
+	if len(sys.argv) < 2:
+		raise RuntimeError("Argument for config file is missing!")
+	
 	conf = sir.read_config(sys.argv[1])
 
+	if len(sys.argv) < 3:
+		raise RuntimeError("Argument for savepath is missing!")
+	
+	savepath = sys.argv[2]
+	
 	if conf['mode'] == "MC":
-		extract_profile_model_MC(conf, int(sys.argv[2]))
+		extract_profile_model_MC(conf, int(sys.argv[2]), savepath)
 	elif conf['mode'] == "1C":
-		extract_profile_model_1C(conf, int(sys.argv[2]), int(sys.argv[3]))
+		extract_profile_model_1C(conf, int(sys.argv[2]), int(sys.argv[3]), savepath)
 	elif conf['mode'] == "2C":
-		extract_profile_model_2C(conf, int(sys.argv[2]), int(sys.argv[3]))
+		extract_profile_model_2C(conf, int(sys.argv[2]), int(sys.argv[3]), savepath)
 
 
 

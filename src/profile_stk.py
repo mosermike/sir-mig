@@ -45,18 +45,18 @@ class profile_stk:
 		Data was cut to the inversion range in the wavelength (this is necessary when data is written into a SIR profile file)
 
 	"""
-	def __init__(self, nx=None, ny = None, nw=0):
+	def __init__(self, nx : int, ny : int, nw=0):
 		"""
 		Initialisation of the class with the Profiles
 		
 		Parameters
 		----------
-		nx : int, default=None
+		nx : int
 			Integer of pixels in x direction
-		ny :  int, default=None
+		ny :  int
 			Integer of pixels in y direction
-		nw : int, default=0
-			Number of wavelength points
+		nw : int, optional
+			Number of wavelength points. Default: 0
 		
 		Returns
 		-------
@@ -82,7 +82,7 @@ class profile_stk:
 		self._data_cut_map = False
 		self.data_cut_wave = False
 
-	def __read_grid(self, filename):
+	def __read_grid(self, filename :str):
 		"""
 		Reads the grid file
 		
@@ -139,7 +139,7 @@ class profile_stk:
 		return Dict
 
 
-	def __read_profile_sir(self, filename):
+	def __read_profile_sir(self, filename :str):
 		"""
 		Reads the first LINE data from a profile computed by SIR
 		
@@ -170,7 +170,7 @@ class profile_stk:
 
 		return np.array(ll), np.array(I), np.array(Q), np.array(U), np.array(V)
 
-	def __read_profile_sir_mc(self, filename):
+	def __read_profile_sir_mc(self, filename : str):
 		"""
 		Reads the first LINE data from a profile computed by SIR
 		
@@ -236,7 +236,7 @@ class profile_stk:
 
 		return pro
 
-	def cut_to_map(self, Map):
+	def cut_to_map(self, Map : list):
 		"""
 		Cut the data to a map [xmin, xmax, ymin, ymax]
 
@@ -270,7 +270,7 @@ class profile_stk:
 		
 		return self
 
-	def cut_to_wave(self, range_wave):
+	def cut_to_wave(self, range_wave : list):
 		"""
 		Cut the data to the range in wavelengths
 
@@ -316,7 +316,7 @@ class profile_stk:
 		return self
 	
 
-	def read(self, fname, fmt_type=np.float32):
+	def read(self, fname : str, fmt_type=np.float32):
 		"""
 		Reads a binary profile file
 
@@ -378,7 +378,7 @@ class profile_stk:
 
 		return self
 
-	def read_profile(self, filename, x=0, y=0):
+	def read_profile(self, filename : str, x=0, y=0):
 		"""
 		Reads a single profile file and stores it in the class
 
@@ -407,7 +407,7 @@ class profile_stk:
 		self.stku[x, y] = U
 		self.stkv[x, y] = V
 
-	def read_results(self, task, filename, path, nx, ny):
+	def read_results(self, task : dict, filename : str, path : str, nx : int, ny : int):
 		"""
 		Reads all the errors from the inversion
 		
@@ -460,18 +460,18 @@ class profile_stk:
 		return self
 
 
-	def read_results_MC(self, path, tasks, filename):
+	def read_results_MC(self, path : str, tasks : dict, filename : str):
 		"""
 		Reads all the profiles for the simulation where indx is the line number
 
 		Parameters
 		----------
-		config : dict
-			Config information
+		path : str
+			Path of the simulation
 		tasks : dict
 			Dictionary with the folder names
-		Type : string, optional
-			Indicating if synthesis or inversion. Default: 'syn'
+		filename : str
+			Filename of the profile file to be read
 		
 		Returns
 		-------
@@ -515,7 +515,7 @@ class profile_stk:
 		return self
 
 
-	def set_dim(self, nx, ny, nw):
+	def set_dim(self, nx : int, ny : int, nw : int):
 		"""
 		Sets the dimensions if no data is loaded yet
 
@@ -552,7 +552,7 @@ class profile_stk:
 
 		return self
 
-	def veil_correction(self, nu, Ic = 1.):
+	def veil_correction(self, nu : float, Ic = 1.):
 		"""
 		Correct the spectrum for the spectral veil by simly inverting
 		the convoluted equation.
@@ -573,7 +573,7 @@ class profile_stk:
 		
 		return self
 
-	def write(self, fname, fmt_type=np.float32):
+	def write(self, fname : str, fmt_type=np.float32):
 		"""
 		Write data into a binary fortran file
 
@@ -641,7 +641,7 @@ class profile_stk:
 		return self
 
 
-	def write_profile(self, filename, x, y, Grid):
+	def write_profile(self, filename : str, x : int, y : int, Grid : str):
 		"""
 		Writes data to profiles as described in the config file
 		Note to call cut_to_wave, otherwise it writes the wrong profiles!

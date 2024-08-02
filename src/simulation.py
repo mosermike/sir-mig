@@ -29,7 +29,7 @@ import profile_stk as p
 
 
 
-def __split_to_float(string, letter=","):
+def __split_to_float(string : str, letter=","):
 	"""
 	Splits the string into a list and converts the elements to floats
 
@@ -683,7 +683,7 @@ def create_models(conf: dict) -> None:
 
 	return
 
-def create_temperature(tau, B = 0):
+def create_temperature(tau : np.array, B : float = 0.0) -> np.array:
 	r"""
 	Creates a random temperature in the parameter space.
 
@@ -696,7 +696,7 @@ def create_temperature(tau, B = 0):
 
 	Returns
 	-------
-	out : numpy array
+	create_temperature : numpy array
 		Interpolated numy array with a random temperature atmosphere
 	"""
 	#############################################################################################
@@ -743,7 +743,7 @@ def create_temperature(tau, B = 0):
 
 	return np.interp(tau, np.flip(log_taus), np.flip(Ts))
 
-def _rot(x,y,origin,deg):
+def _rot(x : np.array, y : np.array, origin : float, deg : float) -> np.array:
 	'''
 	Rotates a curve around a specific origin in x. Note that only y is changed!
 
@@ -775,17 +775,17 @@ def _rot(x,y,origin,deg):
 
 	# Rotate it by use of the rotation matrix
 	rad = deg/180*np.pi
-	x_rot =  x_*np.cos(rad)+y_*np.sin(rad)
+	#x_rot =  x_*np.cos(rad)+y_*np.sin(rad)
 	y_rot = -x_*np.sin(rad)+y_*np.cos(rad)
 
 	# "Unormalise"
-	x_rot *= x_max
+	#x_rot *= x_max
 	y_rot *= y_max
 
 	# Interpolate in the selected temperature
 	return y_rot+y[np.argmin(abs(x-origin))]
 
-def synthesis(conf, comm, rank, size, MPI, debug=False, progress = True):
+def synthesis(conf : dict, comm, rank : int, size : int, MPI, debug : bool=False, progress : bool = True):
 	"""
 	Performs the synthesis of all the models.
 
@@ -899,7 +899,7 @@ def synthesis(conf, comm, rank, size, MPI, debug=False, progress = True):
 			os.remove(os.path.join(path,d.Grid))
 		else:
 			print("-------> No created files are deleted. Debug option active.")
-			
+
 		print(f"\r-------> Finished with {conf['num']} synthesised models.")
 
 	comm.barrier()

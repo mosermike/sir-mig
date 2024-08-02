@@ -42,7 +42,7 @@ import sir
 import definitions as d
 import profile_stk as p
 
-def merge(dir, ending, instrument, path = "./", shift = "0", save = False):
+def merge(dir : str, ending : str, instrument : str, path = "./", shift = "0", save = False):
 	"""
 	
 	Merges data to a cube
@@ -216,7 +216,7 @@ def merge(dir, ending, instrument, path = "./", shift = "0", save = False):
 
 	return pro
 
-def merge_conf(dir, conf):
+def merge_conf(dir : str, conf : dict):
 	"""
 	Merges data to a cube with the config file
 
@@ -241,7 +241,7 @@ def merge_conf(dir, conf):
 #################
 
 
-def normalise(pro, instrument, quiet_sun, path = "./", save=False):
+def normalise(pro : p.profile_stk, instrument : str, quiet_sun : list, path = "./", save=False) -> p.profile_stk:
 	"""
 	Normalise the data cube by the given quiet sun range
 
@@ -304,7 +304,7 @@ def normalise(pro, instrument, quiet_sun, path = "./", save=False):
 
 	return pro1
 
-def normalise_conf(pro, conf):
+def normalise_conf(pro : p.profile_stk, conf : dict) -> p.profile_stk:
 	"""
 	Normalise the data cube by the given quiet sun range with the config file
 
@@ -328,7 +328,7 @@ def normalise_conf(pro, conf):
 #	SPECTRAL VEIL CORRECTION	#
 #################################
 
-def argmin(x):
+def argmin(x : np.array) -> int,int:
 	r"""
 	Find the argument of the minimum in an multi-dimensional
 	array. It seems to be faster than any numpy-built-in 
@@ -353,7 +353,7 @@ def argmin(x):
 
 #################################################################################################3
 
-def chi2(y_fit, y_obs):
+def chi2(y_fit : np.array, y_obs : np.array):
      r"""
      Computes the merit-function $\chi^2$. The used equation is $$\chi^2 = \sum_i y_{\text{fit}} - y_{\text{obs}}.$$
      
@@ -374,7 +374,7 @@ def chi2(y_fit, y_obs):
 
 #################################################################################################3
 
-def gaussian(x, mean = 0, sigma = 1, norm = True):
+def gaussian(x : np.array, mean = 0, sigma = 1, norm = True):
 	r"""
 	Computes the value of a Gaussian at position x.
 	
@@ -402,13 +402,13 @@ def gaussian(x, mean = 0, sigma = 1, norm = True):
 
 #################################################################################################3
 
-def convective_blueshift(ll,I):
+def convective_blueshift(ll : np.array,I : np.ndarray):
 	"""
 	Determines the shifted $\\lambda_0$ due to convective blueshift.
 
 	Parameters
 	----------
-	ll : array
+	ll : np.array
 		Wavelengths in a given range
 	I  : numpy.ndarray
 		Stokes I in the given range
@@ -433,7 +433,7 @@ def convective_blueshift(ll,I):
 
 #################################################################################################3
 
-def optimise_chi(nu, sigma, I, I_obs):
+def optimise_chi(nu : np.array, sigma : np.array, I : np.ndarray, I_obs : np.ndarray):
 	"""
 	Optimises two parameters by computing the chi2 merit function and finding
 	the minima of the two parameters. The steps are the following
@@ -445,13 +445,13 @@ def optimise_chi(nu, sigma, I, I_obs):
 	
 	Parameters
 	----------
-	nu : array
+	nu : numpy array
 		Array containing the nus which were used
-	sigma : array
+	sigma :  numpy array
 		Array containing the sigmas which were used
-	I : ndarray
+	I :  numpy ndarray
 		Multidimensional array with the following format: I[nu, sigma, wavelength]. This are the fitted/computed data to be compared to the observed one
-	I_obs : array
+	I_obs :  numpy array
 		Array containing the observed intensity
 	
 	Returns
@@ -519,7 +519,7 @@ def optimise_chi(nu, sigma, I, I_obs):
 
 #################################################################################################3
 
-def vac_to_air(wavelength, method = "Ciddor1996"):
+def vac_to_air(wavelength : float, method = "Ciddor1996") -> float:
 	r"""
 	Computes the wavelength from vacuum to air by using (Ciddor, 1996) eq. 1.
 
@@ -552,8 +552,8 @@ def vac_to_air(wavelength, method = "Ciddor1996"):
 
 
 #################################################################################################3
-def correct_spectral_veil_conf(pro, conf):
-	"""
+def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict) -> p.profile_stk:
+	""" 
 	Correct the spectral veil in the data with a config file. This function calls the following functions:
 	 - argmin()
 	 - chi2()
@@ -577,7 +577,7 @@ def correct_spectral_veil_conf(pro, conf):
 	"""
 	return correct_spectral_veil(pro, conf["instrument"], conf["fts_file"], conf["quiet_sun"], conf["cube"], conf["path"])
 	
-def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
+def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str, quiet_sun : list, cube : str, path : str):
 	"""
 	Correct the spectral veil in the data. This function calls the following functions:
 	 - argmin()
@@ -601,6 +601,8 @@ def correct_spectral_veil(pro, instrument, fts_file, quiet_sun, cube, path):
 		List with the pixel for the quiet sun as xmin,xmax,ymin,ymax
 	cube : str
 		Name of the stored data cube
+	path : str
+		Path where the files are stored
 
 	Return
 	------

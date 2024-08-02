@@ -31,7 +31,7 @@ import sir
 #									DATA									*
 #****************************************************************************
 
-def scatter_data(conf, comm, rank, size, return_stk=False):
+def scatter_data(conf : dict, comm, rank : int, size : int, return_stk=False):
 	"""
 	Loads and scatters the data equally into all the processes.
 
@@ -170,7 +170,7 @@ def scatter_data(conf, comm, rank, size, return_stk=False):
 		return stk, tasks
 
 
-def scatter_data_mc(conf, comm, rank, size, return_stk=False):
+def scatter_data_mc(conf : dict, comm, rank : int, size : int, return_stk=False):
 	"""
 	Scatters the data equally into all the ranks for the MC simulation.
 
@@ -208,8 +208,6 @@ def scatter_data_mc(conf, comm, rank, size, return_stk=False):
 
 		if(conf["num"] > (stk1.nx)):
 			raise Exception(f"[scatter_data] Warning: Number of Models is too big! ({conf['num']} > {stk1.nx-1})\n               Undefined Behaviour! Abort ...")
-			print("               Undefined Behaviour! Abort ...")
-			sys.exit()
 
 		# Create one data cube
 		stki = stk1.stki[:,0,:]
@@ -307,7 +305,7 @@ def scatter_data_mc(conf, comm, rank, size, return_stk=False):
 *****************************************************************************
 """
 
-def execute_inversion_1c(conf, task_folder, rank):
+def execute_inversion_1c(conf : dict, task_folder : dict, rank : int):
 	"""
 	Executes inversion and creates if needed random guesses. Make sure that
 	when this function is entered, the os is in the right directory! This
@@ -510,7 +508,7 @@ def execute_inversion_1c(conf, task_folder, rank):
 	return
 
 
-def execute_inversion_2c(conf, task_folder, rank):
+def execute_inversion_2c(conf : dict, task_folder : dict, rank : int):
 	"""
 	Executes inversion and creates if needed random guesses. Make sure that
 	when this function is entered, the os is in the right directory! This is
@@ -744,7 +742,7 @@ def execute_inversion_2c(conf, task_folder, rank):
 """
 
 
-def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
+def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, progress=True):
 	"""
 	Performs the inversion of all the models for the 1 component inversion.
 
@@ -1061,7 +1059,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 *****************************************************************************
 """
 
-def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
+def inversion_mc(conf : dict, comm, rank : int, size : int, MPI, debug=False,progress=True):
 	"""
 	Performs the inversion of all the models for the MC simulation.
 
@@ -1334,7 +1332,7 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 *****************************************************************************
 """
 
-def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
+def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,progress=True):
 	"""
 	Performs the inversion of all the models for the 2 component inversion.
 

@@ -8,13 +8,32 @@ Class chi2_stk with all the tools to compute, read and write chi2 value of Stoke
 """
 import numpy as np
 from scipy.io import FortranFile
+import profile_stk as p
 
-def _compute_chi2(obs, syn, noise, weight, num_of_nodes, mul=1.):
+def _compute_chi2(obs : np.array, syn : np.array, noise : float, weight : float, num_of_nodes : int, mul=1.0) -> float:
 	r"""
 	chi2 of one stokes parameter computed with the equation
 		$$\chi^2 = \frac{1}{\Lambda} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
 
+	Parameters
+	----------
+	obs : np.array
+		Array with the observations
+	syn : np.array
+		Array with the inversion model / synthesised Stokes profiles
+	noise : float
+		Noise of the Stokes parameter
+	weight : float
+		Weigth of the concerning Stokes parameter
+	num_of_nodes : int
+		Used number of nodes in the last cycle
+	mul : float,optional
+		Additional factor to be multiplied to the normalisation
 
+	Return
+	------
+	_compute_chi2 : float
+		chi2 value
 	"""
 	result = 0.0
 	
@@ -29,7 +48,7 @@ def _compute_chi2(obs, syn, noise, weight, num_of_nodes, mul=1.):
 	return result
 
 
-def _compute_total_chi2_fov(obs, syn, n1, n2, n3, n4, w1, w2, w3, w4, num_of_nodes):
+def _compute_total_chi2_fov(obs : p.profile_stk, syn : p.profile_stk, n1 : float, n2 : float, n3 : float, n4 : float, w1 : float, w2 : float, w3 : float, w4 : float, num_of_nodes : int) -> float:
 	r"""
 	$\chi^2$ of all Stokes parameter of the full FOV computed with
 		$$\chi^2 = \frac{1}{4n_xn_y\Lambda - F} \sum_x^{n_x}\sum_y^{n_y}\sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
@@ -61,7 +80,7 @@ def _compute_total_chi2_fov(obs, syn, n1, n2, n3, n4, w1, w2, w3, w4, num_of_nod
 		 
     Return
 	------
-	out : float
+	_compute_total_chi2_fov : float
 	 	reduced chi2 value
 	"""
 	result = 0.0
@@ -80,7 +99,7 @@ def _compute_total_chi2_fov(obs, syn, n1, n2, n3, n4, w1, w2, w3, w4, num_of_nod
 
 
 
-def _compute_total_chi2(obs, syn, x, y, n1, n2, n3, n4,	w1, w2, w3, w4, num_of_nodes):
+def _compute_total_chi2(obs : p.profile_stk, syn : p.profile_stk, x : int, y : int, n1 : float, n2 : float, n3 : float, n4 : float, w1 : float, w2 : float, w3 : float, w4 : float, num_of_nodes : int):
 	r"""
 	$\chi^2$ of all Stokes parameter based on 
 		$$\chi^2 = \frac{1}{4\cdot\Lambda - F} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
@@ -91,6 +110,10 @@ def _compute_total_chi2(obs, syn, x, y, n1, n2, n3, n4,	w1, w2, w3, w4, num_of_n
 		Observations
 	syn : profile_stk
 		Synthesis profiles
+	x : int
+		x position
+	y : int
+		y position
 	n1 : float
 		Noise of the parameter stki
 	n2 : float
@@ -112,7 +135,7 @@ def _compute_total_chi2(obs, syn, x, y, n1, n2, n3, n4,	w1, w2, w3, w4, num_of_n
 
     Return
 	------
-	out : float
+	_compute_total_chi2 : float
 	 	reduced chi2 value
 		 
 	"""
@@ -164,7 +187,7 @@ class chi2_stk:
 		Noise level of the Stokes Parameter
 
 	"""
-	def __init__(self, nx, ny):
+	def __init__(self, nx : int, ny : int):
 		"""
 		Initialisation of the class stk_chi2
 
@@ -196,7 +219,7 @@ class chi2_stk:
 		self.ns = 5
 		return None
 		
-	def compute(self, obs, syn, weights, num_of_nodes):
+	def compute(self, obs : p.profile_stk, syn : p.profile_stk, weights : np.array, num_of_nodes : int) -> None:
 		r"""
 		Compute the $\chi^2$ of all pixels in all Stokes Parameter and also the total $\chi^2$
 		The computation is based on (Borrero et al, 2021) with the equation
@@ -211,11 +234,14 @@ class chi2_stk:
 			Observations
 		syn : profile_stk
 			Synthesis profiles
-		weights : array
+		weights : np.array
 			Weights of the Stokes Parameter
 		num_of_nodes : int
 			Number of nodes used for the last inversion "cycle"
 
+		Return
+		------
+		None
 			
 		"""
 		self.nx = obs.nx
@@ -248,7 +274,7 @@ class chi2_stk:
 
 
 
-	def read(self, fname, fmt_type=np.float32):
+	def read(self, fname : str, fmt_type=np.float32):
 		"""
 		Read a binary fortran file
 
@@ -258,7 +284,12 @@ class chi2_stk:
 			Name of the binary file
 		fmt_type : type
 			Type of the fortran file
-			
+		
+		Return
+		------
+		read : chi2_stk
+			Class with the read data
+
 		"""
 		f = FortranFile(fname, 'r')
 		first_rec = f.read_record(dtype=fmt_type)
@@ -323,7 +354,7 @@ class chi2_stk:
 
 		return self
 	
-	def write(self, fname, fmt_type=np.float32):
+	def write(self, fname : str, fmt_type=np.float32):
 		"""
 		Write the data to a binary file
 
@@ -384,8 +415,23 @@ class chi2_stk:
 
 		return self
 	
-def read_chi2(filename, fmt_type = np.float32):
+def read_chi2(filename : str, fmt_type = np.float32):
+	"""
+	Reads a chi2 file and loads the data
 
+	Parameters
+	----------
+	filename : str
+		Filename of the binary file
+	fmt_type : type
+		Type of the binary file (only np.float32 implemented)
+
+	Return
+	------
+	read_chi2 : chi2_stk
+		Class with the read binary file
+		
+	"""
 	f = FortranFile(filename, 'r')
 	first_rec = f.read_record(dtype=fmt_type)
 

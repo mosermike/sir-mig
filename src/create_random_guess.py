@@ -19,7 +19,7 @@ def help():
 	sys.exit(1)
 
 
-def __split_to_float(string, letter = ","):
+def __split_to_float(string : str, letter = ","):
 	"""
 	Splits the string into a list and converts the elements to floats
 
@@ -39,7 +39,7 @@ def __split_to_float(string, letter = ","):
 	return np.array([float(i) for i in strings])
 
 
-def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
+def create_guess(model : str, random_pars : list, lim_B : list, lim_vlos : list, lim_gamma : list, lim_phi : list):
 	"""
 	Create random guesses.
 
@@ -240,7 +240,7 @@ def create_guess(model, random_pars, lim_B, lim_vlos, lim_gamma, lim_phi):
 
 	return mod
 
-def create_small_guess(mod, random_pars, factor):
+def create_small_guess(mod : m.model_atm, random_pars : list, factor : float):
 	r"""
 	Create random guesses in a small area around the provided values.
 
@@ -256,7 +256,8 @@ def create_small_guess(mod, random_pars, factor):
 		
 	Return
 	------
-	Class Model with the random Model
+	create_small_guess : m.model_atm
+		Class Model with the random Model
 
 	"""
 	
@@ -351,7 +352,7 @@ def create_small_guess(mod, random_pars, factor):
 	return mod
 
 
-def create_guesses_1c(conf, output = "./", number = 0):
+def create_guesses_1c(conf : dict, output = "./", number = 0):
 	"""
 	Create random guess.
 
@@ -392,8 +393,10 @@ def create_guesses_1c(conf, output = "./", number = 0):
 	mod.vmacro[0,0] = conf["vmacro"]
 	mod.write_model(output + f"{d.model}{number}.mod", 0, 0)
 
+	return
 
-def create_guesses_2c(conf, output = "./", number = 0):
+
+def create_guesses_2c(conf : dict, output = "./", number = 0):
 	"""
 	Create random guesses.
 
@@ -442,6 +445,8 @@ def create_guesses_2c(conf, output = "./", number = 0):
 			mod.write_model(output + f"{d.model1}" + str(number) + ".mod", 0, 0)
 		else:
 			mod.write_model(output + f"{d.model2}" + str(number) + ".mod", 0, 0)
+
+		return
 
 if __name__ == "__main__":
 	if "-h" in sys.argv:
