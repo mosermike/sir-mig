@@ -302,7 +302,7 @@ def analysis_multiple(confs : list, labels : list):
 		if len(labels) > 5:
 			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17, 4), layout="compressed")
 		else:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(13, 4), layout="compressed")
+			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(15, 4), layout="compressed")
 	else:
 		if len(labels) > 5:
 			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), layout="compressed")
