@@ -685,7 +685,9 @@ def create_models(conf: dict) -> None:
 
 def create_temperature(tau : np.array, B : float = 0.0) -> np.array:
 	r"""
-	Creates a random temperature in the parameter space.
+	Creates a random temperature in the parameter space. The temperature is computed according to the equation
+	$$T_{\text{new}} = \mathcal{R}_{\alpha}^{\log\tau_0} \left[f_1 \cdot T_{\text{c}} + f_2 \cdot (T_h-T_c)\right],$$
+	where $\mathcal{R}$ denotes a rotation, $\alpha$, $f_1$ and $f_2$ random values from a uniform distribution and $T_{\text{new}}$ the new random temperature.
 
 	Parameters
 	----------
@@ -732,30 +734,31 @@ def create_temperature(tau : np.array, B : float = 0.0) -> np.array:
 	# Add the values
 	Ts = cool11_T + factor * HSRA_T
 	
-	# Add (only in creating models) additional perturbation in a resulting rotation around log tau -1
-	#factor = np.random.uniform(0.95, 1.05)
-	#Ts[Ts > d.rot_point] = Ts[Ts > d.rot_point] * factor
-	#Ts[Ts <= d.rot_point] = Ts[Ts <= d.rot_point] / factor
-	
 	# Rotate the temperature
 	deg = np.random.uniform(-d.rot_deg,d.rot_deg)
 	Ts = _rot(log_taus,Ts,d.rot_point,deg)
 
 	return np.interp(tau, np.flip(log_taus), np.flip(Ts))
 
-def _rot(x : np.array, y : np.array, origin : float, deg : float) -> np.array:
-	'''
+def _rot(x : np.array, y : np.array, x0 : float, alpha : float) -> np.array:
+	r'''
 	Rotates a curve around a specific origin in x. Note that only y is changed and interpolated to x with CubicSpline!
-
+	The rotation is defined as
+		$$y^{\prime} = \max(|y|) \cdot \left[(y-y_0)_{\mathrm{norm}}\cdot \cos(\alpha)-(x-x_0)_{\mathrm{norm}}\cdot\sin(\alpha)\right] + y_0$$
+	for y, where the normalisation is defined as $P_{\mathrm{norm}} = \frac{P}{\max(|P|)}$ and $\max(|y|)$ is the absolute maximum of y. For $x$, the rotation is
+	defined as
+		$$x^{\prime} = \max(|x|) \cdot \left[(y-y_0)_{\mathrm{norm}}\cdot \sin(\alpha)+(x-x_0)_{\mathrm{norm}}\cdot\cos(\alpha)\right] + x_0.$$
+	For the origin ($x_0,y_0$), $y_0$ is computed from $x_0$ and $y$.
+		
 	Parameters
 	----------
 	x : np.array
 		x-values
 	y : np.array
 		y-values
-	origin : float
+	x0 : float
 		Origin in x
-	deg : float
+	alpha : float
 		degree of the rotation
 
 	Return
@@ -763,9 +766,12 @@ def _rot(x : np.array, y : np.array, origin : float, deg : float) -> np.array:
 	out : np.array
 		Rotated array in y-direction
 	'''
+	# Determine the origin in y
+	y0 = y[np.argmin(abs(x-x0))]
+
 	# Change the origin to the selected rotation point
-	x_ = x - origin
-	y_ = y - y[np.argmin(abs(x-origin))]
+	x_ = x - x0
+	y_ = y - y0
 
 	# Normalise the functions
 	x_max = np.max(np.abs(x_))
@@ -774,7 +780,7 @@ def _rot(x : np.array, y : np.array, origin : float, deg : float) -> np.array:
 	y_ /= y_max
 
 	# Rotate it by use of the rotation matrix
-	rad = deg/180*np.pi
+	rad = alpha/180*np.pi
 	x_rot =  x_*np.cos(rad)+y_*np.sin(rad)
 	y_rot = -x_*np.sin(rad)+y_*np.cos(rad)
 
@@ -783,8 +789,7 @@ def _rot(x : np.array, y : np.array, origin : float, deg : float) -> np.array:
 	y_rot *= y_max
 
 	# Interpolate in the selected temperature
-	return inter.CubicSpline(np.flip(x_rot+origin),np.flip(y_rot+y[np.argmin(abs(x-origin))]), bc_type='natural')(x)
-	return y_rot+y[np.argmin(abs(x-origin))]
+	return inter.CubicSpline(np.flip(x_rot+x0),np.flip(y_rot+y0), bc_type='natural')(x)
 	
 
 def synthesis(conf : dict, comm, rank : int, size : int, MPI, debug : bool=False, progress : bool = True):

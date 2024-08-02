@@ -155,4 +155,4 @@ upper_f = 1.1 # Maximum factor for the upper model (typically for the QS)
 temp_B = [5000,4000,3000,2000]
 temp_f = [[0.0,0.5],[0.0,0.6],[0.0,0.7],[0.0,0.8]]
 rot_point = -1 # Point where the temperature is rotated (Only for simulation used not in inversion)
-rot_deg = 5 # 
+rot_deg = 3 # It is recommended to not exceed 3 deg for the provided upper and lower limit so that the temperature is not constant or rising between log tau [-1,-4]

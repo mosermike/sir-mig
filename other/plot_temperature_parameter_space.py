@@ -5,6 +5,7 @@ import definitions as d
 import matplotlib.pyplot as plt
 import sir
 import numpy as np
+from simulation import _rot as rot
 
 plt.ion()
 # Import library
@@ -27,46 +28,12 @@ T_max = cool_T + d.upper_f * HSRA_T
 
 # Add (only in creating models) additional perturbation in a resulting rotation around log tau -1
 #factor = np.random.uniform(0.9, 1.1)
-def rot_max(T,f1,f2):
-	T_maxs = np.zeros(shape=(2,len(T)))
-
-	Ts = np.copy(T)
-	Ts[Ts > d.rot_point] = Ts[Ts > d.rot_point] * f1
-	Ts[Ts <= d.rot_point] = Ts[Ts <= d.rot_point] / f1
-	T_maxs[0] = Ts
-	Ts = np.copy(T)
-	Ts[Ts > d.rot_point] = Ts[Ts > d.rot_point] * f2
-	Ts[Ts <= d.rot_point] = Ts[Ts <= d.rot_point] / f2
-	T_maxs[1] = Ts
-
-	for i in range(len(T)):
-		T[i] = np.max([T_maxs[0][i],T_maxs[1][i]])
-	return T
-
-def rot(x,y,origin,deg):
-	# Change the origin to the selected rotation point
-	x_ = x - origin
-	y_ = y - y[np.argmin(abs(x-origin))]
-
-	# Normalise the functions
-	x_max = np.max(np.abs(x_))
-	y_max = np.max(np.abs(y_))
-	x_ /= x_max
-	y_ /= y_max
-
-	# Rotate it by use of the rotation matrix
-	rad = deg/180*np.pi
-	x_rot =  x_*np.cos(rad)+y_*np.sin(rad)
-	y_rot = -x_*np.sin(rad)+y_*np.cos(rad)
-
-	# "Unormalise"
-	x_rot *= x_max
-	y_rot *= y_max
-
-	# Interpolate in the selected temperature
-	return y_rot+y[np.argmin(abs(x-origin))] #np.interp(x,np.flip(x_rot+origin),np.flip(y_rot+y[np.argmin(abs(x-origin))]))
 
 def rot_ext(x1,y1,origin,deg1,deg2, func):
+	"""
+	Find the extrema while applying the rotation operator
+
+	"""
 	T = np.zeros((2,len(x1)))
 	x = np.copy(x1)
 	y = np.copy(y1)
