@@ -1029,6 +1029,7 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 			del chi2
 
 		if not debug:
+			print("-------> Delete created SIR files")
 			# Delete the folder
 			for i in range(len(tasks['x'])):
 				# Remove folder
@@ -1036,6 +1037,11 @@ def inversion_1c(conf, comm, rank, size, MPI, debug=False, progress=True):
 
 			if conf['psf'] != '' and conf['psf'] != d.psf:
 				os.remove(d.psf)
+
+			os.remove(os.path.join(path,d.inv_trol_file))
+			os.remove(os.path.join(path,d.Grid))
+		else:
+			print("-------> No created files are deleted. Debug option active.")
 		
 		# Print needed time
 		end = time.time()
@@ -1303,8 +1309,14 @@ def inversion_mc(conf, comm, rank, size, MPI, debug=False,progress=True):
 
 
 		if not debug:
+			print("-------> Delete created SIR files")
 			for i in range(conf['num']):
 				shutil.rmtree(os.path.join(path,tasks['folders'][i]))
+			
+			os.remove(os.path.join(path,d.inv_trol_file))
+			os.remove(os.path.join(path,d.Grid))
+		else:
+			print("-------> No created files are deleted. Debug option active.")
 
 		# Print needed time
 		end = time.time()
@@ -1661,10 +1673,15 @@ def inversion_2c(conf, comm, rank, size, MPI, debug=False,progress=True):
 		
 		if not debug:
 			# Delete the folder
+			print("-------> Delete created SIR files")
 			for i in range(len(tasks['x'])):
 				shutil.rmtree(tasks['folders'][i])
 			if conf['psf'] != '' and conf['psf'] != d.psf:
 				os.remove(d.psf)
+			os.remove(os.path.join(path,d.inv_trol_file))
+			os.remove(os.path.join(path,d.Grid))
+		else:
+			print("-------> No created files are deleted. Debug option active.")
 
 		# Print needed time
 		end = time.time()

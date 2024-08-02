@@ -785,7 +785,7 @@ def _rot(x,y,origin,deg):
 	# Interpolate in the selected temperature
 	return y_rot+y[np.argmin(abs(x-origin))]
 
-def synthesis(conf, comm, rank, size, MPI, progress = True):
+def synthesis(conf, comm, rank, size, MPI, debug=False, progress = True):
 	"""
 	Performs the synthesis of all the models.
 
@@ -801,6 +801,8 @@ def synthesis(conf, comm, rank, size, MPI, progress = True):
 		Number of processes
 	MPI : library
 		Library MPI
+	debug : bool,optional
+		Do not delete created files
 	progress : bool,optional
 		Print a progress bar
 
@@ -847,6 +849,11 @@ def synthesis(conf, comm, rank, size, MPI, progress = True):
 
 	tasks = sir.create_task_folder_list(conf['num'])
 
+	# Add another variable to the tasks in case debug is active and the folders should not be deleted
+	if debug:
+		for i in range(conf["num"]):
+			tasks["folders"][i] += "_syn"
+
 	for i in range(rank, conf['num'], size):
 		# Create task folder
 		task_folder = os.path.join(path, tasks['folders'][i])
@@ -862,7 +869,7 @@ def synthesis(conf, comm, rank, size, MPI, progress = True):
 	
 		# Perform synthesis
 		os.chdir(task_folder)
-		os.system("echo " + d.syn_trol_file + " | " + " ./sir.x >/dev/null 2>/dev/null")
+		os.system("echo " + d.syn_trol_file + " | " + " ./sir.x 2>1 >syn.log")
 		
 		performed_models += 1
 
@@ -885,8 +892,14 @@ def synthesis(conf, comm, rank, size, MPI, progress = True):
 		
 		stk.write(f"{os.path.join(conf['path'],conf['syn_out'] + d.end_stokes)}")
 		
-		for i in range(conf['num']):
-			shutil.rmtree(tasks['folders'][i])
+		if not debug:
+			for i in range(conf['num']):
+				shutil.rmtree(tasks['folders'][i])
+			os.remove(os.path.join(path,d.syn_trol_file))
+			os.remove(os.path.join(path,d.Grid))
+		else:
+			print("-------> No created files are deleted. Debug option active.")
+			
 		print(f"\r-------> Finished with {conf['num']} synthesised models.")
 
 	comm.barrier()

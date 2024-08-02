@@ -28,7 +28,7 @@ def help():
 	sir.option("--no-noise","Do not add noise [Only in mode MC]")
 	sir.option("--no-inv","Do not perform the inversion")
 	sir.option("--only-inv","Only perform inversion [Only in mode MC]")
-	sir.option("--debug", "Debugging (task folders in inversions are not deleted)")
+	sir.option("--debug", "Debugging (created files are not deleted)")
 	sir.option("--no-progress", "Do not print a progress bar")
 	sys.exit()
 
@@ -151,7 +151,7 @@ def sir_mig():
 			# Perform Synthesis #
 			#####################
 			if not "--no-syn" in sys.argv:
-				simulation.synthesis(conf, comm, rank, size, MPI, not "--no-progress" in sys.argv)
+				simulation.synthesis(conf, comm, rank, size, MPI, "--debug" in sys.argv, not "--no-progress" in sys.argv)
 
 			comm.barrier()
 
