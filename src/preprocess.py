@@ -328,7 +328,7 @@ def normalise_conf(pro : p.profile_stk, conf : dict) -> p.profile_stk:
 #	SPECTRAL VEIL CORRECTION	#
 #################################
 
-def argmin(x : np.array) -> int,int:
+def argmin(x : np.array):
 	r"""
 	Find the argument of the minimum in an multi-dimensional
 	array. It seems to be faster than any numpy-built-in 
@@ -478,15 +478,10 @@ def optimise_chi(nu : np.array, sigma : np.array, I : np.ndarray, I_obs : np.nda
 	nu_min = nu[chi_min[0]]
 	sigma_min = sigma[chi_min[1]]
 
-	fig, ax = plt.subplots()
-	ax.imshow(chis.transpose())
-	fig.savefig("test.png")
-
-
 	if chi_min[0]+5 > len(nu) or chi_min[0] < 4:
-		raise Exception("[optimise_chi] The found minimum (" + str(chi_min[0]) + "," + str(nu_min) + ") is at the border of the selected ranges. Consider increasing the ranges of nu in definitions.py!")
+		raise Exception("[optimise_chi] The found minimum (" + str(chi_min[0]) + "," + str(nu_min) + ") is at the border of the selected ranges. Did you select a QS region?")
 	if chi_min[1]+5 > len(sigma) or chi_min[1] < 4:
-		raise Exception("[optimise_chi] The found minimum (" + str(chi_min[1]) + "," + str(sigma_min) + ") is at the border of the selected ranges. Consider increasing the ranges of sigma in definitions.py!")
+		raise Exception("[optimise_chi] The found minimum (" + str(chi_min[1]) + "," + str(sigma_min) + ") is at the border of the selected ranges. Did you select a QS region?")
 
 	
 	##################
@@ -562,6 +557,9 @@ def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict) -> p.profile_st
 	 - optimise_chi()
 	 - vac_to_air()
 
+	This function convolves the FTS data with a Gaussian and a constant value for the spectral veil using
+	$$I = (1 - \\nu) [I_{FTS} * g(\\lambda, \\sigma)] + \\nu I_c.$$
+
 	Parameters
 	----------
 	pro : profile_stk
@@ -586,6 +584,9 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	 - convective_blueshift()
 	 - optimise_chi()
 	 - vac_to_air()
+
+	This function convolves the FTS data with a Gaussian and a constant value for the spectral veil using
+	$$I = (1 - \\nu) [I_{FTS} * g(\\lambda, \\sigma)] + \\nu I_c.$$
 
 	Parameters
 	----------
@@ -671,7 +672,7 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	#################################################################
 	#						    INITIALIZATION						#
 	#################################################################
-	stokes = pro	
+	stokes = pro
 			
 	filename_fts  = fts_file
 
@@ -822,11 +823,11 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	#					    Plot the best convolved intensity				  #
 	######################################################################################
 	fig, ax = plt.subplots()
-	ax.plot(ll_conv, i_conv, "x", label = r'$I^{FTS}$')
+	ax.plot(ll_conv, i_conv, "x", label = r'$I^{\mathrm{FTS}}$')
 	if instrument == 'GRIS':
-		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{qs}}^{\mathrm{GRIS}}$')
+		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{QS}}^{\mathrm{GRIS}}$')
 	else:
-		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{qs}}^{\mathrm{data}}$')
+		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{QS}}^{\mathrm{data}}$')
 	ax.plot(LL_conv, I_conv_best, label = r"$I^{\mathrm{fit}}$")
 
 	ax.set_xlabel(r"$\Delta \lambda^{\mathrm{air}}$" + f" - {d.ll_lit[instrument]}" + r" \AA")
