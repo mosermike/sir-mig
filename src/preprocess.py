@@ -814,7 +814,7 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 				r"$\hat{\nu} =$ " + "(%.1f ± %.1f) "
 					% (round(nu_min/1e-2,1), round(unu_min / 1e-2 + 0.05,1))  + r"$\%$"
 				+ '\n' +
-				r"$\hat{\chi}^2 =$ " + "%.3f"
+				r"$\hat{\chi}^2 =$ " + "%.4f"
 					% (chi_min), fontsize=12)
 	plt.savefig(os.path.join(path,savepath + "veil_parameter_space"))
 
