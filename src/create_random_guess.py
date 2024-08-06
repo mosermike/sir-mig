@@ -446,7 +446,7 @@ def create_guesses_2c(conf : dict, output = "./", number = 0):
 		else:
 			mod.write_model(output + f"{d.model2}" + str(number) + ".mod", 0, 0)
 
-		return
+	return
 
 if __name__ == "__main__":
 	if "-h" in sys.argv:
