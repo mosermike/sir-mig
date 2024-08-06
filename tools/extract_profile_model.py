@@ -86,9 +86,10 @@ def extract_profile_model_1C(conf : dict, x : int, y : int, savepath : str):
 	x = x - Map[0]
 	y = y - Map[2]
 	
+	sir.write_grid(conf, os.path.join(savepath, d.Grid))
 	# Save data in formats for SIR
-	obs1.write_profile(savepath + "profile" + add + ".per", x, y, d.Grid)
-	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, d.Grid)
+	obs1.write_profile(savepath + "profile" + add + ".per", x, y, os.path.join(savepath, d.Grid))
+	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, os.path.join(savepath, d.Grid))
 	mod.write_model(savepath + "model_result" + add + ".mod", x, y)
 	guess.write_model(savepath + d.guess.replace(".mod","") + add + ".mod", x, y)
 	err.write_model(savepath + "model_result" + add + ".err", x, y)
@@ -105,7 +106,6 @@ def extract_profile_model_1C(conf : dict, x : int, y : int, savepath : str):
 		shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
 	
 	sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
-	sir.write_grid(conf, os.path.join(savepath, d.Grid))
 
 def extract_profile_model_MC(conf : dict, num : int, savepath : str):
 	"""
@@ -240,9 +240,11 @@ def extract_profile_model_2C(conf : dict, x : int, y : int, savepath : str):
 	x = x - Map[0]
 	y = y - Map[2]
 	
+	sir.write_grid(conf, os.path.join(savepath, d.Grid))
+
 	# Save data in formats for SIR
-	obs1.write_profile(savepath + "profile" + add + ".per", x, y,d.Grid)
-	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, d.Grid)
+	obs1.write_profile(savepath + "profile" + add + ".per", x, y,os.path.join(savepath, d.Grid))
+	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, os.path.join(savepath, d.Grid))
 	guess1.write_model(savepath + "guess1" + add + ".mod",x,y)
 	guess2.write_model(savepath + "guess2" + add + ".mod",x,y)
 	mod1.write_model(savepath + "model_result1" + add + ".mod", x,y)
@@ -263,21 +265,31 @@ def extract_profile_model_2C(conf : dict, x : int, y : int, savepath : str):
 		shutil.copy(os.path.join(path, sir_file), os.path.join(savepath, sir_file))
 	
 	sir.write_control(os.path.join(savepath, d.inv_trol_file), conf)
-	sir.write_grid(conf, os.path.join(savepath, d.Grid))
+	
 
 # Used if executed directly
 if __name__ == "__main__":
 	if "-h" in sys.argv:
 		help()
 	if len(sys.argv) < 2:
-		raise RuntimeError("Argument for config file is missing!")
+		raise IndexError("Argument for config file is missing!")
 	
 	conf = sir.read_config(sys.argv[1])
 
 	if len(sys.argv) < 3:
-		raise RuntimeError("Argument for savepath is missing!")
+		raise IndexError("Argument for x is missing!")
 	
-	savepath = sys.argv[2]
+	if conf['mode'] == "MC":
+		if len(sys.argv) < 4:
+			raise IndexError("Argument for savepath is missing!")
+		savepath = sys.argv[3]
+	else:
+		if len(sys.argv) < 4:
+			raise IndexError("Argument for y is missing!")
+		if len(sys.argv) < 5:
+			raise IndexError("Argument for savepath is missing!")
+		
+		savepath = sys.argv[4]
 	
 	if conf['mode'] == "MC":
 		extract_profile_model_MC(conf, int(sys.argv[2]), savepath)

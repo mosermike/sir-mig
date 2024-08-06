@@ -536,18 +536,22 @@ def vac_to_air(wavelength : float, method = "Ciddor1996") -> float:
 	vac_to_air : float
 		Corresponding wavelength in air in Angstrom
 
+	Raises
+	------
+	ValueError
+		If 'method' is not defined
 	"""
 	if method == "Ciddor1996":
 		sigma2 = (1e4 / wavelength)**2 # squared wavenumber in mum^-1
 		refr    = (1 + 5.792105e-2 / (238.0185 - sigma2) + 1.67917e-3 / (57.362 - sigma2))
 		wave_air = wavelength/refr
 	else:
-		print(f"[vac_to_air] Method {method} not defined.")
+		raise ValueError(f"[vac_to_air] Method {method} not defined.")
 	return wave_air
 
 
 #################################################################################################3
-def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict) -> p.profile_stk:
+def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict, save : bool = True, verbose : bool = True, plot : bool = True) -> p.profile_stk:
 	""" 
 	Correct the spectral veil in the data with a config file. This function calls the following functions:
 	 - argmin()
@@ -566,6 +570,12 @@ def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict) -> p.profile_st
 		Class with the normalised Stokes Profiles
 	config : dict
 		Dictionary with all the information from the config file
+	save : bool,optional
+		Save the data cube. Default: True
+	verbose : bool, optional
+		Print out status information. Default: True
+	plot : bool, optional
+		Plot the spectra and the parameter space
 
 	Return
 	------
@@ -573,9 +583,9 @@ def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict) -> p.profile_st
 		Corrected profiles
 
 	"""
-	return correct_spectral_veil(pro, conf["instrument"], conf["fts_file"], conf["quiet_sun"], conf["cube"], conf["path"])
+	return correct_spectral_veil(pro, conf["instrument"], conf["fts_file"], conf["quiet_sun"], conf["cube"], conf["path"], save, verbose, plot)
 	
-def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str, quiet_sun : list, cube : str, path : str):
+def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str, quiet_sun : list, cube : str, path : str, save : bool = True, verbose : bool = True, plot : bool = True):
 	"""
 	Correct the spectral veil in the data. This function calls the following functions:
 	 - argmin()
@@ -604,6 +614,12 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 		Name of the stored data cube
 	path : str
 		Path where the files are stored
+	save : bool,optional
+		Save the data cube. Default: True
+	verbose : bool, optional
+		Print out status information. Default: True
+	plot : bool, optional
+		Plot the spectra and the parameter space
 
 	Return
 	------
@@ -638,7 +654,8 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 		del pro
 		return
 	
-	print("[STATUS] Correct spectral veil ...")
+	if verbose:
+		print("[STATUS] Correct spectral veil ...")
 	if exists(os.path.join(path,cube)):
 		temp = ''
 		print("[WARN] The data cube used for the inversion already exists and spectral veil correction is selected.")
@@ -694,7 +711,8 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	####################################################################
 	#						   SHIFT OF SPECTRUM					   #
 	####################################################################
-	print('-------> Shift spectrum ...')
+	if verbose:
+		print('-------> Shift spectrum ...')
 	
 	#########
 	#  FTS  #
@@ -735,10 +753,12 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	######################################################################################
 	# Moving intensities to zero so that they really overlap due to any other reasons
 	j = 20
+	
 	# ciddor intensities
 	ll_min = np.argmin(abs(ll_ciddor))
 	i_range = i1[ll_min - j : ll_min + j] # Intensity range to check for minima
 	ll_ciddor -= ll_ciddor[np.argmin(i_range) + ll_min - j]
+	
 	# gris intensities
 	ll_min = np.argmin(abs(ll_gris))
 	i_range = i_gris[ll_min - j : ll_min + j] # Intensity range to check for minima
@@ -748,11 +768,12 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	#							  CONVOLUTION							 #
 	######################################################################################
 	# By using Ciddor for the shift
-	print("[STATUS] Start convolution ...")
+	if verbose:
+		print("[STATUS] Start convolution ...")
 
 	# Shorten data to the peak from -(-1.5) to 1.5
-	ll_conv	= ll_ciddor[np.argmin(abs(ll_ciddor + b)) : np.argmin(abs(ll_ciddor - b))]
-	i_conv	= i1	   [np.argmin(abs(ll_ciddor + b)) : np.argmin(abs(ll_ciddor - b))]
+	ll_conv	= ll_ciddor[np.argmin(np.abs(ll_ciddor + b)) : np.argmin(np.abs(ll_ciddor - b))]
+	i_conv	= i1	   [np.argmin(np.abs(ll_ciddor + b)) : np.argmin(np.abs(ll_ciddor - b))]
 
 	# Interpolate the GRIS data to be comparable with the FTS data
 	I_obs = np.interp(ll_conv, ll_gris, i_gris)
@@ -799,57 +820,59 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	######################################################################################
 	#						  Plot the PARAMETER SPACE					   #
 	######################################################################################
-	fig, ax = plt.subplots()
-	vmin = round(np.log10(chi_min)-0.05,1)
-	vmax = round(np.log10(chi_min)-0.05,1) + 0.8
-	c = ax.contourf(sigma*1e3, nu*100, np.log10(chis), levels = np.linspace(vmin, vmax, 40), cmap = 'ocean', vmin = vmin, vmax = vmax)
-	ax.set_ylabel(r"$\nu$ $[\%]$")
-	ax.set_xlabel(r"$\sigma$ [m\AA]")
-	cbar = fig.colorbar(c,ticks=np.arange(vmin, vmax+0.2, 0.2), location = 'top')
-	cbar.set_label(label=r"$\log(\chi^2)$", loc = 'center', labelpad = 15)
-	plt.text((d.sigma_range[1]-d.sigma_range[0])*120/140, (d.nu_range[1]-d.nu_range[0])*25/31,
-		  		r"$\hat{\sigma} =$ " + "(%.1f ± %.1f)"
-					% (round(sigma_min/1e-3,1), round(usigma_min / 1e-3 + 0.05,1)) + r" m\AA"
-				+ '\n' +
-				r"$\hat{\nu} =$ " + "(%.1f ± %.1f) "
-					% (round(nu_min/1e-2,1), round(unu_min / 1e-2 + 0.05,1))  + r"$\%$"
-				+ '\n' +
-				r"$\hat{\chi}^2 =$ " + "%.4f"
-					% (chi_min), fontsize=12)
-	plt.savefig(os.path.join(path,savepath + "veil_parameter_space"))
+	if plot:
+		fig, ax = plt.subplots()
+		vmin = round(np.log10(chi_min)-0.05,1)
+		vmax = round(np.log10(chi_min)-0.05,1) + 0.8
+		c = ax.contourf(sigma*1e3, nu*100, np.log10(chis), levels = np.linspace(vmin, vmax, 40), cmap = 'ocean', vmin = vmin, vmax = vmax)
+		ax.set_ylabel(r"$\nu$ $[\%]$")
+		ax.set_xlabel(r"$\sigma$ [m\AA]")
+		cbar = fig.colorbar(c,ticks=np.arange(vmin, vmax+0.2, 0.2), location = 'top')
+		cbar.set_label(label=r"$\log(\chi^2)$", loc = 'center', labelpad = 15)
+		ax.text((d.sigma_range[1]-d.sigma_range[0])*120/140, (d.nu_range[1]-d.nu_range[0])*25/31,
+					r"$\hat{\sigma} =$ " + "(%.1f ± %.1f)"
+						% (round(sigma_min/1e-3,1), round(usigma_min / 1e-3 + 0.05,1)) + r" m\AA"
+					+ '\n' +
+					r"$\hat{\nu} =$ " + "(%.1f ± %.1f) "
+						% (round(nu_min/1e-2,1), round(unu_min / 1e-2 + 0.05,1))  + r"$\%$"
+					+ '\n' +
+					r"$\hat{\chi}^2 =$ " + "%.4f"
+						% (chi_min), fontsize=12)
+		fig.savefig(os.path.join(path,savepath + "veil_parameter_space"))
 
 
 	######################################################################################
 	#					    Plot the best convolved intensity				  #
 	######################################################################################
-	fig, ax = plt.subplots()
-	ax.plot(ll_conv, i_conv, "x", label = r'$I^{\mathrm{FTS}}$')
-	if instrument == 'GRIS':
-		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{QS}}^{\mathrm{GRIS}}$')
-	else:
-		ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{QS}}^{\mathrm{data}}$')
-	ax.plot(LL_conv, I_conv_best, label = r"$I^{\mathrm{fit}}$")
+	if plot:
+		fig, ax = plt.subplots()
+		ax.plot(ll_conv, i_conv, "x", label = r'$I^{\mathrm{FTS}}$')
+		if instrument == 'GRIS':
+			ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{QS}}^{\mathrm{GRIS}}$')
+		else:
+			ax.plot(ll_conv_g, I_obs, '+', label = r'$I_{\mathrm{QS}}^{\mathrm{data}}$')
+		ax.plot(LL_conv, I_conv_best, label = r"$I^{\mathrm{fit}}$")
 
-	ax.set_xlabel(r"$\Delta \lambda^{\mathrm{air}}$" + f" - {d.ll_lit[instrument]}" + r" \AA")
-	ax.set_ylabel(r"Intensity $I/I_c$")
-	ax.set_xlim(-b,b)
+		ax.set_xlabel(r"$\Delta \lambda^{\mathrm{air}}$" + f" - {d.ll_lit[instrument]}" + r" \AA")
+		ax.set_ylabel(r"Intensity $I/I_c$")
+		ax.set_xlim(-b,b)
 
-	ax.legend(fontsize=15)
+		ax.legend(fontsize=15)
 
-	plt.savefig(os.path.join(path, savepath + "veil_intensity"))
+		fig.savefig(os.path.join(path, savepath + "veil_intensity"))
 
 	######################################################################################
 	#					START OF THE ACTUAL CORRECTION					    #
 	######################################################################################
-	print('[STATUS] Correct data ...')
+	if verbose:
+		print('[STATUS] Correct data ...')
 	pro1 = stokes.copy()
 	# Correct for spectral veil
 	pro1.veil_correction(nu_min)
 	
-
-	print("-------> Saving data (this might take a while) ...")
-	pro1.write(os.path.join(path,cube))
-
-	print("[Preprocess] Preprocess data is done. Consider changing from 'preprocess : 1' to 'preprocess : 0'!")
+	if save:
+		if verbose:
+			print("-------> Saving data (this might take a while) ...")
+		pro1.write(os.path.join(path,cube))
 	
 	return pro1

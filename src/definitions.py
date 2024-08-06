@@ -68,7 +68,7 @@ SVD = "1e-4" # SVD TOL value
 # Literature wavelength in air
 # Add here for another instrument
 ll_lit = {
-			"GRIS": 15648.514  # From A new Multiplet table for Fe I
+			"GRIS": 15648.514  # NIST Atomic Spectra Database
 		}
 
 sigma_range = (10,150) # in mA
