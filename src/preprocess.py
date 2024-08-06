@@ -227,8 +227,8 @@ def merge_conf(dir : str, conf : dict):
 	config : dict
 		Dictionary with all the information from the config file
 	
-	Return
-	------
+	Returns
+	-------
 	merge : profile_stk
 		Class with the merged profiles
 	
@@ -258,8 +258,8 @@ def normalise(pro : p.profile_stk, instrument : str, quiet_sun : list, path = ".
 	save : bool
 		Save the merged data cube
 
-	Return
-	------
+	Returns
+	-------
 	normalise : profile_stk
 		Normalised data cube
 	"""
@@ -315,8 +315,8 @@ def normalise_conf(pro : p.profile_stk, conf : dict) -> p.profile_stk:
 	config : dict
 		Dictionary with all the information from the config file
 
-	Return
-	------
+	Returns
+	-------
 	normalise : profile_stk
 		Normalised data cube
 	
@@ -577,8 +577,8 @@ def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict, save : bool = T
 	plot : bool, optional
 		Plot the spectra and the parameter space
 
-	Return
-	------
+	Returns
+	-------
 	correct_spectral_veil_conf : profile_stk
 		Corrected profiles
 
@@ -621,8 +621,8 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	plot : bool, optional
 		Plot the spectra and the parameter space
 
-	Return
-	------
+	Returns
+	-------
 	correct_spectral_veil : profile_stk
 		Profiles with the corrected spectal veil
 
