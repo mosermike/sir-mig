@@ -376,14 +376,17 @@ def create_guesses_1c(conf : dict, output = "./", number = 0):
 		lim_B = __split_to_float(conf["lim_B"])
 	else:
 		lim_B = None
+
 	if "lim_vlos" in conf:
 		lim_vlos = __split_to_float(conf["lim_vlos"])
 	else:
 		lim_vlos = None
+
 	if "lim_gamma" in conf:
 		lim_gamma = __split_to_float(conf["lim_gamma"])
 	else:
 		lim_gamma = None
+
 	if "lim_phi" in conf:
 		lim_phi = __split_to_float(conf[f"lim_phi"])
 	else:
@@ -424,14 +427,17 @@ def create_guesses_2c(conf : dict, output = "./", number = 0):
 			lim_B = __split_to_float(conf[f"lim_B{j}"])
 		else:
 			lim_B = None
+
 		if f"lim_vlos{j}" in conf:
 			lim_vlos = __split_to_float(conf[f"lim_vlos{j}"])
 		else:
 			lim_vlos = None
+
 		if f"lim_gamma{j}" in conf:
 			lim_gamma = __split_to_float(conf[f"lim_gamma{j}"])
 		else:
 			lim_gamma = None
+
 		if f"lim_phi{j}" in conf:
 			lim_phi = __split_to_float(conf[f"lim_phi{j}"])
 		else:
@@ -477,8 +483,10 @@ if __name__ == "__main__":
 	
 	if conf["mode"] == "MC" or conf["mode"] == "1C":
 		create_guesses_1c(conf, sys.argv[2])
-	else:
+	elif conf["mode"] == "2C":
 		create_guesses_2c(conf, sys.argv[2])
+	else:
+		raise ValueError(f"[create_random_guesses] Mode '{conf['mode']}' unknown")
 
 
 

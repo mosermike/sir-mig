@@ -948,7 +948,7 @@ def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, pr
 			pbar.n = total_jobs
 			pbar.refresh()
 		elif rank == 0:
-			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}", end="")
+			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}")
 	
 	comm.barrier()
 		
@@ -956,7 +956,9 @@ def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, pr
 		pbar.n = max_jobs
 		pbar.refresh()
 		pbar.close()
-
+	elif rank == 0:
+			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}")
+			
 	wave = np.copy(stk.wave)
 	del stk # Free Memory
 
@@ -1040,7 +1042,7 @@ def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, pr
 				shutil.rmtree(tasks['folders'][i])
 
 			if conf['psf'] != '' and conf['psf'] != d.psf:
-				os.remove(d.psf)
+				os.remove(os.path.join(path,d.psf))
 
 			os.remove(os.path.join(path,d.inv_trol_file))
 			os.remove(os.path.join(path,d.Grid))
@@ -1242,7 +1244,8 @@ def inversion_mc(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 		pbar.n = max_jobs
 		pbar.refresh()
 		pbar.close()
-
+	elif rank == 0:
+			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}")
 	##################################################
 	# Read all the results and put it into npy files #
 	##################################################
@@ -1581,7 +1584,8 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 		pbar.n = max_jobs
 		pbar.refresh()
 		pbar.close()
-		
+	elif rank == 0:
+			print(f"\rTotal Jobs: {total_jobs}/{max_jobs}")
 
 	########################################################
 	#	Read all the results and put it into npy files	#
