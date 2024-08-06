@@ -86,7 +86,7 @@ def extract_profile_model_1C(conf : dict, x : int, y : int, savepath : str):
 	x = x - Map[0]
 	y = y - Map[2]
 	
-	sir.write_grid(conf, os.path.join(savepath, d.Grid))
+	sir.write_grid(conf, os.path.join(savepath, d.Grid), obs1.wave)
 	# Save data in formats for SIR
 	obs1.write_profile(savepath + "profile" + add + ".per", x, y, os.path.join(savepath, d.Grid))
 	inv.write_profile(savepath + "profile_result" + add + ".per", x, y, os.path.join(savepath, d.Grid))
@@ -240,7 +240,7 @@ def extract_profile_model_2C(conf : dict, x : int, y : int, savepath : str):
 	x = x - Map[0]
 	y = y - Map[2]
 	
-	sir.write_grid(conf, os.path.join(savepath, d.Grid))
+	sir.write_grid(conf, os.path.join(savepath, d.Grid), obs1.wave)
 
 	# Save data in formats for SIR
 	obs1.write_profile(savepath + "profile" + add + ".per", x, y,os.path.join(savepath, d.Grid))

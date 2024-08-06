@@ -1304,6 +1304,12 @@ def write_grid(conf, filename = 'Grid.grid', waves=None):
 	-------
 	None
 
+	Raise
+	-----
+	ValueError
+		if 'waves' not defined but needed for mode '1C' and '2C'
+	ValueError
+		if unknown mode
 	"""
 	if conf['mode'] == "MC":
 		_write_grid_mc(conf, filename)
@@ -1312,7 +1318,7 @@ def write_grid(conf, filename = 'Grid.grid', waves=None):
 	elif conf['mode'] == "2C":
 		_write_grid(conf, filename, waves)
 	else:
-		print(f"[write_grid] Unknown Mode '{conf['mode']}'")
+		raise ValueError(f"[write_grid] Unknown Mode '{conf['mode']}'")
 
 def _write_grid(conf, filename, waves):
 	"""
@@ -1331,8 +1337,14 @@ def _write_grid(conf, filename, waves):
 	-------
 	None
 
+	Raise
+	-----
+	ValueError
+		if 'waves' not defined
 	"""
-
+	if waves is None:
+		raise ValueError("[write_grid] 'waves' not defined")
+	
 	# Load data from config
 	range_wave = conf['range_wave']
 	line = read_line(os.path.join(conf['path'],conf['line']))
