@@ -526,6 +526,11 @@ def execute_inversion_2c(conf : dict, task_folder : dict, rank : int):
 	Returns
 	-------
 	None
+
+	Raise
+	-----
+	FileNotFoundError
+		if a file is not found
 	"""
 	old_pw = os.path.abspath(os.getcwd())
 	os.chdir(task_folder)
@@ -549,10 +554,11 @@ def execute_inversion_2c(conf : dict, task_folder : dict, rank : int):
 			it = 0
 			while it < 50: # Only stops an inversion, if the chi file is correct => inversion finished properly
 				# Create New Guess
-				g.create_guesses_2c(conf, output = "./", number = i+1)
+				g.create_guesses_2c(conf, output = "./", number = i+1)	
 				if not exists(f'{d.model1}' + str(i+1) + ".mod"):
-					print(f'No model {i+1} in {task_folder} with the name {d.model1}{i+1}.mod')
-					sys.exit()
+					raise FileNotFoundError(f'No model {i+1} in {task_folder} with the name {d.model1}{i+1}.mod')
+				if not exists(f'{d.model2}' + str(i+1) + ".mod"):
+					raise FileNotFoundError(f'No model {i+1} in {task_folder} with the name {d.model2}{i+1}.mod')
 				# Copy to the model
 				shutil.copy(d.model1 + str(i+1) + ".mod",d.guess1)
 				shutil.copy(d.model2 + str(i+1) + ".mod",d.guess2)
