@@ -437,12 +437,12 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Initial print outs and preparation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>mode</strong><span class="classifier">string</span></dt><dd><p>Mode which is used</p>
+<dt><strong>mode</strong><span class="classifier">str</span></dt><dd><p>Mode which is used</p>
 </dd>
 </dl>
 </dd>
@@ -469,7 +469,7 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">str</span></dt><dd><p>Information from the list</p>
+<dt>str</dt><dd><p>Information from the list</p>
 </dd>
 </dl>
 </dd>
@@ -484,7 +484,7 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text2</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Print an option in a help page</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -505,20 +505,20 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_chi2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reads the last chi value in a inv.chi file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Path of the chi file</p>
 </dd>
-<dt><strong>task</strong><span class="classifier">string, optional</span></dt><dd><p>Prints out in which folder the chi2 file does not exist. Default: ‘’</p>
+<dt><strong>task</strong><span class="classifier">string, optional</span></dt><dd><p>Prints out in which folder the chi2 file does not exist, by default ‘’</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">float</span></dt><dd><p>Best chi2 value of the fit</p>
+<dt>float</dt><dd><p>Best chi2 value of the fit</p>
 </dd>
 </dl>
 </dd>
@@ -527,7 +527,7 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reads a config file for the inversion</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -542,7 +542,15 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dict containing all the information from the config file</p>
+<dt>dict</dt><dd><p>Dict containing all the information from the config file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if config file does not exist</p>
+</dd>
+<dt>Exception</dt><dd><p>if range_wave and atoms do not consist of the same number of lines</p>
 </dd>
 </dl>
 </dd>
@@ -551,18 +559,24 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reads a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Path of the control file</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Path of the control file</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">dict</span></dt><dd><p>Dict containing all the information from the control file</p>
+<dt>dict</dt><dd><p>Dict containing all the information from the control file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if file does not exist</p>
 </dd>
 </dl>
 </dd>
@@ -571,18 +585,50 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reads the grid file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>File to be read</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>File to be read</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>dict</strong><span class="classifier">dict</span></dt><dd><p>Dict. with ‘Line’, ‘min’, ‘step’ and ‘max’ in it</p>
+<dt>dict</dt><dd><p>Dict. with ‘Line’, ‘min’, ‘step’ and ‘max’ in it</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if file does not exist</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Reads the info file created in the preprocess</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>File name to be loaded</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict</dt><dd><p>Dictionary with the informations from the info file</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if file does not exist</p>
 </dd>
 </dl>
 </dd>
@@ -602,48 +648,60 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>read_line</strong><span class="classifier">dict</span></dt><dd><p>Dict. with ‘Line’, ‘Ion’, ‘wavelength’, ‘factor’, ‘Exc_Pot’, log_gf’,
+<dt>dict</dt><dd><p>Dict. with ‘Line’, ‘Ion’, ‘wavelength’, ‘factor’, ‘Exc_Pot’, log_gf’,
 ‘Transition’, ‘alpha’ and ‘sigma’ in it</p>
 </dd>
 </dl>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if file does not exist</p>
+</dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reads a model file and returns all parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>String containing the path of the file</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>String containing the path of the file</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Log tau</p>
+<dt>numpy.array</dt><dd><p>Log tau</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Temperature in K</p>
+<dt>numpy.array</dt><dd><p>Temperature in K</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Electron pressure in dyn/cm^2</p>
+<dt>numpy.array</dt><dd><p>Electron pressure in dyn/cm^2</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Microturbulence velocity in cm/s</p>
+<dt>numpy.array</dt><dd><p>Microturbulence velocity in cm/s</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Magnetic field strength in Gauss</p>
+<dt>numpy.array</dt><dd><p>Magnetic field strength in Gauss</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Line-of-sight velocity in cm/s</p>
+<dt>numpy.array</dt><dd><p>Line-of-sight velocity in cm/s</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Inclination in deg</p>
+<dt>numpy.array</dt><dd><p>Inclination in deg</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Azimuth angle in deg</p>
+<dt>numpy.array</dt><dd><p>Azimuth angle in deg</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Height in km</p>
+<dt>numpy.array, optional</dt><dd><p>Height in km</p>
 </dd>
-<dt><strong>otu</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Gas pressure in dyn/cm^2</p>
+<dt>numpy.array, optional</dt><dd><p>Gas pressure in dyn/cm^2</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array, optional</span></dt><dd><p>Density in g/cm^3</p>
+<dt>numpy.array, optional</dt><dd><p>Density in g/cm^3</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if file does not exist</p>
 </dd>
 </dl>
 </dd>
@@ -652,28 +710,34 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">read_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Reads the first LINE data from a profile computed by SIR</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>String containing the path of the file</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>String containing the path of the file</p>
 </dd>
-<dt><strong>num</strong><span class="classifier">int, optional</span></dt><dd><p>Number of the line which is loaded. Default: 0 (use first one from line)</p>
+<dt><strong>num</strong><span class="classifier">int, optional</span></dt><dd><p>Number of the line which is loaded, by default 0 (use first one from line)</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Wavelengths in A</p>
+<dt>numpy.array</dt><dd><p>Wavelengths in A</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes I</p>
+<dt>numpy.array</dt><dd><p>Stokes I</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes Q</p>
+<dt>numpy.array</dt><dd><p>Stokes Q</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes U</p>
+<dt>numpy.array</dt><dd><p>Stokes U</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">numpy.array</span></dt><dd><p>Stokes V</p>
+<dt>numpy.array</dt><dd><p>Stokes V</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if file does not exist</p>
 </dd>
 </dl>
 </dd>
@@ -682,54 +746,44 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Writes a config file with the information provided as a dictionary for the mode 1C</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>File</strong><span class="classifier">string</span></dt><dd><p>Save path</p>
+<dt><strong>File</strong><span class="classifier">str</span></dt><dd><p>Save path</p>
 </dd>
 <dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the informations</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inv'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'inv'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Writes a control file in the scheme SIR expects it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Save filename of the control file. Typically it is inv.trol</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Save filename of the control file. Typically it is inv.trol</p>
 </dd>
 <dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with the information from the config file</p>
 </dd>
-<dt><strong>Type</strong><span class="classifier">string, optional</span></dt><dd><p>Mode for the sir control file. Options are
+<dt><strong>Type</strong><span class="classifier">str, optional</span></dt><dd><p>Mode for the sir control file. Options are
 - ‘syn’: Synthesis
 - ‘inv’: Inversion (default)
 Only used for mode ‘MC’</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_gauss_psf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_gauss_psf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Writes the spectral point spread function with the given sigma. This function is used when the field psf in the config
 contains ‘gauss 1.0’ with sigma = 1.0 mA in this example.</p>
 <dl class="field-list simple">
@@ -741,32 +795,22 @@ contains ‘gauss 1.0’ with sigma = 1.0 mA in this example.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Grid.grid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waves</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Grid.grid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">waves</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Writes the Grid file with data from the config file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>config</strong><span class="classifier">dict</span></dt><dd><p>Dictionary containing all the information from the config file</p>
 </dd>
-<dt><strong>filename</strong><span class="classifier">string,optional</span></dt><dd><p>String containing the name of the Grid file. Default: “Grid.grid</p>
+<dt><strong>filename</strong><span class="classifier">str,optional</span></dt><dd><p>String containing the name of the Grid file, by default “Grid.grid”</p>
 </dd>
-<dt><strong>waves</strong><span class="classifier">numpy array,optional</span></dt><dd><p>Array with the wavelength needed for mode ‘1C’ and ‘2C’. Default: None</p>
+<dt><strong>waves</strong><span class="classifier">numpy array,optional</span></dt><dd><p>Array with the wavelength needed for mode ‘1C’ and ‘2C’, by default None</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -780,9 +824,9 @@ have one white space less</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>Name of the saved file</p>
+<dt><strong>filename</strong><span class="classifier">str</span></dt><dd><p>Name of the saved file</p>
 </dd>
-<dt><strong>Header</strong><span class="classifier">string</span></dt><dd><p>Header of the model</p>
+<dt><strong>Header</strong><span class="classifier">str</span></dt><dd><p>Header of the model</p>
 </dd>
 <dt><strong>log_tau</strong><span class="classifier">numpy.array</span></dt><dd><p>Log tau</p>
 </dd>
@@ -808,17 +852,12 @@ have one white space less</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">x_y_add_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">x_y_add_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Adds zeros so that the returning strings have 4 letters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -831,9 +870,9 @@ have one white space less</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>out</strong><span class="classifier">str</span></dt><dd><p>x as a string of 4 letters</p>
+<dt>str</dt><dd><p>x as a string of 4 letters</p>
 </dd>
-<dt><strong>out</strong><span class="classifier">str</span></dt><dd><p>y as a string of 4 letters</p>
+<dt>str</dt><dd><p>y as a string of 4 letters</p>
 </dd>
 </dl>
 </dd>

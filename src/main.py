@@ -52,7 +52,7 @@ def sir_mig():
 
 	# Read the config file from the input
 	if rank == 0:
-		conf = sir.read_config(sys.argv[1])
+		conf = sir.read_config(sys.argv[1], True)
 	else:
 		conf = None
 	conf = comm.bcast(conf, root=0)

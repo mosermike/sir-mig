@@ -92,10 +92,18 @@ class profile_stk:
 			File to be read
 		
 		Returns
-		--------
-		out : dict
+		-------
+		dict
 			Dict. with 'Line', 'min', 'step' and 'max' in it
+		
+		Raises
+		------
+		FileExistsError
+			if first file does not exist
 		"""
+		if not os.path.exists(filename):
+			raise FileExistsError("[_read_grid] " + filename + " does not exist.")
+		
 		# Open the file and read lines
 		with open(filename) as f:
 			strings = f.readlines()
@@ -160,7 +168,15 @@ class profile_stk:
 			Stokes U
 		out : numpy.array 
 			Stokes V
+		
+		Raises
+		------
+		FileExistsError
+			if first file does not exist
 		"""
+		if not os.path.exists(filename):
+			raise FileExistsError("[_read_profile_sir] " + filename + " does not exist.")
+		
 		data = np.loadtxt(filename).transpose()
 		ll = data[1].astype(np.float32)
 		I  = data[2].astype(np.float32)
@@ -192,9 +208,13 @@ class profile_stk:
 		out : numpy.array 
 			Stokes V
 
+		Raises
+		------
+		FileExistsError
+			if first file does not exist
 		"""
 		if not os.path.exists(filename):
-			print(f"[ERROR] File {filename} does not exist.")
+			raise FileExistsError("[_read_profile_sir_mc] " + filename + " does not exist.")
 
 		data = np.loadtxt(filename).transpose()
 		line = data[0].astype(int)
@@ -214,9 +234,9 @@ class profile_stk:
 		----------
 		None
 
-		Return
-		------
-		copy : profile_stk
+		Returns
+		-------
+		profile_stk
 			Copy of this instance
 		"""
 
@@ -332,7 +352,14 @@ class profile_stk:
 		None
 
 
+		Raises
+		------
+		FileExistsError
+			if first file does not exist
 		"""
+		if not os.path.exists(fname):
+			raise FileExistsError("[read] " + fname + " does not exist.")
+		
 		f = FortranFile(fname, 'r')
 		first_rec = f.read_record(dtype=fmt_type)
 
@@ -390,7 +417,15 @@ class profile_stk:
 			x position to put the values
 		y : int
 			y position to put the values
+		
+		Raises
+		------
+		FileExistsError
+			if first file does not exist
 		"""
+		if not os.path.exists(filename):
+			raise FileExistsError("[read_profile] " + filename + " does not exist.")
+		
 		line, ll, I, Q, U, V = self.__read_profile_sir_mc(filename)
 		if(self.nw == 0 or self.stki.shape[2] == 0):
 			self.nw = len(ll)
@@ -424,11 +459,14 @@ class profile_stk:
 		ny : int
 			how many results are read in y
 		
-
-		Returns
-		-------
-		None
-		"""	
+		Raises
+		------
+		FileExistsError
+			if first file does not exist
+		"""
+		if not os.path.exists((os.path.join(path,task['folders'][0]) + '/' + filename)):
+			raise FileExistsError("[read_results " + os.path.join(path,task['folders'][0]) + "/" + filename + " does not exist.")
+		
 		# Set the dimensions
 		self.nx = nx
 		self.ny = ny
@@ -472,13 +510,15 @@ class profile_stk:
 			Dictionary with the folder names
 		filename : str
 			Filename of the profile file to be read
-		
-		Returns
-		-------
-		None
 
+		Raises
+		------
+		FileExistsError
+			if first file does not exist
 		"""
-			
+		if not os.path.exists((os.path.join(path,tasks['folders'][0]) + '/' + filename)):
+			raise FileExistsError("[read_results_MC] " + os.path.join(path,tasks['folders'][0]) + "/" + filename + " does not exist.")
+
 		# Make a check
 		if not os.path.exists(os.path.join(path,tasks['folders'][0]) + '/' + filename):
 			print('[read_profiles] The profiles do not exist. Make sure, that sir is executed correctly and fortran is installed.')
@@ -515,7 +555,7 @@ class profile_stk:
 		return self
 
 
-	def set_dim(self, nx : int, ny : int, nw : int):
+	def set_dim(self, nx : int, ny : int, nw : int) -> None:
 		"""
 		Sets the dimensions if no data is loaded yet
 
@@ -528,10 +568,6 @@ class profile_stk:
 		nw : int
 			Number of wavelength points
 		
-		Returns
-		-------
-		None
-
 		"""
 
 		if self.load:
@@ -564,10 +600,6 @@ class profile_stk:
 		Ic : float, optional
 			Continuum intensity of the FTS. Default is "1.0".
 
-		Returns
-		-------
-		None
-
 		"""
 		self.stki =  (self.stki - nu*Ic) / (1 - nu)
 		
@@ -582,7 +614,7 @@ class profile_stk:
 		fname : str
 			File name 
 		fmt_type : type, optional
-			type which is used to save it => numpy.float32 used. Default: np.float32
+			type which is used to save it => numpy.float32 used, by default np.float32
 
 		Returns
 		-------
@@ -748,7 +780,14 @@ def read_profile(file):
 	-------
 	class Profile
 
+	Raises
+	------
+	FileExistsError
+		if first file does not exist
 	"""
+	if not os.path.exists(file):
+		raise FileExistsError("[read_profile] " + file + " does not exist.")
+	
 	pro = profile_stk(1,1,0)
 	if(".per" in file):
 		pro.read_profile(file,0,0)

@@ -478,19 +478,20 @@ class model_atm:
 	def reinterpolate(self, tau : np.array):
 		"""
 		Reinterpolate to a different tau scale
-		
-		Note
-		----
-		If tau has bigger or smaller numbers than in the range, the numbers are wrong
 
 		Parameters
-		---------
+		----------
 		tau : numpy array
 			Array with the new log tau scale
 
 		Returns
 		-------
 		New reinterpolated model
+
+		Notes
+		-----
+		If tau has bigger or smaller numbers than in the range, the numbers are wrong
+
 		"""
 		
 		mod = model_atm(self.nx,self.ny,len(tau))
@@ -722,7 +723,7 @@ class model_atm:
 		f.close()
 		return self
 
-def read_model(filename):
+def read_model(filename : str):
 	"""
 	Reads a binary or a .mod file. Expected are model information
 
@@ -735,7 +736,14 @@ def read_model(filename):
 	-------
 	read_model : model_atm
 		Instance of the class model_atm. with the stored entries from the file
+	
+	Raises
+	------
+	FileExistsError
+		if first file does not exist
 	"""
+	if not os.path.exists(filename):
+		raise FileExistsError("[read_model] " + filename + " does not exist.")
 	mod = model_atm(0,0,0)
 	if ".mod" in filename:
 		mod.read_mod(filename)

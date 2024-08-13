@@ -465,6 +465,11 @@ Obviously, also more summations must be considered.</p>
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -481,12 +486,18 @@ Obviously, also more summations must be considered.</p>
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>chi2_stk</dt><dd><p>Class with the read data</p>
+</dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="chi2_stk.chi2_stk.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk.write" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt_type=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk.write" title="Link to this definition">#</a></dt>
 <dd><p>Write the data to a binary file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -745,12 +756,20 @@ This class will then create the class with nx = ny = 1.</p>
 <span class="sig-name descname"><span class="pre">reinterpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.reinterpolate" title="Link to this definition">#</a></dt>
 <dd><p>Reinterpolate to a different tau scale</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>tau</strong><span class="classifier">numpy array</span></dt><dd><p>Array with the new log tau scale</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt>New reinterpolated model</dt><dd></dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>If tau has bigger or smaller numbers than in the range, the numbers are wrong</p>
 </dd></dl>
 
 <dl class="py method">
@@ -926,6 +945,12 @@ This class will then create the class with nx = ny = 1.</p>
 <dt><strong>None</strong></dt><dd></dd>
 </dl>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>profile_stk</dt><dd><p>Copy of this instance</p>
+</dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -975,6 +1000,12 @@ This class will then create the class with nx = ny = 1.</p>
 <dt>None</dt><dd></dd>
 </dl>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if first file does not exist</p>
+</dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -990,6 +1021,12 @@ This class will then create the class with nx = ny = 1.</p>
 <dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>x position to put the values</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>y position to put the values</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>FileExistsError</dt><dd><p>if first file does not exist</p>
 </dd>
 </dl>
 </dd>
@@ -1015,9 +1052,10 @@ This class will then create the class with nx = ny = 1.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
+<dt>FileExistsError</dt><dd><p>if first file does not exist</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1038,9 +1076,10 @@ This class will then create the class with nx = ny = 1.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
+<dt>FileExistsError</dt><dd><p>if first file does not exist</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1048,7 +1087,7 @@ This class will then create the class with nx = ny = 1.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="profile_stk.profile_stk.set_dim">
-<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.set_dim" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">set_dim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.set_dim" title="Link to this definition">#</a></dt>
 <dd><p>Sets the dimensions if no data is loaded yet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1059,11 +1098,6 @@ This class will then create the class with nx = ny = 1.</p>
 </dd>
 <dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Number of wavelength points</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -1083,11 +1117,6 @@ the convoluted equation.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
-</dl>
-</dd>
 </dl>
 </dd></dl>
 
@@ -1100,7 +1129,7 @@ the convoluted equation.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>fname</strong><span class="classifier">str</span></dt><dd><p>File name</p>
 </dd>
-<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>type which is used to save it =&gt; numpy.float32 used. Default: np.float32</p>
+<dt><strong>fmt_type</strong><span class="classifier">type, optional</span></dt><dd><p>type which is used to save it =&gt; numpy.float32 used, by default np.float32</p>
 </dd>
 </dl>
 </dd>

@@ -115,6 +115,11 @@ In the directory `example`, several files are put. An examplary config file for 
   2. Save this numpy array as a npy file with the same name as the parameter 'veil_parameters' in the definitions python script in 'src' (if it is not changed, it should be 'veil.npy').
   3. make sure that there is no file in the directory with the same name as provided in the config file
 
+
+## FTS data
+	FTS data for the spectral veil correction can be found [here](https://aasfiles.blob.core.windows.net/files/archive/cdrom/volume7/doc/files7.htm#1996ApJS..106..165W)
+
+
 ## Support
 For any questions, write a mail to [mosermike@protonmail.ch](mailto:mosermike@protonmail.ch)
 

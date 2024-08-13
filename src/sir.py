@@ -5,6 +5,7 @@ import numpy as np
 import sys
 import os
 from os.path import exists
+from typing import Tuple
 
 def create_task_folder_list(arg):
 	"""
@@ -93,18 +94,20 @@ def determine_line_core(linefile : str, num : int) -> float:
 	print(f"[determine_line_core] The number {num} does not exist in the provided lines file {linefile}")
 	return 0
 
-def initial(mode):
+def initial(mode : str):
 	"""
 	Initial print outs and preparation
 
 	Parameters
 	----------
-	mode : string
+	mode : str
 		Mode which is used
 	
 	Returns
 	-------
 	None
+
+	
 
 	"""
 	print()
@@ -120,6 +123,9 @@ def initial(mode):
 def mpl_library():
 	"""
 	Adjust the matplotlib settings to the defined library in the definitions file or to the default one
+
+	
+
 	"""
 	import matplotlib.pyplot as plt
 	import definitions as d
@@ -147,7 +153,7 @@ def mpl_library():
 				plt.rcParams["mathtext.fontset"] = 'dejavuserif'
 	return
 
-def option(text1, text2):
+def option(text1 : str, text2 : str) -> None:
 	"""
 	Print an option in a help page
 
@@ -161,11 +167,14 @@ def option(text1, text2):
 	Returns
 	-------
 	None
+
+	
+
 	"""
 	print(f"{text1}")
 	print(f"\t{text2}")
 
-def read_chi2(filename, task = ''):
+def read_chi2(filename, task : str= '') -> float:
 	"""
 	Reads the last chi value in a inv.chi file
 	
@@ -174,16 +183,18 @@ def read_chi2(filename, task = ''):
 	filename : string
 		Path of the chi file
 	task : string, optional
-		Prints out in which folder the chi2 file does not exist. Default: ''
+		Prints out in which folder the chi2 file does not exist, by default ''
 
 	
 	Returns
 	-------
-	out : float
+ 	float
 		Best chi2 value of the fit
 	
 	
+	
 	"""
+	
 	if not exists(filename):
 		print("[read_chi2] " + filename + " does not exist in " + task + ".")
 		return -1
@@ -193,7 +204,7 @@ def read_chi2(filename, task = ''):
 	return data[-1][1]
 
 
-def read_config(filename, check = True, change_config = False):
+def read_config(filename : str, check : bool = False, change_config : bool = False) -> dict:
 	"""
 	Reads a config file for the inversion
 	
@@ -209,12 +220,20 @@ def read_config(filename, check = True, change_config = False):
 
 	Returns
 	-------
-	out : dict
+	dict
 		Dict containing all the information from the config file
+	
+	Raises
+	------
+	FileExistsError
+		if config file does not exist
+	Exception
+		if range_wave and atoms do not consist of the same number of lines
+
 	
 	"""
 	if not exists(filename):
-		raise Exception("[read_config] " + filename + " does not exist.")
+		raise FileExistsError("[read_config] " + filename + " does not exist.")
 
 	# Load data
 	data = np.genfromtxt(filename, delimiter=':', comments='#', dtype=str)
@@ -300,12 +319,9 @@ def read_config(filename, check = True, change_config = False):
 	Dict["weights"] = Dict["weights"].split(',')
 
 	# Check if range_wave fits the atoms
-	if len(Dict['atoms']) != len(Dict['range_wave']):
-		print("[read_config] The number of lines in 'atoms' do not fit the given ranges in 'range_wave'! Abort...")
-		sys.exit()
-
-	# Check if some files exists
 	if check:
+		if len(Dict['atoms']) != len(Dict['range_wave']):
+			raise Exception("[read_config] The number of lines in 'atoms' do not fit the given ranges in 'range_wave'! Abort...")
 		if not exists(Dict['path']):
 			print(f"[read_config] {Dict['path']} does not exist.")
 		if (Dict["mode"] == "1C" or Dict["mode"] == "MC") and not exists(os.path.join(Dict['path'],Dict['model'])):
@@ -324,24 +340,30 @@ def read_config(filename, check = True, change_config = False):
 	return Dict
 
 
-def read_control(filename):
+def read_control(filename : str) -> dict:
 	"""
 	Reads a control file in the scheme SIR expects it.
 	
 	Parameters
 	----------
-	filename : string
+	filename : str
 		Path of the control file
 	
 	Returns
 	-------
-	out : dict
+	dict
 		Dict containing all the information from the control file
 	
+	Raises
+	------
+	FileExistsError
+		if file does not exist
+
+	
+
 	"""
 	if not exists(filename):
-		print("[read_control] " + filename + " does not exist.")
-		sys.exit(1)
+		raise FileExistsError("[read_control] " + filename + " does not exist.")
 
 	# Load data
 	data = np.genfromtxt(filename, delimiter=':', comments='!', dtype=str)
@@ -354,43 +376,78 @@ def read_control(filename):
 		Dict[i[0]] = i[1]
 	return Dict
 
-def read_model(filename):
+def read_info(filename : str) -> dict:
+	"""
+	Reads the info file created in the preprocess
+
+	Parameters
+	----------
+	filename : str
+		File name to be loaded
+
+	Returns
+	-------
+	dict
+		Dictionary with the informations from the info file
+
+	Raises
+	------
+	FileExistsError
+		if file does not exist
+
+	
+	"""
+	if not exists(filename):
+		raise FileExistsError("[read_info] " + filename + " does not exist.")
+	infos = dict(np.genfromtxt(filename, dtype='str', delimiter="="), dtype=str)
+
+	return infos
+	
+def read_model(filename : str):
 	"""
 	Reads a model file and returns all parameters
 	
 	Parameters
 	----------
-	filename : string
+	filename : str
 		String containing the path of the file
 
 	Returns
 	-------
-	out : numpy.array
+	numpy.array
 		Log tau
-	out : numpy.array
+	numpy.array
 		Temperature in K
-	out : numpy.array
+	numpy.array
 		Electron pressure in dyn/cm^2
-	out : numpy.array
+	numpy.array
 		Microturbulence velocity in cm/s
-	out : numpy.array
+	numpy.array
 		Magnetic field strength in Gauss
-	out : numpy.array
+	numpy.array
 		Line-of-sight velocity in cm/s
-	out : numpy.array
+	numpy.array
 		Inclination in deg
-	out : numpy.array
+	numpy.array
 		Azimuth angle in deg
-	out : numpy.array, optional
+	numpy.array, optional
 		Height in km
-	otu : numpy.array, optional
+	numpy.array, optional
 		Gas pressure in dyn/cm^2
-	out : numpy.array, optional
+	numpy.array, optional
 		Density in g/cm^3
 
-	"""	
-	# Open file
+	Raises
+	------
+	FileExistsError
+		if file does not exist
 
+	
+	"""	
+	if not exists(filename):
+		raise FileExistsError("[read_model] " + filename + " does not exist.")
+	
+	# Open file
 	data = np.loadtxt(filename, skiprows=1).transpose()
 
 	# Store data
@@ -415,31 +472,40 @@ def read_model(filename):
 	return log_tau, T, Pe, v_micro, B, vlos, inc, azimuth, z, Pg, rho
 
 
-def read_profile(filename, num = 0):
+def read_profile(filename : str, num : int = 0):
 	"""
 	Reads the first LINE data from a profile computed by SIR
 	
 	Parameters
 	----------
-	filename : string
+	filename : str
 		String containing the path of the file
 	num : int, optional
-		Number of the line which is loaded. Default: 0 (use first one from line)
+		Number of the line which is loaded, by default 0 (use first one from line)
 
 	Returns
 	-------
-	out : numpy.array
+	numpy.array
 		Wavelengths in A
-	out : numpy.array
+	numpy.array
 		Stokes I
-	out : numpy.array
+	numpy.array
 		Stokes Q
-	out : numpy.array
+	numpy.array
 		Stokes U
-	out : numpy.array 
+	numpy.array 
 		Stokes V
 	
+	Raises
+	------
+	FileExistsError
+		if file does not exist
+
+	
 	"""
+	if not exists(filename):
+		raise FileExistsError("[read_profile] " + filename + " does not exist.")
+	
 	num = int(num) # num must be an integer
 	
 	data = np.loadtxt(filename).transpose()
@@ -466,21 +532,29 @@ def read_profile(filename, num = 0):
 		return np.array(line), np.array(ll/1000), np.array(I), np.array(Q), np.array(U), np.array(V)
 
 
-def read_grid(filename):
+def read_grid(filename : str) -> dict:
 	"""
 	Reads the grid file
 	
 	Parameters
 	----------
-	filename : string
+	filename : str
 		File to be read
 	
 	Returns
 	-------
-	dict : dict
+	dict
 		Dict. with 'Line', 'min', 'step' and 'max' in it
 
+	Raises
+	------
+	FileExistsError
+		if file does not exist
+
+	
 	"""
+	if not exists(filename):
+		raise FileExistsError("[read_grid] " + filename + " does not exist.")
 	# Open the file and read lines
 	with open(filename) as f:
 		strings = f.readlines()
@@ -535,11 +609,20 @@ def read_line(filename):
 	
 	Returns
 	-------
-	read_line : dict
+	dict
 		Dict. with 'Line', 'Ion', 'wavelength', 'factor', 'Exc_Pot', log_gf',
 		'Transition', 'alpha' and 'sigma' in it
+	
+	Raises
+	------
+	FileExistsError
+		if file does not exist
 
+	
 	"""
+	if not exists(filename):
+		raise FileExistsError("[read_line] " + filename + " does not exist.")
+	
 	# Open the file and read lines
 	with open(filename) as f:
 		strings = f.readlines()
@@ -610,8 +693,10 @@ def list_to_string(temp, let = ','):
 
 	Returns
 	-------
-	out : str
+	str
 		Information from the list
+
+	
 
 	"""
 	temp1 = ''
@@ -622,22 +707,20 @@ def list_to_string(temp, let = ','):
 	return temp1
 
 
-def _write_config_1c(File, conf, verbose = True):
+def _write_config_1c(File : str, conf : dict, verbose : bool = True):
 	"""
 	Writes a config file with the information provided as a dictionary for the mode 1C
 
 	Parameters
 	----------
-	File : string
+	File : str
 		Save path
 	conf : dict
 		Dictionary with all the informations
 	verbose : bool,optional
-		Verbose output that config is written and possibility to abort
+		Verbose output that config is written and possibility to abort, by default True
 
-	Returns
-	-------
-	None
+	
 	"""
 	if verbose:
 		print("[write_config] Manually added comments will be overwritten? 1s to abort left ...")
@@ -723,22 +806,20 @@ def _write_config_1c(File, conf, verbose = True):
 		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation of the inclination in deg\n")
 		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation of the azimuth in deg")
 
-def _write_config_2c(File, conf, verbose = True):
+def _write_config_2c(File : str, conf : dict, verbose : bool = True):
 	"""
 	Writes a config file with the information provided as a dictionary
 
 	Parameters
 	----------
-	File : string
+	File : str
 		Save path
 	conf : dict
 		Dictionary with all the informations
 	verbose : bool,optional
-		Verbose output that config is written and possibility to abort
+		Verbose output that config is written and possibility to abort, by default True
 
-	Returns
-	-------
-	None
+	
 
 	"""
 	if verbose:
@@ -837,22 +918,20 @@ def _write_config_2c(File, conf, verbose = True):
 		f.write(f"lim_gamma2   : {conf['lim_gamma2']} # Limits 2 for the randomisation of the inclination in deg\n")
 		f.write(f"lim_phi2     : {conf['lim_phi2']} # Limits 2 for the randomisation of the azimuth in deg")
 
-def _write_config_mc(File, conf, verbose=True):
+def _write_config_mc(File : str, conf : dict, verbose : bool=True):
 	"""
 	Writes a config file with the information provided as a dictionary
 
 	Parameters
 	----------
-	File : string
+	File : str
 		Save path
 	conf : dict
 		Dictionary with all the informations
 	verbose : bool,optional
 		Verbose output that config is written and possibility to abort
 
-	Returns
-	-------
-	None
+	
 
 	"""
 	if verbose:
@@ -941,20 +1020,18 @@ def _write_config_mc(File, conf, verbose=True):
 		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation of the inclination in deg\n")
 		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation of the azimuth in deg")
 
-def write_config(File, conf):
+def write_config(File : str, conf : dict) -> None:
 	"""
 	Writes a config file with the information provided as a dictionary for the mode 1C
 
 	Parameters
 	----------
-	File : string
+	File : str
 		Save path
 	conf : dict
 		Dictionary with all the informations
 
-	Returns
-	-------
-	None
+	
 
 	"""
 	if conf["mode"] == "MC":
@@ -966,25 +1043,23 @@ def write_config(File, conf):
 	else:
 		print("[write_config] Mode is not defined and config file cannot be written.")
 
-def write_control(filename, conf, Type = 'inv'):
+def write_control(filename : str, conf : dict, Type : str= 'inv'):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
 	Parameters
 	----------
-	filename : string
+	filename : str
 		Save filename of the control file. Typically it is inv.trol
 	config : dict
 		Dictionary with the information from the config file
-	Type : string, optional
+	Type : str, optional
 		Mode for the sir control file. Options are
 		- 'syn': Synthesis
 		- 'inv': Inversion (default)
 		Only used for mode 'MC'
 
-	Returns
-	-------
-	None
+	
 
 	"""
 	if conf['mode'] == 'MC':
@@ -996,20 +1071,18 @@ def write_control(filename, conf, Type = 'inv'):
 	else:
 		print('[write_control] Unknown mode')
 
-def _write_control_1c(filename, conf):
+def _write_control_1c(filename : str, conf : dict):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
 	Parameters
 	----------
-	filename : string
+	filename : str
 		Save filename of the control file. Typically it is inv.trol
 	config : dict
 		Dictionary with the information from the config file
 	
-	Returns
-	-------
-	None
+	
 
 	"""
 	import definitions as d
@@ -1073,20 +1146,18 @@ def _write_control_1c(filename, conf):
 
 	f.close()
 
-def _write_control_2c(filename, conf):
+def _write_control_2c(filename : str, conf : dict):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
 	Parameters
 	----------
-	filename : string
+	filename : str
 		Save filename of the control file. Typically it is inv.trol
 	conf : dict
 		Dictionary with the information from the config file
 	
-	Returns
-	-------
-	None
+	
 	"""
 	import definitions as d
 	model1		= d.guess1			# Base Model 1
@@ -1165,7 +1236,7 @@ def _write_control_2c(filename, conf):
 	f.close()
 
 
-def _write_control_mc(filename, conf, Type = 'inv'):
+def _write_control_mc(filename : str, conf : dict, Type : str= 'inv'):
 	"""
 	Writes a control file in the scheme SIR expects it.
 	
@@ -1178,9 +1249,7 @@ def _write_control_mc(filename, conf, Type = 'inv'):
 	Type : string
 		which type of control file is created ('syn' for synthesis, 'inv' for inversion)
 	
-	Returns
-	-------
-	None
+	
 	"""
 	import definitions as d
 	if Type == 'syn':
@@ -1256,7 +1325,7 @@ def _write_control_mc(filename, conf, Type = 'inv'):
 
 	f.close()
 
-def write_gauss_psf(sigma, filename):
+def write_gauss_psf(sigma : float, filename : str) -> None:
 	"""
 	Writes the spectral point spread function with the given sigma. This function is used when the field psf in the config
 	contains 'gauss 1.0' with sigma = 1.0 mA in this example.
@@ -1268,9 +1337,7 @@ def write_gauss_psf(sigma, filename):
 	filename : str
 		Output file name
 
-	Returns
-	-------
-	None
+	
 
 	"""
 	Delta_ll = 20 # mA
@@ -1287,7 +1354,7 @@ def write_gauss_psf(sigma, filename):
 		f.write(f" {num1:>9.4f}   {num2:>10.4E}\n")
 
 
-def write_grid(conf, filename = 'Grid.grid', waves=None):
+def write_grid(conf : dict, filename : str = 'Grid.grid', waves : bool=None) -> None:
 	"""
 	Writes the Grid file with data from the config file
 
@@ -1295,14 +1362,10 @@ def write_grid(conf, filename = 'Grid.grid', waves=None):
 	----------
 	config : dict
 		Dictionary containing all the information from the config file
-	filename : string,optional
-		String containing the name of the Grid file. Default: "Grid.grid
+	filename : str,optional
+		String containing the name of the Grid file, by default "Grid.grid"
 	waves : numpy array,optional
-		Array with the wavelength needed for mode '1C' and '2C'. Default: None
-
-	Returns
-	-------
-	None
+		Array with the wavelength needed for mode '1C' and '2C', by default None
 
 	Raise
 	-----
@@ -1310,6 +1373,8 @@ def write_grid(conf, filename = 'Grid.grid', waves=None):
 		if 'waves' not defined but needed for mode '1C' and '2C'
 	ValueError
 		if unknown mode
+
+	
 	"""
 	if conf['mode'] == "MC":
 		_write_grid_mc(conf, filename)
@@ -1320,7 +1385,7 @@ def write_grid(conf, filename = 'Grid.grid', waves=None):
 	else:
 		raise ValueError(f"[write_grid] Unknown Mode '{conf['mode']}'")
 
-def _write_grid(conf, filename, waves):
+def _write_grid(conf : dict, filename : str, waves : np.array):
 	"""
 	Writes the Grid file with data from the config file
 
@@ -1328,19 +1393,17 @@ def _write_grid(conf, filename, waves):
 	----------
 	config : dict
 		Dictionary containing all the information from the config file
-	filename : string
+	filename : str
 		String containing the name of the Grid file.
-	waves : numpy array
+	waves : numpy.array
 		Array with the wavelength
 
-	Returns
-	-------
-	None
-
-	Raise
-	-----
+	Raises
+	------
 	ValueError
 		if 'waves' not defined
+
+	
 	"""
 	if waves is None:
 		raise ValueError("[write_grid] 'waves' not defined")
@@ -1367,20 +1430,18 @@ def _write_grid(conf, filename, waves):
 			f.write(f"{atoms[i]}: {'%6.4f' % llambdas[0]},     {'%2.6f' % Line_step[i]},     {'%6.4f' % llambdas[-1]}\n")
 	
 
-def _write_grid_mc(conf, filename):
+def _write_grid_mc(conf : dict, filename : str) -> None:
 	"""
 	Writes the Grid file with data from the config file
 
 	Parameters
 	----------
-	config : dict
+	conf : dict
 		Dictionary containing all the information from the config file
-	filename : string, optional
-		String containing the name of the Grid file. Default: Grid.grid
+	filename : str, optional
+		String containing the name of the Grid file, by default "Grid.grid"
 	
-	Returns
-	-------
-	None
+	
 
 	"""
 
@@ -1406,9 +1467,9 @@ def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth
 
 	Parameters
 	----------
-	filename : string
+	filename : str
 		Name of the saved file
-	Header : string
+	Header : str
 		Header of the model
 	log_tau : numpy.array
 		Log tau
@@ -1433,9 +1494,7 @@ def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth
 	rho : numpy.array, optional
 		Density in g/cm^3
 
-	Returns
-	-------
-	None
+	
 	"""
 	if z is not None:
 		f = open(filename, 'w')
@@ -1450,7 +1509,7 @@ def write_model(filename, Header, log_tau, T, Pe, v_micro, B, vlos, inc, azimuth
 			f.write(f" {n1:>7.4f} {n2:>7.1f} {n3:>12.5E} {n4:>10.3E} {n5:>11.4E} {n6:>11.4E} {n7:>11.4E} {n8:>11.4E}\n")
 
 
-def x_y_add_zeros(x, y):
+def x_y_add_zeros(x : float, y : float) -> Tuple[str, str]:
 	"""
 	Adds zeros so that the returning strings have 4 letters
 
@@ -1463,10 +1522,12 @@ def x_y_add_zeros(x, y):
 
 	Returns
 	-------
-	out : str
+	str
 		x as a string of 4 letters
-	out : str
+	str
 		y as a string of 4 letters
+
+	
 
 	"""
 	if x < 10:

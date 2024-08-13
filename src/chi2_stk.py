@@ -30,9 +30,9 @@ def _compute_chi2(obs : np.array, syn : np.array, noise : float, weight : float,
 	mul : float,optional
 		Additional factor to be multiplied to the normalisation
 
-	Return
-	------
-	_compute_chi2 : float
+	Returns
+	-------
+	float
 		chi2 value
 	"""
 	result = 0.0
@@ -53,8 +53,8 @@ def _compute_total_chi2_fov(obs : p.profile_stk, syn : p.profile_stk, n1 : float
 	$\chi^2$ of all Stokes parameter of the full FOV computed with
 		$$\chi^2 = \frac{1}{4n_xn_y\Lambda - F} \sum_x^{n_x}\sum_y^{n_y}\sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
 
-	Parameter
-	---------
+	Parameters
+	----------
 	obs : profile_stk
 		Observations
 	syn : profile_stk
@@ -78,9 +78,9 @@ def _compute_total_chi2_fov(obs : p.profile_stk, syn : p.profile_stk, n1 : float
  	num_of_nodes : int
  		Number of nodes used for the last inversion "cycle"
 		 
-    Return
-	------
-	_compute_total_chi2_fov : float
+    Returns
+	-------
+	float
 	 	reduced chi2 value
 	"""
 	result = 0.0
@@ -104,8 +104,8 @@ def _compute_total_chi2(obs : p.profile_stk, syn : p.profile_stk, x : int, y : i
 	$\chi^2$ of all Stokes parameter based on 
 		$$\chi^2 = \frac{1}{4\cdot\Lambda - F} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
 
-	Parameter
-	---------
+	Parameters
+	----------
 	obs : profile_stk
 		Observations
 	syn : profile_stk
@@ -133,8 +133,8 @@ def _compute_total_chi2(obs : p.profile_stk, syn : p.profile_stk, x : int, y : i
  	num_of_nodes : int
  		Number of nodes used for the last inversion "cycle"
 
-    Return
-	------
+    Returns
+	-------
 	_compute_total_chi2 : float
 	 	reduced chi2 value
 		 
@@ -239,8 +239,8 @@ class chi2_stk:
 		num_of_nodes : int
 			Number of nodes used for the last inversion "cycle"
 
-		Return
-		------
+		Returns
+		-------
 		None
 			
 		"""
@@ -285,9 +285,9 @@ class chi2_stk:
 		fmt_type : type
 			Type of the fortran file
 		
-		Return
-		------
-		read : chi2_stk
+		Returns
+		-------
+		chi2_stk
 			Class with the read data
 
 		"""
@@ -354,7 +354,7 @@ class chi2_stk:
 
 		return self
 	
-	def write(self, fname : str, fmt_type=np.float32):
+	def write(self, fname : str, fmt_type=np.float32) -> None:
 		"""
 		Write the data to a binary file
 
@@ -426,12 +426,19 @@ def read_chi2(filename : str, fmt_type = np.float32):
 	fmt_type : type
 		Type of the binary file (only np.float32 implemented)
 
-	Return
-	------
+	Returns
+	-------
 	read_chi2 : chi2_stk
 		Class with the read binary file
 		
+	Raises
+	------
+	FileExistsError
+		if first file does not exist
 	"""
+	if not os.path.exists(filename):
+		raise FileExistsError("[read_chi2] " + filename + " does not exist.")
+	
 	f = FortranFile(filename, 'r')
 	first_rec = f.read_record(dtype=fmt_type)
 
