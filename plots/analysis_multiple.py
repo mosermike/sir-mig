@@ -376,10 +376,7 @@ def analysis_multiple(confs : list, labels : list):
 		else:
 			ax1.legend()
 	elif "-hor" in sys.argv:
-		#if len(labels) > 5:
 		ax4.legend(loc='center right', bbox_to_anchor=(1.6 , 0.5), frameon=False)
-		#else:
-		#	ax4.legend(loc='center right', bbox_to_anchor=(1.75 + len(labels[0])/100, 0.5), frameon=False)
 	else:
 		if len(labels) > 5:
 			ax2.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
