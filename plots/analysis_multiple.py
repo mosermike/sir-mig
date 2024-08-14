@@ -41,6 +41,7 @@ def _help():
 	sir.option("-limitB","Set y limits in B as 'ymin,ymax'")
 	sir.option("-limitv","Set y limits in vlos as 'ymin,ymax'")
 	sir.option("-limitg","Set y limits in gamma as 'ymin,ymax'")
+	sir.option("-lx","Move the x position of the legend in the four plot")
 	sir.option("-vertical","Plot the last plot vertical (beta)")
 	sir.option("-v","print out tables with values at different log taus.")
 	sir.option("-hor", "Plot horizontally")
@@ -87,8 +88,16 @@ def analysis_multiple(confs : list, labels : list):
 		Title of the 4 figures plot
 	-xtitle [float]
 		x position of title in Stokes plot
-	-limitT
+	-limitT [float,float]
 		Set y limits in T as 'ymin,ymax'
+	-limitB [float,float]
+		Set y limits in B as 'ymin,ymax'
+	-limitv [float,float]
+		Set y limits in vlos as 'ymin,ymax'
+	-limitg [float,float]
+		Set y limits in gamma as 'ymin,ymax'
+	-lx [float]
+		Move the legend to the left by this value
 	-vertical
 		Plot the last plot vertical
 	-hor
@@ -376,7 +385,10 @@ def analysis_multiple(confs : list, labels : list):
 		else:
 			ax1.legend()
 	elif "-hor" in sys.argv:
-		ax4.legend(loc='center right', bbox_to_anchor=(1.6 , 0.5), frameon=False)
+		lx = 0
+		if("-lx" in sys.argv):
+			lx = float(sys.argv[sys.argv.index("-lx")+1])
+		ax4.legend(loc='center right', bbox_to_anchor=(1.6 - lx, 0.5), frameon=False)
 	else:
 		if len(labels) > 5:
 			ax2.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
