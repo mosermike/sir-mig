@@ -302,10 +302,7 @@ def analysis_multiple(confs : list, labels : list):
 												gridspec_kw=dict(hspace=0), layout="compressed")
 		fig.subplots_adjust(hspace=0, wspace=0)
 	elif "-hor" in sys.argv:
-		if len(labels) > 5:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17, 4), layout="compressed")
-		else:
-			fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(15, 4), layout="compressed")
+		fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(17, 4), layout="compressed")
 	else:
 		if len(labels) > 5:
 			fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12), layout="compressed")
@@ -382,7 +379,7 @@ def analysis_multiple(confs : list, labels : list):
 		#if len(labels) > 5:
 		ax4.legend(loc='center right', bbox_to_anchor=(1.5 + len(labels[0])/100, 0.5), frameon=False)
 		#else:
-		#	ax1.legend(fontsize=10)
+		#	ax4.legend(loc='center right', bbox_to_anchor=(1.75 + len(labels[0])/100, 0.5), frameon=False)
 	else:
 		if len(labels) > 5:
 			ax2.legend(loc='center right', bbox_to_anchor=(1.25 + len(labels[0])/100, 0.5), frameon=False)
