@@ -263,6 +263,9 @@ def analysis_multiple(confs : list, labels : list):
 
 			fig.savefig(save + "analysis_multiple_" + inputs[i][1:] + add)
 
+			if("-npsave" in sys.argv):
+				np.save(stds, f"std_{inputs[i][1:]}.npy")
+
 			if "-v" in sys.argv:
 				print("Parameter:", inputs[i][1:])
 				print("| log τ  |", end="")
