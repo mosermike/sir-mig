@@ -9,6 +9,7 @@ main
 ## Description
 The code computes physical parameters such as magnetic field, azimuth, inclination by using the SIR code. This code is used to perform inversions with creating random initial guesses. There are three different modes available:
  - MC : Monte Carlo Simulation
+ - SY : Synthesis
  - 1C : 1 component inversion
  - 2C : 2 components inversion
 
@@ -101,8 +102,8 @@ In the directory `example`, several files are put. An examplary config file for 
 ├── preprocess.py                     - Scripts for data preprocessing (merge, normalise, spectral veil correction)
 ├── profile_stk.py                    - Class profile 
 ├── simulation.py                     - Performs the simulation which creates models and stokes profiles.
-└── sir.py                            - Script containing import functions related to SIR and the code (reading config, writing control files, etc.)
-
+├──sir.py                             - Script containing import functions related to SIR and the code (reading config, writing control files, etc.)
+└──synthesis.py                       - Perform synthesis for mode "SY"
 
 ```
 
