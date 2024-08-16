@@ -887,8 +887,7 @@ def synthesis(conf : dict, comm, rank : int, size : int, MPI, debug : bool=False
 			print(f"\rTotal finished Jobs: {finished_jobs}", end='', flush=False)
 
 		os.chdir('../') # Go back in case relative paths are used
-	
-	os.chdir(path)
+		
 	# Collect data and save it
 	if rank == 0:
 		print(f"\rTotal finished Jobs: {conf['num']}", end='', flush=False)
