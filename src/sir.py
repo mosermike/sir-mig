@@ -1020,9 +1020,9 @@ def _write_config_mc(File : str, conf : dict, verbose : bool=True):
 		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation of the inclination in deg\n")
 		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation of the azimuth in deg")
 
-def write_config(File : str, conf : dict) -> None:
+def write_config(File : str, conf : dict, verbose : bool = True) -> None:
 	"""
-	Writes a config file with the information provided as a dictionary for the mode 1C
+	Writes a config file with the information provided as a dictionary
 
 	Parameters
 	----------
@@ -1030,18 +1030,22 @@ def write_config(File : str, conf : dict) -> None:
 		Save path
 	conf : dict
 		Dictionary with all the informations
+	verbose : bool,optional
+		Verbose output, by default True.
 
-	
-
+	Raises
+	------
+	ValueError
+		Mode is not defined
 	"""
 	if conf["mode"] == "MC":
-		_write_config_mc(File, conf)
+		_write_config_mc(File, conf, verbose)
 	elif conf["mode"] == "1C":
-		_write_config_1c(File, conf)
+		_write_config_1c(File, conf, verbose)
 	elif conf["mode"] == "2C":
-		_write_config_2c(File, conf)
+		_write_config_2c(File, conf, verbose)
 	else:
-		print("[write_config] Mode is not defined and config file cannot be written.")
+		raise ValueError(f"[write_config] Mode '{conf['mode']}' is not defined and config file cannot be written.")
 
 def write_control(filename : str, conf : dict, Type : str= 'inv'):
 	"""
@@ -1059,7 +1063,10 @@ def write_control(filename : str, conf : dict, Type : str= 'inv'):
 		- 'inv': Inversion (default)
 		Only used for mode 'MC'
 
-	
+	Raises
+	------
+	ValueError
+		Mode is not defined
 
 	"""
 	if conf['mode'] == 'MC':
@@ -1069,7 +1076,7 @@ def write_control(filename : str, conf : dict, Type : str= 'inv'):
 	elif conf['mode'] == '2C':
 		_write_control_2c(filename,conf)
 	else:
-		print('[write_control] Unknown mode')
+		raise ValueError(f'[write_control] Unknown mode {mode["mode"]}')
 
 def _write_control_1c(filename : str, conf : dict):
 	"""
@@ -1367,8 +1374,8 @@ def write_grid(conf : dict, filename : str = 'Grid.grid', waves : bool=None) -> 
 	waves : numpy array,optional
 		Array with the wavelength needed for mode '1C' and '2C', by default None
 
-	Raise
-	-----
+	Raises
+	------
 	ValueError
 		if 'waves' not defined but needed for mode '1C' and '2C'
 	ValueError

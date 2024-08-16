@@ -746,14 +746,22 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Writes a config file with the information provided as a dictionary for the mode 1C</p>
+<span class="sig-prename descclassname"><span class="pre">sir.</span></span><span class="sig-name descname"><span class="pre">write_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">File</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/sir.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Writes a config file with the information provided as a dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>File</strong><span class="classifier">str</span></dt><dd><p>Save path</p>
 </dd>
 <dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Dictionary with all the informations</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool,optional</span></dt><dd><p>Verbose output, by default True.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><p>Mode is not defined</p>
 </dd>
 </dl>
 </dd>
@@ -775,6 +783,12 @@ that the inversion itself can be executed linearly to make use of all cores.</p>
 - ‘syn’: Synthesis
 - ‘inv’: Inversion (default)
 Only used for mode ‘MC’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><p>Mode is not defined</p>
 </dd>
 </dl>
 </dd>
@@ -810,6 +824,14 @@ contains ‘gauss 1.0’ with sigma = 1.0 mA in this example.</p>
 <dt><strong>filename</strong><span class="classifier">str,optional</span></dt><dd><p>String containing the name of the Grid file, by default “Grid.grid”</p>
 </dd>
 <dt><strong>waves</strong><span class="classifier">numpy array,optional</span></dt><dd><p>Array with the wavelength needed for mode ‘1C’ and ‘2C’, by default None</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><p>if ‘waves’ not defined but needed for mode ‘1C’ and ‘2C’</p>
+</dd>
+<dt>ValueError</dt><dd><p>if unknown mode</p>
 </dd>
 </dl>
 </dd>
