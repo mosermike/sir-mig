@@ -1,0 +1,18 @@
+# SIR MIG config file
+mode : SY # Determines which code is executed
+path : ./ # Path location where all the data is stored and will be saved
+# 
+# Data Stuff
+# 
+syn_in    : penumjti.bin # Input synthesis models
+syn_out   : out_penumjtis.bin # Output of the synthesis profiles
+# 
+# Synthesis configuration
+# 
+atoms        : 8;10 # Atoms to be used in Grid file
+range_wave   : -1800.0,50.0,72;-1200.0,50.0,48 # Ranges of wavelengths in mA to be considered start1,step1,num1;start2,step2,num2;... First pair belongs to first line in Grid file, etc.
+line         : Lines # Line file
+vmacro       : 0.1000 # Macroturbulence velocity
+abundance    : THEVENIN # Abundance file
+gas_pressure : 3089 # Gas Pressure Boundary condition
+weights : 1,1,1,1

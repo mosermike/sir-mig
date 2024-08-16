@@ -229,7 +229,8 @@ def read_config(filename : str, check : bool = False, change_config : bool = Fal
 		if config file does not exist
 	Exception
 		if range_wave and atoms do not consist of the same number of lines
-
+	FileNotFoundError
+		if the synthesis input does not exist in mode SY
 	
 	"""
 	if not exists(filename):
@@ -271,17 +272,19 @@ def read_config(filename : str, check : bool = False, change_config : bool = Fal
 	for i in data:
 		if i[0] != '':
 			Dict[i[0]] = i[1]
-
-	if Dict["inv_out"] == "":
-		print("[read_config] No value in inv_out")
+	if check:
+		if(Dict["mode"] != "SY"):
+			if Dict["inv_out"] == "":
+				print("[read_config] No value in inv_out")
+			if Dict["cycles"] == '':
+				print("[read_config] No value in cycles")
 	if Dict["line"] == "":
 		print("[read_config] No value in line")
 	if Dict["atoms"] == "":
 		print("[read_config] No value in atoms")
-	if Dict["cycles"] == '':
-		print("[read_config] No value in cycles")
-	if Dict["abundance"] == '':
-		print("[read_config] No value in abundance")
+	if check:
+		if Dict["abundance"] == '':
+			print("[read_config] No value in abundance")
 
 	# Transform the information into lists or in different types than string
 	if Dict['mode'] == "1C" or Dict['mode'] == "2C":
@@ -290,31 +293,24 @@ def read_config(filename : str, check : bool = False, change_config : bool = Fal
 		if "quiet_sun" in Dict:
 			Dict["quiet_sun"] = np.array([int(i) for i in Dict["quiet_sun"].split(',')])
 		
-		# Convert the ranges into integers or floats
-		temp = [i. split(',') for i in Dict["range_wave"].split(';')]
-		Dict["range_wave"] = np.zeros((len(temp),3), dtype=np.float64)
-		for i in range(0,len(temp)):
-			Dict["range_wave"][i,0] = np.float64(temp[i][0])
-			Dict["range_wave"][i,1] = np.float64(temp[i][1])
-			Dict["range_wave"][i,2] = int(temp[i][2].replace(".0",""))
-	
 	if Dict['mode'] == "MC":
 		Dict['num'] = int(Dict['num'])
 
-		temp = [i. split(',') for i in Dict["range_wave"].split(';')]
-		Dict["range_wave"] = np.zeros((len(temp),3), dtype=np.float64)
-		for i in range(0,len(temp)):
-			Dict["range_wave"][i,0] = np.float64(temp[i][0])
-			Dict["range_wave"][i,1] = np.float64(temp[i][1])
-			Dict["range_wave"][i,2] = int(temp[i][2].replace(".0",""))
+	temp = [i. split(',') for i in Dict["range_wave"].split(';')]
+	Dict["range_wave"] = np.zeros((len(temp),3), dtype=np.float64)
+	for i in range(0,len(temp)):
+		Dict["range_wave"][i,0] = np.float64(temp[i][0])
+		Dict["range_wave"][i,1] = np.float64(temp[i][1])
+		Dict["range_wave"][i,2] = int(temp[i][2].replace(".0",""))
 
 	Dict['atoms'] = Dict["atoms"].split(';')	# Atoms
 
-	Dict["random_guess"] = int(Dict["random_guess"])
+	if(Dict["mode"] != "SY"):
+		Dict["random_guess"] = int(Dict["random_guess"])
 
-	Dict["random_pars"] = Dict["random_pars"].replace(" ",'').split(",")
+		Dict["random_pars"] = Dict["random_pars"].replace(" ",'').split(",")
 	
-	Dict["cycles"] = int(Dict["cycles"])
+		Dict["cycles"] = int(Dict["cycles"])
 
 	Dict["weights"] = Dict["weights"].split(',')
 
@@ -330,11 +326,16 @@ def read_config(filename : str, check : bool = False, change_config : bool = Fal
 			print(f"[read_config] {Dict['model1']} does not exist.")
 		if Dict["mode"] == "2C" and not exists(os.path.join(Dict['path'],Dict['model2'])):
 			print(f"[read_config] {Dict['model2']} does not exist.")
+		if Dict["mode"] == "SY" and not exists(os.path.join(Dict['path'],Dict['syn_in'])):
+			raise FileNotFoundError(f"File '{os.path.join(Dict['path'],Dict['syn_in'])}' does not exist")
 		if Dict['mode'] == "1C" or Dict['mode'] == "2C":
+			if not exists(os.path.join(Dict['path'],Dict['cube'])) and Dict['preprocess'] == "0":
+				raise FileNotFoundError(f"File '{os.path.join(Dict['path'],Dict['syn_in'])}' does not exist")
 			if Dict['preprocess'] == "1" and not exists(os.path.join(Dict['path'],Dict['fts_file'])):
 				print(f"[read_config] {Dict['fts_file']} does not exist.")
-		if (Dict['chi2'] != "" and Dict['chi2'] != "0" and Dict['chi2'] != "1"):
-			print(f"[read_config] Unknown option '{Dict['chi2']}'. chi2 is not computed.")
+		if Dict['mode'] != "SY":
+			if (Dict['chi2'] != "" and Dict['chi2'] != "0" and Dict['chi2'] != "1"):
+				print(f"[read_config] Unknown option '{Dict['chi2']}'. chi2 is not computed.")
 	
 
 	return Dict
@@ -699,6 +700,8 @@ def list_to_string(temp, let = ','):
 	
 
 	"""
+	if(isinstance(temp,str)):
+		return temp
 	temp1 = ''
 	for i in range(len(temp)):
 		temp1 += str(temp[i])
@@ -729,23 +732,26 @@ def _write_config_1c(File : str, conf : dict, verbose : bool = True):
 	# Revert, range_wave, map and weights
 	range_wave = ''
 	temp = conf["range_wave"]
-	for i in range(len(temp)):
-		for j in range(len(temp[i])):
-			# Last entry is an integer
-			if j == len(temp[i])-1:
-				range_wave += str(int(temp[i][j]))
-			else:
-				range_wave += str(temp[i][j])
-			if j +1 < len(temp[i]):
-				range_wave += ','
-		if i < len(temp)-1:
-			range_wave += ';'
+	if(isinstance(temp,str)):
+		range_wave = temp
+	else:
+		for i in range(len(temp)):
+			for j in range(len(temp[i])):
+				# Last entry is an integer
+				if j == len(temp[i])-1:
+					range_wave += str(int(temp[i][j]))
+				else:
+					range_wave += str(temp[i][j])
+				if j +1 < len(temp[i]):
+					range_wave += ','
+			if i < len(temp)-1:
+				range_wave += ';'
 
 	atoms = list_to_string(conf["atoms"], ";")
 	Map = list_to_string(conf["map"])
 	weights = list_to_string(conf["weights"])
 	quiet_sun = list_to_string(conf["quiet_sun"])
-	random_pars = list_to_string(conf["random_pars"])
+	random_pars = list_to_string(conf["random_pars"])	
 
 	with open(File, 'w') as f:
 		f.write("# SIR MIG config file\n")
@@ -829,17 +835,20 @@ def _write_config_2c(File : str, conf : dict, verbose : bool = True):
 	# Revert, range_wave, map and weights
 	range_wave = ''
 	temp = conf["range_wave"]
-	for i in range(len(temp)):
-		for j in range(len(temp[i])):
-			# Last entry is an integer
-			if j == len(temp[i])-1:
-				range_wave += str(int(temp[i][j]))
-			else:
-				range_wave += str(temp[i][j])
-			if j +1 < len(temp[i]):
-				range_wave += ','
-		if i < len(temp)-1:
-			range_wave += ';'
+	if(isinstance(temp,str)):
+		range_wave = temp
+	else:
+		for i in range(len(temp)):
+			for j in range(len(temp[i])):
+				# Last entry is an integer
+				if j == len(temp[i])-1:
+					range_wave += str(int(temp[i][j]))
+				else:
+					range_wave += str(temp[i][j])
+				if j +1 < len(temp[i]):
+					range_wave += ','
+			if i < len(temp)-1:
+				range_wave += ';'
 
 	atoms = list_to_string(conf["atoms"], ";")
 	Map = list_to_string(conf["map"])
@@ -942,17 +951,20 @@ def _write_config_mc(File : str, conf : dict, verbose : bool=True):
 	# Revert, range_wave, map and weights
 	range_wave = ''
 	temp = conf["range_wave"]
-	for i in range(len(temp)):
-		for j in range(len(temp[i])):
-			# Last entry is an integer
-			if j == len(temp[i])-1:
-				range_wave += str(int(temp[i][j]))
-			else:
-				range_wave += str(temp[i][j])
-			if j +1 < len(temp[i]):
-				range_wave += ','
-		if i < len(temp)-1:
-			range_wave += ';'
+	if(isinstance(temp,str)):
+		range_wave = temp
+	else:
+		for i in range(len(temp)):
+			for j in range(len(temp[i])):
+				# Last entry is an integer
+				if j == len(temp[i])-1:
+					range_wave += str(int(temp[i][j]))
+				else:
+					range_wave += str(temp[i][j])
+				if j +1 < len(temp[i]):
+					range_wave += ','
+			if i < len(temp)-1:
+				range_wave += ';'
 
 	atoms = list_to_string(conf["atoms"], ";")
 	weights = list_to_string(conf["weights"])
@@ -1020,6 +1032,72 @@ def _write_config_mc(File : str, conf : dict, verbose : bool=True):
 		f.write(f"lim_gamma    : {conf['lim_gamma']} # Limits for the randomisation of the inclination in deg\n")
 		f.write(f"lim_phi      : {conf['lim_phi']} # Limits for the randomisation of the azimuth in deg")
 
+def _write_config_sy(File : str, conf : dict, verbose : bool=True):
+	"""
+	Writes a config file with the information provided as a dictionary for the mode SY
+
+	Parameters
+	----------
+	File : str
+		Save path
+	conf : dict
+		Dictionary with all the informations
+	verbose : bool,optional
+		Verbose output that config is written and possibility to abort
+
+	
+
+	"""
+	if verbose:
+		print("[write_config] Note that manually added comments will be overwritten! 1s left to abort ...")
+		import time
+		time.sleep(2)
+	
+	# Revert, range_wave, map and weights
+	range_wave = ''
+	temp = conf["range_wave"]
+	if(isinstance(temp,str)):
+		range_wave = temp
+	else:
+		for i in range(len(temp)):
+			for j in range(len(temp[i])):
+				# Last entry is an integer
+				if j == len(temp[i])-1:
+					range_wave += str(int(temp[i][j]))
+				else:
+					range_wave += str(temp[i][j])
+				if j +1 < len(temp[i]):
+					range_wave += ','
+			if i < len(temp)-1:
+				range_wave += ';'
+
+	atoms = list_to_string(conf["atoms"], ";")
+	weights = list_to_string(conf["weights"])
+
+	with open(File, 'w') as f:
+		f.write(f"# SIR MIG config file\n")
+		f.write(f"mode : {conf['mode']} # Determines which code is executed\n")
+		f.write(f"path : {conf['path']} # Path location where all the data is stored and will be saved\n")
+
+		f.write(f"# \n")
+		f.write(f"# Data Stuff\n")
+		f.write(f"# \n")
+		f.write(f"syn_in  : {conf['syn_in']} # Input synthesis models\n")
+		f.write(f"syn_out : {conf['syn_out']} # Output of the synthesis profiles\n")
+		
+		f.write(f"# \n")
+		f.write(f"# Synthesis configuration\n")
+		f.write(f"# \n")
+		f.write(f"atoms        : {atoms} # Atoms to be used in Grid file\n")	
+		f.write(f"range_wave   : {range_wave} # Ranges of wavelengths in mA to be considered start1,step1,num1;start2,step2,num2;... First pair belongs to first line in Grid file, etc.\n")
+		f.write(f"weights      : {weights} # Weights in the control file\n")
+		f.write(f"line         : {conf['line']} # Line file\n")
+		f.write(f"vmacro       : {conf['vmacro']} # Macroturbulence velocity\n")
+		f.write(f"abundance    : {conf['abundance']} # Abundance file\n")
+		f.write(f"gas_pressure : {conf['gas_pressure']} # Gas Pressure Boundary condition")
+
+	return
+
 def write_config(File : str, conf : dict, verbose : bool = True) -> None:
 	"""
 	Writes a config file with the information provided as a dictionary
@@ -1044,6 +1122,8 @@ def write_config(File : str, conf : dict, verbose : bool = True) -> None:
 		_write_config_1c(File, conf, verbose)
 	elif conf["mode"] == "2C":
 		_write_config_2c(File, conf, verbose)
+	elif conf["mode"] == "SY":
+		_write_config_sy(File, conf, verbose)
 	else:
 		raise ValueError(f"[write_config] Mode '{conf['mode']}' is not defined and config file cannot be written.")
 
@@ -1075,6 +1155,8 @@ def write_control(filename : str, conf : dict, Type : str= 'inv'):
 		_write_control_1c(filename,conf)
 	elif conf['mode'] == '2C':
 		_write_control_2c(filename,conf)
+	elif conf['mode'] == 'SY':
+		_write_control_mc(filename,conf,"syn")
 	else:
 		raise ValueError(f'[write_control] Unknown mode {mode["mode"]}')
 
@@ -1383,7 +1465,7 @@ def write_grid(conf : dict, filename : str = 'Grid.grid', waves : bool=None) -> 
 
 	
 	"""
-	if conf['mode'] == "MC":
+	if conf['mode'] == "MC" or conf['mode'] == "SY":
 		_write_grid_mc(conf, filename)
 	elif conf['mode'] == "1C":
 		_write_grid(conf, filename, waves)
@@ -1439,7 +1521,7 @@ def _write_grid(conf : dict, filename : str, waves : np.array):
 
 def _write_grid_mc(conf : dict, filename : str) -> None:
 	"""
-	Writes the Grid file with data from the config file
+	Writes the Grid file with data from the config file for the MC or SY mode
 
 	Parameters
 	----------

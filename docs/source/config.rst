@@ -10,15 +10,15 @@ General
 
 The first part of the configuration is very general and determines where and what is done.
 
-+-----------+-------------------------------------------------------------------------------+
-| Option    | Description                                                                   |
-+===========+===============================================================================+
-| mode      | Determine which part of the code is executed. Options are '1C', '2C' and 'MC' |
-+-----------+-------------------------------------------------------------------------------+
-| path      | Path location where everything is stored and will be saved                    |
-+-----------+-------------------------------------------------------------------------------+
++-----------+-------------------------------------------------------------------------------------+
+| Option    | Description                                                                         |
++===========+=====================================================================================+
+| mode      | Determine which part of the code is executed. Options are '1C', '2C', 'MC' and 'SY' |
++-----------+-------------------------------------------------------------------------------------+
+| path      | Path location where everything is stored and will be saved                          |
++-----------+-------------------------------------------------------------------------------------+
 
-The next parts describe the options for the modes '1C' and '2C'. The reason for that is the big differences between these two modes and the mode 'MC'
+The next parts describe the options for the modes '1C' and '2C'. The reason for that is the big differences between these two modes and the modes 'MC' and 'SY'.
 
 -----------------------
 Mode `1C` and Mode `2C`
@@ -87,7 +87,7 @@ Inversion configuration
 +------------+----------------------------------------------------------------------------------+
 | line       | Lines File                                                                       |
 +------------+----------------------------------------------------------------------------------+
-| atoms      | Atoms used as a list where 1;1 = newline for the Grid File                       |
+| atoms      | Atoms used as a list where `;` = newline for the Grid File                       |
 +------------+----------------------------------------------------------------------------------+
 | guess      | Binary file used as initial guess, blank = base model                            |
 +------------+----------------------------------------------------------------------------------+
@@ -283,3 +283,35 @@ Randomisation Settings
 +--------------+-------------------------------------------------------------------------------+
 
 
+
+---------
+Mode `SY`
+---------
+
+Data Stuff
+==========
+
++-------------+------------
+| Option      | Description
++=============+===============
+| syn_in      | Input Synthesis Model as a binary file
++-------------+
+| syn_out     | Output of the synthesised profiles as a binary file
++-------------+
+
+Synthesis Configuration
+=======================
+
++--------------+-------------------------------------------------------------------------------+
+| Option       | Description                                                                   |
++==============+===============================================================================+
+| atoms        | Atoms to be used in the Grid file with `;` interpreted as a newline           |
++--------------+-------------------------------------------------------------------------------+
+| line         | Lines File                                                                    |
++--------------+-------------------------------------------------------------------------------+
+| weights      | Weights for Stokes separated with `,`                                         |
++--------------+-------------------------------------------------------------------------------+
+| abundace     | Abundance file                                                                |
++--------------+-------------------------------------------------------------------------------+
+| gas_pressure | Gas Pressure at the top of the atmosphere                                     |
++--------------+-------------------------------------------------------------------------------+

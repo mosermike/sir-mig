@@ -347,7 +347,7 @@ def _config_1C():
 		"lim_gamma" : lim_gamma,
 		"lim_phi" : lim_azimuth,
 	}
-	sir.write_config(File,conf)
+	sir.write_config(File,conf, False)
 
 def _config_2C():
 	"""
@@ -541,19 +541,84 @@ def _config_2C():
 		"lim_azimuth2" : lim_azimuth2,
 	}
 
-	sir.write_config(File, conf)
+	sir.write_config(File, conf, False)
+
+
+def _config_SY():
+	"""
+	Creates a config file for Synthesis by asking questions
+
+	Parameters
+	----------
+	None
+
+	Returns
+	-------
+	None
+	"""
+	File = input("File name: ")
+
+	if exists(File):
+		print('File exists already.')
+		sys.exit()
+
+	mode = "SY"
+	if "-path" in sys.argv:
+		path = sys.argv[sys.argv.index("-path")+1]
+	else:
+		path = input("Path: ")
+
+	syn_in = input("Synthesis Input: ")
+	syn_out	= input("Synthesis output [stokes.bin]: ")
+	atoms		= input("Atoms (e.g. 8,9;3,4   ';' == newline): ")
+	range_wave = input("Ranges in the wavelengths (in relative mA) to be considered (as 'min1,step1,max1;min2,step2,max2;...', ;=newline):" )
+	weights		 = input("Weights                       [1,1,1,1]: ")
+	vmacro		 = input ("Value for the macroturbulence [0.1000]: ")
+	abundance	 = input("Abundance file               [THEVENIN]: ")
+	line		 = input("Lines file                      [Lines]: ")
+	gas_pressure = input("Gas Pressure Boundary condition        : ")
+
+	if syn_out == '':
+		syn_out = 'stokes.bin'
+	if abundance == '':
+		abundance = 'THEVENIN'
+	if vmacro == '':
+		vmacro = '0.1000'
+	if weights == '':
+		vmacro = '1,1,1,1'
+	if line == '':
+		line = 'Lines'
+	conf = {
+		"mode" : mode,
+		"path" : path,
+		"syn_in" : syn_in,
+		"syn_out" : syn_out,
+		"atoms" : atoms,
+		"range_wave" : range_wave,
+		"line" : line,
+		"vmacro" : vmacro,
+		"abundance" : abundance,
+		"gas_pressure" : gas_pressure,
+		"weights" : weights
+	}
+ 
+	sir.write_config(File,conf)
+
+	return
 
 def create_config():
 	"""
 	Creates a configuration file for the different modes
 	"""
-	mode = input ("Which mode do you want to use? [1C/2C/MC]: ")
+	mode = input ("Which mode do you want to use? [1C/2C/MC/SY]: ")
 	if mode == "1C":
 		_config_1C()
 	elif mode == "2C":
 		_config_2C()
 	elif mode == "MC":
 		_config_MC()
+	elif mode == "SY":
+		_config_SY()
 	else:
 		print("Mode unknown")
 
