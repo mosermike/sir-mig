@@ -956,10 +956,8 @@ def inversion_single_mc(fit : str, obs : str, phy : str, syn : str):
 	if temp != '0':
 		ll -= float(temp)
 		ll_fit -= float(temp)
-		label_x = temp
 	else:
 		# Keep the same wavelengths as in the Grid file
-		label_x = str(ll0)
 		ll -= ll0
 		ll_fit -= ll0
 

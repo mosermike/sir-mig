@@ -23,7 +23,7 @@ def _help():
 	print()
 	sir.option("[1. Pos]","Config File")
 	sir.option("[2. Pos]","x position")
-	sir.option("[3. Pos]","y position (choose '0' for mode 'MC')")
+	sir.option("[3. Pos]","y position (choose '0' for mode 'MC' or 'SY')")
 	
 	sir.option("-save","Additional save path (optional, default './')")
 	sir.option("-add","Additional text in filenames (optional)")
@@ -99,6 +99,11 @@ def inversion(conf : dict, x : int, y : int):
 		Plot it vertically
 	-num [int]
 		which line number is used (only for mode `MC`)
+
+	Raises
+	------
+	Exception
+		if x or y is out of range
 	"""
 	# Import library
 	sir.mpl_library()
@@ -119,20 +124,26 @@ def inversion(conf : dict, x : int, y : int):
 	if conf['mode'] == "MC":
 		syn1 = m.read_model(os.path.join(path1,conf["syn_out"] + d.end_models))	# Synthesis Models 1
 
-	if conf1['mode'] == "2C":
+	elif conf['mode'] == "SY":
+		syn1 = m.read_model(os.path.join(path1,conf["syn_in"]))	# Synthesis Models 1
+
+	if conf['mode'] == "2C":
 		syn1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_models1))	# Synthesis Models 2	
 		err11 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_errors1))	# Inversion Models 2
 		phy1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_models2))	# Inversion Models 2
 		err1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_errors2))	# Inversion Models 2
-	else:
+	elif (conf["mode"] != "SY"):
 		phy1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_models))	# Inversion Models 1
 		err1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_errors))	# Inversion Models 1
 		
-	if conf1['mode'] == "MC":
+	if conf['mode'] == "MC":
 		obs1 = p.read_profile(os.path.join(path1,conf["syn_out"] + d.end_stokes))	# Synthesis Profiles 1
+	elif conf['mode'] == "SY":
+		obs1 = p.read_profile(os.path.join(path1,conf["syn_out"]))	# Synthesis Profiles 1
 	else:
 		obs1 = p.read_profile(os.path.join(path1,conf["cube"]))
-	fit1 = p.read_profile(os.path.join(path1,conf["inv_out"] + d.end_stokes))	# Inversion Profiles 1
+	if(conf["mode"] != "SY"):
+		fit1 = p.read_profile(os.path.join(path1,conf["inv_out"] + d.end_stokes))	# Inversion Profiles 1
 
 	# Change to relative x and y for mode 1C and 2C
 	if conf["mode"] == "1C" or conf["mode"] == "2C":
@@ -144,7 +155,7 @@ def inversion(conf : dict, x : int, y : int):
 		obs1.cut_to_wave(conf["range_wave"])
 		obs1.cut_to_map(conf["map"])
 
-	else:
+	elif conf['mode'] == "MC":
 		num = obs1.indx[0]
 		if "-num" in sys.argv:
 			num = int(sys.argv[sys.argv.index("-num")+1])
@@ -155,16 +166,22 @@ def inversion(conf : dict, x : int, y : int):
 				ind = i
 		obs1.cut_to_wave(np.array([conf["range_wave"][ind]]))
 		fit1.cut_to_wave(np.array([conf["range_wave"][ind]]))
-
+		conf["map"] = [0,0,0,0]
 		# Determine line core
 		ll0 = sir.determine_line_core(os.path.join(conf["path"],conf["line"]),num)
 	
+	# Write in absolute wavelengths
+	elif conf['mode'] == "SY":
+		obs1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["lines"]))
+		obs1.data_cut_wave = True
+		conf["map"] = [0,0,0,0]
 
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x,y],obs1.stkq[x,y],obs1.stku[x,y],obs1.stkv[x,y]
 	
 	# Load fit data
-	ll2, I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.wave, fit1.stki[x,y],fit1.stkq[x,y],fit1.stku[x,y],fit1.stkv[x,y]
+	if conf["mode"] != "SY":
+		ll2, I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.wave, fit1.stki[x,y],fit1.stkq[x,y],fit1.stku[x,y],fit1.stkv[x,y]
 
 	# Additional savepath
 	savepath = ''
@@ -195,8 +212,8 @@ def inversion(conf : dict, x : int, y : int):
 	#					PLOTTING STUFF					#
 	#############################################################
 	# Change to abs. wavelength to the line core of the first number
-	if conf1['mode'] == "MC":
-		ll0 = float(input("Put wavelength of the line core: "))
+	if conf['mode'] == "MC":
+		#ll0 = float(input("Put wavelength of the line core: "))
 		ll1 += ll0
 		ll2 += ll0
 
@@ -231,7 +248,7 @@ def inversion(conf : dict, x : int, y : int):
 	############################
 	# Plot the Stokes profiles #
 	############################
-	if conf1["mode"] == "MC":
+	if conf["mode"] == "MC" or conf["mode"] == "SY":
 		llabel = "Syn. Profile"
 	else:
 		llabel = "Obs. Profile"
@@ -240,10 +257,11 @@ def inversion(conf : dict, x : int, y : int):
 	ax3.plot(ll1, U1, "-", label=llabel)
 	ax4.plot(ll1, V1, "-", label=llabel)
 
-	ax1.plot(ll1, I_fit1, "-", label = "Best Fit")
-	ax2.plot(ll1, Q_fit1, "-", label = "Best Fit")
-	ax3.plot(ll1, U_fit1, "-", label = "Best Fit")
-	ax4.plot(ll1, V_fit1, "-", label = "Best Fit")
+	if conf["mode"] != "SY":
+		ax1.plot(ll1, I_fit1, "-", label = "Best Fit")
+		ax2.plot(ll1, Q_fit1, "-", label = "Best Fit")
+		ax3.plot(ll1, U_fit1, "-", label = "Best Fit")
+		ax4.plot(ll1, V_fit1, "-", label = "Best Fit")
 
 	# Set xlimits
 	ax1.set_xlim(ll1[0], ll1[-1])
@@ -288,10 +306,11 @@ def inversion(conf : dict, x : int, y : int):
 	# Set Legend and Limits #
 	#########################
 	if "-vertical" in sys.argv:
-		ax1.set_ylim(0.9*np.min(np.abs(np.append(I1,I_fit1))), 1.1*np.max(np.abs(np.append(I1,I_fit1))))
-		ax2.set_ylim(-1.1*np.max(np.abs(np.append(Q1,Q_fit1))), 1.1*np.max(np.abs(np.append(Q1,Q_fit1))))
-		ax3.set_ylim(-1.1*np.max(np.abs(np.append(U1,U_fit1))), 1.1*np.max(np.abs(np.append(U1,U_fit1))))
-		ax4.set_ylim(-1.1*np.max(np.abs(np.append(V1,V_fit1))), 1.1*np.max(np.abs(np.append(V1,V_fit1))))
+		if (conf["mode"] != "SY"):
+			ax1.set_ylim(0.9*np.min(np.abs(np.append(I1,I_fit1))), 1.1*np.max(np.abs(np.append(I1,I_fit1))))
+			ax2.set_ylim(-1.1*np.max(np.abs(np.append(Q1,Q_fit1))), 1.1*np.max(np.abs(np.append(Q1,Q_fit1))))
+			ax3.set_ylim(-1.1*np.max(np.abs(np.append(U1,U_fit1))), 1.1*np.max(np.abs(np.append(U1,U_fit1))))
+			ax4.set_ylim(-1.1*np.max(np.abs(np.append(V1,V_fit1))), 1.1*np.max(np.abs(np.append(V1,V_fit1))))
 		#ax1.legend(bbox_to_anchor=(1.01,0.95))
 		ax1.legend()
 		# set the spacing between subplots
@@ -301,7 +320,7 @@ def inversion(conf : dict, x : int, y : int):
 		# set the spacing between subplots	
 		plt.tight_layout(pad=2.5)
 
-	if conf["mode"] == "MC":
+	if conf["mode"] == "MC" or conf["mode"] == "SY":
 		conf["map"] = [0,0,0,0]
 	plt.savefig(savepath + "inversion_stokes_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
 
@@ -328,35 +347,40 @@ def inversion(conf : dict, x : int, y : int):
 			# '0C5DA5', 'FF2C00', '00B945', 'FF9500', '845B97', '474747', 'C20078','054907'
 			# Plot
 			# Synthesised model = Real model
-			if conf1["mode"] == "MC" or conf1['mode'] == "2C":
-				if conf1['mode'] == "2C":
+			if conf["mode"] == "MC" or conf['mode'] == "2C" or conf["mode"] == "SY":
+				if conf['mode'] == "2C":
 					llabel = "Best Fit Model 1"
 				else:
 					llabel = "Syn Model"
 				ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color=colors[0])
 
-			if conf1['mode'] == "2C":
+			if conf['mode'] == "2C":
 				llabel = "Best Fit Model 2"
 			else:
 				llabel = "Best Fit"
 			
-			ax1.plot(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color = colors[1])
+			if (conf["mode"] != "SY"):
+				ax1.plot(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color = colors[1])
 
-			if conf1['mode'] == "2C":
+			if conf['mode'] == "2C":
 				# Error of fit
 				ax1.fill_between(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y] - err11.get_attribute(inputs[i][1:])[x,y],
 							syn1.get_attribute(inputs[i][1:])[x,y] + err11.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
 							color=colors[0], lw=0)
 			
 			# Error of fit
-			ax1.fill_between(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y] - err1.get_attribute(inputs[i][1:])[x,y],
+			if (conf["mode"] != "SY"):
+				ax1.fill_between(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y] - err1.get_attribute(inputs[i][1:])[x,y],
 						 phy1.get_attribute(inputs[i][1:])[x,y] + err1.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
 						 color=colors[1], lw=0)
 
 
 
 			# Set xlimits
-			ax1.set_xlim(phy1.tau[0], phy1.tau[-1])
+			if (conf["mode"] != "SY"):
+				ax1.set_xlim(phy1.tau[0], phy1.tau[-1])
+			else:
+				ax1.set_xlim(syn1.tau[0], syn1.tau[-1])
 
 			# Set labels
 			ax1.set_xlabel(r"$\log \tau_{c}$")
@@ -366,7 +390,7 @@ def inversion(conf : dict, x : int, y : int):
 				ax1.semilogy()
 
 			# Legend
-			if conf1['mode'] != "1C":
+			if conf['mode'] != "1C" and conf["mode"] != "SY":
 				ax1.legend()
 		
 			ax1.set_title(titles[i])
@@ -375,12 +399,15 @@ def inversion(conf : dict, x : int, y : int):
 			plt.savefig(savepath + "inversion_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + "_" + str(inputs[i][1:]) + add)
 		
 	# Plot T,B,vlos, inc in one figure
-	lim_max = phy1.tau[-1]
-	if conf1["mode"] == "MC" or conf1['mode'] == "2C":
-		syn1.set_limit(lim_max)
-		syn1.set_limit(lim_max)
-	phy1.set_limit(lim_max)
-	err1.set_limit(lim_max)
+	if (conf["mode"] != "SY"):
+		lim_max = phy1.tau[-1]
+		if conf["mode"] == "MC" or conf['mode'] == "2C":
+			syn1.set_limit(lim_max)
+			syn1.set_limit(lim_max)
+		phy1.set_limit(lim_max)
+		err1.set_limit(lim_max)
+	else:
+		lim_max = syn1.tau[1]
 
 
 	if "-vertical" in sys.argv:
@@ -390,85 +417,97 @@ def inversion(conf : dict, x : int, y : int):
 	else:
 		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12))#, sharex=True)
 
-	if conf1["mode"] == "MC":
+	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"] # Get colors used in the actual cycle
+	if conf["mode"] == "MC":
 		llabel = "Syn. Model"
-		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color=colors[0])
+		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color=colors[0])
+		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color=colors[0])
+		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color=colors[0])
 		llabel = "Best Fit"
-		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
-		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
-		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#FF2C00')
-		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#FF2C00')
-	
-	elif conf1["mode"] == "2C":
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color=colors[1])
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color=colors[1])
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color=colors[1])
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color=colors[1])
+	elif conf["mode"] == "SY":
+		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color=colors[0])
+		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color=colors[1])
+		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color=colors[2])
+		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color=colors[3])
+	elif conf["mode"] == "2C":
 		llabel = "Best Fit Model 1"
-		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color=colors[2])
+		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color=colors[2])
+		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color=colors[2])
+		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color=colors[3])
 		llabel = "Best Fit Model 2"
-		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#FF2C00')
-		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#FF2C00')
-		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#FF2C00')
-		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#FF2C00')
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color=colors[4])
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color=colors[4])
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color=colors[4])
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color=colors[4])
 	
-	else:
+	elif conf["mode"] == "1C":
 		llabel = "Best Fit"
-		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color='#0C5DA5')
-		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color='#0C5DA5')
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color=colors[0])
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color=colors[1])
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color=colors[2])
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color=colors[3])
 
 
-	if conf1['mode'] == "2C":
+	if conf['mode'] == "2C":
 		ax1.fill_between(syn1.tau, syn1.T[x,y] - err11.T[x,y],
 				 syn1.T[x,y] + err11.T[x,y], alpha = 0.5,
-				 color='#0C5DA5', lw=0)
+				 color=colors[0], lw=0)
 		ax2.fill_between(syn1.tau, syn1.B[x,y] - err11.B[x,y],
 					syn1.B[x,y] + err11.B[x,y], alpha = 0.5,
-					color='#0C5DA5', lw=0)
+					color=colors[0], lw=0)
 		ax3.fill_between(syn1.tau, syn1.vlos[x,y] - err11.vlos[x,y],
 					syn1.vlos[x,y] + err11.vlos[x,y], alpha = 0.5,
-					color='#0C5DA5', lw=0)
+					color=colors[0], lw=0)
 		ax4.fill_between(syn1.tau, syn1.gamma[x,y] - err11.gamma[x,y],
 					syn1.gamma[x,y] + err11.gamma[x,y], alpha = 0.5,
-					color='#0C5DA5', lw=0)
-	if conf1['mode'] == "2C" or conf["mode"] == "MC":
+					color=colors[0], lw=0)
+	if conf['mode'] == "2C" or conf["mode"] == "MC":
 		ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
 				 phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
-				 color='#FF2C00', lw=0)
+				 color=colors[1], lw=0)
 		ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
 				 phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
-				color='#FF2C00', lw=0)
+				color=colors[1], lw=0)
 		ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
 				 phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
-				 color='#FF2C00', lw=0)
+				 color=colors[1], lw=0)
 		ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
 				 phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
-				 color='#FF2C00', lw=0)
-	else:
+				 color=colors[1], lw=0)
+	elif conf["mode"] == "1C":
 		ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
 				 phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
-				 color='#0C5DA5', lw=0)
+				 color=colors[0], lw=0)
 		ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
 				 phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
-				color='#0C5DA5', lw=0)
+				color=colors[1], lw=0)
 		ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
 				 phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
-				 color='#0C5DA5', lw=0)
+				 color=colors[2], lw=0)
 		ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
 				 phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
-				 color='#0C5DA5', lw=0)
+				 color=colors[3], lw=0)
 
 	#####################
 	#	Set limits	#
-	#####################	
-	ax1.set_xlim(phy1.tau[0], lim_max)
-	ax2.set_xlim(phy1.tau[0], lim_max)
-	ax3.set_xlim(phy1.tau[0], lim_max)
-	ax4.set_xlim(phy1.tau[0], lim_max)
+	#####################
+	if (conf["mode"] != "SY"):
+		ax1.set_xlim(phy1.tau[0], lim_max)
+		ax2.set_xlim(phy1.tau[0], lim_max)
+		ax3.set_xlim(phy1.tau[0], lim_max)
+		ax4.set_xlim(phy1.tau[0], lim_max)
+
+	else:
+		ax1.set_xlim(syn1.tau[0], lim_max)
+		ax2.set_xlim(syn1.tau[0], lim_max)
+		ax3.set_xlim(syn1.tau[0], lim_max)
+		ax4.set_xlim(syn1.tau[0], lim_max)
 
 	Min, Max = ax2.get_ylim()
 	ax2.set_ylim(Min,Max*1.15)
@@ -500,7 +539,7 @@ def inversion(conf : dict, x : int, y : int):
 		ax3.set_title(titles[4])
 		ax4.set_title(titles[5])
 
-	if conf1["mode"] == "MC" or conf1['mode'] == "2C":
+	if conf["mode"] == "MC" or conf['mode'] == "2C":
 		ax1.legend(loc='upper right')
 		#ax2.legend(loc='upper right')
 		#ax3.legend(loc='upper right')
@@ -528,8 +567,8 @@ def inversion(conf : dict, x : int, y : int):
 if __name__ == "__main__":
 	if "-h" in sys.argv:
 		_help()
-	conf1 = sir.read_config(sys.argv[1])
-	inversion(conf1, int(sys.argv[2]),int(sys.argv[3]))
+	conf = sir.read_config(sys.argv[1])
+	inversion(conf, int(sys.argv[2]),int(sys.argv[3]))
 
 
 

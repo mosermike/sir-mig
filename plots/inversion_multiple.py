@@ -18,21 +18,17 @@ def help():
 	"""
 	Help Page
 	"""
-	print("plot_inversion_2 - Plots the result of two inversions")
+	print("plot_inversion_multiple - Plots the result of multiple inversions")
 	print("Usage: python plot_inversion_2 [OPTION]")
 	print()
-	sir.option("[1. Pos]","Config Model 1")
-	sir.option("[2. Pos]","x position Profile 1")
-	sir.option("[3. Pos]","y position Profile 1")
-	sir.option("[4. Pos]","Config Model 2")
-	sir.option("[5. Pos]","x position Profile 2")
-	sir.option("[6. Pos]","y position Profile 2")
-
+	sir.option("[1. Pos]","Config Models as a string config1.txt,config2.txt,...")
+	sir.option("[2. Pos]","x positions as a string x1,x2,x3,x4,...")
+	sir.option("[3. Pos]","y positions as a string y1,y2,y3,... (choose 0 for mode 'MC' and 'SY')")
+	
 	sir.option("-save","Additional save path (optional, default './')")
 	sir.option("-add","Additional text in filenames (optional)")
 	sir.option("-add_label","Additional label in plots")
-	sir.option("-label1","Label for 1st inversion")
-	sir.option("-label2","Label for 2nd inversion")
+	sir.option("-labels", "Labels as a string where the string is split at ','.")
 	sir.option("-title","Title in Stokes plot")
 	sir.option("-T","Plot temperature in K")
 	sir.option("-Pe","Plot electron pressure in dyn/cm^2")
@@ -51,7 +47,7 @@ def help():
 	sir.option("-err","Plot errorbars")
 	sys.exit()
 
-def inversion_multiple(confs : list, x : int, y : int, labels : list):
+def inversion_multiple(confs : list, x : list, y : list, labels : list):
 	""""
 	Plots the result of multiple inversions. The code assumes the same x and y position for all inversions. In addition, it also assumes that in mode "MC"
 	the synthesis model is the same
@@ -60,10 +56,10 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 	----------
 	confs : list
 		List with dictionaries of the config files
-	x : int
-		x position
-	y : int
-		y position
+	x : list
+		x positions
+	y : list
+		y positions
 	labels : list
 		List of strings for the labels
 	
@@ -103,10 +99,6 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 		Title of the figures
 	-add_label [str]
 		Additional label in the legend. Can be used e.g. as a title
-	-label1 [str]
-		Label for the 1st inversion. Default: "1st Inversion"
-	-label2 [str]
-		Label for the 2nd inversion. Default: "2nd Inversion"
 	-vertical
 		Plot it vertically
 	-num [int]
@@ -115,10 +107,22 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 		Observations are the same and therefore only plotted once
 	-err
 		Plot errorbars
+
+	Raises
+	------
+	RuntimeError
+		if the lenghts of confs, x and y are not the same
+	ValueError
+		if the mode in the configs are not the same
 	"""
 	# Import library
 	sir.mpl_library()
 
+	if(len(x) != len(y) != len(confs)):
+		raise RuntimeError("[inversion_multiple] Lengths of the arrays confs, x and y not the same!")
+	
+	if(np.all(np.array([i["mode"] for i in confs], dtype=str) != confs[0]["mode"])):
+		raise ValueError(f"The mode must be the same for all configs. The first one is '{confs[0]['mode']}'.")
 	
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#
@@ -126,23 +130,31 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 
 	if confs[0]['mode'] == "MC":
 		syns = [m.read_model(os.path.join(confs[i]["path"],confs[i]["syn_out"] + d.end_models)) for i in range(len(confs))]	# Synthesis Models 1
-
+	elif confs[0]["mode"] == "SY":
+		syns = [m.read_model(os.path.join(confs[i]["path"],confs[i]["syn_in"])) for i in range(len(confs))]
+	
 	if confs[0]['mode'] == "2C":
 		syns = [m.read_model(os.path.join(confs[i]["path"],confs[i]["inv_out"] + d.end_models1)) for i in range(len(confs))]	# Synthesis Models 2	
 		phys = [m.read_model(os.path.join(confs[i]["path"],confs[i]["inv_out"] + d.end_models2)) for i in range(len(confs))]	# Inversion Models 2
-	else:
+	elif confs[0]["mode"] != "SY":
 		phys = [m.read_model(os.path.join(confs[i]["path"],confs[i]["inv_out"] + d.end_models)) for i in range(len(confs))]	# Inversion Models 1
 		
 	if confs[0]['mode'] == "MC":
 		obss = [p.read_profile(os.path.join(confs[i]["path"],confs[i]["syn_out"] + d.end_stokes)) for i in range(len(confs))]	# Synthesis Profiles 1
-	else:
+	elif confs[0]["mode"] != "SY":
 		obss = [p.read_profile(os.path.join(confs[i]["path"],confs["cube"])) for i in range(len(confs))]
-	fits = [p.read_profile(os.path.join(confs[i]["path"],confs[i]["inv_out"] + d.end_stokes)) for i in range(len(confs))]	# Inversion Profiles 1
+
+	if confs[0]["mode"] == "SY":
+		fits = [p.read_profile(os.path.join(confs[i]["path"],confs[i]["syn_out"])) for i in range(len(confs))]	# Inversion Profiles 1
+	else:	
+		fits = [p.read_profile(os.path.join(confs[i]["path"],confs[i]["inv_out"] + d.end_stokes)) for i in range(len(confs))]	# Inversion Profiles 1
+
+	
 
 	# Cut wave
 	if confs[0]['mode'] == "1C" or confs[0]["mode"] == "2C":
 		[obss[i].cut_to_wave(confs[i]["range_wave"]) for i in range(len(confs))]
-	else:
+	elif confs[0]['mode'] == "MC":
 		num = fits[0].indx[0]
 		if "-num" in sys.argv:
 			num = int(sys.argv[sys.argv.index("-num")+1])
@@ -155,17 +167,21 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 
 					# define map as it is used later for saving
 					confs[n]["map"] = [0,0,0,0]
-					confs[i]["map"] = [0,0,0,0]
-		
 					obss[n].cut_to_wave(np.array([confs[n]["range_wave"][ind1]]))
 					fits[n].cut_to_wave(np.array([confs[n]["range_wave"][ind1]]))
-		
+	# Write in absolute wavelengths
+	elif confs[0]["mode"] == "SY":
+		for i in range(len(confs)):
+			fits[i].transform_wave_sir_to_abs(os.path.join(confs[i]["path"],confs[i]["lines"]))
+			fits[i].data_cut_wave = True
+			confs[i]["map"] = [0,0,0,0]
 
 	# Observation from synthesis
-	lls, Is, Qs, Us, Vs = [obss[i].wave for i in range(len(confs))], [obss[i].stki[x,y] for i in range(len(confs))],[obss[i].stkq[x,y] for i in range(len(confs))],[obss[i].stku[x,y] for i in range(len(confs))],[obss[i].stkv[x,y]  for i in range(len(confs))]
+	if confs[0]["mode"] != "SY":
+		lls, Is, Qs, Us, Vs = [obss[i].wave for i in range(len(confs))], [obss[i].stki[x[i],y[i]] for i in range(len(confs))],[obss[i].stkq[x[i],y[i]] for i in range(len(confs))],[obss[i].stku[x[i],y[i]] for i in range(len(confs))],[obss[i].stkv[x[i],y[i]]  for i in range(len(confs))]
 	
 	# Load fit data
-	lls_fit, I_fits, Q_fits, U_fits, V_fits = [fits[i].wave for i in range(len(confs))], fits[i].stki[x,y] for i in range(len(confs))],[fits[i].stkq[x,y] for i in range(len(confs))],[fits[i].stku[x,y] for i in range(len(confs))],[fits[i].stkv[x,y] for i in range(len(confs))]
+	lls_fit, I_fits, Q_fits, U_fits, V_fits = [fits[i].wave for i in range(len(confs))], [fits[i].stki[x[i],y[i]] for i in range(len(confs))],[fits[i].stkq[x[i],y[i]] for i in range(len(confs))],[fits[i].stku[x[i],y[i]] for i in range(len(confs))],[fits[i].stkv[x[i],y[i]] for i in range(len(confs))]
 
 	# Additional savepath
 	savepath = ''
@@ -200,14 +216,20 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 
 	temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
 	if temp != '0':
-		lls = [lls[i]-float(temp) for i in range(len(lls))]
+		if confs[0]["mode"] != "SY":
+			lls = [lls[i]-float(temp) for i in range(len(lls))]
+		else:
+			lls = [lls_fit[i]-float(temp) for i in range(len(lls_fit))]
 		lls_fit = [lls_fit[i]-float(temp) for i in range(len(lls_fit))]
 		label_x = temp
 	else:
 		# Keep the same wavelengths as in the Grid file
 		label_x = str(ll0)
-		lls = [lls[i]-ll0 for i in range(len(lls))]
-		lls_fit = [lls_fit[i]-ll0 for i in range(len(lls))]
+		if confs[0]["mode"] != "SY":
+			lls = [lls[i]-ll0 for i in range(len(lls))]
+		else:
+			lls = [lls_fit[i]-ll0 for i in range(len(lls_fit))]
+		lls_fit = [lls_fit[i]-ll0 for i in range(len(lls_fit))]
 
 
 	########################
@@ -231,17 +253,24 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 		llabel = "Syn. Profile"
 	else:
 		llabel = "Obs. Profile"
+	if confs[0]["mode"] != "SY":
+		ax1.plot(lls[0], Is[0], "x", label=llabel)
+		ax2.plot(lls[0], Qs[0], "x", label=llabel)
+		ax3.plot(lls[0], Us[0], "x", label=llabel)
+		ax4.plot(lls[0], Vs[0], "x", label=llabel)
 
-	ax1.plot(lls[0], Is[0], "x", label=llabel)
-	ax2.plot(lls[0], Qs[0], "x", label=llabel)
-	ax3.plot(lls[0], Us[0], "x", label=llabel)
-	ax4.plot(lls[0], Vs[0], "x", label=llabel)
-
-	for i in range(len(confs)):
-		ax1.plot(lls[i], I_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
-		ax2.plot(lls[i], Q_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
-		ax3.plot(lls[i], U_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
-		ax4.plot(lls[i], V_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
+	if confs[0]["mode"] != "SY":
+		for i in range(len(confs)):
+			ax1.plot(lls[i], I_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
+			ax2.plot(lls[i], Q_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
+			ax3.plot(lls[i], U_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
+			ax4.plot(lls[i], V_fits[i], "-", label = "Best Fit (" + labels[i] + ")")
+	else:
+		for i in range(len(confs)):
+			ax1.plot(lls_fit[i], I_fits[i], "-", label = labels[i])
+			ax2.plot(lls_fit[i], Q_fits[i], "-", label = labels[i])
+			ax3.plot(lls_fit[i], U_fits[i], "-", label = labels[i])
+			ax4.plot(lls_fit[i], V_fits[i], "-", label = labels[i])
 
 	# Set xlimits
 	ax1.set_xlim(lls[0][0], lls[0][-1])
@@ -306,8 +335,8 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 
 	i = 0
 
-	for m in range(len(inputs)):
-		if inputs[m] in sys.argv:
+	for j in range(len(inputs)):
+		if inputs[j] in sys.argv:
 			fig, ax1 = plt.subplots(figsize=(8,7))
 
 			# Add label
@@ -320,27 +349,27 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 				if confs[0]['mode'] == "2C":
 					llabel = "Best Fit M. ("
 					for i in range(len(confs)):
-						ax1.plot(syns[i].tau, syns[i].get_attribute(inputs[m][1:])[x,y], label=f"{llabel}{labels[i]})")
+						ax1.plot(syns[i].tau, syns[i].get_attribute(inputs[m][1:])[x[i],y[i]], label=f"{llabel}{labels[i]})")
 				else:
 					llabel = "Syn Model"
-					ax1.plot(syns[0].tau, syns[0].get_attribute(inputs[m][1:])[x,y], label=f"{llabel}")
-					ax1.plot(syns[0].tau, syns[0].get_attribute(inputs[m][1:])[x,y], label=f"{llabel}")
+					ax1.plot(syns[0].tau, syns[0].get_attribute(inputs[m][1:])[x[i],y[i]], label=f"{llabel}")
+					ax1.plot(syns[0].tau, syns[0].get_attribute(inputs[m][1:])[x[i],y[i]], label=f"{llabel}")
 	
 			if confs[0]['mode'] == "2C":
 					llabel = "Best Fit M. 2 ("
 			else:
 					llabel = "Best Fit ("
 			for i in range(len(confs)):
-				ax1.plot(fits[i].tau, fits[i].get_attribute(inputs[m][1:])[x,y], label=f"{llabel}{labels[i]})")
+				ax1.plot(fits[i].tau, fits[i].get_attribute(inputs[m][1:])[x[i],y[i]], label=f"{llabel}{labels[i]})")
 
 			# Set xlimits
 			ax1.set_xlim(fits[0].tau[0], fits[0].tau[-1])
 
 			# Set labels
 			ax1.set_xlabel(r"$\log \tau_{c}$")
-			ax1.set_ylabel(labels[index[m]])
+			ax1.set_ylabel(labels[index[j]])
 
-			if index[m] == 2 or index[m] == 9:
+			if index[j] == 2 or index[j] == 9:
 				ax1.semilogy()
 
 			# Legend
@@ -349,7 +378,7 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 			ax1.set_title(titles[i])
 			# set the spacing between subplots
 			plt.tight_layout(pad=2)
-			plt.savefig(savepath + "inversion_multiple_x" + str(x) + "_y"  + str(y) + str(inputs[m][1:]) + add)
+			plt.savefig(savepath + "inversion_multiple_x" + str(x) + "_y"  + str(y) + str(inputs[j][1:]) + add)
 		
 	# Plot T,B,vlos, inc in one figure
 	lim_max = syns[0].tau[-1]
@@ -369,26 +398,26 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 		if confs[0]["mode"] == "2C":
 			llabel = "Best Fit M. 1"
 			for i in range(len(confs)):
-				ax1.plot(syns[i].tau, syns[i].T[x,y], label=f"{llabel} ({labels[i]})")
-				ax2.plot(syns[i].tau, syns[i].B[x,y], label=f"{llabel} ({labels[i]})")
-				ax3.plot(syns[i].tau, syns[i].vlos[x,y], label=f"{llabel} ({labels[i]})")
-				ax4.plot(syns[i].tau, syns[i].gamma[x,y], label=f"{llabel} ({labels[i]})")
+				ax1.plot(syns[i].tau, syns[i].T[x[i],y[i]], label=f"{llabel} ({labels[i]})")
+				ax2.plot(syns[i].tau, syns[i].B[x[i],y[i]], label=f"{llabel} ({labels[i]})")
+				ax3.plot(syns[i].tau, syns[i].vlos[x[i],y[i]], label=f"{llabel} ({labels[i]})")
+				ax4.plot(syns[i].tau, syns[i].gamma[x[i],y[i]], label=f"{llabel} ({labels[i]})")
 		else:
 			llabel = "Syn. Model"
-			ax1.plot(syns[0].tau, syns[0].T[x,y], label=f"{llabel}")
-			ax2.plot(syns[0].tau, syns[0].B[x,y], label=f"{llabel}")
-			ax3.plot(syns[0].tau, syns[0].vlos[x,y], label=f"{llabel}")
-			ax4.plot(syns[0].tau, syns[0].gamma[x,y], label=f"{llabel}")
+			ax1.plot(syns[0].tau, syns[0].T[x[i],y[i]], label=f"{llabel}")
+			ax2.plot(syns[0].tau, syns[0].B[x[i],y[i]], label=f"{llabel}")
+			ax3.plot(syns[0].tau, syns[0].vlos[x[i],y[i]], label=f"{llabel}")
+			ax4.plot(syns[0].tau, syns[0].gamma[x[i],y[i]], label=f"{llabel}")
 
 	if confs[0]['mode'] == "2C":
 		llabel = "Best Fit M. 2"
 	else:
 		llabel = "Best Fit"
-	for i in range(len(confs))
-		ax1.plot(phys[i].tau, phys[i].T[x,y], label=f"{llabel} ({labels[i]})")	
-		ax2.plot(phys[i].tau, phys[i].B[x,y], label=f"{llabel} ({labels[i]})")
-		ax3.plot(phys[i].tau, phys[i].vlos[x,y], label=f"{llabel} ({labels[i]})")
-		ax4.plot(phys[i].tau, phys[i].gamma[x,y], label=f"{llabel} ({labels[i]})")
+	for i in range(len(confs)):
+		ax1.plot(phys[i].tau, phys[i].T[x[i],y[i]], label=f"{llabel} ({labels[i]})")	
+		ax2.plot(phys[i].tau, phys[i].B[x[i],y[i]], label=f"{llabel} ({labels[i]})")
+		ax3.plot(phys[i].tau, phys[i].vlos[x[i],y[i]], label=f"{llabel} ({labels[i]})")
+		ax4.plot(phys[i].tau, phys[i].gamma[x[i],y[i]], label=f"{llabel} ({labels[i]})")
 
 	#####################
 	#	Set limits	#
@@ -465,13 +494,28 @@ if __name__ == "__main__":
 				confs[i]['path'] = temp[i][:temp[i].rfind('/')+1] + confs[i]['path'][2:]
 	else:
 		confs  = [sir.read_config(sys.argv[1])]
+	
+	if "," in sys.argv[2]:
+		x = sys.argv[2].replace(", ", ",").split(',')
+		x = [int(i) for i in x]
+	else:
+		x  = [int(sys.argv[2])]
+
+	if "," in sys.argv[3]:
+		y = sys.argv[3].replace(", ", ",").split(',')
+		y = [int(i) for i in y]
+	else:
+		y  = [int(sys.argv[3])]
+
 	#Labels
 	labels = []
-	for i in range(len(confs)):
-		ll = input(f"Label {i+1}: ")
-		labels.append(ll)
+	if ("-labels" in sys.argv):
+		labels = sys.argv[sys.argv.index("-labels")+1].split(",")
+	else:
+		for i in range(len(confs)):
+			labels.append(input(f"Label {i+1}: "))
 	
-	inversion_multiple(confs, int(sys.argv[2]),int(sys.argv[3]), labels)
+	inversion_multiple(confs, x, y, labels)
 
 
 
