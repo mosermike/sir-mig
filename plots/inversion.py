@@ -23,7 +23,7 @@ def _help():
 	print()
 	sir.option("[1. Pos]","Config File")
 	sir.option("[2. Pos]","x position")
-	sir.option("[3. Pos]","y position (choose '0' for mode 'MC' or 'SY')")
+	sir.option("[3. Pos]","y position (choose '0' for mode 'MC')")
 	
 	sir.option("-save","Additional save path (optional, default './')")
 	sir.option("-add","Additional text in filenames (optional)")
@@ -98,16 +98,20 @@ def inversion(conf : dict, x : int, y : int):
 	-vertical
 		Plot it vertically
 	-num [int]
-		which line number is used (only for mode `MC`)
+		which line number is used (only for mode `MC`), if not selected, everything is plotted in absolute wavelengths
 
 	Raises
 	------
-	Exception
+	NotImplementedError
+		if mode is not implemented
+	IndexError
 		if x or y is out of range
 	"""
 	# Import library
 	sir.mpl_library()
 
+	if(conf["mode"] != "1C" and conf["mode"] != "MC" and conf["mode"] != "2C"):
+		raise NotImplementedError(f"[inversion_multiple] Mode {conf['mode']} not implemented.")
 	
 	#############################################################
 	#			READ INPUT AND LOAD DATA					#
@@ -115,35 +119,29 @@ def inversion(conf : dict, x : int, y : int):
 	# Check range
 	if conf["mode"] == "1C" or conf["mode"] == "2C":
 		if x < conf["map"][0] or x > conf["map"][1]:
-			raise Exception("[inversion] x out of range!")
+			raise IndexError("[inversion] x out of range!")
 		if y < conf["map"][2] or y > conf["map"][3]:
-			raise Exception("[inversion] y out of range!")
+			raise IndexError("[inversion] y out of range!")
 		
 
 	path1 = conf["path"]
 	if conf['mode'] == "MC":
 		syn1 = m.read_model(os.path.join(path1,conf["syn_out"] + d.end_models))	# Synthesis Models 1
 
-	elif conf['mode'] == "SY":
-		syn1 = m.read_model(os.path.join(path1,conf["syn_in"]))	# Synthesis Models 1
-
 	if conf['mode'] == "2C":
 		syn1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_models1))	# Synthesis Models 2	
 		err11 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_errors1))	# Inversion Models 2
 		phy1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_models2))	# Inversion Models 2
 		err1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_errors2))	# Inversion Models 2
-	elif (conf["mode"] != "SY"):
+	else:
 		phy1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_models))	# Inversion Models 1
 		err1 = m.read_model(os.path.join(path1,conf["inv_out"] + d.end_errors))	# Inversion Models 1
 		
 	if conf['mode'] == "MC":
 		obs1 = p.read_profile(os.path.join(path1,conf["syn_out"] + d.end_stokes))	# Synthesis Profiles 1
-	elif conf['mode'] == "SY":
-		obs1 = p.read_profile(os.path.join(path1,conf["syn_out"]))	# Synthesis Profiles 1
 	else:
 		obs1 = p.read_profile(os.path.join(path1,conf["cube"]))
-	if(conf["mode"] != "SY"):
-		fit1 = p.read_profile(os.path.join(path1,conf["inv_out"] + d.end_stokes))	# Inversion Profiles 1
+	fit1 = p.read_profile(os.path.join(path1,conf["inv_out"] + d.end_stokes))	# Inversion Profiles 1
 
 	# Change to relative x and y for mode 1C and 2C
 	if conf["mode"] == "1C" or conf["mode"] == "2C":
@@ -155,10 +153,8 @@ def inversion(conf : dict, x : int, y : int):
 		obs1.cut_to_wave(conf["range_wave"])
 		obs1.cut_to_map(conf["map"])
 
-	elif conf['mode'] == "MC":
-		num = obs1.indx[0]
-		if "-num" in sys.argv:
-			num = int(sys.argv[sys.argv.index("-num")+1])
+	elif conf['mode'] == "MC" and "-num" in sys.argv:
+		num = int(sys.argv[sys.argv.index("-num")+1])
 		# Cut the wave to the line number
 		ind = 0
 		for i in range(len(conf["atoms"])):
@@ -169,19 +165,18 @@ def inversion(conf : dict, x : int, y : int):
 		conf["map"] = [0,0,0,0]
 		# Determine line core
 		ll0 = sir.determine_line_core(os.path.join(conf["path"],conf["line"]),num)
-	
-	# Write in absolute wavelengths
-	elif conf['mode'] == "SY":
+	elif conf['mode'] == "MC":
 		obs1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["lines"]))
+		fit1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["lines"]))
 		obs1.data_cut_wave = True
+		fit1.data_cut_wave = True
 		conf["map"] = [0,0,0,0]
 
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x,y],obs1.stkq[x,y],obs1.stku[x,y],obs1.stkv[x,y]
 	
 	# Load fit data
-	if conf["mode"] != "SY":
-		ll2, I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.wave, fit1.stki[x,y],fit1.stkq[x,y],fit1.stku[x,y],fit1.stkv[x,y]
+	ll2, I_fit1, Q_fit1, U_fit1, V_fit1 = fit1.wave, fit1.stki[x,y],fit1.stkq[x,y],fit1.stku[x,y],fit1.stkv[x,y]
 
 	# Additional savepath
 	savepath = ''
@@ -216,19 +211,18 @@ def inversion(conf : dict, x : int, y : int):
 		#ll0 = float(input("Put wavelength of the line core: "))
 		ll1 += ll0
 		ll2 += ll0
-
-	label_x = "0"
-
-	temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
-	if temp != '0':
-		ll1 -= float(temp)
-		ll2 -= float(temp)
-		label_x = temp
-	elif conf["mode"] == "MC":
+	
+	if conf["mode"] == "MC" and "-num" in sys.argv:
 		# Keep the same wavelengths as in the Grid file
 		label_x = str(ll0)
 		ll1 -= ll0
 		ll2 -= ll0
+	else:
+		label_x = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
+		if label_x != '0':
+			ll1 -= float(label_x)
+			ll2 -= float(label_x)
+	
 
 
 	########################
@@ -236,10 +230,10 @@ def inversion(conf : dict, x : int, y : int):
 	########################
 	if "-vertical" in sys.argv:
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, figsize=(12,14), sharex=True,
-			 gridspec_kw=dict(hspace=0))
+			 gridspec_kw=dict(hspace=0), layout="compressed")
 		fig.subplots_adjust(hspace=0, wspace=0)
 	else:
-		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12))
+		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), layout="compressed")
 
 
 	# Add label
@@ -248,7 +242,7 @@ def inversion(conf : dict, x : int, y : int):
 	############################
 	# Plot the Stokes profiles #
 	############################
-	if conf["mode"] == "MC" or conf["mode"] == "SY":
+	if conf["mode"] == "MC":
 		llabel = "Syn. Profile"
 	else:
 		llabel = "Obs. Profile"
@@ -257,11 +251,10 @@ def inversion(conf : dict, x : int, y : int):
 	ax3.plot(ll1, U1, "-", label=llabel)
 	ax4.plot(ll1, V1, "-", label=llabel)
 
-	if conf["mode"] != "SY":
-		ax1.plot(ll1, I_fit1, "-", label = "Best Fit")
-		ax2.plot(ll1, Q_fit1, "-", label = "Best Fit")
-		ax3.plot(ll1, U_fit1, "-", label = "Best Fit")
-		ax4.plot(ll1, V_fit1, "-", label = "Best Fit")
+	ax1.plot(ll1, I_fit1, "-", label = "Best Fit")
+	ax2.plot(ll1, Q_fit1, "-", label = "Best Fit")
+	ax3.plot(ll1, U_fit1, "-", label = "Best Fit")
+	ax4.plot(ll1, V_fit1, "-", label = "Best Fit")
 
 	# Set xlimits
 	ax1.set_xlim(ll1[0], ll1[-1])
@@ -306,23 +299,15 @@ def inversion(conf : dict, x : int, y : int):
 	# Set Legend and Limits #
 	#########################
 	if "-vertical" in sys.argv:
-		if (conf["mode"] != "SY"):
-			ax1.set_ylim(0.9*np.min(np.abs(np.append(I1,I_fit1))), 1.1*np.max(np.abs(np.append(I1,I_fit1))))
-			ax2.set_ylim(-1.1*np.max(np.abs(np.append(Q1,Q_fit1))), 1.1*np.max(np.abs(np.append(Q1,Q_fit1))))
-			ax3.set_ylim(-1.1*np.max(np.abs(np.append(U1,U_fit1))), 1.1*np.max(np.abs(np.append(U1,U_fit1))))
-			ax4.set_ylim(-1.1*np.max(np.abs(np.append(V1,V_fit1))), 1.1*np.max(np.abs(np.append(V1,V_fit1))))
-		#ax1.legend(bbox_to_anchor=(1.01,0.95))
+		ax1.set_ylim(0.9*np.min(np.abs(np.append(I1,I_fit1))), 1.1*np.max(np.abs(np.append(I1,I_fit1))))
+		ax2.set_ylim(-1.1*np.max(np.abs(np.append(Q1,Q_fit1))), 1.1*np.max(np.abs(np.append(Q1,Q_fit1))))
+		ax3.set_ylim(-1.1*np.max(np.abs(np.append(U1,U_fit1))), 1.1*np.max(np.abs(np.append(U1,U_fit1))))
+		ax4.set_ylim(-1.1*np.max(np.abs(np.append(V1,V_fit1))), 1.1*np.max(np.abs(np.append(V1,V_fit1))))
 		ax1.legend()
-		# set the spacing between subplots
-		plt.tight_layout(pad=2,h_pad=0.0)
 	else:
 		ax2.legend(bbox_to_anchor=(1.01,0.95))
-		# set the spacing between subplots	
-		plt.tight_layout(pad=2.5)
 
-	if conf["mode"] == "MC" or conf["mode"] == "SY":
-		conf["map"] = [0,0,0,0]
-	plt.savefig(savepath + "inversion_stokes_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
+	fig.savefig(savepath + "inversion_stokes_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
 
 	###################################################
 	#			Plot physical parameters			#

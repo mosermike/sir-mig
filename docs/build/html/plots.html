@@ -607,7 +607,15 @@ Plots the result of one inversion</p>
 </dd>
 <dt><strong>-vertical</strong></dt><dd><p>Plot it vertically</p>
 </dd>
-<dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>)</p>
+<dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>), if not selected, everything is plotted in absolute wavelengths</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>NotImplementedError</dt><dd><p>if mode is not implemented</p>
+</dd>
+<dt>IndexError</dt><dd><p>if x or y is out of range</p>
 </dd>
 </dl>
 </dd>
@@ -767,6 +775,86 @@ Plots the result of one inversion</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Plots two single inversions</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.inversion_multiple.</span></span><span class="sig-name descname"><span class="pre">inversion_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_multiple.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>”
+Plots the result of multiple inversions. The code assumes the same x and y position for all inversions. In addition, it also assumes that in mode “MC”
+the synthesis model is the same</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>confs</strong><span class="classifier">list</span></dt><dd><p>List with dictionaries of the config files</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int</span></dt><dd><p>x position</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int</span></dt><dd><p>y position</p>
+</dd>
+<dt><strong>labels</strong><span class="classifier">list</span></dt><dd><p>List of strings for the labels</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Savepath, if not actual directory desired</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional string at the end of file names</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title of the figures</p>
+</dd>
+<dt><strong>-add_label [str]</strong></dt><dd><p>Additional label in the legend. Can be used e.g. as a title</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot it vertically</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>)</p>
+</dd>
+<dt><strong>-one</strong></dt><dd><p>Observations are the same and therefore only plotted once</p>
+</dd>
+<dt><strong>-err</strong></dt><dd><p>Plot errorbars</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>NotImplementedError</dt><dd><p>if the selected mode is not implemented</p>
+</dd>
+<dt>RuntimeError</dt><dd><p>if the lenghts of confs, x and y are not the same</p>
+</dd>
+<dt>ValueError</dt><dd><p>if the mode in the configs are not the same</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1045,6 +1133,154 @@ Plots the result of one inversion</p>
 <dt><strong>-symv</strong></dt><dd><p>Symmetric limits for vlos</p>
 </dd>
 <dt><strong>-rot90</strong></dt><dd><p>Rotate the image 90 deg</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Plots a single inversion</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.synthesis.</span></span><span class="sig-name descname"><span class="pre">synthesis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/synthesis.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>”
+Plots the result of one inversion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>conf</strong><span class="classifier">dict</span></dt><dd><p>Config. infos</p>
+</dd>
+<dt><strong>num</strong><span class="classifier">int</span></dt><dd><p>Model number</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>Additional parameters given as an argument when the script is executed.</strong></dt><dd></dd>
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Savepath, if not actual directory desired</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional string at the end of file names</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title of the figures</p>
+</dd>
+<dt><strong>-add_label [str]</strong></dt><dd><p>Additional label in the legend. Can be used e.g. as a title</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot it vertically</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>IndexError</dt><dd><p>if num is out of range</p>
+</dd>
+<dt>NotImplementedError</dt><dd><p>if mode is not ‘SY’ or ‘MC’</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Plots two single inversions</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">plots.synthesis_multiple.</span></span><span class="sig-name descname"><span class="pre">synthesis_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/synthesis_multiple.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>”
+Plots the result of multiple inversions. The code assumes the same x and y position for all inversions. In addition, it also assumes that in mode “MC”
+the synthesis model is the same</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>confs</strong><span class="classifier">list</span></dt><dd><p>List with dictionaries of the config files</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">list</span></dt><dd><p>x positions</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">list</span></dt><dd><p>y positions</p>
+</dd>
+<dt><strong>labels</strong><span class="classifier">list</span></dt><dd><p>List of strings for the labels</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>-T</strong></dt><dd><p>Plot temperature in K</p>
+</dd>
+<dt><strong>-Pe</strong></dt><dd><p>Plot electron pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-vmicro</strong></dt><dd><p>Plot microturbulence in cm/s</p>
+</dd>
+<dt><strong>-B</strong></dt><dd><p>Plot magentic field strength in Gauss</p>
+</dd>
+<dt><strong>-vlos</strong></dt><dd><p>Plot line of sight velocity in km/s</p>
+</dd>
+<dt><strong>-gamma</strong></dt><dd><p>Plot inclination by subtracting in deg</p>
+</dd>
+<dt><strong>-phi</strong></dt><dd><p>Plot azimuth by adding in deg</p>
+</dd>
+<dt><strong>-z</strong></dt><dd><p>Plot real height in km</p>
+</dd>
+<dt><strong>-Pg</strong></dt><dd><p>Plot gas pressure in dyn/cm^2</p>
+</dd>
+<dt><strong>-rho</strong></dt><dd><p>Plot density</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot spectra vertically</p>
+</dd>
+<dt><strong>-save [str]</strong></dt><dd><p>Savepath, if not actual directory desired</p>
+</dd>
+<dt><strong>-add [str]</strong></dt><dd><p>Additional string at the end of file names</p>
+</dd>
+<dt><strong>-title [str]</strong></dt><dd><p>Title of the figures</p>
+</dd>
+<dt><strong>-add_label [str]</strong></dt><dd><p>Additional label in the legend. Can be used e.g. as a title</p>
+</dd>
+<dt><strong>-vertical</strong></dt><dd><p>Plot it vertically</p>
+</dd>
+<dt><strong>-num [int]</strong></dt><dd><p>which line number is used (only for mode <cite>MC</cite>)</p>
+</dd>
+<dt><strong>-one</strong></dt><dd><p>Observations are the same and therefore only plotted once</p>
+</dd>
+<dt><strong>-err</strong></dt><dd><p>Plot errorbars</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>RuntimeError</dt><dd><p>if the lenghts of confs, x and y are not the same</p>
+</dd>
+<dt>ValueError</dt><dd><p>if the mode in the configs are not the same</p>
 </dd>
 </dl>
 </dd>

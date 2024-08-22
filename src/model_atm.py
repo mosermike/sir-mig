@@ -4,6 +4,14 @@ Model
 
 Class model_atm with all the tools to read and write the models. The class contains all the information from the model.
 
+Classes:
+--------
+- model_atm: A class encapsulating the physical properties of the atmospheres, with methods to change, read, and write these values.
+
+Functions:
+----------
+- read_model: Reads a binary file containing models and returns a model_atm object.
+
 """
 import numpy as np 
 import os
@@ -11,51 +19,81 @@ from scipy.io import FortranFile
 
 class model_atm:
 	"""
-	Class containing the models
+	A class for handling atmospheric models, with tools for reading, writing, and manipulating model data.
 
-	Parameters
+	This class provides various methods to load, manipulate, and extract physical parameters from atmospheric models.
+	It handles model data in three dimensions (nx, ny, nval) across various physical parameters such as temperature,
+	pressure, magnetic field, and velocities.
+
+	Attributes
 	----------
 	tau : numpy.array
-		Array with the log tau
+		Array containing the logarithm of optical depth (log tau).
 	T : numpy.ndarray
-		Temperature in K
+		3D array representing the temperature in Kelvin.
 	Pe : numpy.ndarray
-		Electron Pressure in dyn/cm$^2$
+		3D array for the electron pressure in dyn/cm^2.
 	vmicro : numpy.ndarray
-		Microturbulence Velocity in cm/s
+		3D array for the microturbulence velocity in cm/s.
 	B : numpy.ndarray
-		Magnetic Field Strength in G
+		3D array for the magnetic field strength in Gauss.
 	vlos : numpy.ndarray
-		Line-of-Sight Velocity in km/s
+		3D array for the line-of-sight velocity in km/s.
 	gamma : numpy.ndarray
-		Inclination in deg
+		3D array for the inclination angle in degrees.
 	phi : numpy.ndarray
-		Azimuth in deg
+		3D array for the azimuthal angle in degrees.
 	z : numpy.ndarray
-		z in km
+		3D array representing the geometrical height in km.
 	Pg : numpy.ndarray
-		Gas pressure in dyn/cm$^2$
+		3D array for the gas pressure in dyn/cm^2.
 	rho : numpy.ndarray
-		Density in g/cm$^3$
-	vmacro : numpy.array
-		Macroturbulence Velocity in km/s
-	fill : numpy.array
-		Filling factor
-	stray_light : numpy.array
-		Stray Light Factor in Percent
+		3D array for the mass density in g/cm^3.
+	vmacro : numpy.ndarray
+		2D array for the macroturbulence velocity in km/s.
+	fill : numpy.ndarray
+		2D array representing the filling factor.
+	stray_light : numpy.ndarray
+		2D array representing the stray light factor in percent.
 	nx : int
-		Dimension in x
+		Dimension in the x-direction.
 	ny : int
-		Dimension in y
+		Dimension in the y-direction.
 	nval : int
-		Dimension along log_tau
-		
-	Returns
-	-------
-	None
+		Dimension along the log_tau axis.
+	full : bool
+		Indicates whether the model includes z, Pg, and rho parameters.
+	load : bool
+		Indicates whether the model data has been loaded.
 
+    Methods
+    -------
+    correct_phi:
+        Corrects the azimuthal angle (phi) to ensure values are within the range [0, 180] degrees.
+    cut_to_map:
+        Cuts the model data to a specified map region.
+    get_attribute:
+        Returns the specified physical parameter based on the input string.
+    interp:
+        Interpolates the model data to a new log tau scale.
+    read:
+        Reads a binary model file and populates the class attributes.
+    read_mod:
+        Reads a .mod file from SIR and initializes the model with nx = ny = 1.
+    read_results:
+        Reads results from inversion processes and populates the model with the data.
+    reinterpolate:
+        Reinterpolates the model to a different log tau scale.
+    set_dim:
+        Sets the dimensions of the model if no data has been loaded.
+
+	Notes
+	-----
+	This class is designed to handle atmospheric models used in astrophysics, particularly for modeling
+	the solar atmosphere or other stellar atmospheres. The model data can include temperature, pressure,
+	velocity fields, and magnetic fields, among other parameters.
 	"""
-	
+
 	def __init__(self, nx = 0, ny = 0, nval = 0):
 		"""
 

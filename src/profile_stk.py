@@ -3,7 +3,20 @@
 Profile
 =======
 
-Class Profile with all the tools to read and write the Stokes Profiles.
+This module provides the `profile_stk` class, a comprehensive class for reading, writing, 
+and manipulating Stokes Profiles, which are typically used in the field of spectropolarimetry. 
+The class offers methods to load Stokes profile data from files, manipulate the data by trimming 
+it spatially or spectrally, and manage various associated data structures, such as wavelength arrays.
+Furthermore, it provides the necessary functions to read the results from the performed synthesis and
+inversions.
+
+Classes:
+--------
+- profile_stk: A class encapsulating the Stokes profiles, with methods to change, read, and write these values.
+
+Functions:
+----------
+- read_profile: Reads a binary file containing Stokes profiles data and returns a profile_stk object.
 
 """
 
@@ -15,36 +28,63 @@ from scipy.io import FortranFile
 
 class profile_stk:
 	"""
-	Class containing the Stokes Profiles
+	A class for handling and manipulating Stokes Profiles, typically used in spectropolarimetry.
+	This class provides tools to read, write, and process Stokes profiles in various formats, as
+	well as to manage associated data like wavelength.
 
-	Parameters
+	Attributes
 	----------
-	wave : nump.array
-		Wavelength
-	indx : numpy array
-		Index or line numbers in mode 'MC'
-	stki : numpy.ndarray
-		Stokes Parameter I
-	stkq : numpy.ndarray
-		Stokes Parameter Q
-	stku : numpy.ndarray
-		Stokes Parameter U
-	stkv : numpy.ndarray
-		Stokes Parameter V
 	nx : int
-		Dimension in x
+		Number of pixels in the x-direction.
 	ny : int
-		Dimension in y
+		Number of pixels in the y-direction.
 	ns : int
-		Number of Stokes Parameter
+		Number of Stokes parameters (typically 4: I, Q, U, V).
 	nw : int
-		Dimension in wavelength
+		Number of wavelength points.
+	wave : numpy.array
+		Wavelength array.
+	indx : numpy.array
+		Index or line numbers, especially in mode 'MC' or 'SY'.
+	stki : numpy.ndarray
+		Stokes I parameter data in format (x,y,$\\lambda$).
+	stkq : numpy.ndarray
+		Stokes Q parameter data in format (x,y,$\\lambda$).
+	stku : numpy.ndarray
+		Stokes U parameter data in format (x,y,$\\lambda$).
+	stkv : numpy.ndarray
+		Stokes V parameter data in format (x,y,$\\lambda$).
 	load : bool
-		Data was loaded
+		Indicates whether the data has been loaded.
 	data_cut_wave : bool
-		Data was cut to the inversion range in the wavelength (this is necessary when data is written into a SIR profile file)
+		Indicates if the data has been trimmed to a specific wavelength range.
+	_data_cut_map : bool
+		Indicates if the data has been trimmed to a specific spatial map.
+    
+    Methods
+    -------
+	copy:
+		Creates a copy of the current profile_stk instance.
+    
+	cut_to_map:
+		Trims the data to a specific spatial map region.
+    
+	cut_to_wave:
+		Trims the data to a specified wavelength range.
+    
+	read:
+		Reads a binary file containing Stokes profiles.
+    
+	read_profile:
+		Reads and stores a single profile from a file into the class at the specified (x, y) position.
 
+	read_results:
+		Reads and stores inversion results from multiple tasks.
+    
+	read_results_MC:
+		Reads and stores profiles for simulations where `indx` is the line number.
 	"""
+
 	def __init__(self, nx : int, ny : int, nw=0):
 		"""
 		Initialisation of the class with the Profiles

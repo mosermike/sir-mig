@@ -18,6 +18,9 @@ This list provides information for plotting results.
 .. automodule:: plots.inversion_single
 	:members:
 	:no-index:
+.. automodule:: plots.inversion_multiple
+	:members:
+	:no-index:
 .. automodule:: plots.inversion_2
 	:members:
 	:no-index:
@@ -25,6 +28,12 @@ This list provides information for plotting results.
 	:members:
 	:no-index:
 .. automodule:: plots.result
+	:members:
+	:no-index:
+.. automodule:: plots.synthesis
+	:members:
+	:no-index:
+.. automodule:: plots.synthesis_multiple
 	:members:
 	:no-index:
 .. automodule:: plots.visualizer

@@ -1,11 +1,18 @@
 """
+Chi2 Calculation for Stokes Profiles
+====================================
 
-Chi2
-====
+This module provides tools to compute, read, and write the chi-squared (χ²) values for Stokes profiles, which are essential in analyzing polarimetric data in astrophysical observations. The χ² statistic is used to measure the goodness of fit between observed and synthetic (modeled) Stokes profiles.
 
-Class chi2_stk with all the tools to compute, read and write chi2 value of Stokes Profiles.
+Classes:
+--------
+- chi2_stk: A class encapsulating the χ² values for Stokes profiles, with methods to compute, read, and write these values.
 
+Functions:
+----------
+- read_chi2: Reads a binary file containing χ² data and returns a chi2_stk object.
 """
+
 import numpy as np
 from scipy.io import FortranFile
 import profile_stk as p
@@ -152,41 +159,54 @@ def _compute_total_chi2(obs : p.profile_stk, syn : p.profile_stk, x : int, y : i
 
 
 class chi2_stk:
-	r"""
-	Class containing the $\chi^2$-values
+	"""
+	
+	A class to store and manage chi-squared (χ²) values for Stokes profiles. The Stokes profiles
+	represent the polarization state of light in astrophysical observations, and the χ² statistic
+	is used to assess the goodness of fit between observed and synthetic profiles.
 
 	Parameters
 	----------
 	total : float
-		Total chi2 of the full map
+		The total χ² value for the entire map.
 	Itot : float
-		Total chi2 for Stokes I
+		The total χ² value for Stokes I.
 	Qtot : float
-		Total chi2 for Stokes Q
+		The total χ² value for Stokes Q.
 	Utot : float
-		Total chi2 for Stokes U
+		The total χ² value for Stokes U.
 	Vtot : float
-		Total chi2 for Stokes V
+		The total χ² value for Stokes V.
 	tot : numpy.ndarray
-		chi2 for all 4 Stokes Parameter
+		A 2D array storing the χ² values for all Stokes parameters combined.
 	stki : numpy.ndarray
-		chi2 for Stokes Parameter I
+		A 2D array storing the χ² values for Stokes I.
 	stkq : numpy.ndarray
-		chi2 for Stokes Parameter Q
+		A 2D array storing the χ² values for Stokes Q.
 	stku : numpy.ndarray
-		chi2 for Stokes Parameter U
+		A 2D array storing the χ² values for Stokes U.
 	stkv : numpy.ndarray
-		chi2 for Stokes Parameter V
+		A 2D array storing the χ² values for Stokes V.
 	nx : int
-		Dimension in x
+		The dimension of the data in the x-direction.
 	ny : int
-		Dimension in y
+		The dimension of the data in the y-direction.
 	ns : int
-		Number of Stokes Parameter
+		The number of Stokes parameters (normally 4: I, Q, U, V).
 	noise : float
-		Noise level of the Stokes Parameter
+		The noise level for the Stokes parameters.
 
+	Methods
+	-------
+	compute:
+		Computes the χ² values for all pixels across all Stokes parameters and the total χ².
+	read:
+		Reads a binary Fortran file containing χ² data.
+	write:
+		Writes the χ² data to a binary file.
 	"""
+
+
 	def __init__(self, nx : int, ny : int):
 		"""
 		Initialisation of the class stk_chi2
@@ -223,7 +243,9 @@ class chi2_stk:
 		r"""
 		Compute the $\chi^2$ of all pixels in all Stokes Parameter and also the total $\chi^2$
 		The computation is based on (Borrero et al, 2021) with the equation
+		
 		$$\chi^2 = \frac{1}{\Lambda - F} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
+		
 		with $\omega = \frac{w}{\sigma}$ with the used weight $w$ and the noise $\sigma$. In case, there are
 		more spectra considered, $\Lambda$ may be multiplied with the number of pixels and number of used Stokes Parameter.
 		Obviously, also more summations must be considered.

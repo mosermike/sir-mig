@@ -392,52 +392,54 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="chi2_stk.chi2_stk">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chi2_stk.</span></span><span class="sig-name descname"><span class="pre">chi2_stk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk" title="Link to this definition">#</a></dt>
-<dd><p>Class containing the <span class="math notranslate nohighlight">\(\chi^2\)</span>-values</p>
+<dd><p>A class to store and manage chi-squared (χ²) values for Stokes profiles. The Stokes profiles
+represent the polarization state of light in astrophysical observations, and the χ² statistic
+is used to assess the goodness of fit between observed and synthetic profiles.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>total</strong><span class="classifier">float</span></dt><dd><p>Total chi2 of the full map</p>
+<dt><strong>total</strong><span class="classifier">float</span></dt><dd><p>The total χ² value for the entire map.</p>
 </dd>
-<dt><strong>Itot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes I</p>
+<dt><strong>Itot</strong><span class="classifier">float</span></dt><dd><p>The total χ² value for Stokes I.</p>
 </dd>
-<dt><strong>Qtot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes Q</p>
+<dt><strong>Qtot</strong><span class="classifier">float</span></dt><dd><p>The total χ² value for Stokes Q.</p>
 </dd>
-<dt><strong>Utot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes U</p>
+<dt><strong>Utot</strong><span class="classifier">float</span></dt><dd><p>The total χ² value for Stokes U.</p>
 </dd>
-<dt><strong>Vtot</strong><span class="classifier">float</span></dt><dd><p>Total chi2 for Stokes V</p>
+<dt><strong>Vtot</strong><span class="classifier">float</span></dt><dd><p>The total χ² value for Stokes V.</p>
 </dd>
-<dt><strong>tot</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for all 4 Stokes Parameter</p>
+<dt><strong>tot</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>A 2D array storing the χ² values for all Stokes parameters combined.</p>
 </dd>
-<dt><strong>stki</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter I</p>
+<dt><strong>stki</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>A 2D array storing the χ² values for Stokes I.</p>
 </dd>
-<dt><strong>stkq</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter Q</p>
+<dt><strong>stkq</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>A 2D array storing the χ² values for Stokes Q.</p>
 </dd>
-<dt><strong>stku</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter U</p>
+<dt><strong>stku</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>A 2D array storing the χ² values for Stokes U.</p>
 </dd>
-<dt><strong>stkv</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>chi2 for Stokes Parameter V</p>
+<dt><strong>stkv</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>A 2D array storing the χ² values for Stokes V.</p>
 </dd>
-<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in x</p>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>The dimension of the data in the x-direction.</p>
 </dd>
-<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in y</p>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>The dimension of the data in the y-direction.</p>
 </dd>
-<dt><strong>ns</strong><span class="classifier">int</span></dt><dd><p>Number of Stokes Parameter</p>
+<dt><strong>ns</strong><span class="classifier">int</span></dt><dd><p>The number of Stokes parameters (normally 4: I, Q, U, V).</p>
 </dd>
-<dt><strong>noise</strong><span class="classifier">float</span></dt><dd><p>Noise level of the Stokes Parameter</p>
+<dt><strong>noise</strong><span class="classifier">float</span></dt><dd><p>The noise level for the Stokes parameters.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="autosummary longtable table autosummary">
+<table class="table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#chi2_stk.chi2_stk.compute" title="chi2_stk.chi2_stk.compute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute</span></code></a>(obs, syn, weights, num_of_nodes)</p></td>
-<td><p>Compute the $chi^2$ of all pixels in all Stokes Parameter and also the total $chi^2$ The computation is based on (Borrero et al, 2021) with the equation $$chi^2 = frac{1}{Lambda - F} sum_i^Lambda (I^{obs}_i - I^{syn}_i)^2 cdot omega^2$$ with $omega = frac{w}{sigma}$ with the used weight $w$ and the noise $sigma$.</p></td>
+<tr class="row-odd"><td><p><strong>compute:</strong></p></td>
+<td><p>Computes the χ² values for all pixels across all Stokes parameters and the total χ².</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#chi2_stk.chi2_stk.read" title="chi2_stk.chi2_stk.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Read a binary fortran file</p></td>
+<tr class="row-even"><td><p><strong>read:</strong></p></td>
+<td><p>Reads a binary Fortran file containing χ² data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#chi2_stk.chi2_stk.write" title="chi2_stk.chi2_stk.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Write the data to a binary file</p></td>
+<tr class="row-odd"><td><p><strong>write:</strong></p></td>
+<td><p>Writes the χ² data to a binary file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -445,11 +447,11 @@ document.write(`
 <dt class="sig sig-object py" id="chi2_stk.chi2_stk.compute">
 <span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#profile_stk.profile_stk" title="profile_stk.profile_stk"><span class="pre">profile_stk</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">syn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#profile_stk.profile_stk" title="profile_stk.profile_stk"><span class="pre">profile_stk</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/chi2_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chi2_stk.chi2_stk.compute" title="Link to this definition">#</a></dt>
 <dd><p>Compute the <span class="math notranslate nohighlight">\(\chi^2\)</span> of all pixels in all Stokes Parameter and also the total <span class="math notranslate nohighlight">\(\chi^2\)</span>
-The computation is based on (Borrero et al, 2021) with the equation
-<div class="math notranslate nohighlight">
+The computation is based on (Borrero et al, 2021) with the equation</p>
+<p><div class="math notranslate nohighlight">
 \[\chi^2 = \frac{1}{\Lambda - F} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2\]</div>
-
-with <span class="math notranslate nohighlight">\(\omega = \frac{w}{\sigma}\)</span> with the used weight <span class="math notranslate nohighlight">\(w\)</span> and the noise <span class="math notranslate nohighlight">\(\sigma\)</span>. In case, there are
+</p>
+<p>with <span class="math notranslate nohighlight">\(\omega = \frac{w}{\sigma}\)</span> with the used weight <span class="math notranslate nohighlight">\(w\)</span> and the noise <span class="math notranslate nohighlight">\(\sigma\)</span>. In case, there are
 more spectra considered, <span class="math notranslate nohighlight">\(\Lambda\)</span> may be multiplied with the number of pixels and number of used Stokes Parameter.
 Obviously, also more summations must be considered.</p>
 <dl class="field-list simple">
@@ -517,90 +519,89 @@ Obviously, also more summations must be considered.</p>
 <dt class="sig sig-object py" id="model_atm.model_atm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model_atm.</span></span><span class="sig-name descname"><span class="pre">model_atm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class containing the models</p>
+<blockquote>
+<div><p>A class for handling atmospheric models, with tools for reading, writing, and manipulating model data.</p>
+<p>This class provides various methods to load, manipulate, and extract physical parameters from atmospheric models.
+It handles model data in three dimensions (nx, ny, nval) across various physical parameters such as temperature,
+pressure, magnetic field, and velocities.</p>
+</div></blockquote>
+<p class="rubric">Notes</p>
+<p>This class is designed to handle atmospheric models used in astrophysics, particularly for modeling
+the solar atmosphere or other stellar atmospheres. The model data can include temperature, pressure,
+velocity fields, and magnetic fields, among other parameters.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>tau</strong><span class="classifier">numpy.array</span></dt><dd><p>Array with the log tau</p>
+<dt><strong>tau</strong><span class="classifier">numpy.array</span></dt><dd><p>Array containing the logarithm of optical depth (log tau).</p>
 </dd>
-<dt><strong>T</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Temperature in K</p>
+<dt><strong>T</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array representing the temperature in Kelvin.</p>
 </dd>
-<dt><strong>Pe</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Electron Pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p>
+<dt><strong>Pe</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the electron pressure in dyn/cm^2.</p>
 </dd>
-<dt><strong>vmicro</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Microturbulence Velocity in cm/s</p>
+<dt><strong>vmicro</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the microturbulence velocity in cm/s.</p>
 </dd>
-<dt><strong>B</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Magnetic Field Strength in G</p>
+<dt><strong>B</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the magnetic field strength in Gauss.</p>
 </dd>
-<dt><strong>vlos</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Line-of-Sight Velocity in km/s</p>
+<dt><strong>vlos</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the line-of-sight velocity in km/s.</p>
 </dd>
-<dt><strong>gamma</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Inclination in deg</p>
+<dt><strong>gamma</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the inclination angle in degrees.</p>
 </dd>
-<dt><strong>phi</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Azimuth in deg</p>
+<dt><strong>phi</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the azimuthal angle in degrees.</p>
 </dd>
-<dt><strong>z</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>z in km</p>
+<dt><strong>z</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array representing the geometrical height in km.</p>
 </dd>
-<dt><strong>Pg</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Gas pressure in dyn/cm<span class="math notranslate nohighlight">\(^2\)</span></p>
+<dt><strong>Pg</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the gas pressure in dyn/cm^2.</p>
 </dd>
-<dt><strong>rho</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Density in g/cm<span class="math notranslate nohighlight">\(^3\)</span></p>
+<dt><strong>rho</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>3D array for the mass density in g/cm^3.</p>
 </dd>
-<dt><strong>vmacro</strong><span class="classifier">numpy.array</span></dt><dd><p>Macroturbulence Velocity in km/s</p>
+<dt><strong>vmacro</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>2D array for the macroturbulence velocity in km/s.</p>
 </dd>
-<dt><strong>fill</strong><span class="classifier">numpy.array</span></dt><dd><p>Filling factor</p>
+<dt><strong>fill</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>2D array representing the filling factor.</p>
 </dd>
-<dt><strong>stray_light</strong><span class="classifier">numpy.array</span></dt><dd><p>Stray Light Factor in Percent</p>
+<dt><strong>stray_light</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>2D array representing the stray light factor in percent.</p>
 </dd>
-<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in x</p>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in the x-direction.</p>
 </dd>
-<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in y</p>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in the y-direction.</p>
 </dd>
-<dt><strong>nval</strong><span class="classifier">int</span></dt><dd><p>Dimension along log_tau</p>
+<dt><strong>nval</strong><span class="classifier">int</span></dt><dd><p>Dimension along the log_tau axis.</p>
 </dd>
-</dl>
+<dt><strong>full</strong><span class="classifier">bool</span></dt><dd><p>Indicates whether the model includes z, Pg, and rho parameters.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
+<dt><strong>load</strong><span class="classifier">bool</span></dt><dd><p>Indicates whether the model data has been loaded.</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="autosummary longtable table autosummary">
+<table class="table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.correct_phi" title="model_atm.model_atm.correct_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correct_phi</span></code></a>()</p></td>
-<td><p>SIR can give you any value for the azimuth, e.g. -250 deg, and therefore, to compute the standard deviation those values should be corrected so that I have values from 0 to 360 degrees.</p></td>
+<tr class="row-odd"><td><p><strong>correct_phi:</strong></p></td>
+<td><p>Corrects the azimuthal angle (phi) to ensure values are within the range [0, 180] degrees.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.cut_to_map" title="model_atm.model_atm.cut_to_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_map</span></code></a>(Map)</p></td>
-<td><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p></td>
+<tr class="row-even"><td><p><strong>cut_to_map:</strong></p></td>
+<td><p>Cuts the model data to a specified map region.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.get_attribute" title="model_atm.model_atm.get_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attribute</span></code></a>(string)</p></td>
-<td><p>Returns a specific physical parameter.</p></td>
+<tr class="row-odd"><td><p><strong>get_attribute:</strong></p></td>
+<td><p>Returns the specified physical parameter based on the input string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.interp" title="model_atm.model_atm.interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interp</span></code></a>(new_tau)</p></td>
-<td><p>Interpolate the model to a new log tau scale.</p></td>
+<tr class="row-even"><td><p><strong>interp:</strong></p></td>
+<td><p>Interpolates the model data to a new log tau scale.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.read" title="model_atm.model_atm.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Reads a binary model file.</p></td>
+<tr class="row-odd"><td><p><strong>read:</strong></p></td>
+<td><p>Reads a binary model file and populates the class attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.read_mod" title="model_atm.model_atm.read_mod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_mod</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Reads a model file from SIR and assigns the value to the class.</p></td>
+<tr class="row-even"><td><p><strong>read_mod:</strong></p></td>
+<td><p>Reads a .mod file from SIR and initializes the model with nx = ny = 1.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.read_results" title="model_atm.model_atm.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
-<td><p>Reads all the errors from the inversion</p></td>
+<tr class="row-odd"><td><p><strong>read_results:</strong></p></td>
+<td><p>Reads results from inversion processes and populates the model with the data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.reinterpolate" title="model_atm.model_atm.reinterpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reinterpolate</span></code></a>(tau)</p></td>
-<td><p>Reinterpolate to a different tau scale</p></td>
+<tr class="row-even"><td><p><strong>reinterpolate:</strong></p></td>
+<td><p>Reinterpolates the model to a different log tau scale.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.set_dim" title="model_atm.model_atm.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nval)</p></td>
-<td><p>Sets the dimensions if no data is loaded yet</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.set_limit" title="model_atm.model_atm.set_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_limit</span></code></a>(lim)</p></td>
-<td><p>Cuts the arrays to a specific log tau value (should only be used for plotting).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#model_atm.model_atm.write" title="model_atm.model_atm.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Write data into a binary fortran file</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#model_atm.model_atm.write_model" title="model_atm.model_atm.write_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_model</span></code></a>(filename, x, y)</p></td>
-<td><p>Write a model with the given data in a specific format.</p></td>
+<tr class="row-odd"><td><p><strong>set_dim:</strong></p></td>
+<td><p>Sets the dimensions of the model if no data has been loaded.</p></td>
 </tr>
 </tbody>
 </table>
@@ -863,75 +864,66 @@ This class will then create the class with nx = ny = 1.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="profile_stk.profile_stk">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">profile_stk.</span></span><span class="sig-name descname"><span class="pre">profile_stk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk" title="Link to this definition">#</a></dt>
-<dd><p>Class containing the Stokes Profiles</p>
+<dd><blockquote>
+<div><p>A class for handling and manipulating Stokes Profiles, typically used in spectropolarimetry.
+This class provides tools to read, write, and process Stokes profiles in various formats, as
+well as to manage associated data like wavelength.</p>
+</div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>wave</strong><span class="classifier">nump.array</span></dt><dd><p>Wavelength</p>
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Number of pixels in the x-direction.</p>
 </dd>
-<dt><strong>indx</strong><span class="classifier">numpy array</span></dt><dd><p>Index or line numbers in mode ‘MC’</p>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Number of pixels in the y-direction.</p>
 </dd>
-<dt><strong>stki</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter I</p>
+<dt><strong>ns</strong><span class="classifier">int</span></dt><dd><p>Number of Stokes parameters (typically 4: I, Q, U, V).</p>
 </dd>
-<dt><strong>stkq</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter Q</p>
+<dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Number of wavelength points.</p>
 </dd>
-<dt><strong>stku</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter U</p>
+<dt><strong>wave</strong><span class="classifier">numpy.array</span></dt><dd><p>Wavelength array.</p>
 </dd>
-<dt><strong>stkv</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Parameter V</p>
+<dt><strong>indx</strong><span class="classifier">numpy.array</span></dt><dd><p>Index or line numbers, especially in mode ‘MC’ or ‘SY’.</p>
 </dd>
-<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>Dimension in x</p>
+<dt><strong>stki</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes I parameter data in format (x,y,<span class="math notranslate nohighlight">\(\lambda\)</span>).</p>
 </dd>
-<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Dimension in y</p>
+<dt><strong>stkq</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes Q parameter data in format (x,y,<span class="math notranslate nohighlight">\(\lambda\)</span>).</p>
 </dd>
-<dt><strong>ns</strong><span class="classifier">int</span></dt><dd><p>Number of Stokes Parameter</p>
+<dt><strong>stku</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes U parameter data in format (x,y,<span class="math notranslate nohighlight">\(\lambda\)</span>).</p>
 </dd>
-<dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Dimension in wavelength</p>
+<dt><strong>stkv</strong><span class="classifier">numpy.ndarray</span></dt><dd><p>Stokes V parameter data in format (x,y,<span class="math notranslate nohighlight">\(\lambda\)</span>).</p>
 </dd>
-<dt><strong>load</strong><span class="classifier">bool</span></dt><dd><p>Data was loaded</p>
+<dt><strong>load</strong><span class="classifier">bool</span></dt><dd><p>Indicates whether the data has been loaded.</p>
 </dd>
-<dt><strong>data_cut_wave</strong><span class="classifier">bool</span></dt><dd><p>Data was cut to the inversion range in the wavelength (this is necessary when data is written into a SIR profile file)</p>
+<dt><strong>data_cut_wave</strong><span class="classifier">bool</span></dt><dd><p>Indicates if the data has been trimmed to a specific wavelength range.</p>
+</dd>
+<dt><strong>_data_cut_map</strong><span class="classifier">bool</span></dt><dd><p>Indicates if the data has been trimmed to a specific spatial map.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="autosummary longtable table autosummary">
+<table class="table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.copy" title="profile_stk.profile_stk.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Copy the class to a new instance</p></td>
+<tr class="row-odd"><td><p><strong>copy:</strong></p></td>
+<td><p>Creates a copy of the current profile_stk instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.cut_to_map" title="profile_stk.profile_stk.cut_to_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_map</span></code></a>(Map)</p></td>
-<td><p>Cut the data to a map [xmin, xmax, ymin, ymax]</p></td>
+<tr class="row-even"><td><p><strong>cut_to_map:</strong></p></td>
+<td><p>Trims the data to a specific spatial map region.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.cut_to_wave" title="profile_stk.profile_stk.cut_to_wave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_to_wave</span></code></a>(range_wave)</p></td>
-<td><p>Cut the data to the range in wavelengths</p></td>
+<tr class="row-odd"><td><p><strong>cut_to_wave:</strong></p></td>
+<td><p>Trims the data to a specified wavelength range.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read" title="profile_stk.profile_stk.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Reads a binary profile file</p></td>
+<tr class="row-even"><td><p><strong>read:</strong></p></td>
+<td><p>Reads a binary file containing Stokes profiles.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_profile" title="profile_stk.profile_stk.read_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_profile</span></code></a>(filename[, x, y])</p></td>
-<td><p>Reads a single profile file and stores it in the class</p></td>
+<tr class="row-odd"><td><p><strong>read_profile:</strong></p></td>
+<td><p>Reads and stores a single profile from a file into the class at the specified (x, y) position.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results" title="profile_stk.profile_stk.read_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results</span></code></a>(task, filename, path, nx, ny)</p></td>
-<td><p>Reads all the errors from the inversion</p></td>
+<tr class="row-even"><td><p><strong>read_results:</strong></p></td>
+<td><p>Reads and stores inversion results from multiple tasks.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.read_results_MC" title="profile_stk.profile_stk.read_results_MC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_results_MC</span></code></a>(path, tasks, filename)</p></td>
-<td><p>Reads all the profiles for the simulation where indx is the line number</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.set_dim" title="profile_stk.profile_stk.set_dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dim</span></code></a>(nx, ny, nw)</p></td>
-<td><p>Sets the dimensions if no data is loaded yet</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.veil_correction" title="profile_stk.profile_stk.veil_correction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">veil_correction</span></code></a>(nu[, Ic])</p></td>
-<td><p>Correct the spectrum for the spectral veil by simly inverting the convoluted equation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write" title="profile_stk.profile_stk.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(fname[, fmt_type])</p></td>
-<td><p>Write data into a binary fortran file</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile" title="profile_stk.profile_stk.write_profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile</span></code></a>(filename, x, y, Grid)</p></td>
-<td><p>Writes data to profiles as described in the config file Note to call cut_to_wave, otherwise it writes the wrong profiles!</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#profile_stk.profile_stk.write_profile_mc" title="profile_stk.profile_stk.write_profile_mc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_profile_mc</span></code></a>(filename, x)</p></td>
-<td><p>Writes data to SIR profiles as described in the config file</p></td>
+<tr class="row-odd"><td><p><strong>read_results_MC:</strong></p></td>
+<td><p>Reads and stores profiles for simulations where <cite>indx</cite> is the line number.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1097,6 +1089,20 @@ This class will then create the class with nx = ny = 1.</p>
 <dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>Number of Models in y</p>
 </dd>
 <dt><strong>nw</strong><span class="classifier">int</span></dt><dd><p>Number of wavelength points</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.profile_stk.transform_wave_sir_to_abs">
+<span class="sig-name descname"><span class="pre">transform_wave_sir_to_abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines_file</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.transform_wave_sir_to_abs" title="Link to this definition">#</a></dt>
+<dd><p>Transforms the relative wavelengths from sir in mA to absolute wavelengths with the lines file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lines_file</strong><span class="classifier">string</span></dt><dd><p>Path to the lines file</p>
 </dd>
 </dl>
 </dd>
@@ -1272,6 +1278,7 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_results"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_results()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_results_MC"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_results_MC()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.set_dim"><code class="docutils literal notranslate"><span class="pre">profile_stk.set_dim()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.transform_wave_sir_to_abs"><code class="docutils literal notranslate"><span class="pre">profile_stk.transform_wave_sir_to_abs()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.veil_correction"><code class="docutils literal notranslate"><span class="pre">profile_stk.veil_correction()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.write"><code class="docutils literal notranslate"><span class="pre">profile_stk.write()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.write_profile"><code class="docutils literal notranslate"><span class="pre">profile_stk.write_profile()</span></code></a></li>

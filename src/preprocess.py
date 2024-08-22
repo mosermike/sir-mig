@@ -553,7 +553,12 @@ def vac_to_air(wavelength : float, method = "Ciddor1996") -> float:
 #################################################################################################3
 def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict, save : bool = True, verbose : bool = True, plot : bool = True) -> p.profile_stk:
 	""" 
-	Correct the spectral veil in the data with a config file. This function calls the following functions:
+	Correct the spectral veil in the data with a config file.
+	
+	This function convolves the FTS data with a Gaussian and a constant value for the spectral veil using
+	$$I = (1 - \\nu) [I_{FTS} * g(\\lambda, \\sigma)] + \\nu I_c.$$
+	
+	This function calls the following functions:
 	 - argmin()
 	 - chi2()
 	 - gaussian()
@@ -561,8 +566,7 @@ def correct_spectral_veil_conf(pro : p.profile_stk, conf : dict, save : bool = T
 	 - optimise_chi()
 	 - vac_to_air()
 
-	This function convolves the FTS data with a Gaussian and a constant value for the spectral veil using
-	$$I = (1 - \\nu) [I_{FTS} * g(\\lambda, \\sigma)] + \\nu I_c.$$
+	
 
 	Parameters
 	----------
