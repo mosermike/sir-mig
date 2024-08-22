@@ -146,6 +146,86 @@ class profile_stk:
 		
 		return Dict
 
+	def __read_line(self, filename : str):
+		"""
+		Reads the line file
+
+		Parameters
+		----------
+		filename : string
+			File to be read
+		
+		Returns
+		-------
+		dict
+			Dict. with 'Line', 'Ion', 'wavelength', 'factor', 'Exc_Pot', log_gf',
+			'Transition', 'alpha' and 'sigma' in it
+		
+		Raises
+		------
+		FileExistsError
+			if file does not exist
+
+		
+		"""
+		if not os.path.exists(filename):
+			raise FileExistsError("Line file " + filename + " does not exist.")
+		
+		# Open the file and read lines
+		with open(filename) as f:
+			strings = f.readlines()
+
+		# Remove last line if it contains no information
+		if "=" not in strings[-1]:
+			strings = strings[:-1]
+
+		# Remove leading spaces
+		for i in range(len(strings)):
+			while(strings[i][0] == ' '):
+				strings[i] = strings[i][1:]
+		
+		# Create arrays
+		Line 		= np.empty(len(strings), dtype = int)
+		Ion			= ["" for i in strings]
+		ll			= np.empty(len(strings))
+		factor		= np.empty(len(strings))
+		Exc_Pot		= np.empty(len(strings))
+		log_gf		= np.empty(len(strings))
+		Transition	= np.empty(len(strings), dtype=str)
+		alpha		= np.empty(len(strings))
+		sigma		= np.empty(len(strings))
+		
+		# Remove multiple spaces
+		while any('  ' in x for x in strings):
+			strings = [i.replace('  ', ' ')   for i in strings]
+
+		# Fill arrays with data	
+		strings = [i.split(' ') for i in strings]
+		for i in range(len(strings)):
+			split = strings[i][0].split('=')
+			Line[i]    = int(split[0])
+			Ion[i]	= split[1] + ' ' + strings[i][1]
+			ll[i]	= strings[i][2]
+			factor[i]  = strings[i][3]
+			Exc_Pot[i] = strings[i][4]
+			log_gf[i]  = strings[i][5]
+			Transition[i]  = strings[i][6] + strings[i][7] + strings[i][8] + strings[i][9]
+			alpha[i]   = strings[i][10]
+			sigma[i]   = strings[i][11]
+
+		Dict = {
+				'Line'		: Line,
+				'Ion'		: Ion,
+				'wavelength'	: ll,
+				'factor'		: factor,
+				'Exc_Pot'		: Exc_Pot,
+				'log_gf'		: log_gf,
+				'Transition'	: Transition,
+				'alpha'	 : alpha,
+				'sigma'	 : sigma
+			}
+		
+		return Dict
 
 	def __read_profile_sir(self, filename :str):
 		"""
@@ -585,6 +665,28 @@ class profile_stk:
 		self.ny = ny
 		self.nw = nw
 		self.ns = 4
+
+		return self
+
+	def transform_wave_sir_to_abs(self, lines_file):
+		"""
+		Transforms the relative wavelengths from sir in mA to absolute wavelengths with the lines file
+
+		Parameters
+		----------
+		lines_file : string
+			Path to the lines file
+		"""
+		# Check whether the wavelength data is in the MC form
+		if(np.all(self.indx == 0) or (abs(self.wave[1] - self.wave[0]) < 10)):
+			print("The wavelengths seem not to be in relative as in SIR. No changes are made!")
+			return self
+
+		# Read the lines file
+		lines = self.__read_line(lines_file)
+
+		for i in range(len(self.wave)):
+			self.wave[i] = self.wave[i]/1e3 + lines["wavelength"][lines["Line"] == self.indx[i]]
 
 		return self
 
