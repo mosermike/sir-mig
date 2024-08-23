@@ -336,6 +336,15 @@ def read_config(filename : str, check : bool = False, change_config : bool = Fal
 		if Dict['mode'] != "SY":
 			if (Dict['chi2'] != "" and Dict['chi2'] != "0" and Dict['chi2'] != "1"):
 				print(f"[read_config] Unknown option '{Dict['chi2']}'. chi2 is not computed.")
+
+		if Dict["mode"] == "1C" or Dict["mode"] == "MC":
+			if len(Dict["nodes_temp"].split(",")) > Dict["cycles"] or len(Dict["nodes_magn"].split(",")) > Dict["cycles"] or len(Dict["nodes_vlos"].split(",")) > Dict["cycles"] or len(Dict["nodes_gamma"].split(",")) > Dict["cycles"] or len(Dict["nodes_phi"].split(",")) > Dict["cycles"]:
+				print("[read_config] Warning: More nodes specified than number of cycles.")
+		if Dict["mode"] == "2C":
+			if len(Dict["nodes_temp1"].split(",")) > Dict["cycles"] or len(Dict["nodes_magn1"].split(",")) > Dict["cycles"] or len(Dict["nodes_vlos1"].split(",")) > Dict["cycles"] or len(Dict["nodes_gamma1"].split(",")) > Dict["cycles"] or len(Dict["nodes_phi1"].split(",")) > Dict["cycles"]:
+				print("[read_config] Warning: More nodes specified for model 1 than number of cycles.")
+			if len(Dict["nodes_temp2"].split(",")) > Dict["cycles"] or len(Dict["nodes_magn2"].split(",")) > Dict["cycles"] or len(Dict["nodes_vlos2"].split(",")) > Dict["cycles"] or len(Dict["nodes_gamma2"].split(",")) > Dict["cycles"] or len(Dict["nodes_phi2"].split(",")) > Dict["cycles"]:
+				print("[read_config] Warning: More nodes specified for model 2 than number of cycles.")
 	
 
 	return Dict
