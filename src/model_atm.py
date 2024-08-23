@@ -72,6 +72,8 @@ class model_atm:
         Corrects the azimuthal angle (phi) to ensure values are within the range [0, 180] degrees.
     cut_to_map:
         Cuts the model data to a specified map region.
+	extend:
+		Extends this model to a new x and y dimension and assigns the data from a specific pixel to all the pixels
     get_attribute:
         Returns the specified physical parameter based on the input string.
     interp:
@@ -82,8 +84,6 @@ class model_atm:
         Reads a .mod file from SIR and initializes the model with nx = ny = 1.
     read_results:
         Reads results from inversion processes and populates the model with the data.
-    reinterpolate:
-        Reinterpolates the model to a different log tau scale.
     set_dim:
         Sets the dimensions of the model if no data has been loaded.
 
@@ -193,6 +193,65 @@ class model_atm:
 		
 		return self
 
+	def extend(self, nx : int, ny : int, x : int=0, y : int=0):
+		"""
+		Extends the model to a new dimension and takes the atmosphere from position x,y and
+		assigns it to all the pixels
+
+		Parameters
+		----------
+		nx : int
+			New dimension in x
+		ny : int
+			New dimension in y
+		x : int, optional
+			take data from this x position, by default 0
+		y : int, optional
+			take data from this y position, by default 0
+
+		Returns
+		-------
+		model_atm
+			New, extended model
+
+		Raises
+		------
+		IndexError
+			if x or y is out of range
+		ValueError
+			if nx or ny is negative
+		"""
+		if (x >= self.nx) or (x < 0):
+			raise IndexError("[extend] x out of range")
+		if (y >= self.ny) or (y < 0):
+			raise IndexError("[extend] y out of range")
+		if (nx < 0):
+			raise ValueError("[extend] New dimension nx is negative")
+		if (ny < 0):
+			raise ValueError("[extend] New dimension ny is negative")
+		mod = model_atm(nx, ny, self.nval)
+		mod.full = self.full
+		mod.load = self.load
+		mod.tau = self.tau
+		for i in range(nx):
+			for j in range(ny):
+				mod.T[i,j] = self.T[x,y]
+				mod.Pe[i,j] = self.Pe[x,y]
+				mod.vmicro[i,j] = self.vmicro[x,y]
+				mod.B[i,j] = self.B[x,y]
+				mod.vlos[i,j] = self.vlos[x,y]
+				mod.gamma[i,j] = self.gamma[x,y]
+				mod.phi[i,j] = self.phi[x,y]
+				if self.full or np.any(self.z):
+					mod.z[i,j] = self.z[x,y]
+					mod.Pg[i,j] = self.Pg[x,y]
+					mod.rho[i,j] = self.rho[x,y]
+				mod.fill[i,j] = self.fill[x,y]
+				mod.stray_light[i,j] = self.stray_light[x,y]
+				mod.vmacro[i,j] = self.vmacro[x,y]
+
+		return mod
+
 	def get_attribute(self, string):
 		"""
 		Returns a specific physical parameter. This can be used if ones only wants a specific
@@ -268,20 +327,26 @@ class model_atm:
 			print(f"[interp] Error as the scale exceeds the borders of the model ({new_tau[0]} vs. {self.tau[0]})")
 			return self
 		
+		mod = model_atm(self.nx,self.ny,len(new_tau))
+		mod.full = np.copy(self.full)
+		mod.fill = np.copy(self.fill)
+		mod.stray_light = np.copy(self.stray_light)
+		mod.vmacro = np.copy(self.vmacro)
+
 		for x in self.nx:
 			for y in self.y:
-				self.T[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.T[x,y]))
-				self.Pe[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.Pe[x,y]))
-				self.vmicro[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.vmicro[x,y]))
-				self.B[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.B[x,y]))
-				self.vlos[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.vlos[x,y]))
-				self.gamma[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.gamma[x,y]))
-				self.phi[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.phi[x,y]))
+				mod.T[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.T[x,y]))
+				mod.Pe[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.Pe[x,y]))
+				mod.vmicro[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.vmicro[x,y]))
+				mod.B[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.B[x,y]))
+				mod.vlos[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.vlos[x,y]))
+				mod.gamma[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.gamma[x,y]))
+				mod.phi[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.phi[x,y]))
 				if self.full or np.any(self.z):
-					self.z[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.z[x,y]))
-					self.Pg[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.Pg[x,y]))
-					self.rho[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.rho[x,y]))
-		self.tau = new_tau
+					mod.z[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.z[x,y]))
+					mod.Pg[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.Pg[x,y]))
+					mod.rho[x,y] = np.interp(new_tau, np.flip(self.tau), np.flip(self.rho[x,y]))
+		mod.tau = new_tau
 
 		return self
 
@@ -512,54 +577,6 @@ class model_atm:
 		
 		
 		return self
-
-	def reinterpolate(self, tau : np.array):
-		"""
-		Reinterpolate to a different tau scale
-
-		Parameters
-		----------
-		tau : numpy array
-			Array with the new log tau scale
-
-		Returns
-		-------
-		New reinterpolated model
-
-		Notes
-		-----
-		If tau has bigger or smaller numbers than in the range, the numbers are wrong
-
-		"""
-		
-		mod = model_atm(self.nx,self.ny,len(tau))
-		mod.tau = tau
-		mod.full = np.copy(self.full)
-		mod.fill = np.copy(self.fill)
-		mod.stray_light = np.copy(self.stray_light)
-		mod.vmacro = np.copy(self.vmacro)
-
-		if(tau[0] > np.min(self.tau[0])):
-			print("Note that the chosen range as it exceeds the range sometimes will lead to wrong numbers in the start!")
-		if(tau[-1] < np.max(self.tau[-1])):
-			print("Note that the chosen range as it exceeds the range sometimes will lead to wrong numbers in the end!")
-		
-		for x in range(self.nx):
-			for y in range(self.ny):
-				mod.T[x,y]      = np.interp(tau, np.flip(self.tau),np.flip(self.T[x,y]))
-				mod.Pe[x,y]     = np.interp(tau, np.flip(self.tau),np.flip(self.Pe[x,y]))
-				mod.vmicro[x,y] = np.interp(tau, np.flip(self.tau),np.flip(self.vmicro[x,y]))
-				mod.B[x,y]      = np.interp(tau, np.flip(self.tau),np.flip(self.B[x,y]))
-				mod.vlos[x,y]   = np.interp(tau, np.flip(self.tau),np.flip(self.vlos[x,y]))
-				mod.gamma[x,y]  = np.interp(tau, np.flip(self.tau),np.flip(self.gamma[x,y]))
-				mod.phi[x,y]    = np.interp(tau, np.flip(self.tau),np.flip(self.phi[x,y]))
-				if self.full:
-					mod.z[x,y]   = np.interp(tau, np.flip(self.tau),np.flip(self.z[x,y]))
-					mod.rho[x,y] = np.interp(tau, np.flip(self.tau),np.flip(self.rho[x,y]))
-					mod.Pg[x,y]  = np.interp(tau, np.flip(self.tau),np.flip(self.Pg[x,y]))
-
-		mod.load = self.load
-		return mod
 
 	def set_dim(self, nx : int, ny : int, nval : int):
 		"""

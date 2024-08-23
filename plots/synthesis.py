@@ -130,9 +130,20 @@ def synthesis(conf : dict, num : int):
 	if(num > syn1.nx):
 		raise IndexError(f"[synthesis] num {num} out of range!")
 	
-	# Write in absolute wavelengths
-	obs1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["lines"]))
-	obs1.data_cut_wave = True
+	if "-num" in sys.argv:
+		num1 = int(sys.argv[sys.argv.index("-num")+1])
+		ind1 = 0
+
+		for i in range(len(conf["atoms"])):
+			if str(num1) in conf["atoms"][i]:
+				ind1 = i
+				obs1.cut_to_wave(np.array([conf["range_wave"][ind1]]))
+		ll0 = sir.determine_line_core(os.path.join(conf["path"],conf["line"]),num1)
+		#obs1.wave = obs1.wave/1e3 + ll0
+	else:
+		# Write in absolute wavelengths
+		obs1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["line"]))
+		obs1.data_cut_wave = True
 
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[num,0],obs1.stkq[num,0],obs1.stku[num,0],obs1.stkv[num,0]
@@ -162,9 +173,9 @@ def synthesis(conf : dict, num : int):
 
 
 	label_x = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
-	if label_x != '0':
+	if label_x != "0":
 		ll1 -= float(label_x)
-		ll2 -= float(label_x)
+
 
 	########################
 	#  Plot I, Q, U and V  #
@@ -183,10 +194,10 @@ def synthesis(conf : dict, num : int):
 	############################
 	# Plot the Stokes profiles #
 	############################
-	ax1.plot(ll1, I1, "-", label=llabel)
-	ax2.plot(ll1, Q1, "-", label=llabel)
-	ax3.plot(ll1, U1, "-", label=llabel)
-	ax4.plot(ll1, V1, "-", label=llabel)
+	ax1.plot(ll1, I1, "-")
+	ax2.plot(ll1, Q1, "-")
+	ax3.plot(ll1, U1, "-")
+	ax4.plot(ll1, V1, "-")
 
 	# Set xlimits
 	ax1.set_xlim(ll1[0], ll1[-1])
@@ -221,23 +232,8 @@ def synthesis(conf : dict, num : int):
 			fig.suptitle(title, y=0.98, x=xtitle1)
 		elif title is not None:
 			fig.suptitle(title, y=0.98, x=xtitle1)
-
-	#########################
-	# Set Legend and Limits #
-	#########################
-	if "-vertical" in sys.argv:
-		if (conf["mode"] != "SY"):
-			ax1.set_ylim(0.9*np.min(np.abs(I1)) , 1.1*np.max(np.abs(I1)))
-			ax2.set_ylim(-1.1*np.max(np.abs(Q1)), 1.1*np.max(np.abs(Q1)))
-			ax3.set_ylim(-1.1*np.max(np.abs(U1)), 1.1*np.max(np.abs(U1)))
-			ax4.set_ylim(-1.1*np.max(np.abs(V1)), 1.1*np.max(np.abs(V1)))
-		#ax1.legend(bbox_to_anchor=(1.01,0.95))
-		ax1.legend()
-	else:
-		ax2.legend(bbox_to_anchor=(1.01,0.95))
-
 	
-	plt.savefig(savepath + "synthesis_stokes_" + str(num) + add)
+	fig.savefig(savepath + "synthesis_stokes_" + str(num) + add)
 
 	###################################################
 	#			Plot physical parameters			#
@@ -346,7 +342,7 @@ if __name__ == "__main__":
 	if "-h" in sys.argv:
 		_help()
 	conf = sir.read_config(sys.argv[1])
-	synthesis(conf, int(sys.argv[2]),int(sys.argv[3]))
+	synthesis(conf, int(sys.argv[2]))
 
 
 

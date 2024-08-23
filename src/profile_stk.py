@@ -58,7 +58,7 @@ class profile_stk:
 		Indicates whether the data has been loaded.
 	data_cut_wave : bool
 		Indicates if the data has been trimmed to a specific wavelength range.
-	_data_cut_map : bool
+	data_cut_map : bool
 		Indicates if the data has been trimmed to a specific spatial map.
     
     Methods
@@ -72,6 +72,9 @@ class profile_stk:
 	cut_to_wave:
 		Trims the data to a specified wavelength range.
     
+	extend:
+		Extends these profiles to a new x and y dimension and assigns the data from a specific pixel to all the pixels
+		
 	read:
 		Reads a binary file containing Stokes profiles.
     
@@ -119,7 +122,7 @@ class profile_stk:
 		self.stku = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
 		self.stkv = np.zeros(shape=(self.nx,self.ny,self.nw), dtype=np.float32)
 
-		self._data_cut_map = False
+		self.data_cut_map = False
 		self.data_cut_wave = False
 
 	def __read_grid(self, filename :str):
@@ -370,7 +373,7 @@ class profile_stk:
 		pro.wave = np.copy(self.wave)
 		pro.indx = np.copy(self.indx)
 
-		pro._data_cut_map = self._data_cut_map 
+		pro.data_cut_map = self.data_cut_map 
 		pro.data_cut_wave = self.data_cut_wave
 		pro.load = self.load
 
@@ -386,7 +389,7 @@ class profile_stk:
 			List with the ranges in pixel in x and y direction
 
 		"""
-		if self._data_cut_map:
+		if self.data_cut_map:
 			print("[cut_to_map] The data was already cut before!")
 
 		if((Map[1]-Map[0]+1) > self.stki.shape[0]):
@@ -406,7 +409,7 @@ class profile_stk:
 		self.stku = self.stku[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
 		self.stkv = self.stkv[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
 		
-		self._data_cut_map = True
+		self.data_cut_map = True
 		
 		return self
 
@@ -455,6 +458,57 @@ class profile_stk:
 		
 		return self
 	
+	def extend(self, nx : int, ny : int, x : int=0, y : int=0):
+		"""
+		Extends the profiles to a new dimension and takes the Stokes vector from position x,y and
+		assigns it to all the pixels of the new profile
+
+		Parameters
+		----------
+		nx : int
+			New dimension in x
+		ny : int
+			New dimension in y
+		x : int, optional
+			take data from this x position, by default 0
+		y : int, optional
+			take data from this y position, by default 0
+
+		Returns
+		-------
+		profile_stk
+			New, extended profiles
+
+		Raises
+		------
+		IndexError
+			if x or y is out of range
+		ValueError
+			if nx or ny is negative
+		"""
+		if (x >= self.nx) or (x < 0):
+			raise IndexError("[extend] x out of range")
+		if (y >= self.ny) or (y < 0):
+			raise IndexError("[extend] y out of range")
+		if (nx < 0):
+			raise ValueError("[extend] New dimension nx is negative")
+		if (ny < 0):
+			raise ValueError("[extend] New dimension ny is negative")
+		pro = profile_stk(nx, ny, self.nw)
+		pro.ns = self.ns
+		pro.load = self.load
+		pro.data_cut_wave = self.data_cut_wave
+		pro.data_cut_map = self.data_cut_map
+		pro.indx = self.indx
+		pro.wave = self.wave
+
+		for i in range(nx):
+			for j in range(ny):
+				pro.stki[i,j] = self.stki[x,y]
+				pro.stkq[i,j] = self.stkq[x,y]
+				pro.stku[i,j] = self.stku[x,y]
+				pro.stkv[i,j] = self.stkv[x,y]
+		return pro
 
 	def read(self, fname : str, fmt_type=np.float32):
 		"""

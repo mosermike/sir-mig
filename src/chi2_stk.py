@@ -200,8 +200,10 @@ class chi2_stk:
 	-------
 	compute:
 		Computes the χ² values for all pixels across all Stokes parameters and the total χ².
+	
 	read:
 		Reads a binary Fortran file containing χ² data.
+	
 	write:
 		Writes the χ² data to a binary file.
 	"""
@@ -264,16 +266,25 @@ class chi2_stk:
 		Returns
 		-------
 		None
+
+		Raises
+		------
+		RuntimeError
+			if any dimension of obs or syn is not the same with the class
 			
 		"""
-		self.nx = obs.nx
-		self.ny = obs.ny
-		self.tot = np.zeros(shape=(self.nx,self.ny))
-		self.stki = np.zeros(shape=(self.nx,self.ny))
-		self.stkq = np.zeros(shape=(self.nx,self.ny))
-		self.stku = np.zeros(shape=(self.nx,self.ny))
-		self.stkv = np.zeros(shape=(self.nx,self.ny))
-
+		if(self.nx != obs.nx):
+			raise RuntimeError("[compute] nx of the class and the observations are not the same")
+		
+		if(self.ny != obs.ny):
+			raise RuntimeError("[compute] ny of the class and the observations are not the same")
+		
+		if(self.ny != syn.ny):
+			raise RuntimeError("[compute] nx of the class and the synthesis are not the same")
+		
+		if(self.ny != syn.ny):
+			raise RuntimeError("[compute] ny of the class and the synthesis are not the same")
+		
 		# Compute chi2 for each pixel
 		for x in range(self.nx):
 			for y in range(self.ny):
