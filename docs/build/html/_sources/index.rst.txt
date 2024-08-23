@@ -29,6 +29,7 @@ There are three different modes selectable:
 - 1C : 1 Component Inversion
 - 2C : 2 Component Inversion
 - MC : Monte-Carlo Simulation
+- SY : Synthesis
 
 It is also possible to use it without random guesses.
 

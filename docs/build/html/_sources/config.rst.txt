@@ -291,13 +291,13 @@ Mode `SY`
 Data Stuff
 ==========
 
-+-------------+------------
-| Option      | Description
-+=============+===============
-| syn_in      | Input Synthesis Model as a binary file
-+-------------+
-| syn_out     | Output of the synthesised profiles as a binary file
-+-------------+
++-------------+-----------------------------------------------------+
+| Option      | Description                                         |
++=============+=====================================================+
+| syn_in      | Input Synthesis Model as a binary file              |
++-------------+-----------------------------------------------------+
+| syn_out     | Output of the synthesised profiles as a binary file |
++-------------+-----------------------------------------------------+
 
 Synthesis Configuration
 =======================

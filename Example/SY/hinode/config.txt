@@ -4,15 +4,15 @@ path : ./ # Path location where all the data is stored and will be saved
 # 
 # Data Stuff
 # 
-syn_in    : penumjti.bin # Input synthesis models
-syn_out   : out_penumjtis.bin # Output of the synthesis profiles
+syn_in  : penumjti.bin # Input synthesis models
+syn_out : stokes.bin # Output of the synthesis profiles
 # 
 # Synthesis configuration
 # 
 atoms        : 3,4 # Atoms to be used in Grid file
 range_wave   : -623.5,21.5,112 # Ranges of wavelengths in mA to be considered start1,step1,num1;start2,step2,num2;... First pair belongs to first line in Grid file, etc.
+weights      : 1,1,1,1 # Weights in the control file
 line         : Lines # Line file
 vmacro       : 0.1000 # Macroturbulence velocity
 abundance    : THEVENIN # Abundance file
 gas_pressure : 3089 # Gas Pressure Boundary condition
-weights : 1,1,1,1

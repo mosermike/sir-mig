@@ -472,6 +472,12 @@ Obviously, also more summations must be considered.</p>
 <dt>None</dt><dd></dd>
 </dl>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>RuntimeError</dt><dd><p>if any dimension of obs or syn is not the same with the class</p>
+</dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -580,7 +586,7 @@ velocity fields, and magnetic fields, among other parameters.</p>
 <td><p>Corrects the azimuthal angle (phi) to ensure values are within the range [0, 180] degrees.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>cut_to_map:</strong></p></td>
-<td><p>Cuts the model data to a specified map region.</p></td>
+<td><p>Cuts the model data to a specified map region. extend: Extends this model to a new x and y dimension and assigns the data from a specific pixel to all the pixels</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>get_attribute:</strong></p></td>
 <td><p>Returns the specified physical parameter based on the input string.</p></td>
@@ -597,10 +603,7 @@ velocity fields, and magnetic fields, among other parameters.</p>
 <tr class="row-odd"><td><p><strong>read_results:</strong></p></td>
 <td><p>Reads results from inversion processes and populates the model with the data.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>reinterpolate:</strong></p></td>
-<td><p>Reinterpolates the model to a different log tau scale.</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>set_dim:</strong></p></td>
+<tr class="row-even"><td><p><strong>set_dim:</strong></p></td>
 <td><p>Sets the dimensions of the model if no data has been loaded.</p></td>
 </tr>
 </tbody>
@@ -638,6 +641,41 @@ those values should be corrected so that I have values from 0 to 360 degrees.</p
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model_atm.model_atm.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.extend" title="Link to this definition">#</a></dt>
+<dd><p>Extends the model to a new dimension and takes the atmosphere from position x,y and
+assigns it to all the pixels</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>New dimension in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>New dimension in y</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int, optional</span></dt><dd><p>take data from this x position, by default 0</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int, optional</span></dt><dd><p>take data from this y position, by default 0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>model_atm</dt><dd><p>New, extended model</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>IndexError</dt><dd><p>if x or y is out of range</p>
+</dd>
+<dt>ValueError</dt><dd><p>if nx or ny is negative</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -750,27 +788,6 @@ This class will then create the class with nx = ny = 1.</p>
 </dl>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="model_atm.model_atm.reinterpolate">
-<span class="sig-name descname"><span class="pre">reinterpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.reinterpolate" title="Link to this definition">#</a></dt>
-<dd><p>Reinterpolate to a different tau scale</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>tau</strong><span class="classifier">numpy array</span></dt><dd><p>Array with the new log tau scale</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>New reinterpolated model</dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>If tau has bigger or smaller numbers than in the range, the numbers are wrong</p>
 </dd></dl>
 
 <dl class="py method">
@@ -896,7 +913,7 @@ well as to manage associated data like wavelength.</p>
 </dd>
 <dt><strong>data_cut_wave</strong><span class="classifier">bool</span></dt><dd><p>Indicates if the data has been trimmed to a specific wavelength range.</p>
 </dd>
-<dt><strong>_data_cut_map</strong><span class="classifier">bool</span></dt><dd><p>Indicates if the data has been trimmed to a specific spatial map.</p>
+<dt><strong>data_cut_map</strong><span class="classifier">bool</span></dt><dd><p>Indicates if the data has been trimmed to a specific spatial map.</p>
 </dd>
 </dl>
 </dd>
@@ -913,16 +930,19 @@ well as to manage associated data like wavelength.</p>
 <tr class="row-odd"><td><p><strong>cut_to_wave:</strong></p></td>
 <td><p>Trims the data to a specified wavelength range.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>read:</strong></p></td>
+<tr class="row-even"><td><p><strong>extend:</strong></p></td>
+<td><p>Extends these profiles to a new x and y dimension and assigns the data from a specific pixel to all the pixels</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>read:</strong></p></td>
 <td><p>Reads a binary file containing Stokes profiles.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>read_profile:</strong></p></td>
+<tr class="row-even"><td><p><strong>read_profile:</strong></p></td>
 <td><p>Reads and stores a single profile from a file into the class at the specified (x, y) position.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>read_results:</strong></p></td>
+<tr class="row-odd"><td><p><strong>read_results:</strong></p></td>
 <td><p>Reads and stores inversion results from multiple tasks.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>read_results_MC:</strong></p></td>
+<tr class="row-even"><td><p><strong>read_results_MC:</strong></p></td>
 <td><p>Reads and stores profiles for simulations where <cite>indx</cite> is the line number.</p></td>
 </tr>
 </tbody>
@@ -968,6 +988,41 @@ well as to manage associated data like wavelength.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>range_wave</strong><span class="classifier">multidimensional list</span></dt><dd><p>List with the ranges from the config file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="profile_stk.profile_stk.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/profile_stk.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#profile_stk.profile_stk.extend" title="Link to this definition">#</a></dt>
+<dd><p>Extends the profiles to a new dimension and takes the Stokes vector from position x,y and
+assigns it to all the pixels of the new profile</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nx</strong><span class="classifier">int</span></dt><dd><p>New dimension in x</p>
+</dd>
+<dt><strong>ny</strong><span class="classifier">int</span></dt><dd><p>New dimension in y</p>
+</dd>
+<dt><strong>x</strong><span class="classifier">int, optional</span></dt><dd><p>take data from this x position, by default 0</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">int, optional</span></dt><dd><p>take data from this y position, by default 0</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>profile_stk</dt><dd><p>New, extended profiles</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>IndexError</dt><dd><p>if x or y is out of range</p>
+</dd>
+<dt>ValueError</dt><dd><p>if nx or ny is negative</p>
 </dd>
 </dl>
 </dd>
@@ -1257,12 +1312,12 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm"><code class="docutils literal notranslate"><span class="pre">model_atm</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.correct_phi"><code class="docutils literal notranslate"><span class="pre">model_atm.correct_phi()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.cut_to_map"><code class="docutils literal notranslate"><span class="pre">model_atm.cut_to_map()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.extend"><code class="docutils literal notranslate"><span class="pre">model_atm.extend()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.get_attribute"><code class="docutils literal notranslate"><span class="pre">model_atm.get_attribute()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.interp"><code class="docutils literal notranslate"><span class="pre">model_atm.interp()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.read"><code class="docutils literal notranslate"><span class="pre">model_atm.read()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.read_mod"><code class="docutils literal notranslate"><span class="pre">model_atm.read_mod()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.read_results"><code class="docutils literal notranslate"><span class="pre">model_atm.read_results()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.reinterpolate"><code class="docutils literal notranslate"><span class="pre">model_atm.reinterpolate()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.set_dim"><code class="docutils literal notranslate"><span class="pre">model_atm.set_dim()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.set_limit"><code class="docutils literal notranslate"><span class="pre">model_atm.set_limit()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.write"><code class="docutils literal notranslate"><span class="pre">model_atm.write()</span></code></a></li>
@@ -1273,6 +1328,7 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.copy"><code class="docutils literal notranslate"><span class="pre">profile_stk.copy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.cut_to_map"><code class="docutils literal notranslate"><span class="pre">profile_stk.cut_to_map()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.cut_to_wave"><code class="docutils literal notranslate"><span class="pre">profile_stk.cut_to_wave()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.extend"><code class="docutils literal notranslate"><span class="pre">profile_stk.extend()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read"><code class="docutils literal notranslate"><span class="pre">profile_stk.read()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_profile"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_profile()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profile_stk.profile_stk.read_results"><code class="docutils literal notranslate"><span class="pre">profile_stk.read_results()</span></code></a></li>

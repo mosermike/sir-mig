@@ -573,7 +573,7 @@ def _config_SY():
 	atoms		= input("Atoms (e.g. 8,9;3,4   ';' == newline): ")
 	range_wave = input("Ranges in the wavelengths (in relative mA) to be considered (as 'min1,step1,max1;min2,step2,max2;...', ;=newline):" )
 	weights		 = input("Weights                       [1,1,1,1]: ")
-	vmacro		 = input ("Value for the macroturbulence [0.1000]: ")
+	vmacro		 = input("Value for the macroturbulence  [0.1000]: ")
 	abundance	 = input("Abundance file               [THEVENIN]: ")
 	line		 = input("Lines file                      [Lines]: ")
 	gas_pressure = input("Gas Pressure Boundary condition        : ")
@@ -585,7 +585,7 @@ def _config_SY():
 	if vmacro == '':
 		vmacro = '0.1000'
 	if weights == '':
-		vmacro = '1,1,1,1'
+		weights = '1,1,1,1'
 	if line == '':
 		line = 'Lines'
 	conf = {
@@ -602,7 +602,7 @@ def _config_SY():
 		"weights" : weights
 	}
  
-	sir.write_config(File,conf)
+	sir.write_config(File,conf, False)
 
 	return
 
