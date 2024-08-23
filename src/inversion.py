@@ -1008,7 +1008,7 @@ def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, pr
 		del best_guesses
 
 		if conf['chi2'] == "1":
-			chi2 = c.chi2_stk(0,0)
+			chi2 = c.chi2_stk(stokes_inv.nx,stokes_inv.ny)
 			print("-------> Compute χ² (this might take a while) ...")
 			
 			# Number of Nodes in the last step
@@ -1289,7 +1289,7 @@ def inversion_mc(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 
 		if conf['chi2'] == "1":
 			print("-------> Compute χ² (this might take a while) ...")
-			chi2 = c.chi2_stk(0,0)
+			chi2 = c.chi2_stk(stokes.nx,stokes.ny)
 
 			# Number of Nodes in the last step
 			num_of_nodes = 0
@@ -1651,7 +1651,7 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 
 		if conf['chi2'] == "1":
 			print("-------> Compute χ² (this might take a while) ...")
-			chi2 = c.chi2_stk(0,0)
+			chi2 = c.chi2_stk(stokes_inv.nx,stokes_inv.ny)
 
 			# Number of Nodes in the last step
 			num_of_nodes = 0
