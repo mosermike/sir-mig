@@ -16,6 +16,7 @@ Functions:
 import numpy as np
 from scipy.io import FortranFile
 import profile_stk as p
+import os
 
 def _compute_chi2(obs : np.array, syn : np.array, noise : float, weight : float, num_of_nodes : int, mul=1.0) -> float:
 	r"""
