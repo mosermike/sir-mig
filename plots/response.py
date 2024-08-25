@@ -135,7 +135,25 @@ def plot_response(conf,filename, modelname):
 	for i in range(len(Line)):	
 		points.append(round((Line_max[i]+Line_step[i] - Line_min[i])/Line_step[i]+0.5))
 
-	range_wave = sir.pixel_to_angstrom(np.load(os.path.join(conf['path'],conf['waves'])), conf['range_wave'])
+
+	if conf["mode"] == "SY" or conf["mode"] == "MC":
+		atoms = [i.split(",") for i in conf["atoms"]]
+		lines = sir.read_line(os.path.join(conf["path"], conf["line"]))
+		range_wave = []
+		for j in range(len(atoms)):
+			for i in range(len(lines["Line"])):
+				if(lines["Line"][i] == int(atoms[j][0])):
+					range_wave.append([conf['range_wave'][j][0]/1e3 + float(lines["wavelength"][i]), conf['range_wave'][j][0]/1e3 + conf['range_wave'][j][1]/1e3 *conf['range_wave'][j][2]+ float(lines["wavelength"][i])])
+		range_wave = np.array(range_wave)
+	else:
+		atoms = [i.split(",") for i in conf["atoms"]]
+		range_wave = []
+		for j in range(len(atoms)):
+			range_wave.append([conf['range_wave'][j][0], conf['range_wave'][j][0] + conf['range_wave'][j][1]*conf['range_wave'][j][2]])
+		range_wave = np.array(range_wave)
+	
+	
+	#range_wave = [range_wave[]]
 	savepath = ''
 	if '-save' in sys.argv:
 		savepath = conf["path"] + "/" + sys.argv[sys.argv.index("-save")+1]
@@ -151,12 +169,6 @@ def plot_response(conf,filename, modelname):
 	title = ''
 	if '-title' in sys.argv:
 		title = sys.argv[sys.argv.index("-title")+1]
-	
-	# Additional label
-	add_label = '_'
-	if '-label' in sys.argv:
-		add_label = sys.argv[sys.argv.index("-label")+1]
-
 
 	log_tau, T, Pe, vmicro, B, vlos, inc, azi, z, pg, rho = sir.read_model(modelname)
 	ntau, nlam, I, Q, U, V = load_data(filename)
@@ -165,7 +177,7 @@ def plot_response(conf,filename, modelname):
 	#  Plot I, Q, U and V  at wave for obs		#
 	##############################################
 	# Change to relative wavelength to make the axis better readable
-	rel = input('Instrument unknown or not set. Put a wavelength to print in rel. wavelengths (0 = in absolute): ')
+	rel = input('Put a wavelength to print in rel. wavelengths (0 = in absolute): ')
 
 	range_wave = range_wave - float(rel)
 

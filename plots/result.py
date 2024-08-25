@@ -960,11 +960,11 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		stokes_inv.stkv = np.moveaxis(stokes_inv.stkv,(0,1,2),(1,0,2))
 		stokes_inv.nx, stokes_inv.ny = stokes_inv.ny, stokes_inv.nx
 		if ("-chi2" in sys.argv or "-plot_chi2" in sys.argv and conf["chi2"] != ""):
-			chi2.stki = np.moveaxis(chi2.stki,(0,1,2),(1,0,2))
-			chi2.stkq = np.moveaxis(chi2.stkq,(0,1,2),(1,0,2))
-			chi2.stku = np.moveaxis(chi2.stku,(0,1,2),(1,0,2))
-			chi2.stkv = np.moveaxis(chi2.stkv,(0,1,2),(1,0,2))
-			chi2.tot = np.moveaxis(chi2.tot,(0,1,2),(1,0,2))
+			chi2.stki = np.moveaxis(chi2.stki,(0,1),(1,0))
+			chi2.stkq = np.moveaxis(chi2.stkq,(0,1),(1,0))
+			chi2.stku = np.moveaxis(chi2.stku,(0,1),(1,0))
+			chi2.stkv = np.moveaxis(chi2.stkv,(0,1),(1,0))
+			chi2.tot = np.moveaxis(chi2.tot,(0,1),(1,0))
 			chi2.nx, chi2.ny = chi2.ny, chi2.nx
 		Map = [Map[2],Map[3],Map[0],Map[1]]
 
