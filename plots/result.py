@@ -552,7 +552,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	waveU_ind1 = np.argmin(abs(stokes.wave-waveU))
 	waveU_ind2 = np.argmin(abs(stokes_inv.wave-waveU))
 
-	if not stokes._data_cut_map:
+	if not stokes.data_cut_map:
 		stokes.cut_to_map(Map)
 	
 	I1 = stokes.stki
