@@ -204,7 +204,7 @@ def read_chi2(filename, task : str= '') -> float:
 	return data[-1][1]
 
 
-def read_config(filename : str, check : bool = False, change_config : bool = False) -> dict:
+def read_config(filename : str, check : bool = False) -> dict:
 	"""
 	Reads a config file for the inversion
 	
@@ -213,10 +213,7 @@ def read_config(filename : str, check : bool = False, change_config : bool = Fal
 	filename : string
 		Path of the control file
 	check : bool, optional
-		Check if file exists (Default: True)
-	change_config : bool, optional
-		config file is read to be changed (=> Do not try to load anything) (Default: False)
-	
+		Check if file exists, by default 'False'
 
 	Returns
 	-------
@@ -314,7 +311,7 @@ def read_config(filename : str, check : bool = False, change_config : bool = Fal
 
 	Dict["weights"] = Dict["weights"].split(',')
 
-	# Check if range_wave fits the atoms
+	# TODO check the checks
 	if check:
 		if len(Dict['atoms']) != len(Dict['range_wave']):
 			raise Exception("[read_config] The number of lines in 'atoms' do not fit the given ranges in 'range_wave'! Abort...")
@@ -1514,7 +1511,7 @@ def _write_grid(conf : dict, filename : str, waves : np.array):
 	# Define minimum, step and maximum
 	Line_min = np.zeros(0, dtype=np.float64)
 	Line_max = np.zeros(0, dtype=np.float64)
-	Line_step = np.float64(conf["range_wave"][:,1]) # in mA
+	Line_step = np.array(np.float64(conf["range_wave"][:,1])) # in mA
 	
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
