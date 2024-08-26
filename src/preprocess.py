@@ -91,9 +91,9 @@ def merge(dir : str, ending : str, instrument : str, path = "./", shift = "0", s
 	# Create data cube #
 	####################
 
-	example = fits.open(filenames[0])
-	stokes = example[0].data
-	header = example[0].header
+	example1 = fits.open(filenames[0])
+	stokes = example1[0].data
+	header = example1[0].header
 
 	#########################################
 	# 	Load data and store it in an array	#
@@ -161,6 +161,8 @@ def merge(dir : str, ending : str, instrument : str, path = "./", shift = "0", s
 				return
 
 			data[i] = stokes[0, :, :, :]
+
+		example.close()
 
 	data = data.reshape(nx, ny, 4, nw)  # shape x, y, values, wavelengths
 	print()
@@ -290,19 +292,18 @@ def normalise(pro : p.profile_stk, instrument : str, quiet_sun : list, path = ".
 		Ic  = np.mean(pro.stki[x1:x2,y1:y2,ll1:ll2])  # Average continuum intensity in quiet sun
 
 		# Divide through the mean
-		pro1 = pro.copy()
-		pro1.stki /= Ic
-		pro1.stkq /= Ic
-		pro1.stku /= Ic
-		pro1.stkv /= Ic
+		pro.stki /= Ic
+		pro.stkq /= Ic
+		pro.stku /= Ic
+		pro.stkv /= Ic
 	else:
 		print("-------> Skipping normalisation")
 
 	if save:
 		print("-------> Saving data (this might take a while) ...")
-		pro1.write(os.path.join(path,d.cube_norm))
+		pro.write(os.path.join(path,d.cube_norm))
 
-	return pro1
+	return pro
 
 def normalise_conf(pro : p.profile_stk, conf : dict) -> p.profile_stk:
 	"""
@@ -870,13 +871,13 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	######################################################################################
 	if verbose:
 		print('[STATUS] Correct data ...')
-	pro1 = stokes.copy()
+	
 	# Correct for spectral veil
-	pro1.veil_correction(nu_min)
+	pro.veil_correction(nu_min)
 	
 	if save:
 		if verbose:
 			print("-------> Saving data (this might take a while) ...")
-		pro1.write(os.path.join(path,cube))
+		pro.write(os.path.join(path,cube))
 	
-	return pro1
+	return pro

@@ -863,6 +863,7 @@ class profile_stk:
 		f.write_record(np.float32(array.flatten()))
 
 		del array
+		del towrite
 
 		f.close()
 

@@ -18,10 +18,10 @@ model_nodes   : 3 # Create models with 2 or 3 nodes
 model_pars    : B,T,vlos,gamma,phi # Randomise these parameters while creating models as a list
 syn_out       : syn # Output prefix of the synthesis profiles and models
 noise_out     : noise # Output prefix of the noise profiles as bin
-noise_I       : 0 # Noise in I
-noise_Q       : 0.000768 # Noise in Q
-noise_U       : 0.0007677 # Noise in U
-noise_V       : 0.0007447 # Noise in V
+noise_I       : 0.001 # Noise in I
+noise_Q       : 0.00076 # Noise in Q
+noise_U       : 0.00076 # Noise in U
+noise_V       : 0.00073 # Noise in V
 create_B      : 500,4000;0,1000 # The limits for the first and last node in B
 create_vlos   : -3e5,3e5;-3e5,3e5 # The limits for the first and last node in vlos
 create_gamma  : 0,180;0,180 # The limits for the first and last node in gamma
