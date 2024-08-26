@@ -1511,8 +1511,13 @@ def _write_grid(conf : dict, filename : str, waves : np.array):
 	# Define minimum, step and maximum
 	Line_min = np.zeros(0, dtype=np.float64)
 	Line_max = np.zeros(0, dtype=np.float64)
-	Line_step = np.array(np.float64(conf["range_wave"][:,1])) # in mA
+	Line_step = np.float64(conf["range_wave"][:,1]) # in mA
 	
+	# Correct if only one wavelength range is used to be an array
+	if range_wave.shape[0] == 1:
+		Line_step = np.array([Line_step])
+
+	# Determine minimum and maximum to be used in sir
 	for i in range(range_wave.shape[0]):
 		Line_min  = np.append(Line_min,waves[np.argmin(np.abs(waves-range_wave[i,0]))])
 		Line_max  = np.append(Line_max,Line_min[i] + Line_step[i]/1e3*(range_wave[i,2]-1))
