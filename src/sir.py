@@ -1193,29 +1193,34 @@ def _write_control_1c(filename : str, conf : dict):
 	line			= conf['line']			# Name of the line file
 	gas_pressure   = conf['gas_pressure']	# Gas Pressure
 	
+	if conf['psf'] == '':
+		psf = ''
+	else:
+		psf = d.psf
+
 	# Write lines
 	with open(filename, 'w') as f:
 		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
 		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
 		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
-		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
+		f.write('PSF file                      :' + psf + '        ! (none=no convolution with PSF)\n')
 		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
 		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
-		f.write('Abundances file               :'    + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
-		f.write('Initial guess model 1      (*):'+ d.model_inv + '      !\n')
+		f.write('Abundances file               :' + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
+		f.write('Initial guess model 1      (*):' + d.model_inv + '      !\n')
 		f.write('Initial guess model 2         :\n')
-		f.write('Weight for Stokes I           :'   + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes Q           :'   + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes U           :'   + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
-		f.write('Weight for Stokes V           :'   + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes I           :' + weights[0] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes Q           :' + weights[1] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes U           :' + weights[2] + '                   ! (DEFAULT=1; 0=not inverted\n')
+		f.write('Weight for Stokes V           :' + weights[3] + '                   ! (DEFAULT=1; 0=not inverted\n')
 		f.write('AUTOMATIC SELECT. OF NODES?   :                   ! (DEFAULT=0=no; 1=yes)\n')
-		f.write('Nodes for temperature 1       :'  + nodes_temp + '\n')
+		f.write('Nodes for temperature 1       :' + nodes_temp + '\n')
 		f.write('Nodes for electr. press. 1    :                         \n')
 		f.write('Nodes for microturb. 1        :                         \n')
-		f.write('Nodes for magnetic field 1    :'+ nodes_magn + '\n')
-		f.write('Nodes for LOS velocity 1      :'+ nodes_vlos + '\n')
-		f.write('Nodes for gamma 1             :'+ nodes_gamma + '\n')
-		f.write('Nodes for phi 1               :'    + nodes_phi + '\n')
+		f.write('Nodes for magnetic field 1    :' + nodes_magn + '\n')
+		f.write('Nodes for LOS velocity 1      :' + nodes_vlos + '\n')
+		f.write('Nodes for gamma 1             :' + nodes_gamma + '\n')
+		f.write('Nodes for phi 1               :' + nodes_phi + '\n')
 		f.write('Invert macroturbulence 1?     :                   ! (0 or blank=no, 1=yes)\n')
 		f.write('Nodes for temperature 2       :                   \n')
 		f.write('Nodes for electr. press. 2    :                   \n')
@@ -1227,7 +1232,7 @@ def _write_control_1c(filename : str, conf : dict):
 		f.write('Invert macroturbulence 2?     :                    ! (0 or blank=no, 1=yes)\n')
 		f.write('Invert filling factor?        :                    ! (0 or blank=no, 1=yes)\n')
 		f.write('Invert stray light factor?    :0                   ! (0 or blank=no, 1=yes)\n')
-		f.write('mu=cos (theta)                :'  + mu_cos +  '              ! (DEFAULT: mu=1)\n')
+		f.write('mu=cos (theta)                :' + mu_cos +  '              ! (DEFAULT: mu=1)\n')
 		f.write('Estimated S/N for I           :200                ! (DEFAULT: 1000) \n')
 		f.write('Continuum contrast            :                    ! (DEFAULT: not used)\n')
 		f.write('Tolerance for SVD             :' + d.SVD + '              ! (DEFAULT value: 1e-4)\n')
@@ -1281,13 +1286,18 @@ def _write_control_2c(filename : str, conf : dict):
 		gas_pressure1  = gas_pressure2 = gas_pressure
 
 	fill = conf["invert_fill"] # invert filling factor
-	
+
+	if conf['psf'] == '':
+		psf = ''
+	else:
+		psf = d.psf
+
 	# Write lines
 	with open(filename, 'w') as f:
 		f.write(f'Number of cycles           (*):{cycles}                  ! (0=synthesis)\n')
 		f.write('Observed profiles          (*):' + d.profile_obs + '      ! \n')
 		f.write('Stray light file              :                   ! (none=no stray light contam)\n')
-		f.write('PSF file                      :' + d.psf + '        ! (none=no convolution with PSF)\n')
+		f.write('PSF file                      :' + psf + '        ! (none=no convolution with PSF)\n')
 		f.write('Wavelength grid file       (s):' + d.Grid + '! (none=automatic selection)\n')
 		f.write('Atomic parameters file        :' + line + '    ! (none=DEFAULT LINES file)\n')
 		f.write('Abundances file               :' + abundance + '         ! (none=DEFAULT ABUNDANCES file)\n')
