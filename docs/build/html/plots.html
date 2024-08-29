@@ -625,15 +625,17 @@ Plots the result of one inversion</p>
 <p>Plots the result of the SIR synthesis</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.inversion_single.</span></span><span class="sig-name descname"><span class="pre">inversion_single_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_single.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">plots.inversion_single.</span></span><span class="sig-name descname"><span class="pre">inversion_single_1C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phy_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">syn_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_single.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>fit</strong><span class="classifier">str</span></dt><dd><p>Best Fit Profile</p>
+<dt><strong>fit_str</strong><span class="classifier">str</span></dt><dd><p>Best Fit Profile</p>
 </dd>
-<dt><strong>obs</strong><span class="classifier">str</span></dt><dd><p>Observation profiles</p>
+<dt><strong>obs_str</strong><span class="classifier">str</span></dt><dd><p>Observation profiles</p>
 </dd>
-<dt><strong>phy</strong><span class="classifier">str</span></dt><dd><p>Best Fit Model</p>
+<dt><strong>phy_str</strong><span class="classifier">str</span></dt><dd><p>Best Fit Model</p>
+</dd>
+<dt><strong>syn_str</strong><span class="classifier">str, optional</span></dt><dd><p>Used for the synthesis model, e.g. in mode MC, by default “”.</p>
 </dd>
 </dl>
 </dd>
@@ -679,9 +681,7 @@ Plots the result of one inversion</p>
 </dd>
 <dt><strong>-num [int]</strong></dt><dd><p>Number of the line considered</p>
 </dd>
-<dt><strong>-line [str]</strong></dt><dd><p>Line file if -num is used</p>
-</dd>
-<dt><strong>-instrument [str]</strong></dt><dd><p>which instrument is used (GRIS 15648A line or Hinode) for relative wavelength, otherwise asked</p>
+<dt><strong>-line [str]</strong></dt><dd><p>Line file for using absolute wavelength values</p>
 </dd>
 </dl>
 </dd>
@@ -746,35 +746,8 @@ Plots the result of one inversion</p>
 </dd>
 <dt><strong>-num [int]</strong></dt><dd><p>Number of the line considered</p>
 </dd>
-<dt><strong>-line [str]</strong></dt><dd><p>Line file if -num is used</p>
+<dt><strong>-line [str]</strong></dt><dd><p>Line file for using absolute wavelength values</p>
 </dd>
-<dt><strong>-instrument [str]</strong></dt><dd><p>which instrument is used (GRIS 15648A line or Hinode) for relative wavelength, otherwise asked</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">plots.inversion_single.</span></span><span class="sig-name descname"><span class="pre">inversion_single_mc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">syn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/plots/inversion_single.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Print a single inversion directly from the .mod and .per files</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>fit</strong><span class="classifier">str</span></dt><dd><p>Best Fit Profile</p>
-</dd>
-<dt><strong>obs</strong><span class="classifier">str</span></dt><dd><p>Observation profiles</p>
-</dd>
-<dt><strong>phy</strong><span class="classifier">str</span></dt><dd><p>Best Fit Model</p>
-</dd>
-<dt><strong>syn</strong><span class="classifier">str</span></dt><dd><p>Synthesis Model</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>None</dt><dd></dd>
 </dl>
 </dd>
 </dl>

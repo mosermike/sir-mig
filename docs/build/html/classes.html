@@ -582,32 +582,41 @@ velocity fields, and magnetic fields, among other parameters.</p>
 <p class="rubric">Methods</p>
 <table class="table">
 <tbody>
-<tr class="row-odd"><td><p><strong>correct_phi:</strong></p></td>
+<tr class="row-odd"><td><p><strong>copy:</strong></p></td>
+<td><p>Copy this instance to a new one</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>correct_phi:</strong></p></td>
 <td><p>Corrects the azimuthal angle (phi) to ensure values are within the range [0, 180] degrees.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>cut_to_map:</strong></p></td>
+<tr class="row-odd"><td><p><strong>cut_to_map:</strong></p></td>
 <td><p>Cuts the model data to a specified map region. extend: Extends this model to a new x and y dimension and assigns the data from a specific pixel to all the pixels</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>get_attribute:</strong></p></td>
+<tr class="row-even"><td><p><strong>get_attribute:</strong></p></td>
 <td><p>Returns the specified physical parameter based on the input string.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>interp:</strong></p></td>
+<tr class="row-odd"><td><p><strong>interp:</strong></p></td>
 <td><p>Interpolates the model data to a new log tau scale.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>read:</strong></p></td>
+<tr class="row-even"><td><p><strong>read:</strong></p></td>
 <td><p>Reads a binary model file and populates the class attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>read_mod:</strong></p></td>
+<tr class="row-odd"><td><p><strong>read_mod:</strong></p></td>
 <td><p>Reads a .mod file from SIR and initializes the model with nx = ny = 1.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>read_results:</strong></p></td>
+<tr class="row-even"><td><p><strong>read_results:</strong></p></td>
 <td><p>Reads results from inversion processes and populates the model with the data.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>set_dim:</strong></p></td>
+<tr class="row-odd"><td><p><strong>set_dim:</strong></p></td>
 <td><p>Sets the dimensions of the model if no data has been loaded.</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt class="sig sig-object py" id="model_atm.model_atm.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.copy" title="Link to this definition">#</a></dt>
+<dd><p>Copy this instance and returns the new instance</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="model_atm.model_atm.correct_phi">
 <span class="sig-name descname"><span class="pre">correct_phi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.correct_phi" title="Link to this definition">#</a></dt>
@@ -977,6 +986,12 @@ well as to manage associated data like wavelength.</p>
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><p>if a value in the Map is negative</p>
+</dd>
+</dl>
+</dd>
 </dl>
 </dd></dl>
 
@@ -1310,6 +1325,7 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm"><code class="docutils literal notranslate"><span class="pre">model_atm</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.copy"><code class="docutils literal notranslate"><span class="pre">model_atm.copy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.correct_phi"><code class="docutils literal notranslate"><span class="pre">model_atm.correct_phi()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.cut_to_map"><code class="docutils literal notranslate"><span class="pre">model_atm.cut_to_map()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.extend"><code class="docutils literal notranslate"><span class="pre">model_atm.extend()</span></code></a></li>
