@@ -933,6 +933,20 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 	else:
 		chi2 = None
 
+	# Cut data in x and y position	
+	if "-limitxy" in sys.argv:
+		limit_xy = np.array([int(i) for i in sys.argv[sys.argv.index("-limitxy")+1].split(",")], dtype=int)
+		
+		limit_xy = [limit_xy[0]+Map[0],limit_xy[1]+Map[0],limit_xy[2]+Map[2],limit_xy[3]+Map[2]] # Relative the the used map
+		
+		# Cut data to the new range:
+		stokes_inv	= stokes_inv.cut_to_map(limit_xy)
+		stokes		= stokes.cut_to_map    (limit_xy)
+		models_inv	= models_inv.cut_to_map(limit_xy)
+
+		# Save the new limits as the new Map
+		Map = limit_xy
+		
 	# Rotate by 90 deg
 	if "-rot90" in sys.argv:
 		print("[INFO] Images are rotated by 90°!")
@@ -967,20 +981,6 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 			chi2.tot = np.moveaxis(chi2.tot,(0,1),(1,0))
 			chi2.nx, chi2.ny = chi2.ny, chi2.nx
 		Map = [Map[2],Map[3],Map[0],Map[1]]
-
-
-	# Cut data in x and y position	
-	if "-limitxy" in sys.argv:
-		limit_xy = np.array([int(i) for i in sys.argv[sys.argv.index("-limitxy")+1].split(",")], dtype=int)
-
-		# Cut data to the new range:
-		stokes_inv = stokes_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
-		stokes = stokes.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
-		models_inv = models_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
-		#errors_inv = errors_inv.cut_to_map([limit_xy[0]-Map[0],limit_xy[1]+1-(Map[1]+1), limit_xy[2]-Map[2],limit_xy[3]+1-(Map[3]+1)])
-
-		# Save the new limits as the new Map
-		Map = limit_xy
 
 
 	# Additional savepath

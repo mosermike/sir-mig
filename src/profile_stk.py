@@ -388,10 +388,19 @@ class profile_stk:
 		Map : list
 			List with the ranges in pixel in x and y direction
 
+		Raises
+		------
+		ValueError
+			if a value in the Map is negative
+
 		"""
 		if self.data_cut_map:
 			print("[cut_to_map] The data was already cut before!")
-
+		
+		for i in Map:
+			if i < 0:
+				raise ValueError("[cut_to_map] There is a negative entry in the map. Only positive numbers are valid.")
+			
 		if((Map[1]-Map[0]+1) > self.stki.shape[0]):
 			print(f"[cut_to_map] The selected map region is too big! ({Map[1]-Map[0]+1} vs. {self.stki.shape[0]})")
 			return self
