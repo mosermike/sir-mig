@@ -41,6 +41,7 @@ def _help():
 	sir.option("-rho","Plot density")
 	sir.option("-syn","Synthesised model .mod file")
 	sir.option("-vertical","Plot spectra vertically")
+	sir.option("-hor","Plot spectra horizontally")
 	sir.option("-num:","Number of the line considered (Default: take first one) (for Mode 'MC')")
 	sys.exit()
 
@@ -232,6 +233,8 @@ def inversion(conf : dict, x : int, y : int):
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, figsize=(12,14), sharex=True,
 			 gridspec_kw=dict(hspace=0), layout="compressed")
 		fig.subplots_adjust(hspace=0, wspace=0)
+	elif "-hor" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(ncols=4, figsize=(17.39,4.31), layout="compressed")
 	else:
 		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), layout="compressed")
 
@@ -273,9 +276,12 @@ def inversion(conf : dict, x : int, y : int):
 	ax4.set_ylabel(r'$V / I_c$')
 	
 	if label_x != "0":
+		if "-hor" in sys.argv:
+			ax1.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
+			ax2.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
 		if "-vertical" not in sys.argv:
-			ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
-		ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
+			ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
+		ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
 	else:
 		if "-vertical" not in sys.argv:
 			ax3.set_xlabel(r'$\lambda$' + r' [\AA]', loc='center')
@@ -303,6 +309,8 @@ def inversion(conf : dict, x : int, y : int):
 		ax2.set_ylim(-1.1*np.max(np.abs(np.append(Q1,Q_fit1))), 1.1*np.max(np.abs(np.append(Q1,Q_fit1))))
 		ax3.set_ylim(-1.1*np.max(np.abs(np.append(U1,U_fit1))), 1.1*np.max(np.abs(np.append(U1,U_fit1))))
 		ax4.set_ylim(-1.1*np.max(np.abs(np.append(V1,V_fit1))), 1.1*np.max(np.abs(np.append(V1,V_fit1))))
+		ax1.legend()
+	elif "-hor" in sys.argv:
 		ax1.legend()
 	else:
 		ax2.legend(bbox_to_anchor=(1.01,0.95))
@@ -397,10 +405,12 @@ def inversion(conf : dict, x : int, y : int):
 
 	if "-vertical" in sys.argv:
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, figsize=(12,16), sharex=True,
-			 gridspec_kw=dict(hspace=0))
+			 gridspec_kw=dict(hspace=0), layout="compressed")
 		fig.subplots_adjust(hspace=0, wspace=0)
+	elif "-hor" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(ncols=4, figsize=(17.39,4.31), layout="compressed")
 	else:
-		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12))#, sharex=True)
+		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), layout="compressed")
 
 	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"] # Get colors used in the actual cycle
 	if conf["mode"] == "MC":
@@ -539,13 +549,8 @@ def inversion(conf : dict, x : int, y : int):
 		if title != '':
 			fig.suptitle(title, y=0.98, x=xtitle2)
 
-	if "-vertical" in sys.argv:	
-		plt.tight_layout(pad=2,h_pad=0.0)
-	else:
-		# set the spacing between subplots
-		plt.tight_layout(pad=2)
 
-	plt.savefig(savepath + "inversion_result_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
+	fig.savefig(savepath + "inversion_result_x" + str(x + conf["map"][0]) + "_y" + str(y + conf["map"][2]) + add)
 
 
 # Used if executed directly

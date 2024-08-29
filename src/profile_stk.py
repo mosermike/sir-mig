@@ -401,8 +401,6 @@ class profile_stk:
 		
 		self.nx = Map[1]-Map[0]+1
 		self.ny = Map[3]-Map[2]+1
-
-		
 		
 		self.stki = self.stki[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
 		self.stkq = self.stkq[Map[0]:Map[1]+1, Map[2]:Map[3]+1]
@@ -433,6 +431,7 @@ class profile_stk:
 			nws.append(temp[i]+temp[i-1])
 		
 		# Initialize new arrays
+		lindx = np.zeros(shape=(nws[-1]), dtype=np.float32)
 		lwave = np.zeros(shape=(nws[-1]), dtype=np.float32)
 		lstki = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
 		lstkq = np.zeros(shape=(self.nx, self.ny,nws[-1]), dtype=np.float32)
@@ -441,12 +440,14 @@ class profile_stk:
 		
 		ind = [np.argmin(np.abs(self.wave-np.float32(range_wave[i][0]))) for i in range(len(range_wave))]
 		for i in range(len(range_wave)):
+			lindx[nws[i]:nws[i+1]] = self.indx[ind[i]:ind[i]+int(range_wave[i][2])]
 			lwave[nws[i]:nws[i+1]] = self.wave[ind[i]:ind[i]+int(range_wave[i][2])]
 			lstki[:,:,nws[i]:nws[i+1]] = self.stki[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
 			lstkq[:,:,nws[i]:nws[i+1]] = self.stkq[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
 			lstku[:,:,nws[i]:nws[i+1]] = self.stku[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
 			lstkv[:,:,nws[i]:nws[i+1]] = self.stkv[:,:,ind[i]:ind[i]+int(range_wave[i][2])]
 		
+		self.indx = lindx
 		self.wave = lwave
 		self.stki = lstki
 		self.stkq = lstkq

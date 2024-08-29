@@ -68,6 +68,8 @@ class model_atm:
 
     Methods
     -------
+	copy:
+		Copy this instance to a new one
     correct_phi:
         Corrects the azimuthal angle (phi) to ensure values are within the range [0, 180] degrees.
     cut_to_map:
@@ -132,6 +134,32 @@ class model_atm:
 		self.vmacro = np.zeros(shape=(nx, ny), dtype=np.float64)
 		self.fill = np.zeros(shape=(nx, ny), dtype=np.float64)
 		self.stray_light = np.zeros(shape=(nx, ny), dtype=np.float64)
+
+	def copy(self):
+		"""
+		Copy this instance and returns the new instance
+
+		"""
+		New = model_atm(self.nx, self.ny, self.nval)
+
+		New.full = self.full
+		New.load = self.load
+		New.tau = self.tau.copy()
+		New.T = self.T.copy()
+		New.Pe = self.Pe.copy()
+		New.vmicro = self.vmicro.copy()
+		New.B = self.B.copy()
+		New.vlos = self.vlos.copy()
+		New.gamma = self.gamma.copy()
+		New.phi = self.phi.copy()
+		New.z = self.z.copy()
+		New.Pg = self.Pg.copy()
+		New.rho = self.rho.copy()
+		New.vmacro = self.vmacro.copy()
+		New.fill = self.fill.copy()
+		New.stray_light = self.stray_light.copy()
+
+		return New
 
 	def correct_phi(self):
 		"""

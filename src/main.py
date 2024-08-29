@@ -172,11 +172,10 @@ def sir_mig():
 			# PERFORM INVERSION #
 			#####################
 			inversion.inversion_mc(conf, comm, rank, size, MPI, "--debug" in sys.argv, not "--no-progress" in sys.argv)
+
 	elif conf['mode'] == 'SY':
 		import synthesis 
 		synthesis.synthesis(conf, comm, rank, size, MPI, "--debug" in sys.argv, not "--no-progress" in sys.argv)
-
-		comm.barrier()
 	else:
 		raise ValueError(f"Mode '{conf['mode']}' not defined.")
 
