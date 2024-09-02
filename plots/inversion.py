@@ -207,11 +207,6 @@ def inversion(conf : dict, x : int, y : int):
 	#############################################################
 	#					PLOTTING STUFF					#
 	#############################################################
-	# Change to abs. wavelength to the line core of the first number
-	if conf['mode'] == "MC":
-		#ll0 = float(input("Put wavelength of the line core: "))
-		ll1 += ll0
-		ll2 += ll0
 	
 	if conf["mode"] == "MC" and "-num" in sys.argv:
 		# Keep the same wavelengths as in the Grid file
