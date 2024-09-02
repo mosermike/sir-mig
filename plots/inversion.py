@@ -167,8 +167,8 @@ def inversion(conf : dict, x : int, y : int):
 		# Determine line core
 		ll0 = sir.determine_line_core(os.path.join(conf["path"],conf["line"]),num)
 	elif conf['mode'] == "MC":
-		obs1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["lines"]))
-		fit1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["lines"]))
+		obs1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["line"]))
+		fit1.transform_wave_sir_to_abs(os.path.join(conf["path"],conf["line"]))
 		obs1.data_cut_wave = True
 		fit1.data_cut_wave = True
 		conf["map"] = [0,0,0,0]

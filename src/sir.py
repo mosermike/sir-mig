@@ -224,6 +224,8 @@ def read_config(filename : str, check : bool = False) -> dict:
 	------
 	FileExistsError
 		if config file does not exist
+	FileNotFoundError
+		if path does not exist
 	Exception
 		if range_wave and atoms do not consist of the same number of lines
 	FileNotFoundError
@@ -263,12 +265,16 @@ def read_config(filename : str, check : bool = False) -> dict:
 	# Create dictionary
 	Dict = {
 		"filename" : filename,
-		"vmacro" : "0.1000",
 	}
 
 	for i in data:
 		if i[0] != '':
 			Dict[i[0]] = i[1]
+
+	# replace path if it is ./ but there is a path in the filename
+	if Dict["path"][:2] == "./" and "/" in filename:
+		Dict["path"] = os.path.join(filename[:filename.rfind("/")], Dict["path"][2:])
+
 	if check:
 		if(Dict["mode"] != "SY"):
 			if Dict["inv_out"] == "":
@@ -316,7 +322,7 @@ def read_config(filename : str, check : bool = False) -> dict:
 		if len(Dict['atoms']) != len(Dict['range_wave']):
 			raise Exception("[read_config] The number of lines in 'atoms' do not fit the given ranges in 'range_wave'! Abort...")
 		if not exists(Dict['path']):
-			print(f"[read_config] {Dict['path']} does not exist.")
+			raise FileNotFoundError(f"[read_config] {Dict['path']} does not exist.")
 		if (Dict["mode"] == "1C" or Dict["mode"] == "MC") and not exists(os.path.join(Dict['path'],Dict['model'])):
 			print(f"[read_config] {Dict['model']} does not exist.")
 		if Dict["mode"] == "2C" and not exists(os.path.join(Dict['path'],Dict['model1'])):

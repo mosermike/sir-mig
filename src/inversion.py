@@ -897,7 +897,7 @@ def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, pr
 
 	# Root process initializes the progress bar
 	if rank == 0 and progress:
-		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
 	comm.barrier()
 
 	for i in range(0, len(tasks['folders'])):
@@ -967,7 +967,6 @@ def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, pr
 	##################################################
 	# Read all the results and put it into npy files #
 	##################################################
-	os.chdir(path)
 	if rank == 0:
 		print("[STATUS] Gathering results...")
 
@@ -1039,7 +1038,7 @@ def inversion_1c(conf : dict, comm, rank : int, size : int, MPI, debug=False, pr
 			# Delete the folder
 			for i in range(len(tasks['x'])):
 				# Remove folder
-				shutil.rmtree(tasks['folders'][i])
+				shutil.rmtree(os.path.join(path,tasks['folders'][i]))
 
 			if conf['psf'] != '' and conf['psf'] != d.psf:
 				os.remove(os.path.join(path,d.psf))
@@ -1194,7 +1193,7 @@ def inversion_mc(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 
 	# Root process initializes the progress bar
 	if rank == 0 and progress:
-		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
 		
 	comm.barrier()
 
@@ -1249,7 +1248,6 @@ def inversion_mc(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 	##################################################
 	# Read all the results and put it into npy files #
 	##################################################
-	os.chdir(path)
 	if rank == 0:
 		print("[STATUS] Gathering results...")
 
@@ -1368,7 +1366,6 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 
 	"""
 	start = time.time()
-
 	###################################################
 	#		READ PARAMETERS FROM CONFIG FILE		#	
 	###################################################
@@ -1500,7 +1497,7 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 	# Write the control file with the information from the config file
 	if rank == 0:
 		print(f"-------> Write control and grid file")
-		sir._write_control_2c(os.path.join(conf['path'],d.inv_trol_file), conf)
+		sir._write_control_2c(os.path.join(path,d.inv_trol_file), conf)
 		sir.write_grid(conf, os.path.join(path,d.Grid), stk.wave)
 
 
@@ -1517,7 +1514,7 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 
 	# Root process initializes the progress bar
 	if rank == 0 and progress:
-		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout, colour='green')
+		pbar = tqdm(total=max_jobs, desc="Overall Progress", file=sys.stdout)
 
 	comm.barrier()
 
@@ -1590,7 +1587,6 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 	########################################################
 	#	Read all the results and put it into npy files	#
 	########################################################
-	os.chdir(path)
 	if rank == 0:
 		
 		print("[STATUS] Gathering results...")
@@ -1617,7 +1613,7 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 
 		print("-------> Read and Write Models ...")
 		# Create shapes of the arrays which are filled and saved later
-		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{tasks['folders'][0]}/best1.mod")
+		log_tau, _,_,_,_,_,_,_,_,_,_ = sir.read_model(f"{os.path.join(path,tasks['folders'][0])}/best1.mod")
 
 		models_inv1		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
 		models_inv2		= m.model_atm(nx = Map[1]-Map[0]+1, ny = Map[3]-Map[2]+1, nval=len(log_tau))
@@ -1683,9 +1679,9 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 			# Delete the folder
 			print("-------> Delete created SIR files")
 			for i in range(len(tasks['x'])):
-				shutil.rmtree(tasks['folders'][i])
+				shutil.rmtree(os.path.join(path,tasks['folders'][i]))
 			if conf['psf'] != '' and conf['psf'] != d.psf:
-				os.remove(d.psf)
+				os.remove(os.path.join(path,d.psf))
 			os.remove(os.path.join(path,d.inv_trol_file))
 			os.remove(os.path.join(path,d.Grid))
 		else:
