@@ -188,18 +188,29 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	if chi2.ny < chi2.nx//2:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.12 * frac, pad=0.04, aspect=10, extend=ext_cbar, cmap=cmap)
+	else:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=ext_cbar, cmap=cmap)
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	if chi2.ny < chi2.nx//2:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.12 * frac, pad=0.04, aspect=10, extend=ext_cbar, cmap=cmap)
+	else:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=ext_cbar, cmap=cmap)
 	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	if chi2.ny < chi2.nx//2:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.12 * frac, pad=0.04, aspect=10, extend=ext_cbar, cmap=cmap)
+	else:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=ext_cbar, cmap=cmap)
 	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	if chi2.ny < chi2.nx//2:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10, extend=ext_cbar, cmap=cmap)
+	else:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=ext_cbar, cmap=cmap)
 	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
-	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
 	############
 
 	#####################
@@ -228,7 +239,7 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 			fig.suptitle(title4, y=1.02, x=xtitle1)
 
 
-	plt.savefig(savepath + "chi2_stokes" + add)
+	fig.savefig(savepath + "chi2_stokes" + add)
 
 	# Plot
 	fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
@@ -241,11 +252,14 @@ def plot_chi2(figsize, frac, chi2, Map_plot, units, savepath, add, origin, title
 	ax.set_ylabel(f"y [{units}]")
 	############
 	# Colorbar #
-	cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, cmap=cmap, extend=ext_cbar, aspect=30)
+	if chi2.ny < chi2.nx//2:
+		cbar = fig.colorbar(im, ax=ax, fraction=0.12 * frac, pad=0.04, aspect=10, extend=ext_cbar)
+	else:
+		cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, aspect=30, extend=ext_cbar)
 	cbar.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar.set_label(label = r"$\chi^2$", loc = 'center')
 	############
-	plt.savefig(savepath + "chi2_total" + add)
+	fig.savefig(savepath + "chi2_total" + add)
 	
 
 def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath, add, chi2, Map_plot, origin, sign1, sign2, n, dx, dy, Type=""):
@@ -462,26 +476,44 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[1])
+	if models_inv.ny < models_inv.nx//2:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[1])
+	else:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[1])
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar1.set_label(label = labels[1], loc = 'center', labelpad=15)
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[4])
+	if models_inv.ny < models_inv.nx//2:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[4])
+	else:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[4])
 	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar2.set_label(label = labels[4], loc = 'center', labelpad=15)
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[5])
+	if models_inv.ny < models_inv.nx//2:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[5])
+	else:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[5])
 	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	cbar3.set_label(label = labels[5], loc = 'center', labelpad=15)
 	
 	if "-plot_chi2" in sys.argv:
-		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[11])
+		if models_inv.ny < models_inv.nx//2:
+			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[11])
+		else:
+			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[11])
 		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 		cbar4.set_label(label = labels[11], loc = 'center', labelpad=15)
 	elif "-plot_fill" in sys.argv:
-		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
+		if models_inv.ny < models_inv.nx//2:
+			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10)
+		else:
+			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
 		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 		cbar4.set_label(label = r"$\alpha$", loc = 'center', labelpad=15)	
 	else:
-		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[6])
+		if models_inv.ny < models_inv.nx//2:
+			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[6])
+		else:
+			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[6])
 		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 		cbar4.set_label(label = labels[6], loc = 'center', labelpad=15)
 	############
@@ -619,24 +651,36 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	#####################
 	#	Set labels	#
 	#####################
-	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
-	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
-	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")
-	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")	
+	ax1.set_title(r'$I / I_c$ @' + "%.3f" % wave  + r" \AA")
+	ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")
+	ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")
+	ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")	
 
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30)
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
 	############
@@ -673,7 +717,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	# Set Legend and Limits #
 	#########################
 	
-	plt.savefig(savepath + "stokes_obs" + add)
+	fig.savefig(savepath + "stokes_obs" + add)
 
 	##############################################
 	#  Plot I, Q, U and V  at wave for result	#
@@ -709,22 +753,38 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	#####################
 	#	Set labels	#
 	#####################
-	ax1.set_title(r'$\mathrm{I} / \mathrm{I}_c $ @' + "%.3f" % wave + r" \AA")
-	ax2.set_title(r'$\mathrm{Q} / \mathrm{I}_c$ @' + "%.3f" % waveQ + r" \AA")
-	ax3.set_title(r'$\mathrm{U} / \mathrm{I}_c$ @' + "%.3f" % waveU + r" \AA")		
-	ax4.set_title(r'$\mathrm{V} / \mathrm{I}_c$ @' + "%.3f" % waveV + r" \AA")		
+	ax1.set_title(r'$I / I_c$ @' + "%.3f" % wave + r" \AA")
+	ax2.set_title(r'$Q / I_c$ @' + "%.3f" % waveQ + r" \AA")
+	ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")		
+	ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")		
 
 
 	############
 	# Colorbar #
-	cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
-	cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30)
+	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
-	cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30)
+	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
-	cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
+	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
+	if stokes_inv.ny < stokes_inv.nx//2:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
+	else:
+		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
 	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
 	############
 
 	#####################

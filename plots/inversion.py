@@ -231,7 +231,7 @@ def inversion(conf : dict, x : int, y : int):
 	elif "-hor" in sys.argv:
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(ncols=4, figsize=(17.39,4.31), layout="compressed")
 	else:
-		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), layout="compressed")
+		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(12,8), layout="compressed")
 
 
 	# Add label
@@ -405,7 +405,7 @@ def inversion(conf : dict, x : int, y : int):
 	elif "-hor" in sys.argv:
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(ncols=4, figsize=(17.39,4.31), layout="compressed")
 	else:
-		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), layout="compressed")
+		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(12,8), layout="compressed") #16,12
 
 	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"] # Get colors used in the actual cycle
 	if conf["mode"] == "MC":
