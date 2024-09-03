@@ -388,13 +388,16 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 			ax.set_ylabel(f"y [{units}]")
 			############
 			# Colorbar #
-			cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[i])
+			if models_inv.ny < models_inv.nx//2:
+				cbar = fig.colorbar(im, ax=ax, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[i])
+			else:
+				cbar = fig.colorbar(im, ax=ax, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[i])
 			cbar.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
 			cbar.set_label(label = labels[i], loc = 'center')
 			############
 			# set the spacing between subplots
 			#plt.tight_layout(pad=2)
-			plt.savefig(savepath + "plot_" + str(inputs[i][1:]) + Type + add)
+			fig.savefig(savepath + "plot_" + str(inputs[i][1:]) + Type + add)
 
 
 	# Plot T,B,vlos, inc in one figure
