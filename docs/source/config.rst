@@ -79,7 +79,7 @@ Inversion configuration
 +------------+----------------------------------------------------------------------------------+
 | range_wave | Range in the Grid (start in A, step in mA, number of wavelengths), `;` = newline |
 +------------+----------------------------------------------------------------------------------+
-| fill       | Filling factors for both models as `fill1,fill2` (if random_guess > 0) (2C)      |
+| fill       | Filling factors for both models as `fill1,fill2` (2C)                            |
 +------------+----------------------------------------------------------------------------------+
 | inv_out    | Prefix to written results from the inversion                                     |
 +------------+----------------------------------------------------------------------------------+
@@ -123,6 +123,8 @@ Control file
 | nodes_gamma  | Nodes for the inclination of the magnetic field as list with `,`              |
 +--------------+-------------------------------------------------------------------------------+
 | nodes_phi    | Nodes for the azimuth of the magnetic field as list with `,`                  |
++--------------+-------------------------------------------------------------------------------+
+| invert_fill  | Invert the filling factor (2C)                                                |
 +--------------+-------------------------------------------------------------------------------+
 | mu_cos       | Observer angle $\mu = \cos \theta$                                            |
 +--------------+-------------------------------------------------------------------------------+

@@ -1661,7 +1661,8 @@ def inversion_2c(conf : dict, comm, rank : int, size : int, MPI, debug=False,pro
 				num_of_nodes+= int(conf['nodes_gamma1'].split(",")[-1])
 			if conf['nodes_phi1'] != "":
 				num_of_nodes+= int(conf['nodes_phi1'].split(",")[-1])
-			
+			if conf["invert_fill"] != "1":
+				num_of_nodes +=1
 			
 			# Compute chi2
 			chi2.compute(obs, stokes_inv, [float(i) for i in conf["weights"]], num_of_nodes)

@@ -46,6 +46,7 @@ nodes_magn2  :  # Nodes in B
 nodes_vlos2  :  # Nodes in vlos
 nodes_gamma2 :  # Nodes in gamma
 nodes_phi2   :  # Nodes in phi
+invert_fill  :  # Invert filling factor (1 or 0)
 mu_cos       :  # mu = cos theta
 abundance    : THEVENIN # Abundance file
 gas_pressure : 3000 3000 # Gas Pressure Boundary condition (two values separated with a space)
