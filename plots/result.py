@@ -378,11 +378,11 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 			# Plot
 			fig, ax = plt.subplots(figsize=[figsize[0]/2,figsize[1]/2], layout="compressed")
 			if inputs[i] == "-Bz":
-				ax.set_title(titles[i] + add_str + r" @ $\log \tau = $" + str(taus[4]))
+				ax.set_title(titles[i] + add_str + r" @ $\log \tau_c =\ $" + str(taus[4]))
 			elif inputs[i] == "-fill":
 				ax.set_title(titles[i] + add_str)
 			else:
-				ax.set_title(titles[i] + add_str + r" @ $\log \tau = $" + str(taus[i]))
+				ax.set_title(titles[i] + add_str + r" @ $\log \tau_c =\ $" + str(taus[i]))
 			
 			if inputs[i] == "-Bz":
 				im = ax.imshow((models_inv.B*np.cos(models_inv.gamma*np.pi/180)).transpose(), cmap=cmap[i], origin = origin, vmin = limits[i][0], vmax = limits[i][1],
@@ -464,15 +464,15 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	#	Set title and legend	#
 	###############################
 	if "-vertical" not in sys.argv:
-		ax1.set_title(titles[1] + r" @ $\log\tau = $ " + str(logT))
-		ax2.set_title(titles[4] + r" @ $\log\tau = $ " + str(logB))
-		ax3.set_title(titles[5] + r" @ $\log\tau = $ " + str(logV))
+		ax1.set_title(titles[1] + r" @ $\log\tau_c =\ $ " + str(logT))
+		ax2.set_title(titles[4] + r" @ $\log\tau_c =\ $ " + str(logB))
+		ax3.set_title(titles[5] + r" @ $\log\tau_c =\ $ " + str(logV))
 		if "-plot_chi2" in sys.argv:
 			ax4.set_title(titles[11])
 		elif "-plot_fill" in sys.argv:
 			ax4.set_title("Filling Factor")
 		else:
-			ax4.set_title(titles[6] + r" @ $\log\tau = $ " + str(logI))
+			ax4.set_title(titles[6] + r" @ $\log\tau_c =\ $ " + str(logI))
 
 	############
 	# Colorbar #
@@ -541,7 +541,7 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 				fig.suptitle(title4, y=1.02, x=xtitle1)
 	
 
-	plt.savefig(savepath + "inversion" + Type + add)
+	fig.savefig(savepath + "inversion" + Type + add)
 
 
 
