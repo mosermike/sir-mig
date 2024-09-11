@@ -432,13 +432,13 @@ def inversion_multiple(confs : list, x : int, y : int, labels : list):
 			fig.suptitle(title, y=0.98, x=xtitle2)
 
 	if "-vertical" in sys.argv:	
-		plt.tight_layout(pad=2,h_pad=0.0)
+		fig.tight_layout(pad=2,h_pad=0.0)
 	else:
 		# set the spacing between subplots
-		plt.tight_layout(pad=2)
+		fig.tight_layout(pad=2)
 
 	  
-	plt.savefig(savepath + "inversion_multiple_result_x" + str(x) + "_y"  + str(y) + add)
+	fig.savefig(savepath + "inversion_multiple_result_x" + str(x) + "_y"  + str(y) + add)
 
 
 # Used if executed directly
