@@ -669,7 +669,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 			xs = np.int64(sys.argv[sys.argv.index("-mark")+1].split(","))
 			ys = np.int64(sys.argv[sys.argv.index("-mark")+2].split(","))
 		colors = ["black","red","blue","green","yellow"]
-		for i in len(xs):
+		for i in range(len(xs)):
 			ax1.scatter(xs[i]*abs(dx),ys[i]*abs(dy),c=colors[i % len(colors)], marker="x")
 	
 	############
