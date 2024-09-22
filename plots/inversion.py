@@ -103,7 +103,7 @@ def inversion(conf : dict, x : int, y : int):
 		which line number is used (only for mode `MC`), if not selected, everything is plotted in absolute wavelengths
 	-err
 		Print error bars
-		
+
 	Raises
 	------
 	NotImplementedError
@@ -489,6 +489,13 @@ def inversion(conf : dict, x : int, y : int):
 					phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
 					color=colors[3], lw=0)
 
+	if "-2C" in sys.argv:
+		ax2.axvspan(-0.3, 0.3, color='black', alpha=0.3) 
+		ax2.axvspan(-0.7, -1.3, color='black', alpha=0.3) 
+		ax3.axvspan(-0.3, 0.3, color='black', alpha=0.3) 
+		ax3.axvspan(-0.7, -1.3, color='black', alpha=0.3) 
+		ax4.axvspan(-0.3, 0.3, color='black', alpha=0.3) 
+		ax4.axvspan(-0.7, -1.3, color='black', alpha=0.3) 
 	#####################
 	#	Set limits	#
 	#####################

@@ -81,6 +81,7 @@ def _help():
 	sir.option("-f [float]","Factor for the fontsizes")
 	sir.option("-symv","Symmetric limits for vlos")
 	sir.option("-rot90","Rotate the image 90 deg")
+	sir.option("-mark x1,x2,... y1,y2,...","Marked pixels in the observations Stokes I as two lists separated with ','")
 	sys.exit()
 
 
@@ -656,7 +657,19 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	ax3.set_title(r'$U / I_c$ @' + "%.3f" % waveU + r" \AA")
 	ax4.set_title(r'$V / I_c$ @' + "%.3f" % waveV + r" \AA")	
 
-
+	if "-mark" in sys.argv:
+		if "-arc" in sys.argv:
+			infos = dict(np.genfromtxt(d.header_infos,dtype='str', delimiter="="), dtype=str)
+			dx = float(infos['CDELT1'])
+			dy = float(infos['CDELT2'])	
+			xs = np.int64(sys.argv[sys.argv.index("-mark")+1].split(","))-conf["map"][0]
+			ys = np.int64(sys.argv[sys.argv.index("-mark")+2].split(","))-conf["map"][2]
+		else:
+			dx = dy = 1
+			xs = np.int64(sys.argv[sys.argv.index("-mark")+1].split(","))
+			ys = np.int64(sys.argv[sys.argv.index("-mark")+2].split(","))
+		ax1.scatter(xs*abs(dx),ys*abs(dy),c="black", marker="x")
+	
 	############
 	# Colorbar #
 	if stokes_inv.ny < stokes_inv.nx//2:
@@ -936,6 +949,9 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		Symmetric limits for vlos
 	-rot90
 		Rotate the image 90 deg
+	-mark [int,int,...] [int,int,...]
+		Marked pixels in the observations Stokes I as two lists separated with ',' and starting with x position
+		
 	"""
 
 	# Import library
