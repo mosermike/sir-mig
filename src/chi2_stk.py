@@ -21,7 +21,7 @@ import os
 def _compute_chi2(obs : np.array, syn : np.array, noise : float, weight : float, num_of_nodes : int, mul=1.0) -> float:
 	r"""
 	chi2 of one stokes parameter computed with the equation
-		$$\chi^2 = \frac{1}{\Lambda} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
+		$$\chi^2 = \frac{1}{\Lambda-num_of_nodes} \sum_i^\Lambda (I^{obs}_i - I^{syn}_i)^2 \cdot \omega^2$$
 
 	Parameters
 	----------

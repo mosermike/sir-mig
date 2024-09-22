@@ -828,7 +828,7 @@ def read_model(filename : str):
 	if not os.path.exists(filename):
 		raise FileExistsError("[read_model] " + filename + " does not exist.")
 	mod = model_atm(0,0,0)
-	if ".mod" in filename:
+	if ".mod" in filename or ".err" in filename:
 		mod.read_mod(filename)
 	else:
 		mod.read(filename)

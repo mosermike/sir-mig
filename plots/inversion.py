@@ -43,6 +43,7 @@ def _help():
 	sir.option("-vertical","Plot spectra vertically")
 	sir.option("-hor","Plot spectra horizontally")
 	sir.option("-num:","Number of the line considered (Default: take first one) (for Mode 'MC')")
+	sir.option("-err:", "Print error bars")
 	sys.exit()
 
 def inversion(conf : dict, x : int, y : int):
@@ -100,7 +101,9 @@ def inversion(conf : dict, x : int, y : int):
 		Plot it vertically
 	-num [int]
 		which line number is used (only for mode `MC`), if not selected, everything is plotted in absolute wavelengths
-
+	-err
+		Print error bars
+		
 	Raises
 	------
 	NotImplementedError
@@ -352,13 +355,15 @@ def inversion(conf : dict, x : int, y : int):
 
 			if conf['mode'] == "2C":
 				# Error of fit
-				ax1.fill_between(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y] - err11.get_attribute(inputs[i][1:])[x,y],
+				if "-err" in sys.argv:
+					ax1.fill_between(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y] - err11.get_attribute(inputs[i][1:])[x,y],
 							syn1.get_attribute(inputs[i][1:])[x,y] + err11.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
 							color=colors[0], lw=0)
 			
 			# Error of fit
 			if (conf["mode"] != "SY"):
-				ax1.fill_between(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y] - err1.get_attribute(inputs[i][1:])[x,y],
+				if "-err" in sys.argv:
+					ax1.fill_between(phy1.tau, phy1.get_attribute(inputs[i][1:])[x,y] - err1.get_attribute(inputs[i][1:])[x,y],
 						 phy1.get_attribute(inputs[i][1:])[x,y] + err1.get_attribute(inputs[i][1:])[x,y], alpha = 0.5,
 						 color=colors[1], lw=0)
 
@@ -443,46 +448,46 @@ def inversion(conf : dict, x : int, y : int):
 		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color=colors[2])
 		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color=colors[3])
 
-
-	if conf['mode'] == "2C":
-		ax1.fill_between(syn1.tau, syn1.T[x,y] - err11.T[x,y],
-				 syn1.T[x,y] + err11.T[x,y], alpha = 0.5,
-				 color=colors[0], lw=0)
-		ax2.fill_between(syn1.tau, syn1.B[x,y] - err11.B[x,y],
-					syn1.B[x,y] + err11.B[x,y], alpha = 0.5,
+	if "-err" in sys.argv:
+		if conf['mode'] == "2C":
+			ax1.fill_between(syn1.tau, syn1.T[x,y] - err11.T[x,y],
+					syn1.T[x,y] + err11.T[x,y], alpha = 0.5,
 					color=colors[0], lw=0)
-		ax3.fill_between(syn1.tau, syn1.vlos[x,y] - err11.vlos[x,y],
-					syn1.vlos[x,y] + err11.vlos[x,y], alpha = 0.5,
+			ax2.fill_between(syn1.tau, syn1.B[x,y] - err11.B[x,y],
+						syn1.B[x,y] + err11.B[x,y], alpha = 0.5,
+						color=colors[0], lw=0)
+			ax3.fill_between(syn1.tau, syn1.vlos[x,y] - err11.vlos[x,y],
+						syn1.vlos[x,y] + err11.vlos[x,y], alpha = 0.5,
+						color=colors[0], lw=0)
+			ax4.fill_between(syn1.tau, syn1.gamma[x,y] - err11.gamma[x,y],
+						syn1.gamma[x,y] + err11.gamma[x,y], alpha = 0.5,
+						color=colors[0], lw=0)
+		if conf['mode'] == "2C" or conf["mode"] == "MC":
+			ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
+					phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
+					color=colors[1], lw=0)
+			ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
+					phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
+					color=colors[1], lw=0)
+			ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
+					phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
+					color=colors[1], lw=0)
+			ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
+					phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
+					color=colors[1], lw=0)
+		elif conf["mode"] == "1C":
+			ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
+					phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
 					color=colors[0], lw=0)
-		ax4.fill_between(syn1.tau, syn1.gamma[x,y] - err11.gamma[x,y],
-					syn1.gamma[x,y] + err11.gamma[x,y], alpha = 0.5,
-					color=colors[0], lw=0)
-	if conf['mode'] == "2C" or conf["mode"] == "MC":
-		ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
-				 phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
-				 color=colors[1], lw=0)
-		ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
-				 phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
-				color=colors[1], lw=0)
-		ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
-				 phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
-				 color=colors[1], lw=0)
-		ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
-				 phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
-				 color=colors[1], lw=0)
-	elif conf["mode"] == "1C":
-		ax1.fill_between(phy1.tau, phy1.T[x,y] - err1.T[x,y],
-				 phy1.T[x,y] + err1.T[x,y], alpha = 0.5,
-				 color=colors[0], lw=0)
-		ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
-				 phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
-				color=colors[1], lw=0)
-		ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
-				 phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
-				 color=colors[2], lw=0)
-		ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
-				 phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
-				 color=colors[3], lw=0)
+			ax2.fill_between(phy1.tau, phy1.B[x,y] - err1.B[x,y],
+					phy1.B[x,y] + err1.B[x,y], alpha = 0.5,
+					color=colors[1], lw=0)
+			ax3.fill_between(phy1.tau, phy1.vlos[x,y] - err1.vlos[x,y],
+					phy1.vlos[x,y] + err1.vlos[x,y], alpha = 0.5,
+					color=colors[2], lw=0)
+			ax4.fill_between(phy1.tau, phy1.gamma[x,y] - err1.gamma[x,y],
+					phy1.gamma[x,y] + err1.gamma[x,y], alpha = 0.5,
+					color=colors[3], lw=0)
 
 	#####################
 	#	Set limits	#

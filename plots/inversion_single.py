@@ -42,6 +42,7 @@ def _help():
 	sir.option("-num","Number of the line considered")
 	sir.option("-line","Line file for using absolute wavelength values")
 	sir.option("-instrument [str]","which instrument is used for relative wavelength (Hinode or GRIS at 15648A) (Mode `1C` and `2C`), otherwise asked")
+	sir.option("-err","Print errorbars")
 	sys.exit()
 
 
@@ -128,9 +129,6 @@ def inversion_single_1C(fit_str : str, obs_str : str, phy_str : str, syn_str : s
 	# Load error of best fit model
 	err = m.read_model(phy_str.replace(".per",".err"))
 	
-	obs.wave /= 1e3
-	fit.wave /= 1e3
-	
 	if '-line' in sys.argv:
 		line = sys.argv[sys.argv.index("-line")+1]
 		# Determine line numbers
@@ -144,15 +142,14 @@ def inversion_single_1C(fit_str : str, obs_str : str, phy_str : str, syn_str : s
 			ll0 = sir.determine_line_core(line, i)
 			obs.wave[obs.indx == i] += ll0
 			fit.wave[fit.indx == i] += ll0
-
-
+	
+	
 	# Change to abs. wavelength to the line core of the first number
 	if "-num" in sys.argv:
-		
 		num = int(sys.argv[sys.argv.index("-num")+1])
-		obs.cut_to_wave([obs.wave[obs.indx == num][0], obs.wave[obs.indx == num][1]-obs.wave[obs.indx == num][0],len(obs.wave[obs.indx == num])])
-		fit.cut_to_wave([fit.wave[fit.indx == num][0], fit.wave[fit.indx == num][1]-fit.wave[fit.indx == num][0],len(fit.wave[fit.indx == num])])
-
+		obs.cut_to_wave(np.array([[obs.wave[obs.indx == num][0], obs.wave[obs.indx == num][1]-obs.wave[obs.indx == num][0],len(obs.wave[obs.indx == num])]]))
+		fit.cut_to_wave(np.array([[fit.wave[fit.indx == num][0], fit.wave[fit.indx == num][1]-fit.wave[fit.indx == num][0],len(fit.wave[fit.indx == num])]]))
+	
 	label_x = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
 	if label_x != '0':
 		obs.wave -= float(label_x)
@@ -204,15 +201,15 @@ def inversion_single_1C(fit_str : str, obs_str : str, phy_str : str, syn_str : s
 	# Plot the Stokes profiles #
 	############################
 	llabel = "Observation"
-	ax1.plot(obs.wave, obs.stki, "x", label=llabel)
-	ax2.plot(obs.wave, obs.stkq, "x", label=llabel)
-	ax3.plot(obs.wave, obs.stku, "x", label=llabel)
-	ax4.plot(obs.wave, obs.stkv, "x", label=llabel)
+	ax1.plot(obs.wave, obs.stki[0,0], "x", label=llabel)
+	ax2.plot(obs.wave, obs.stkq[0,0], "x", label=llabel)
+	ax3.plot(obs.wave, obs.stku[0,0], "x", label=llabel)
+	ax4.plot(obs.wave, obs.stkv[0,0], "x", label=llabel)
 
-	ax1.plot(fit.wave, fit.stki, "-", label = "Best Fit")
-	ax2.plot(fit.wave, fit.stkq, "-", label = "Best Fit")
-	ax3.plot(fit.wave, fit.stku, "-", label = "Best Fit")
-	ax4.plot(fit.wave, fit.stkv, "-", label = "Best Fit")
+	ax1.plot(fit.wave, fit.stki[0,0], "-", label = "Best Fit")
+	ax2.plot(fit.wave, fit.stkq[0,0], "-", label = "Best Fit")
+	ax3.plot(fit.wave, fit.stku[0,0], "-", label = "Best Fit")
+	ax4.plot(fit.wave, fit.stkv[0,0], "-", label = "Best Fit")
 
 	# Set xlimits
 	ax1.set_xlim(fit.wave[0], fit.wave[-1])
@@ -285,8 +282,8 @@ def inversion_single_1C(fit_str : str, obs_str : str, phy_str : str, syn_str : s
 			r"Inclination $\gamma$", r"Azimuth $\phi$", r"Height $z$", r"Gas Pressure $P_g$", r"Density $\rho$", r"Magnetic Field Strength $B_z$"]
 
 	i = 0
-	pars = [phy.tau[0,0],phy.T[0,0],phy.Pe[0,0],phy.vmic[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
-	pars_err = [err.tau[0,0],err.T[0,0],err.Pe[0,0],err.vmic[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
+	pars = [phy.tau,phy.T,phy.Pe,phy.vmicro,phy.B,phy.vlos,phy.gamma,phy.phi,phy.z,phy.Pg,phy.rho]
+	pars_err = [err.tau,err.T,err.Pe,err.vmicro,err.B,err.vlos,err.gamma,err.phi,err.z,err.Pg,err.rho]
 
 	for i in range(len(inputs)):
 		if inputs[i] in sys.argv:
@@ -300,15 +297,17 @@ def inversion_single_1C(fit_str : str, obs_str : str, phy_str : str, syn_str : s
 			if inputs[i] == "-Bz":
 				ax1.plot(phy.tau, phy.B[0,0]*np.cos(phy.gamma[0,0]/180*np.pi), label="Best Fit Model", color='#FF2C00')
 				# Error of fit
-				ax1.fill_between(pars[0], (phy.B[0,0] - err.B[0,0])*np.cos(phy.gamma[0,0]/180*np.pi),
+				if "-err" in sys.argv:
+					ax1.fill_between(pars[0], (phy.B[0,0] - err.B[0,0])*np.cos(phy.gamma[0,0]/180*np.pi),
 						(phy.B[0,0] + err.B[0,0])*np.cos(phy.gamma[0,0]/180*np.pi), alpha = 0.5,
 						color='#FF2C00', lw=0)
 			else:
-				ax1.plot(pars[0], pars[index[i]], label="Best Fit Model", color='#FF2C00')
+				ax1.plot(pars[0], pars[index[i]][0,0], label="Best Fit Model", color='#FF2C00')
 
 				# Error of fit
-				ax1.fill_between(pars[0], pars[index[i]] - pars_err[index[i]],
-							pars[index[i]] + pars_err[index[i]], alpha = 0.5,
+				if "-err" in sys.argv:
+					ax1.fill_between(pars[0], pars[index[i]][0,0] - pars_err[index[i]][0,0],
+							pars[index[i]][0,0] + pars_err[index[i]][0,0], alpha = 0.5,
 							color='#FF2C00', lw=0)
 
 			# Set xlimits
@@ -330,13 +329,14 @@ def inversion_single_1C(fit_str : str, obs_str : str, phy_str : str, syn_str : s
 			plt.savefig(savepath + "inversion_" + str(inputs[i][1:]) + add)
 		
 	# Plot T,B,vlos, inc in one figure
+	
 	lim_max = -3.0
 	phy.set_limit(lim_max)
 	err.set_limit(lim_max)
 	
-	pars = [phy.tau[0,0],phy.T[0,0],phy.Pe[0,0],phy.vmic[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
-	pars_err = [err.tau[0,0],err.T[0,0],err.Pe[0,0],err.vmic[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
-
+	pars = [phy.tau,phy.T,phy.Pe,phy.vmicro,phy.B,phy.vlos,phy.gamma,phy.phi,phy.z,phy.Pg,phy.rho]
+	pars_err = [err.tau,err.T,err.Pe,err.vmicro,err.B,err.vlos,err.gamma,err.phi,err.z,err.Pg,err.rho]
+	
 	colors = plt.rcParams["axes.prop_cycle"].by_key()["color"] # Get colors used in the actual cycle
 
 	if "-vertical" in sys.argv:
@@ -364,20 +364,20 @@ def inversion_single_1C(fit_str : str, obs_str : str, phy_str : str, syn_str : s
 	ax4.plot(phy.tau, phy.gamma[0,0], label=llabel, color=colors[inds[3]])
 
 	
-
-	ax1.fill_between(pars[0], pars[1] - pars_err[1],
-				pars[1] + pars_err[1], alpha = 0.5,
-				color=colors[0], lw=0)
-	ax2.fill_between(pars[0], pars[4] - pars_err[4],
-				pars[4] + pars_err[4], alpha = 0.5,
-				color=colors[1], lw=0)
-	ax3.fill_between(pars[0], pars[5] - pars_err[5],
-				pars[5] + pars_err[5], alpha = 0.5,
-				color=colors[2], lw=0)
-	ax4.fill_between(pars[0], pars[6] - pars_err[6],
-				pars[6] + pars_err[6], alpha = 0.5,
-				color=colors[3], lw=0)
-	#####################
+	if "-err" in sys.argv:
+		ax1.fill_between(pars[0], pars[1][0,0] - pars_err[1][0,0],
+					pars[1][0,0] + pars_err[1][0,0], alpha = 0.5,
+					color=colors[0], lw=0)
+		ax2.fill_between(pars[0], pars[4][0,0] - pars_err[4][0,0],
+					pars[4][0,0] + pars_err[4][0,0], alpha = 0.5,
+					color=colors[1], lw=0)
+		ax3.fill_between(pars[0], pars[5][0,0] - pars_err[5][0,0],
+					pars[5][0,0] + pars_err[5][0,0], alpha = 0.5,
+					color=colors[2], lw=0)
+		ax4.fill_between(pars[0], pars[6][0,0] - pars_err[6][0,0],
+					pars[6][0,0] + pars_err[6][0,0], alpha = 0.5,
+					color=colors[3], lw=0)
+		#####################
 	#	Set limits	#
 	#####################	
 	ax1.set_xlim(phy.tau[0], lim_max)
@@ -517,9 +517,6 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 	# Load error of best fit model
 	err1 = m.read_model(phy1.replace(".per",".err"))
 	err2 = m.read_model(phy2.replace(".per",".err"))
-	
-	obs1.wave /= 1e3
-	fit1.wave /= 1e3
 	
 	if '-line' in sys.argv:
 		line = sys.argv[sys.argv.index("-line")+1]
@@ -705,18 +702,19 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 			ax1.plot(pars2[0], pars2[index[i]], label="Best Fit Model 2", color=colors[1])
 
 			# Error of fit
-			ax1.fill_between(pars1[0], pars1[index[i]] - pars1_err[index[i]],
-						pars1[index[i]] + pars1_err[index[i]], alpha = 0.5,
-						color=colors[0], lw=0)
-			ax1.fill_between(pars2[0], pars2[index[i]] - pars2_err[index[i]],
-						pars2[index[i]] + pars2_err[index[i]], alpha = 0.5,
-						color=colors[1], lw=0)
+			if "-err" in sys.argv:
+				ax1.fill_between(pars1[0], pars1[index[i]] - pars1_err[index[i]],
+							pars1[index[i]] + pars1_err[index[i]], alpha = 0.5,
+							color=colors[0], lw=0)
+				ax1.fill_between(pars2[0], pars2[index[i]] - pars2_err[index[i]],
+							pars2[index[i]] + pars2_err[index[i]], alpha = 0.5,
+							color=colors[1], lw=0)
 
 			# Set xlimits
 			ax1.set_xlim(pars1[0][0], pars1[0][-1])
 
 			# Set labels
-			ax1.set_xlabel(r"$\log \tau_{500}$")
+			ax1.set_xlabel(r"$\log \tau_{c}$")
 			ax1.set_ylabel(labels[index[i]])
 
 			if index[i] == 2 or index[i] == 9:
@@ -767,30 +765,31 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 	ax3.plot(pars2[0], pars2[5], label=llabel, color=colors[1])
 	ax4.plot(pars2[0], pars2[6], label=llabel, color=colors[1])
 
-	ax1.fill_between(pars1[0], pars1[1] - pars1_err[1],
-				pars1[1] + pars1_err[1], alpha = 0.5,
-				color=colors[0], lw=0)
-	ax2.fill_between(pars1[0], pars1[4] - pars1_err[4],
-				pars1[4] + pars1_err[4], alpha = 0.5,
-				color=colors[0], lw=0)
-	ax3.fill_between(pars1[0], pars1[5] - pars1_err[5],
-				pars1[5] + pars1_err[5], alpha = 0.5,
-				color=colors[0], lw=0)
-	ax4.fill_between(pars1[0], pars1[6] - pars1_err[6],
-				pars1[6] + pars1_err[6], alpha = 0.5,
-				color=colors[0], lw=0)
-	ax1.fill_between(pars2[0], pars2[1] - pars2_err[1],
-				pars2[1] + pars2_err[1], alpha = 0.5,
-				color=colors[1], lw=0)
-	ax2.fill_between(pars2[0], pars2[4] - pars2_err[4],
-				pars2[4] + pars2_err[4], alpha = 0.5,
-				color=colors[1], lw=0)
-	ax3.fill_between(pars2[0], pars2[5] - pars2_err[5],
-				pars2[5] + pars2_err[5], alpha = 0.5,
-				color=colors[1], lw=0)
-	ax4.fill_between(pars2[0], pars2[6] - pars2_err[6],
-				pars2[6] + pars2_err[6], alpha = 0.5,
-				color=colors[1], lw=0)
+	if "-err" in sys.argv:
+		ax1.fill_between(pars1[0], pars1[1] - pars1_err[1],
+					pars1[1] + pars1_err[1], alpha = 0.5,
+					color=colors[0], lw=0)
+		ax2.fill_between(pars1[0], pars1[4] - pars1_err[4],
+					pars1[4] + pars1_err[4], alpha = 0.5,
+					color=colors[0], lw=0)
+		ax3.fill_between(pars1[0], pars1[5] - pars1_err[5],
+					pars1[5] + pars1_err[5], alpha = 0.5,
+					color=colors[0], lw=0)
+		ax4.fill_between(pars1[0], pars1[6] - pars1_err[6],
+					pars1[6] + pars1_err[6], alpha = 0.5,
+					color=colors[0], lw=0)
+		ax1.fill_between(pars2[0], pars2[1] - pars2_err[1],
+					pars2[1] + pars2_err[1], alpha = 0.5,
+					color=colors[1], lw=0)
+		ax2.fill_between(pars2[0], pars2[4] - pars2_err[4],
+					pars2[4] + pars2_err[4], alpha = 0.5,
+					color=colors[1], lw=0)
+		ax3.fill_between(pars2[0], pars2[5] - pars2_err[5],
+					pars2[5] + pars2_err[5], alpha = 0.5,
+					color=colors[1], lw=0)
+		ax4.fill_between(pars2[0], pars2[6] - pars2_err[6],
+					pars2[6] + pars2_err[6], alpha = 0.5,
+					color=colors[1], lw=0)
 	#####################
 	#	Set limits	#
 	#####################	
