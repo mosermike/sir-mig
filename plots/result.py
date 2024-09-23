@@ -302,6 +302,20 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	# Correct for 180 deg ambiguity
 	models_inv.correct_phi()
 
+	if np.all(models_inv.vlos[0,0] == models_inv.vlos[0,0,0]):
+		addV = ""
+	else:
+		addV =  r" @ $\log\tau_c =\ $ " + str(logV)
+	if np.all(models_inv.B[0,0] == models_inv.B[0,0,0]):
+		addB = ""
+	else:
+		addB =  r" @ $\log\tau_c =\ $ " + str(logB)
+	if np.all(models_inv.gamma[0,0] == models_inv.gamma[0,0,0]):
+		addI = ""
+	else:
+		addI =  r" @ $\log\tau_c =\ $ " + str(logI)
+	
+
 	# Cut models to the specific log tau value
 	models_inv.nval = 1
 	models_inv.T = models_inv.T[:,:,indT]
@@ -382,6 +396,12 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 				ax.set_title(titles[i] + add_str + r" @ $\log \tau_c =\ $" + str(taus[4]))
 			elif inputs[i] == "-fill":
 				ax.set_title(titles[i] + add_str)
+			elif inputs[i] == "-B":
+				ax.set_title(titles[i] + add_str + addB)
+			elif inputs[i] == "-vlos":
+				ax.set_title(titles[i] + add_str + addV)
+			elif inputs[i] == "-gamma":
+				ax.set_title(titles[i] + add_str + addI)
 			else:
 				ax.set_title(titles[i] + add_str + r" @ $\log \tau_c =\ $" + str(taus[i]))
 			
@@ -465,15 +485,16 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	#	Set title and legend	#
 	###############################
 	if "-vertical" not in sys.argv:
+		Add = ""
 		ax1.set_title(titles[1] + r" @ $\log\tau_c =\ $ " + str(logT))
-		ax2.set_title(titles[4] + r" @ $\log\tau_c =\ $ " + str(logB))
-		ax3.set_title(titles[5] + r" @ $\log\tau_c =\ $ " + str(logV))
+		ax2.set_title(titles[4] + addB)
+		ax3.set_title(titles[5] + addV)
 		if "-plot_chi2" in sys.argv:
 			ax4.set_title(titles[11])
 		elif "-plot_fill" in sys.argv:
 			ax4.set_title("Filling Factor")
 		else:
-			ax4.set_title(titles[6] + r" @ $\log\tau_c =\ $ " + str(logI))
+			ax4.set_title(titles[6] + addI)
 
 	############
 	# Colorbar #
