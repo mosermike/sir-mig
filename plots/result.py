@@ -355,9 +355,9 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	if "-limitT" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
 		limits[1] = [int(i) for i in temp ]
-		cmap[0] = mpl.colormaps[cmap[0]]
-		cmap[0].set_extremes(under='red', over='orange')
-		extend[0] = "both"
+		cmap[1] = mpl.colormaps[cmap[0]]
+		cmap[1].set_extremes(under='red', over='orange')
+		extend[1] = "both"
 	
 	if "-limitB" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
