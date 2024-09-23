@@ -31,9 +31,9 @@ def _help():
 	sir.option("-title","Title in Stokes plot")
 	sir.option("-T","Plot temperature in K")
 	sir.option("-Pe","Plot electron pressure in dyn/cm^2")
-	sir.option("-vmicro","Plot microturbulence in cm/s")
+	sir.option("-vmicro","Plot microturbulence in km/s")
 	sir.option("-B","Plot magentic field strength in Gauss")
-	sir.option("-vlos","Plot line of sight velocity in cm/s")
+	sir.option("-vlos","Plot line of sight velocity in km/s")
 	sir.option("-gamma","Plot inclination by subtracting in deg")
 	sir.option("-phi","Plot azimuth by adding in deg")
 	sir.option("-z","Plot real height in km")
@@ -275,15 +275,15 @@ def inversion(conf : dict, x : int, y : int):
 	
 	if label_x != "0":
 		if "-hor" in sys.argv:
-			ax1.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
-			ax2.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
+			ax1.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
+			ax2.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
 		if "-vertical" not in sys.argv:
-			ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
-		ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA', loc='center')
+			ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
+		ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
 	else:
 		if "-vertical" not in sys.argv:
-			ax3.set_xlabel(r'$\lambda$' + r' [\AA]', loc='center')
-		ax4.set_xlabel(r'$\lambda$' + r' [\AA]', loc='center')
+			ax3.set_xlabel(r'$\lambda$' + r' [\AA]')
+		ax4.set_xlabel(r'$\lambda$' + r' [\AA]')
 	##################################################################
 	# Set title											#
 	# The position is relative to the chosen plot (vertical or not)  #
