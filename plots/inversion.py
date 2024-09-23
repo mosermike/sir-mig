@@ -511,12 +511,12 @@ def inversion(conf : dict, x : int, y : int):
 		ax3.set_xlim(syn1.tau[0], lim_max)
 		ax4.set_xlim(syn1.tau[0], lim_max)
 
-	Min, Max = ax2.get_ylim()
-	ax2.set_ylim(Min,Max*1.15)
-	Min, Max = ax3.get_ylim()
-	ax3.set_ylim(Min,Max*1.15)
-	Min, Max = ax4.get_ylim()
-	ax4.set_ylim(Min,Max*1.15)
+	#Min, Max = ax2.get_ylim()
+	#ax2.set_ylim(Min,Max*1.15)
+	#Min, Max = ax3.get_ylim()
+	#ax3.set_ylim(Min,Max*1.15)
+	#Min, Max = ax4.get_ylim()
+	#ax4.set_ylim(Min,Max*1.15)
 
 	#####################
 	#	Set labels	#
