@@ -431,15 +431,15 @@ def inversion(conf : dict, x : int, y : int):
 		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color=colors[3])
 	elif conf["mode"] == "2C":
 		llabel = "Best Fit Model 1"
-		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color=colors[2])
-		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color=colors[2])
-		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color=colors[2])
-		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color=colors[3])
+		ax1.plot(syn1.tau, syn1.T[x,y], label=f"{llabel}", color=colors[0])
+		ax2.plot(syn1.tau, syn1.B[x,y], label=f"{llabel}", color=colors[0])
+		ax3.plot(syn1.tau, syn1.vlos[x,y], label=f"{llabel}", color=colors[0])
+		ax4.plot(syn1.tau, syn1.gamma[x,y], label=f"{llabel}", color=colors[0])
 		llabel = "Best Fit Model 2"
-		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color=colors[4])
-		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color=colors[4])
-		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color=colors[4])
-		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color=colors[4])
+		ax1.plot(phy1.tau, phy1.T[x,y], label=f"{llabel}", color=colors[1])
+		ax2.plot(phy1.tau, phy1.B[x,y], label=f"{llabel}", color=colors[1])
+		ax3.plot(phy1.tau, phy1.vlos[x,y], label=f"{llabel}", color=colors[1])
+		ax4.plot(phy1.tau, phy1.gamma[x,y], label=f"{llabel}", color=colors[1])
 	
 	elif conf["mode"] == "1C":
 		llabel = "Best Fit"
