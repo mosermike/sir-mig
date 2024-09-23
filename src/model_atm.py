@@ -88,6 +88,10 @@ class model_atm:
         Reads results from inversion processes and populates the model with the data.
     set_dim:
         Sets the dimensions of the model if no data has been loaded.
+	set_limit:
+		Cuts the arrays to a specific log tau value (should only be used for plotting).
+	set_value:
+		Set the values of a pixel from another model
 
 	Notes
 	-----
@@ -677,6 +681,48 @@ class model_atm:
 			self.rho = self.rho[:, :, 0:ind]
 
 		return self
+
+	def set_value(self, mod, x1 : int, y1 : int, x2 : int, y2 : int):
+		"""
+		Set the values of a pixel from another model
+
+		Parameters
+		----------
+		mod : model_atm
+			Model from which the values are taken at [x1,y1]
+		x1 : int
+			x position of the source pixel
+		y1 : int
+			y position of the source pixel
+		x2 : int
+			x position of the goal pixel of this class
+		y2 : int
+			y position of the goal pixel of this class
+
+		Raises
+		------
+		OverflowError
+			if the dimension in optical depth are not the same
+		"""
+		if self.nval != mod.nval:
+			raise OverflowError(f"The provided model has not the same dimension in log tau ({mod.nval} vs. {self.nval})")
+		
+		self.T[x2,y2] = mod.T[x1,y1]
+		self.Pg[x2,y2] = mod.Pg[x1,y1]
+		self.vmicro[x2,y2] = mod.vmicro[x1,y1]
+		self.B[x2,y2] = mod.B[x1,y1]
+		self.vlos[x2,y2] = mod.vlos[x1,y1]
+		self.gamma[x2,y2] = mod.gamma[x1,y1]
+		self.phi[x2,y2] = mod.phi[x1,y1]
+		self.z[x2,y2] = mod.z[x1,y1]
+		self.rho[x2,y2] = mod.rho[x1,y1]
+		self.Pe[x2,y2] = mod.Pe[x1,y1]
+		self.vmacro[x2,y2] = mod.vmacro[x1,y1]
+		self.fill[x2,y2] = mod.fill[x1,y1]
+		self.stray_light[x2,y2] = mod.stray_light[x1,y1]
+		
+		return self
+
 
 	def write(self, fname, fmt_type=np.float64):
 		"""

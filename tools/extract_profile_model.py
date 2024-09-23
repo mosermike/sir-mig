@@ -52,8 +52,8 @@ def extract_profile_model_1C(conf : dict, x : int, y : int, savepath : str):
 	path = conf["path"]
 
 	# Additional savepath
-	if not exists(savepath):
-		os.mkdir(savepath)
+	if not exists(savepath[:savepath.rfind("/")]):
+		os.mkdir(savepath[:savepath.rfind("/")])
 
 	# Additional text
 	add = ''
@@ -133,11 +133,8 @@ def extract_profile_model_MC(conf : dict, num : int, savepath : str):
 	abundance_file = conf['abundance']
 
 	# Additional savepath
-	savepath = ''
-	if '-save' in sys.argv:
-		savepath = sys.argv[sys.argv.index("-save")+1]
-		if not exists(savepath):
-			os.mkdir(savepath)
+	if not exists(savepath[:savepath.rfind("/")]):
+		os.mkdir(savepath[:savepath.rfind("/")])
 
 	# Additional text
 	add = ''
@@ -208,9 +205,8 @@ def extract_profile_model_2C(conf : dict, x : int, y : int, savepath : str):
 	path = conf["path"]
 
 	# Additional savepath
-	savepath = ''
-	if not exists(savepath):
-		os.mkdir(savepath)
+	if not exists(savepath[:savepath.rfind("/")]):
+		os.mkdir(savepath[:savepath.rfind("/")])
 
 	# Additional text
 	add = ''
