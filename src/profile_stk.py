@@ -432,7 +432,9 @@ class profile_stk:
 		"""
 		if self.data_cut_wave:
 			print("[cut_to_wave] The data was already cut before!")
-
+		
+		range_wave = np.array(range_wave)
+		
 		# Number of wavelengths
 		temp = range_wave[:,2].astype(int)
 		nws = [0, temp[0]]

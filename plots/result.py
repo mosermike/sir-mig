@@ -82,6 +82,7 @@ def _help():
 	sir.option("-symv","Symmetric limits for vlos")
 	sir.option("-rot90","Rotate the image 90 deg")
 	sir.option("-mark x1,x2,... y1,y2,...","Marked pixels in the observations Stokes I as two lists separated with ','")
+	sir.option("-arrowI", "Plot the direction arrow in Stokes I inversion results when '-arc' is used.")
 	sys.exit()
 
 
@@ -782,7 +783,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
 	
-	if "-arc" in sys.argv:
+	if "-arc" in sys.argv and "-arrowI" in sys.argv:
 		l = np.min([Map_plot[1],Map_plot[3]])*0.025
 		ax1.arrow(Map_plot[1]/2, Map_plot[3]/2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 
@@ -974,6 +975,8 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		Rotate the image 90 deg
 	-mark [int,int,...] [int,int,...]
 		Marked pixels in the observations Stokes I as two lists separated with ',' and starting with x position
+	-arrowI
+		Plot the direction arrow in Stokes I inversion results when '-arc' is used
 		
 	"""
 

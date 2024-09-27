@@ -154,7 +154,9 @@ def inversion(conf : dict, x : int, y : int):
 
 	# Cut wave
 	if conf['mode'] == "1C" or conf["mode"] == "2C":
-		obs1.cut_to_wave(conf["range_wave"])
+		obs1.cut_to_wave([[15646.409,40.039,115]])
+		fit1.cut_to_wave([[15646.409,40.039,115]])
+		#obs1.cut_to_wave(conf["range_wave"])
 		obs1.cut_to_map(conf["map"])
 
 	elif conf['mode'] == "MC" and "-num" in sys.argv:
@@ -176,6 +178,7 @@ def inversion(conf : dict, x : int, y : int):
 		fit1.data_cut_wave = True
 		conf["map"] = [0,0,0,0]
 
+	
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x,y],obs1.stkq[x,y],obs1.stku[x,y],obs1.stkv[x,y]
 	
@@ -222,7 +225,7 @@ def inversion(conf : dict, x : int, y : int):
 			ll1 -= float(label_x)
 			ll2 -= float(label_x)
 	
-
+	
 
 	########################
 	#  Plot I, Q, U and V  #
