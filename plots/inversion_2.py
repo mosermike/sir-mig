@@ -167,9 +167,9 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	# Cut wave
 	if conf1['mode'] == "1C" or conf1["mode"] == "2C":
 		obs1.cut_to_wave(conf1["range_wave"])
-		obs1.cut_to_map(conf1["Map"])
+		obs1.cut_to_map(conf1["map"])
 		obs2.cut_to_wave(conf2["range_wave"])
-		obs2.cut_to_map(conf2["Map"])
+		obs2.cut_to_map(conf2["map"])
 	else:
 		num = fit1.indx[0]
 		if "-num" in sys.argv:
