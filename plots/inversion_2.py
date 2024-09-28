@@ -148,9 +148,9 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 
 
 	path2 = conf2["path"]
-	if conf1['mode'] == "MC":
+	if conf2['mode'] == "MC":
 		syn2 = m.read_model(os.path.join(path2,conf2["syn_out"] + d.end_models))	# Synthesis Models 2	
-	if conf1['mode'] == "2C":
+	if conf2['mode'] == "2C":
 		syn2 = m.read_model(os.path.join(path2,conf2["inv_out"] + d.end_models1))	# Synthesis Models 2	
 		err22 = m.read_model(os.path.join(path2,conf2["inv_out"] + d.end_errors1))	# Inversion Models 2
 		phy2 = m.read_model(os.path.join(path2,conf2["inv_out"] + d.end_models2))	# Inversion Models 2
@@ -158,7 +158,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	else:
 		phy2 = m.read_model(os.path.join(path2,conf2["inv_out"] + d.end_models))	# Inversion Models 2
 		err2 = m.read_model(os.path.join(path2,conf2["inv_out"] + d.end_errors))	# Inversion Models 2
-	if conf1['mode'] == "MC":
+	if conf2['mode'] == "MC":
 		obs2 = p.read_profile(os.path.join(path2,conf2["syn_out"] + d.end_stokes))	# Synthesis Profiles 2
 	else:
 		obs2 = p.read_profile(os.path.join(path2,conf2["cube"]))
