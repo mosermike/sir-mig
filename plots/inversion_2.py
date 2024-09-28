@@ -53,7 +53,7 @@ def help():
 
 def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : int):
 	""""
-	Plots the result of one inversion
+	Plots the result of two inversions
 
 	Parameters
 	----------
@@ -380,7 +380,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		# set the spacing between subplots
 		plt.tight_layout(pad=2,h_pad=0.0)
 	elif "-hor" in sys.argv:
-		ax1.legend()
+		ax1.legend(fontsize=12)
 	else:
 		ax2.legend(bbox_to_anchor=(1.01,0.95))
 		# set the spacing between subplots	
