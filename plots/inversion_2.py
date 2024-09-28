@@ -635,9 +635,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 
 	if "-vertical" in sys.argv:	
 		plt.tight_layout(pad=2,h_pad=0.0)
-	elif "-hor" in sys.argv:
-		True = True
-	else:
+	elif "-hor" not in sys.argv:
 		# set the spacing between subplots
 		plt.tight_layout(pad=2)
 
