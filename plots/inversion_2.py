@@ -172,10 +172,10 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		obs2.cut_to_map(conf2["map"])
 		if "-num" in sys.argv:
 			obs1.data_cut_wave = fit1.data_cut_wave = obs2.data_cut_wave = fit2.data_cut_wave = False
-			obs1.cut_to_wave(conf1["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
-			fit1.cut_to_wave(conf1["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
-			obs2.cut_to_wave(conf2["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
-			fit2.cut_to_wave(conf2["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
+			obs1.cut_to_wave(np.array([conf1["range_wave"][int(sys.argv[sys.argv.index("-num") +1])]]))
+			fit1.cut_to_wave(np.array([conf1["range_wave"][int(sys.argv[sys.argv.index("-num") +1])]]))
+			obs2.cut_to_wave(np.array([conf2["range_wave"][int(sys.argv[sys.argv.index("-num") +1])]]))
+			fit2.cut_to_wave(np.array([conf2["range_wave"][int(sys.argv[sys.argv.index("-num") +1])]]))
 	elif conf1['mode'] == "MC" and "-num" in sys.argv:
 		num = int(sys.argv[sys.argv.index("-num")+1])
 		# Cut the wave to the line number

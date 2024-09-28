@@ -435,6 +435,10 @@ class profile_stk:
 		
 		range_wave = np.array(range_wave)
 		
+		# Correct if range_wave is one dimensional
+		if len(range_wave.shape) == 1:
+			range_wave = np.array([range_wave])
+
 		# Number of wavelengths
 		temp = range_wave[:,2].astype(int)
 		nws = [0, temp[0]]
