@@ -271,6 +271,8 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, figsize=(12,14), sharex=True,
 			 gridspec_kw=dict(hspace=0))
 		fig.subplots_adjust(hspace=0, wspace=0)
+	elif "-hor" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(ncols=4, figsize=(17.39,4.31), layout="compressed")
 	else:
 		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12))
 
@@ -292,19 +294,19 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		else:
 			llabel = "Obs. Profile"
 	if "-one" in sys.argv:
-		ax1.plot(ll1, I1, "x", label=llabel)
-		ax2.plot(ll1, Q1, "x", label=llabel)
-		ax3.plot(ll1, U1, "x", label=llabel)
-		ax4.plot(ll1, V1, "x", label=llabel)
+		ax1.plot(ll1, I1, "-", label=llabel)
+		ax2.plot(ll1, Q1, "-", label=llabel)
+		ax3.plot(ll1, U1, "-", label=llabel)
+		ax4.plot(ll1, V1, "-", label=llabel)
 	else:
-		ax1.plot(ll1, I1, "x", label=llabel + label1 + ")")
-		ax1.plot(ll2, I2, "x", label=llabel + label2 + ")")
-		ax2.plot(ll1, Q1, "x", label=llabel + label1 + ")")
-		ax2.plot(ll2, Q2, "x", label=llabel + label2 + ")")
-		ax3.plot(ll1, U1, "x", label=llabel + label1 + ")")
-		ax3.plot(ll2, U2, "x", label=llabel + label2 + ")")
-		ax4.plot(ll1, V1, "x", label=llabel + label1 + ")")
-		ax4.plot(ll2, V2, "x", label=llabel + label2 + ")")
+		ax1.plot(ll1, I1, "-", label=llabel + label1 + ")")
+		ax1.plot(ll2, I2, "-", label=llabel + label2 + ")")
+		ax2.plot(ll1, Q1, "-", label=llabel + label1 + ")")
+		ax2.plot(ll2, Q2, "-", label=llabel + label2 + ")")
+		ax3.plot(ll1, U1, "-", label=llabel + label1 + ")")
+		ax3.plot(ll2, U2, "-", label=llabel + label2 + ")")
+		ax4.plot(ll1, V1, "-", label=llabel + label1 + ")")
+		ax4.plot(ll2, V2, "-", label=llabel + label2 + ")")
 
 	ax1.plot(ll1, I_fit1, "-", label = "Best Fit (" + label1 + ")")
 	ax1.plot(ll2, I_fit2, "-", label = "Best Fit (" + label2 + ")")
@@ -332,9 +334,17 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	ax4.set_ylabel(r'$V / I_c$')
 	
 	
-	if "-vertical" not in sys.argv:
-		ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
-	ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' [\AA]', loc='center')
+	if label_x != "0":
+		if "-hor" in sys.argv:
+			ax1.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
+			ax2.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
+		if "-vertical" not in sys.argv:
+			ax3.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
+		ax4.set_xlabel(r'$\Delta \lambda - $' + label_x + r' \AA')
+	else:
+		if "-vertical" not in sys.argv:
+			ax3.set_xlabel(r'$\lambda$' + r' [\AA]')
+		ax4.set_xlabel(r'$\lambda$' + r' [\AA]')
 
 	##################################################################
 	# Set title											#
@@ -362,6 +372,8 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		ax1.legend(bbox_to_anchor=(1.01,0.95))
 		# set the spacing between subplots
 		plt.tight_layout(pad=2,h_pad=0.0)
+	elif "-hor" in sys.argv:
+		ax1.legend()
 	else:
 		ax2.legend(bbox_to_anchor=(1.01,0.95))
 		# set the spacing between subplots	
@@ -462,6 +474,8 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		fig, (ax1,ax2,ax3,ax4) = plt.subplots(4,1, figsize=(12,16), sharex=True,
 			 gridspec_kw=dict(hspace=0))
 		fig.subplots_adjust(hspace=0, wspace=0)
+	elif "-hor" in sys.argv:
+		fig, (ax1,ax2,ax3,ax4) = plt.subplots(ncols=4, figsize=(17.39,4.31), layout="compressed")
 	else:
 		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), sharex=True)
 
@@ -583,6 +597,10 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	#####################
 	#	Set labels	#
 	#####################
+	if "-hor" in sys.argv:
+		ax1.set_xlabel(r"$\log \tau_{c}$")
+		ax2.set_xlabel(r"$\log \tau_{c}$")
+		ax3.set_xlabel(r"$\log \tau_{c}$")
 	if "-vertical" not in sys.argv:
 		ax3.set_xlabel(r"$\log \tau_{c}$")
 	ax4.set_xlabel(r"$\log \tau_{c}$")
@@ -617,6 +635,8 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 
 	if "-vertical" in sys.argv:	
 		plt.tight_layout(pad=2,h_pad=0.0)
+	elif "-hor" in sys.argv:
+		True = True
 	else:
 		# set the spacing between subplots
 		plt.tight_layout(pad=2)
