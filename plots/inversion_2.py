@@ -449,7 +449,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 			plt.savefig(savepath + "inversion2_x1" + str(x1) + "_y1"  + str(y1) + "_x2" + str(x2) + "_y2"  + str(y2) + str(inputs[i][1:]) + add)
 		
 	# Plot T,B,vlos, inc in one figure
-	lim_max = syn1.tau[-1]
+	lim_max = phy1.tau[-1]
 	if conf1["mode"] == "MC" or conf1['mode'] == "2C":
 		syn1.set_limit(lim_max)
 		syn1.set_limit(lim_max)
