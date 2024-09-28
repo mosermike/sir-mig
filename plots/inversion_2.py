@@ -46,7 +46,7 @@ def help():
 	sir.option("-rho","Plot density")
 	sir.option("-syn","Synthesised model .mod file")
 	sir.option("-vertical","Plot spectra vertically")
-	sir.option("-num","Number of the line considered (Default: take first one) (for Mode 'MC')")
+	sir.option("-num","which line number is used (mode `MC`) or which range from the config (mode `1C` and mode `1C`)")
 	sir.option("-one","Plot observations only once")
 	sir.option("-err","Plot errorbars")
 	sys.exit()
@@ -113,7 +113,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	-vertical
 		Plot it vertically
 	-num [int]
-		which line number is used (only for mode `MC`)
+		which line number is used (mode `MC`) or which range from the config (mode `1C` and mode `1C`)
 	-one
 		Observations are the same and therefore only plotted once
 	-err
@@ -170,28 +170,39 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		obs1.cut_to_map(conf1["map"])
 		obs2.cut_to_wave(conf2["range_wave"])
 		obs2.cut_to_map(conf2["map"])
-	else:
-		num = fit1.indx[0]
 		if "-num" in sys.argv:
-			num = int(sys.argv[sys.argv.index("-num")+1])
-		ind1 = 0
-		ind2 = 0
-
+			obs1.data_cut_wave = fit1.data_cut_wave = obs2.data_cut_wave = fit2.data_cut_wave = False
+			obs1.cut_to_wave(conf1["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
+			fit1.cut_to_wave(conf1["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
+			obs2.cut_to_wave(conf2["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
+			fit2.cut_to_wave(conf2["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
+	elif conf1['mode'] == "MC" and "-num" in sys.argv:
+		num = int(sys.argv[sys.argv.index("-num")+1])
+		# Cut the wave to the line number
+		ind = 0
 		for i in range(len(conf1["atoms"])):
 			if str(num) in conf1["atoms"][i]:
-				ind1 = i
-		for i in range(len(conf2["atoms"])):
-			if str(num) in conf2["atoms"][i]:
-				ind2 = i
-
-		# define map as it is used later for saving
+				ind = i
+		obs1.cut_to_wave(np.array([conf1["range_wave"][ind]]))
+		fit1.cut_to_wave(np.array([conf1["range_wave"][ind]]))
+		obs2.cut_to_wave(np.array([conf2["range_wave"][ind]]))
+		fit2.cut_to_wave(np.array([conf2["range_wave"][ind]]))
 		conf1["map"] = [0,0,0,0]
 		conf2["map"] = [0,0,0,0]
-		
-		obs1.cut_to_wave(np.array([conf1["range_wave"][ind1]]))
-		obs2.cut_to_wave(np.array([conf2["range_wave"][ind2]]))
-		fit1.cut_to_wave(np.array([conf1["range_wave"][ind1]]))
-		fit2.cut_to_wave(np.array([conf2["range_wave"][ind2]]))
+		# Determine line core
+		ll0 = sir.determine_line_core(os.path.join(conf1["path"],conf1["line"]),num)
+	elif conf1['mode'] == "MC":
+		obs1.transform_wave_sir_to_abs(os.path.join(conf1["path"],conf1["line"]))
+		fit1.transform_wave_sir_to_abs(os.path.join(conf1["path"],conf1["line"]))
+		obs2.transform_wave_sir_to_abs(os.path.join(conf2["path"],conf2["line"]))
+		fit2.transform_wave_sir_to_abs(os.path.join(conf2["path"],conf2["line"]))
+		obs1.data_cut_wave = True
+		fit1.data_cut_wave = True
+		obs2.data_cut_wave = True
+		fit2.data_cut_wave = True
+		conf1["map"] = [0,0,0,0]
+		conf2["map"] = [0,0,0,0]
+
 
 	# Change x and y position to the map as the data is cut to the map
 	if conf1['mode'] == "1C" or conf1["mode"] == "2C":
@@ -243,25 +254,21 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 	#					PLOTTING STUFF					#
 	#############################################################
 	# Change to abs. wavelength to the line core of the first number
-	if conf1['mode'] == "MC":
-		ll0 = sir.determine_line_core(os.path.join(conf1["path"],conf1["line"]),num)
-
 	label_x = 0
 
-	temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
-	if temp != '0':
-		ll1 -= float(temp)
-		ll2 -= float(temp)
-		ll1_fit -= float(temp)
-		ll2_fit -= float(temp)
-		label_x = temp
-	else:
+	if conf1["mode"] == "MC" and "-num" in sys.argv:
 		# Keep the same wavelengths as in the Grid file
 		label_x = str(ll0)
 		ll1 -= ll0
 		ll2 -= ll0
-		ll1_fit -= ll0
-		ll2_fit -= ll0
+	else:
+		temp = input("Put wavelength in A to which it should be relative (0 = change nothing): ")
+		if temp != '0':
+			ll1 -= float(temp)
+			ll2 -= float(temp)
+			ll1_fit -= float(temp)
+			ll2_fit -= float(temp)
+			label_x = temp
 
 
 	########################

@@ -42,7 +42,7 @@ def _help():
 	sir.option("-syn","Synthesised model .mod file")
 	sir.option("-vertical","Plot spectra vertically")
 	sir.option("-hor","Plot spectra horizontally")
-	sir.option("-num:","Number of the line considered (Default: take first one) (for Mode 'MC')")
+	sir.option("-num:","Number of the line considered (mode MC) or which range (mode 1C and 2C)")
 	sir.option("-err:", "Print error bars")
 	sys.exit()
 
@@ -100,7 +100,7 @@ def inversion(conf : dict, x : int, y : int):
 	-vertical
 		Plot it vertically
 	-num [int]
-		which line number is used (only for mode `MC`), if not selected, everything is plotted in absolute wavelengths
+		which line number is used (mode `MC`) or which range from the config (mode `1C` and `2C`), if not selected, everything is plotted in absolute wavelengths
 	-err
 		Print error bars
 
@@ -153,10 +153,10 @@ def inversion(conf : dict, x : int, y : int):
 		y = y - conf["map"][2]
 
 	# Cut wave
-	if conf['mode'] == "1C" or conf["mode"] == "2C":
-		obs1.cut_to_wave([[15646.409,40.039,115]])
-		fit1.cut_to_wave([[15646.409,40.039,115]])
-		#obs1.cut_to_wave(conf["range_wave"])
+	if (conf['mode'] == "1C" or conf["mode"] == "2C"):
+		if "-num" in sys.argv:
+			obs1.cut_to_wave(conf["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
+			fit1.cut_to_wave(conf["range_wave"][int(sys.argv[sys.argv.index("-num") +1])])
 		obs1.cut_to_map(conf["map"])
 
 	elif conf['mode'] == "MC" and "-num" in sys.argv:
