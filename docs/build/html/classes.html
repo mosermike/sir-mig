@@ -607,7 +607,7 @@ velocity fields, and magnetic fields, among other parameters.</p>
 <td><p>Reads results from inversion processes and populates the model with the data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>set_dim:</strong></p></td>
-<td><p>Sets the dimensions of the model if no data has been loaded.</p></td>
+<td><p>Sets the dimensions of the model if no data has been loaded. set_limit: Cuts the arrays to a specific log tau value (should only be used for plotting). set_value: Set the values of a pixel from another model</p></td>
 </tr>
 </tbody>
 </table>
@@ -836,6 +836,34 @@ This class will then create the class with nx = ny = 1.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model_atm.model_atm.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://gitlab.moser.mywire.org/moser/sir-mig/-/blob/main/src/model_atm.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model_atm.model_atm.set_value" title="Link to this definition">#</a></dt>
+<dd><p>Set the values of a pixel from another model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>mod</strong><span class="classifier">model_atm</span></dt><dd><p>Model from which the values are taken at [x1,y1]</p>
+</dd>
+<dt><strong>x1</strong><span class="classifier">int</span></dt><dd><p>x position of the source pixel</p>
+</dd>
+<dt><strong>y1</strong><span class="classifier">int</span></dt><dd><p>y position of the source pixel</p>
+</dd>
+<dt><strong>x2</strong><span class="classifier">int</span></dt><dd><p>x position of the goal pixel of this class</p>
+</dd>
+<dt><strong>y2</strong><span class="classifier">int</span></dt><dd><p>y position of the goal pixel of this class</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>OverflowError</dt><dd><p>if the dimension in optical depth are not the same</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1336,6 +1364,7 @@ Note to call cut_to_wave, otherwise it writes the wrong profiles!</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.read_results"><code class="docutils literal notranslate"><span class="pre">model_atm.read_results()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.set_dim"><code class="docutils literal notranslate"><span class="pre">model_atm.set_dim()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.set_limit"><code class="docutils literal notranslate"><span class="pre">model_atm.set_limit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.set_value"><code class="docutils literal notranslate"><span class="pre">model_atm.set_value()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.write"><code class="docutils literal notranslate"><span class="pre">model_atm.write()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model_atm.model_atm.write_model"><code class="docutils literal notranslate"><span class="pre">model_atm.write_model()</span></code></a></li>
 </ul>

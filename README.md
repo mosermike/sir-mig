@@ -4,7 +4,7 @@
  SIR Multiple Guesses
 
 ## Version
-main
+1.0
 
 ## Description
 The code computes physical parameters such as magnetic field, azimuth, inclination by using the SIR code. This code is used to perform inversions with creating random initial guesses. There are three different modes available:
@@ -21,7 +21,6 @@ There is no introduction into SIR. For more information, look into the manual of
 
 **There is a wiki available at [sir-mig.moser.mywire.org](https://sir-mig.moser.mywire.org) **
 
-**If you use this code, please cite these papers:**
 
 ## Installation
 Several packages are necessary to use the sripts:
@@ -130,7 +129,7 @@ I thank Dr. Juan Manuel Borrero and Dr. Ivan Milic for helpful insights into the
 
 
 ## Project status
-Ongoing
+Finished, only updated are made.
 
 
 ## License

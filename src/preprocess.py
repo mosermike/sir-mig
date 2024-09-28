@@ -473,16 +473,16 @@ def optimise_chi(nu : np.array, sigma : np.array, I : np.ndarray, I_obs : np.nda
 	for n in range(len(nu)):
 		for s in range(len(sigma)):
 			chis[n,s] = np.sum((I[n,s,:]-I_obs)**2)
-
+	
 	# Find the simple minima
 	chi_min = argmin(chis)
 	nu_min = nu[chi_min[0]]
 	sigma_min = sigma[chi_min[1]]
 
 	if chi_min[0]+5 > len(nu) or chi_min[0] < 4:
-		raise Exception("[optimise_chi] The found minimum (" + str(chi_min[0]) + "," + str(nu_min) + ") is at the border of the selected ranges. Did you select a QS region?")
+		raise Exception("[optimise_chi] The found minimum in nu (" + str(chi_min[0]) + "," + str(nu_min) + ") is at the border of the selected ranges. Did you select a QS region?")
 	if chi_min[1]+5 > len(sigma) or chi_min[1] < 4:
-		raise Exception("[optimise_chi] The found minimum (" + str(chi_min[1]) + "," + str(sigma_min) + ") is at the border of the selected ranges. Did you select a QS region?")
+		raise Exception("[optimise_chi] The found minimum in sigma (" + str(chi_min[1]) + "," + str(sigma_min) + ") is at the border of the selected ranges. Did you select a QS region?")
 
 	
 	##################
@@ -624,7 +624,7 @@ def correct_spectral_veil(pro : p.profile_stk, instrument : str, fts_file : str,
 	verbose : bool, optional
 		Print out status information. Default: True
 	plot : bool, optional
-		Plot the spectra and the parameter space
+		Plot the spectra and the parameter space, by default: "True"
 
 	Returns
 	-------

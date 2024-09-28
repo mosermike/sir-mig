@@ -72,7 +72,7 @@ Inversion
 
 .. note::
 
-   This project is under active development.
+   This project is finished. Only updates will be made to fix bugs or to implement necessary new features.
 
 Contents
 --------
