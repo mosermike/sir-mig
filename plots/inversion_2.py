@@ -193,6 +193,13 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		fit1.cut_to_wave(np.array([conf1["range_wave"][ind1]]))
 		fit2.cut_to_wave(np.array([conf2["range_wave"][ind2]]))
 
+	# Change x and y position to the map as the data is cut to the map
+	if conf1['mode'] == "1C" or conf1["mode"] == "2C":
+		x1 = x1 - conf1["map"][0]
+		y1 = y1 - conf1["map"][2]
+		x2 = x2 - conf2["map"][0]
+		y2 = y2 - conf2["map"][2]
+
 	# Observation from synthesis
 	ll1, I1, Q1, U1, V1 = obs1.wave, obs1.stki[x1,y1],obs1.stkq[x1,y1],obs1.stku[x1,y1],obs1.stkv[x1,y1]
 	ll2, I2, Q2, U2, V2 = obs2.wave, obs2.stki[x2,y2],obs2.stkq[x2,y2],obs2.stku[x2,y2],obs2.stkv[x2,y2]
