@@ -386,7 +386,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		# set the spacing between subplots	
 		plt.tight_layout(pad=2.5)
 
-	plt.savefig(savepath + "inversion2_stokes_x1" + str(x1) + "_y1" + str(y1) +"_x2" + str(x2) + "_y2" + str(y2) + add)
+	plt.savefig(savepath + "inversion2_stokes_x1_" + str(x1) + "_y1_" + str(y1) +"_x2_" + str(x2) + "_y2_" + str(y2) + add)
 
 	###################################################
 	#			Plot physical parameters			#
@@ -465,7 +465,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 			ax1.set_title(titles[i])
 			# set the spacing between subplots
 			plt.tight_layout(pad=2)
-			plt.savefig(savepath + "inversion2_x1" + str(x1) + "_y1"  + str(y1) + "_x2" + str(x2) + "_y2"  + str(y2) + str(inputs[i][1:]) + add)
+			plt.savefig(savepath + "inversion2_x1" + str(x1) + "_y1_"  + str(y1) + "_x2_" + str(x2) + "_y2_"  + str(y2) + str(inputs[i][1:]) + add)
 		
 	# Plot T,B,vlos, inc in one figure
 	lim_max = phy1.tau[-1]
