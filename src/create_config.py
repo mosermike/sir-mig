@@ -51,12 +51,12 @@ def _config_MC():
 	noise_out = input("Noise Prefix [noise]: ")
 	instrument = input("Instrument (GRIS, Hinode or blank) for predefined noise levels: ")
 	if instrument == "GRIS":
-		noise_I=0
-		noise_Q=76e-5 # Computed by using many different quiet sun observations from GRIS
-		noise_U=76e-5 # Computed by using many different quiet sun observations from GRIS
-		noise_V=73e-5 # Computed by using many different quiet sun observations from GRIS
+		noise_I=1e-3
+		noise_Q=73e-5 # Computed by using many different quiet sun observations from GRIS
+		noise_U=73e-5 # Computed by using many different quiet sun observations from GRIS
+		noise_V=70e-5 # Computed by using many different quiet sun observations from GRIS
 	elif instrument == "Hinode":
-		noise_I=0
+		noise_I=1e-3
 		noise_Q=1e-3 # From (Tsuneta et al., 2008)
 		noise_U=1e-3 # From (Tsuneta et al., 2008)
 		noise_V=1e-3 # From (Tsuneta et al., 2008)
