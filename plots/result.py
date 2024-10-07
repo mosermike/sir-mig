@@ -83,6 +83,7 @@ def _help():
 	sir.option("-rot90","Rotate the image 90 deg")
 	sir.option("-mark x1,x2,... y1,y2,...","Marked pixels in the observations Stokes I as two lists separated with ','")
 	sir.option("-arrowI", "Plot the direction arrow in Stokes I inversion results when '-arc' is used.")
+	sir.option("-ext", "Extend in colorbars")
 	sys.exit()
 
 
@@ -357,34 +358,39 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 		temp = sys.argv[sys.argv.index("-limitT")+1].split(',')
 		limits[1] = [int(i) for i in temp ]
 		cmap[1] = mpl.colormaps[cmap[0]]
-		cmap[1].set_extremes(under='red', over='orange')
-		extend[1] = "both"
+		if "-ext" in sys.argv:
+			cmap[1].set_extremes(under='red', over='orange')
+			extend[1] = "both"
 	
 	if "-limitB" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
 		limits[4] = [int(i) for i in temp ]
 		cmap[4] = mpl.colormaps[cmap[4]]
-		cmap[4].set_extremes(under='red', over='green')
-		if limits[4][0] > 0:
-			extend[4] = "both"
-		else:
-			extend[4] = "max"
+		if "-ext" in sys.argv:
+			cmap[4].set_extremes(under='red', over='green')
+			if limits[4][0] > 0:
+				extend[4] = "both"
+			else:
+				extend[4] = "max"
 	if "-limitv" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitv")+1].split(',')
 		limits[5] = [int(i) for i in temp ]
 		cmap[5] = mpl.colormaps[cmap[5]]
-		cmap[5].set_extremes(under='green', over='yellow')
-		extend[5] = "both"
+		if "-ext" in sys.argv:
+			cmap[5].set_extremes(under='green', over='yellow')
+			extend[5] = "both"
 
 	if "-limitchi2" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitchi2")+1].split(',')
 		limits[11] = [int(i) for i in temp ]
 		cmap[11] = mpl.colormaps[cmap[11]]
-		cmap[11].set_extremes(under='red', over='blue')
-		if limits[11][0] > 0:
-			extend[11] = "both"
-		else:
-			extend[11] = "max"
+		if "-ext" in sys.argv:
+			cmap[11].set_extremes(under='red', over='blue')
+			if limits[11][0] > 0:
+				extend[11] = "both"
+			else:
+				extend[11] = "max"
+	
 	if Type != "":
 		add_str =  f" for Model {Type} "
 	else:
@@ -982,7 +988,9 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 		Marked pixels in the observations Stokes I as two lists separated with ',' and starting with x position
 	-arrowI
 		Plot the direction arrow in Stokes I inversion results when '-arc' is used
-		
+	-ext
+		Extend in colorbars
+
 	"""
 
 	# Import library
