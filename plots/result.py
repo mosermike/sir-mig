@@ -510,19 +510,19 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 	else:
 		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[1])
 	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
-	cbar1.set_label(label = labels[1], loc = 'center', labelpad=15)
+	cbar1.set_label(label = labels[1], loc = 'center', labelpad=13)
 	if models_inv.ny < models_inv.nx//2:
 		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[4])
 	else:
 		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[4])
 	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
-	cbar2.set_label(label = labels[4], loc = 'center', labelpad=15)
+	cbar2.set_label(label = labels[4], loc = 'center', labelpad=13)
 	if models_inv.ny < models_inv.nx//2:
 		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[5])
 	else:
 		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[5])
 	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
-	cbar3.set_label(label = labels[5], loc = 'center', labelpad=15)
+	cbar3.set_label(label = labels[5], loc = 'center', labelpad=13)
 	
 	if "-plot_chi2" in sys.argv:
 		if models_inv.ny < models_inv.nx//2:
@@ -530,21 +530,21 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 		else:
 			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[11])
 		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
-		cbar4.set_label(label = labels[11], loc = 'center', labelpad=15)
+		cbar4.set_label(label = labels[11], loc = 'center', labelpad=13)
 	elif "-plot_fill" in sys.argv:
 		if models_inv.ny < models_inv.nx//2:
 			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10)
 		else:
 			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30)
 		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
-		cbar4.set_label(label = r"$\alpha$", loc = 'center', labelpad=15)	
+		cbar4.set_label(label = r"$\alpha$", loc = 'center', labelpad=13)	
 	else:
 		if models_inv.ny < models_inv.nx//2:
 			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend[6])
 		else:
 			cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend[6])
 		cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
-		cbar4.set_label(label = labels[6], loc = 'center', labelpad=15)
+		cbar4.set_label(label = labels[6], loc = 'center', labelpad=13)
 	############
 	# Set title position depending on the chosen plot and consider the flags hinode and gris
 	if Type != "2":
