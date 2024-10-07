@@ -255,16 +255,16 @@ def inversion(conf : dict, x : int, y : int):
 	ax3.plot(ll1, U1, "-", label=llabel)
 	ax4.plot(ll1, V1, "-", label=llabel)
 
-	ax1.plot(ll1, I_fit1, "-", label = "Best Fit")
-	ax2.plot(ll1, Q_fit1, "-", label = "Best Fit")
-	ax3.plot(ll1, U_fit1, "-", label = "Best Fit")
-	ax4.plot(ll1, V_fit1, "-", label = "Best Fit")
+	ax1.plot(ll2, I_fit1, "-", label = "Best Fit")
+	ax2.plot(ll2, Q_fit1, "-", label = "Best Fit")
+	ax3.plot(ll2, U_fit1, "-", label = "Best Fit")
+	ax4.plot(ll2, V_fit1, "-", label = "Best Fit")
 
 	# Set xlimits
-	ax1.set_xlim(ll1[0], ll1[-1])
-	ax2.set_xlim(ll1[0], ll1[-1])
-	ax3.set_xlim(ll1[0], ll1[-1])
-	ax4.set_xlim(ll1[0], ll1[-1])
+	ax1.set_xlim(ll2[0], ll2[-1])
+	ax2.set_xlim(ll2[0], ll2[-1])
+	ax3.set_xlim(ll2[0], ll2[-1])
+	ax4.set_xlim(ll2[0], ll2[-1])
 
 	#######################################################################
 	# Set labels												#
