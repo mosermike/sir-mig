@@ -701,9 +701,9 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 		#	xs = xs
 		#	ys = conf["map"][3]-ys
 			
-		colors = ["black","red","blue","green","yellow"]
+		colors = ["orange","red","blue","green","yellow"]
 		for i in range(len(xs)):
-			ax1.scatter(xs[i]*abs(dx),ys[i]*abs(dy),c=colors[i % len(colors)], marker="x")
+			ax1.scatter(xs[i]*abs(dx),ys[i]*abs(dy),c=colors[i % len(colors)], marker="x", s=80)
 	
 	############
 	# Colorbar #
