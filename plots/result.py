@@ -82,7 +82,8 @@ def _help():
 	sir.option("-symv","Symmetric limits for vlos")
 	sir.option("-rot90","Rotate the image 90 deg")
 	sir.option("-mark x1,x2,... y1,y2,...","Marked pixels in the observations Stokes I as two lists separated with ','")
-	sir.option("-arrowI", "Plot the direction arrow in Stokes I inversion results when '-arc' is used.")
+	sir.option("-arrowI", "Plot the direction arrow in Stokes I observations results when '-arc' is used.")
+	sir.option("-arrowI1", "Plot the direction arrow in Stokes I inversion results when '-arc' is used.")
 	sir.option("-ext", "Extend in colorbars")
 	sys.exit()
 
@@ -674,7 +675,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	im2 = ax2.imshow(Q1[:,:,waveQ_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[1][0], vmax = limits_stokes1[1][1], cmap = 'PuOr', extent=Map_plot)
 	im3 = ax3.imshow(U1[:,:,waveU_ind1]  .transpose(), origin=origin, vmin = limits_stokes1[2][0], vmax = limits_stokes1[2][1], cmap = 'PuOr', extent=Map_plot)
 	im4 = ax4.imshow(V1[:,:,waveV_ind1].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
-	if "-arc" in sys.argv:
+	if "-arc" in sys.argv and "-arrowI" in sys.argv:
 		l = np.min([Map_plot[1],Map_plot[3]])*0.025
 		ax1.arrow(Map_plot[1]/2, Map_plot[3]/2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 	#####################
@@ -794,7 +795,7 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 	im4 = ax4.imshow(V2[:,:,waveV_ind2].transpose(), origin=origin, vmin = limits_stokes1[3][0], vmax = limits_stokes1[3][1], cmap = 'PuOr', extent=Map_plot)
 
 	
-	if "-arc" in sys.argv and "-arrowI" in sys.argv:
+	if "-arc" in sys.argv and "-arrowI2" in sys.argv:
 		l = np.min([Map_plot[1],Map_plot[3]])*0.025
 		ax1.arrow(Map_plot[1]/2, Map_plot[3]/2, sign1*abs(dx)*n, sign2*abs(dy)*n, head_width=l, head_length=l, fc='black', ec='black')
 
@@ -987,6 +988,8 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 	-mark [int,int,...] [int,int,...]
 		Marked pixels in the observations Stokes I as two lists separated with ',' and starting with x position
 	-arrowI
+		Plot the direction arrow in Stokes I observations results when '-arc' is used
+	-arrowI1
 		Plot the direction arrow in Stokes I inversion results when '-arc' is used
 	-ext
 		Extend in colorbars
