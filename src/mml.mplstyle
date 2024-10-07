@@ -55,8 +55,8 @@ figure.figsize : 11, 8
 
 
 # Fontsizes
-xtick.labelsize : 16
-ytick.labelsize : 16
+xtick.labelsize : 18
+ytick.labelsize : 18
 legend.fontsize : 14
 legend.title_fontsize : 14
 axes.titlesize : 23

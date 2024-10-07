@@ -711,25 +711,25 @@ def _plot_stokes(stokes, stokes_inv, wave, Map, figsize, frac, units, title1,  t
 		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
 	else:
 		cbar1 = fig.colorbar(im1, ax=ax1, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
-	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	cbar1.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
 	#cbar1.set_label(label = r'$I / I_c $', loc = 'center')
 	if stokes_inv.ny < stokes_inv.nx//2:
 		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
 	else:
 		cbar2 = fig.colorbar(im2, ax=ax2, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
-	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	cbar2.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
 	#cbar2.set_label(label = r'$Q / I_c $', loc = 'center')
 	if stokes_inv.ny < stokes_inv.nx//2:
 		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
 	else:
 		cbar3 = fig.colorbar(im3, ax=ax3, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
-	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	cbar3.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
 	#cbar3.set_label(label = r'$U / I_c $', loc = 'center')
 	if stokes_inv.ny < stokes_inv.nx//2:
 		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.12 * frac, pad=0.04, aspect=10, extend=extend)
 	else:
 		cbar4 = fig.colorbar(im4, ax=ax4, fraction=0.057 * frac, pad=0.04, aspect=30, extend=extend)
-	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"]*0.8)
+	cbar4.ax.tick_params(labelsize=mpl.rcParams["ytick.labelsize"])
 	#cbar4.set_label(label = r'$V / I_c $', loc = 'center')
 	############
 
