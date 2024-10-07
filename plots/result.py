@@ -1206,7 +1206,7 @@ def result(conf, wave, tau, Type = "", plot_stokes = True):
 			origin = "lower"
 		
 	if "-arc" in sys.argv:
-		units = 'Arcsec'
+		units = 'arcsec'
 	else:
 		units = 'Pixels'
 
