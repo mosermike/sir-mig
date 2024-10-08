@@ -595,7 +595,7 @@ class profile_stk:
 
 		return self
 
-	def read_profile(self, filename : str, x=0, y=0):
+	def  read_profile(self, filename : str, x=0, y=0):
 		"""
 		Reads a single profile file and stores it in the class
 

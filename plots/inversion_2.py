@@ -416,7 +416,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 			# Synthesised model = Real model
 			if conf1["mode"] == "MC" or conf1['mode'] == "2C":
 				if conf1['mode'] == "2C":
-					llabel = "Best Fit M. 1 ("
+					llabel = "Best Fit 1st C. ("
 				else:
 					llabel = "Syn Model ("
 
@@ -426,7 +426,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 				else:
 					ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x1,y1], label=f"{llabel[:-2]})",color='#0C5DA5')
 			if conf1['mode'] == "2C":
-					llabel = "Best Fit M. 2 ("
+					llabel = "Best Fit 2nd C. ("
 			else:
 					llabel = "Best Fit ("
 			
@@ -491,7 +491,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 
 	if conf1["mode"] == "MC" or conf1['mode'] == "2C":
 		if conf1["mode"] == "2C":
-			llabel = "Best Fit M. 1"
+			llabel = "Best Fit 1st C."
 		else:
 			llabel = "Syn. Model"
 		if "-one" not in sys.argv:
@@ -507,7 +507,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 			ax4.plot(syn1.tau, syn1.gamma[x1,y1], label=f"{llabel}", color='#0C5DA5')
 
 	if conf1['mode'] == "2C":
-		llabel = "Best Fit M. 2"
+		llabel = "Best Fit 2nd C."
 	else:
 		llabel = "Best Fit"
 	ax1.plot(phy1.tau, phy1.T[x1,y1], label=f"{llabel} ({label1})", color='#FF2C00')
@@ -517,7 +517,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 
 	if conf1["mode"] == "MC" or conf1['mode'] == "2C":
 		if conf1["mode"] == "2C":
-			llabel = "Best Fit M. 2"
+			llabel = "Best Fit 2nd C."
 		else:
 			llabel = "Syn. Model"
 		if "-one" not in sys.argv:
@@ -527,7 +527,7 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 			ax4.plot(syn2.tau, syn2.gamma[x2,y2], label=f"{llabel} ({label2})", color='#00B945')
 
 	if conf1['mode'] == "2C":
-		llabel = "Best Fit M. 2"
+		llabel = "Best Fit 2nd C."
 	else:
 		llabel = "Best Fit"
 	ax1.plot(phy2.tau, phy2.T[x2,y2], label=f"{llabel} ({label2})", color='#FF9500')

@@ -592,19 +592,19 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 	# Plot the Stokes profiles #
 	############################
 	llabel = "Observation"
-	ax1.plot(obs1.wave, obs1.stki, "x", label=llabel)
-	ax2.plot(obs1.wave, obs1.stkq, "x", label=llabel)
-	ax3.plot(obs1.wave, obs1.stku, "x", label=llabel)
-	ax4.plot(obs1.wave, obs1.stkv, "x", label=llabel)
-	ax1.plot(obs1.wave, obs1.stki, "-", color=colors[0], alpha = 0.5)
-	ax2.plot(obs1.wave, obs1.stkq, "-", color=colors[0], alpha = 0.5)
-	ax3.plot(obs1.wave, obs1.stku, "-", color=colors[0], alpha = 0.5)
-	ax4.plot(obs1.wave, obs1.stkv, "-", color=colors[0], alpha = 0.5)
+	ax1.plot(obs1.wave, obs1.stki[0,0], "x", label=llabel)
+	ax2.plot(obs1.wave, obs1.stkq[0,0], "x", label=llabel)
+	ax3.plot(obs1.wave, obs1.stku[0,0], "x", label=llabel)
+	ax4.plot(obs1.wave, obs1.stkv[0,0], "x", label=llabel)
+	ax1.plot(obs1.wave, obs1.stki[0,0], "-", color=colors[0], alpha = 0.5)
+	ax2.plot(obs1.wave, obs1.stkq[0,0], "-", color=colors[0], alpha = 0.5)
+	ax3.plot(obs1.wave, obs1.stku[0,0], "-", color=colors[0], alpha = 0.5)
+	ax4.plot(obs1.wave, obs1.stkv[0,0], "-", color=colors[0], alpha = 0.5)
 
-	ax1.plot(fit1.wave, fit1.stki, "-", label = "Best Fit", color=colors[1])
-	ax2.plot(fit1.wave, fit1.stkq, "-", label = "Best Fit", color=colors[1])
-	ax3.plot(fit1.wave, fit1.stku, "-", label = "Best Fit", color=colors[1])
-	ax4.plot(fit1.wave, fit1.stkv, "-", label = "Best Fit", color=colors[1])
+	ax1.plot(fit1.wave, fit1.stki[0,0], "-", label = "Best Fit", color=colors[1])
+	ax2.plot(fit1.wave, fit1.stkq[0,0], "-", label = "Best Fit", color=colors[1])
+	ax3.plot(fit1.wave, fit1.stku[0,0], "-", label = "Best Fit", color=colors[1])
+	ax4.plot(fit1.wave, fit1.stkv[0,0], "-", label = "Best Fit", color=colors[1])
 
 	# Set xlimits
 	ax1.set_xlim(obs1.wave[0], obs1.wave[-1])
@@ -681,13 +681,13 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 
 	phy = phy11.copy()
 	err = err1.copy()
-	pars1 = [phy.tau[0,0],phy.T[0,0],phy.Pe[0,0],phy.vmic[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
-	pars1_err = [err.tau[0,0],err.T[0,0],err.Pe[0,0],err.vmic[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
+	pars1 = [phy.tau,phy.T[0,0],phy.Pe[0,0],phy.vmicro[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
+	pars1_err = [err.tau,err.T[0,0],err.Pe[0,0],err.vmicro[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
 
 	phy = phy22.copy()
 	err = err2.copy()
-	pars2 = [phy.tau[0,0],phy.T[0,0],phy.Pe[0,0],phy.vmic[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
-	pars2_err = [err.tau[0,0],err.T[0,0],err.Pe[0,0],err.vmic[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
+	pars2 = [phy.tau,phy.T[0,0],phy.Pe[0,0],phy.vmicro[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
+	pars2_err = [err.tau,err.T[0,0],err.Pe[0,0],err.vmicro[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
 
 	for i in range(len(inputs)):
 		if inputs[i] in sys.argv:
@@ -732,17 +732,18 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 	lim_max  = -3
 	phy = phy11.copy()
 	err = err1.copy()
-	phy.set_lim(lim_max)
-	err.set_lim(lim_max)
-	pars1 = [phy.tau[0,0],phy.T[0,0],phy.Pe[0,0],phy.vmic[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
-	pars1_err = [err.tau[0,0],err.T[0,0],err.Pe[0,0],err.vmic[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
+	phy.set_limit(lim_max)
+	err.set_limit(lim_max)
+	
+	pars1 = [phy.tau,phy.T[0,0],phy.Pe[0,0],phy.vmicro[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
+	pars1_err = [err.tau,err.T[0,0],err.Pe[0,0],err.vmicro[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
 
 	phy = phy22.copy()
 	err = err2.copy()
-	phy.set_lim(lim_max)
-	err.set_lim(lim_max)
-	pars2 = [phy.tau[0,0],phy.T[0,0],phy.Pe[0,0],phy.vmic[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
-	pars2_err = [err.tau[0,0],err.T[0,0],err.Pe[0,0],err.vmic[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
+	phy.set_limit(lim_max)
+	err.set_limit(lim_max)
+	pars2 = [phy.tau,phy.T[0,0],phy.Pe[0,0],phy.vmicro[0,0],phy.B[0,0],phy.vlos[0,0],phy.gamma[0,0],phy.phi[0,0],phy.z[0,0],phy.Pg[0,0],phy.rho[0,0]]
+	pars2_err = [err.tau,err.T[0,0],err.Pe[0,0],err.vmicro[0,0],err.B[0,0],err.vlos[0,0],err.gamma[0,0],err.phi[0,0],err.z[0,0],err.Pg[0,0],err.rho[0,0]]
 
 
 	if "-vertical" in sys.argv:
@@ -754,16 +755,16 @@ def inversion_single_2C(fit : str, obs : str, phy1 : str, phy2 : str):
 	else:
 		fig, ((ax1,ax2),(ax3,ax4)) = plt.subplots(2,2, figsize=(16,12), sharex=True, layout="compressed")
 
-	llabel = "Best Fit Model 1"
+	llabel = "1st component"
 	ax1.plot(pars1[0], pars1[1], label=llabel, color=colors[0])
 	ax2.plot(pars1[0], pars1[4], label=llabel, color=colors[0])
 	ax3.plot(pars1[0], pars1[5], label=llabel, color=colors[0])
 	ax4.plot(pars1[0], pars1[6], label=llabel, color=colors[0])
-	llabel = "Best Fit Model 2"
-	ax1.plot(pars2[0], pars2[1], label=llabel, color=colors[1])
-	ax2.plot(pars2[0], pars2[4], label=llabel, color=colors[1])
-	ax3.plot(pars2[0], pars2[5], label=llabel, color=colors[1])
-	ax4.plot(pars2[0], pars2[6], label=llabel, color=colors[1])
+	llabel = "2nd component"
+	ax1.plot(pars2[0], pars2[1], "--",label=llabel, color=colors[1])
+	ax2.plot(pars2[0], pars2[4], "--", label=llabel, color=colors[1])
+	ax3.plot(pars2[0], pars2[5], "--", label=llabel, color=colors[1])
+	ax4.plot(pars2[0], pars2[6], "--", label=llabel, color=colors[1])
 
 	if "-err" in sys.argv:
 		ax1.fill_between(pars1[0], pars1[1] - pars1_err[1],

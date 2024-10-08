@@ -343,13 +343,13 @@ def inversion(conf : dict, x : int, y : int):
 			# Synthesised model = Real model
 			if conf["mode"] == "MC" or conf['mode'] == "2C" or conf["mode"] == "SY":
 				if conf['mode'] == "2C":
-					llabel = "Best Fit Model 1"
+					llabel = "Best Fit 1st component"
 				else:
 					llabel = "Syn Model"
 				ax1.plot(syn1.tau, syn1.get_attribute(inputs[i][1:])[x,y], label=f"{llabel}",color=colors[0])
 
 			if conf['mode'] == "2C":
-				llabel = "Best Fit Model 2"
+				llabel = "Best Fit 2nd component"
 			else:
 				llabel = "Best Fit"
 			

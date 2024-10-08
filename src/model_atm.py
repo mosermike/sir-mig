@@ -520,6 +520,9 @@ class model_atm:
 			self.rho[0,0] = data[10]
 			self.full = True
 		else:
+			self.z[0,0]   = np.zeros(len(data[1]))
+			self.Pg[0,0]  = np.zeros(len(data[1]))
+			self.rho[0,0] = np.zeros(len(data[1]))
 			self.full = False
 
 		self.load = True
