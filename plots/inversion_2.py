@@ -629,10 +629,10 @@ def inversion_2(conf1 : dict, x1 : int, y1 : int, conf2 : dict, x2 : int, y2 : i
 		ax3.set_title(titles[4])
 		ax4.set_title(titles[5])
 
-	ax1.legend(loc='upper right')
-	ax2.legend(loc='upper right')
-	ax3.legend(loc='upper right')
-	ax4.legend(loc='upper right')
+	ax1.legend()
+	#ax2.legend(loc='upper right')
+	#ax3.legend(loc='upper right')
+	#ax4.legend(loc='upper right')
 
 	# Set title position depending on the chosen plot and consider the flags hinode and gris
 	if title != "-1":

@@ -17,7 +17,6 @@ import profile_stk as p
 import chi2_stk as c
 import matplotlib as mpl
 
-# TODO do the figure size as in gris_firtez
 
 def _help():
 	"""
@@ -362,9 +361,6 @@ def _plot_model(models_inv, tau, figsize, frac, units, title3, title4, savepath,
 		if "-ext" in sys.argv:
 			cmap[1].set_extremes(under='red', over='orange')
 			extend[1] = "both"
-		if "-extT" in sys.argv:
-			cmap[1].set_extremes(over='yellow')
-			extend[1] = "max"
 	
 	if "-limitB" in sys.argv:
 		temp = sys.argv[sys.argv.index("-limitB")+1].split(',')
